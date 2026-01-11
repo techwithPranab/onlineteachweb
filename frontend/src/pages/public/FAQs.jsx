@@ -74,12 +74,12 @@ export default function FAQs() {
     {
       category: 'tutors',
       question: 'How much can I earn as a tutor?',
-      answer: 'Tutors keep 80% of their course revenue. Earnings vary based on your rates, number of students, and hours taught. Beginner tutors typically earn $500-$1,500/month part-time, while experienced tutors can earn $2,000-$5,000+ monthly.'
+      answer: 'Tutors keep 80% of their course revenue. Earnings vary based on your rates, number of students, and hours taught. Beginner tutors typically earn ₹500-₹1,500/month part-time, while experienced tutors can earn ₹2,000-₹5,000+ monthly.'
     },
     {
       category: 'tutors',
       question: 'When and how do I get paid?',
-      answer: 'Payments are processed weekly via direct deposit or PayPal. You can track your earnings in real-time through your tutor dashboard. A minimum balance of $50 is required for withdrawal.'
+      answer: 'Payments are processed weekly via direct deposit or PayPal. You can track your earnings in real-time through your tutor dashboard. A minimum balance of ₹50 is required for withdrawal.'
     },
     {
       category: 'tutors',
@@ -96,7 +96,7 @@ export default function FAQs() {
     {
       category: 'billing',
       question: 'What subscription plans are available?',
-      answer: 'We offer three plans: Basic ($19/month for 5 courses), Standard ($39/month for 15 courses), and Premium ($79/month for unlimited courses). All plans include access to live classes, materials, and progress tracking.'
+      answer: 'We offer three plans: Basic (₹19/month for 5 courses), Standard (₹39/month for 15 courses), and Premium (₹79/month for unlimited courses). All plans include access to live classes, materials, and progress tracking.'
     },
     {
       category: 'billing',

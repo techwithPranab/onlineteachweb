@@ -40,6 +40,8 @@ import UserManagement from './pages/admin/UserManagement'
 import TutorApproval from './pages/admin/TutorApproval'
 import AdminCourseManagement from './pages/admin/AdminCourseManagement'
 import AdminCourseCreation from './pages/admin/AdminCourseCreation'
+import AdminCourseEdit from './pages/admin/AdminCourseEdit'
+import AdminCourseView from './pages/admin/AdminCourseView'
 import RevenueAnalytics from './pages/admin/RevenueAnalytics'
 import PaymentManagement from './pages/admin/PaymentManagement'
 import SessionManagement from './pages/admin/SessionManagement'
@@ -136,6 +138,8 @@ function App() {
             <Route path="tutors/approval" element={<TutorApproval />} />
             <Route path="courses" element={<AdminCourseManagement />} />
             <Route path="courses/new" element={<AdminCourseCreation />} />
+            <Route path="courses/:id/view" element={<AdminCourseView />} />
+            <Route path="courses/:id/edit" element={<AdminCourseEdit />} />
             <Route path="payments" element={<PaymentManagement />} />
             <Route path="sessions" element={<SessionManagement />} />
             <Route path="subscriptions" element={<AdminSubscriptionManagement />} />

@@ -150,7 +150,7 @@ export default function SubscriptionManagement() {
   if (error) return <ErrorMessage message={error.message || 'Failed to load subscription plans'} />
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
         <div>
@@ -163,7 +163,7 @@ export default function SubscriptionManagement() {
             setEditingPlan(null)
             setShowCreateModal(true)
           }}
-          className="btn-primary mt-4 sm:mt-0"
+          className="px-3 py-2 text-sm bg-blue-600 text-white rounded-md hover:bg-blue-700 flex items-center mt-3 sm:mt-0"
         >
           <Plus className="h-4 w-4 mr-2" />
           Create Plan
@@ -171,7 +171,7 @@ export default function SubscriptionManagement() {
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <div className="card">
           <div className="flex items-center justify-between">
             <div>
@@ -230,7 +230,7 @@ export default function SubscriptionManagement() {
       </div>
 
       {/* Plans Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {plans.map((plan) => (
           <div key={plan._id} className={`card relative ${plan.priority === 2 ? 'ring-2 ring-primary-500' : ''}`}>
             {plan.priority === 2 && (

@@ -214,7 +214,7 @@ export default function ProfileSettings() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-4xl">
+    <div className="px-4 py-8">
       <div className="bg-white rounded-lg shadow-lg">
         {/* Header */}
         <div className="p-6 border-b border-gray-200">

@@ -96,6 +96,31 @@ export const sessionService = {
     const { data } = await api.post(`/live/end`, { sessionId: id })
     return data
   },
+
+  approveSession: async (id) => {
+    const { data } = await api.put(`/sessions/${id}/approve`)
+    return data
+  },
+
+  rejectSession: async (id, reason) => {
+    const { data } = await api.put(`/sessions/${id}/reject`, { reason })
+    return data
+  },
+
+  getPendingSessions: async (params = {}) => {
+    const { data } = await api.get('/sessions/pending', { params })
+    return data
+  },
+
+  cancelSession: async (id, reason) => {
+    const { data } = await api.put(`/sessions/${id}/cancel`, { reason })
+    return data
+  },
+
+  reassignSession: async (id, newTutorId) => {
+    const { data } = await api.put(`/sessions/${id}/reassign`, { newTutorId })
+    return data
+  },
 }
 
 export const materialService = {
@@ -220,6 +245,16 @@ export const adminService = {
     return data
   },
 
+  updateUser: async (userId, userData) => {
+    const { data } = await api.put(`/admin/users/${userId}`, userData)
+    return data
+  },
+
+  deleteUser: async (userId) => {
+    const { data } = await api.delete(`/admin/users/${userId}`)
+    return data
+  },
+
   getPendingTutors: async () => {
     const { data } = await api.get('/admin/tutors/pending')
     return data
@@ -235,6 +270,16 @@ export const adminService = {
 
   getAnalytics: async (params = {}) => {
     const { data } = await api.get('/admin/analytics', { params })
+    return data
+  },
+
+  getAdminCourses: async (params = {}) => {
+    const { data } = await api.get('/admin/courses', { params })
+    return data
+  },
+
+  getCourseStats: async () => {
+    const { data } = await api.get('/admin/courses/stats')
     return data
   },
 }

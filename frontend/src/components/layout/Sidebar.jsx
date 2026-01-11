@@ -35,6 +35,7 @@ const tutorLinks = [
 
 const adminLinks = [
   { to: '/admin', icon: LayoutDashboard, label: 'Dashboard', end: true },
+  { to: '/admin/courses', icon: BookOpen, label: 'Course Management' },
   { to: '/admin/users', icon: Users, label: 'Users' },
   { to: '/admin/tutors/approval', icon: GraduationCap, label: 'Tutor Approval' },
   { to: '/admin/payments', icon: DollarSign, label: 'Payments' },

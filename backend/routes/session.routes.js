@@ -40,4 +40,47 @@ router.delete('/:id',
   sessionController.deleteSession
 );
 
+// Admin routes for session approval
+router.put('/:id/approve',
+  authenticate,
+  authorize('admin'),
+  sessionController.approveSession
+);
+
+router.put('/:id/reject',
+  authenticate,
+  authorize('admin'),
+  [
+    body('reason').trim().notEmpty().withMessage('Rejection reason is required'),
+    validate
+  ],
+  sessionController.rejectSession
+);
+
+router.put('/:id/cancel',
+  authenticate,
+  authorize('admin'),
+  [
+    body('reason').trim().notEmpty().withMessage('Cancellation reason is required'),
+    validate
+  ],
+  sessionController.cancelSession
+);
+
+router.put('/:id/reassign',
+  authenticate,
+  authorize('admin'),
+  [
+    body('newTutorId').notEmpty().withMessage('New tutor ID is required'),
+    validate
+  ],
+  sessionController.reassignSession
+);
+
+router.get('/pending',
+  authenticate,
+  authorize('admin'),
+  sessionController.getPendingSessions
+);
+
 module.exports = router;

@@ -114,7 +114,7 @@ export default function TermsOfService() {
 
                   <h4 className="font-semibold text-gray-900 mb-2 mt-4">4.5 Tutor Payments</h4>
                   <p>
-                    Tutors earn 80% of course revenue. Payments are processed weekly with a minimum withdrawal of $50. We reserve the right to withhold payments for policy violations.
+                    Tutors earn 80% of course revenue. Payments are processed weekly with a minimum withdrawal of ₹50. We reserve the right to withhold payments for policy violations.
                   </p>
                 </>
               }

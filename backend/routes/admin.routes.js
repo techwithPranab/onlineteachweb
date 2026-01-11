@@ -22,6 +22,19 @@ router.put('/users/:id/status',
   adminController.updateUserStatus
 );
 
+router.put('/users/:id',
+  [
+    body('name').optional().trim().notEmpty().withMessage('Name cannot be empty'),
+    body('email').optional().isEmail().withMessage('Valid email is required'),
+    body('phone').optional().trim(),
+    body('bio').optional().trim(),
+    validate
+  ],
+  adminController.updateUser
+);
+
+router.delete('/users/:id', adminController.deleteUser);
+
 // Tutor management
 router.get('/tutors/pending', adminController.getPendingTutors);
 

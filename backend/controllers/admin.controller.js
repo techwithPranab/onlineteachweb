@@ -40,7 +40,7 @@ exports.getAllUsers = async (req, res, next) => {
     
     res.json({
       success: true,
-      users,
+      data: users,
       total,
       page: parseInt(page),
       pages: Math.ceil(total / parseInt(limit))
@@ -86,6 +86,75 @@ exports.updateUserStatus = async (req, res, next) => {
     res.json({
       success: true,
       user: user.getPublicProfile()
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// @desc    Update user details
+// @route   PUT /api/admin/users/:id
+// @access  Private (Admin)
+exports.updateUser = async (req, res, next) => {
+  try {
+    const { name, email, phone, bio, subjects, experience } = req.body;
+    
+    const user = await User.findById(req.params.id);
+    
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: 'User not found'
+      });
+    }
+    
+    // Update allowed fields
+    if (name !== undefined) user.name = name;
+    if (email !== undefined) user.email = email;
+    if (phone !== undefined) user.phone = phone;
+    if (bio !== undefined) user.bio = bio;
+    if (subjects !== undefined) user.subjects = subjects;
+    if (experience !== undefined) user.experience = experience;
+    
+    await user.save();
+    
+    res.json({
+      success: true,
+      user: user.getPublicProfile()
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// @desc    Delete user
+// @route   DELETE /api/admin/users/:id
+// @access  Private (Admin)
+exports.deleteUser = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.params.id);
+    
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: 'User not found'
+      });
+    }
+    
+    // Prevent deleting admin users
+    if (user.role === 'admin') {
+      return res.status(403).json({
+        success: false,
+        message: 'Cannot delete admin users'
+      });
+    }
+    
+    // Hard delete the user
+    await User.findByIdAndDelete(req.params.id);
+    
+    res.json({
+      success: true,
+      message: 'User deleted successfully'
     });
   } catch (error) {
     next(error);

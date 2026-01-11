@@ -33,8 +33,17 @@ const sessionSchema = new mongoose.Schema({
   },
   status: {
     type: String,
-    enum: ['scheduled', 'ongoing', 'completed', 'cancelled'],
-    default: 'scheduled'
+    enum: ['pending_approval', 'scheduled', 'ongoing', 'completed', 'cancelled', 'rejected'],
+    default: 'pending_approval'
+  },
+  approvedBy: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  },
+  approvedAt: Date,
+  rejectionReason: {
+    type: String,
+    maxlength: 500
   },
   isPaid: {
     type: Boolean,

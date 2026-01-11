@@ -80,9 +80,23 @@ exports.getSessions = async (req, res, next) => {
     if (tutorId) query.tutor = tutorId;
     if (status) query.status = status;
     
+    // Filter sessions based on user role
+    if (req.user.role === 'student') {
+      // Students can only see approved sessions
+      query.status = { $in: ['scheduled', 'ongoing', 'completed'] };
+    } else if (req.user.role === 'tutor') {
+      // Tutors can see their own sessions regardless of approval status
+      query.tutor = req.user._id;
+    }
+    // Admins can see all sessions
+    
     if (upcoming === 'true') {
       query.scheduledAt = { $gte: new Date() };
-      query.status = 'scheduled';
+      if (req.user.role === 'student') {
+        query.status = 'scheduled';
+      } else {
+        query.status = { $in: ['pending_approval', 'scheduled'] };
+      }
     }
     
     if (studentId) {
@@ -227,6 +241,222 @@ exports.deleteSession = async (req, res, next) => {
     res.json({
       success: true,
       message: 'Session deleted successfully'
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// @desc    Approve session
+// @route   PUT /api/sessions/:id/approve
+// @access  Private (Admin)
+exports.approveSession = async (req, res, next) => {
+  try {
+    const session = await Session.findById(req.params.id).populate('course tutor');
+    
+    if (!session) {
+      return res.status(404).json({
+        success: false,
+        message: 'Session not found'
+      });
+    }
+    
+    if (session.status !== 'pending_approval') {
+      return res.status(400).json({
+        success: false,
+        message: 'Session is not pending approval'
+      });
+    }
+    
+    session.status = 'scheduled';
+    session.approvedBy = req.user._id;
+    session.approvedAt = new Date();
+    session.rejectionReason = undefined; // Clear any previous rejection reason
+    
+    await session.save();
+    
+    res.json({
+      success: true,
+      message: 'Session approved successfully',
+      session
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// @desc    Reject session
+// @route   PUT /api/sessions/:id/reject
+// @access  Private (Admin)
+exports.rejectSession = async (req, res, next) => {
+  try {
+    const { reason } = req.body;
+    
+    if (!reason || reason.trim().length === 0) {
+      return res.status(400).json({
+        success: false,
+        message: 'Rejection reason is required'
+      });
+    }
+    
+    const session = await Session.findById(req.params.id).populate('course tutor');
+    
+    if (!session) {
+      return res.status(404).json({
+        success: false,
+        message: 'Session not found'
+      });
+    }
+    
+    if (session.status !== 'pending_approval') {
+      return res.status(400).json({
+        success: false,
+        message: 'Session is not pending approval'
+      });
+    }
+    
+    session.status = 'rejected';
+    session.rejectionReason = reason.trim();
+    
+    await session.save();
+    
+    res.json({
+      success: true,
+      message: 'Session rejected successfully',
+      session
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// @desc    Cancel session (Admin only)
+// @route   PUT /api/sessions/:id/cancel
+// @access  Private (Admin)
+exports.cancelSession = async (req, res, next) => {
+  try {
+    const { reason } = req.body;
+    
+    if (!reason || reason.trim().length === 0) {
+      return res.status(400).json({
+        success: false,
+        message: 'Cancellation reason is required'
+      });
+    }
+    
+    const session = await Session.findById(req.params.id).populate('course tutor');
+    
+    if (!session) {
+      return res.status(404).json({
+        success: false,
+        message: 'Session not found'
+      });
+    }
+    
+    // Can't cancel completed or ongoing sessions
+    if (session.status === 'completed' || session.status === 'ongoing') {
+      return res.status(400).json({
+        success: false,
+        message: 'Cannot cancel completed or ongoing sessions'
+      });
+    }
+    
+    session.status = 'cancelled';
+    session.rejectionReason = reason.trim(); // Reuse the field for cancellation reason
+    
+    await session.save();
+    
+    res.json({
+      success: true,
+      message: 'Session cancelled successfully',
+      session
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// @desc    Reassign session to different tutor (Admin only)
+// @route   PUT /api/sessions/:id/reassign
+// @access  Private (Admin)
+exports.reassignSession = async (req, res, next) => {
+  try {
+    const { newTutorId } = req.body;
+    
+    if (!newTutorId) {
+      return res.status(400).json({
+        success: false,
+        message: 'New tutor ID is required'
+      });
+    }
+    
+    const session = await Session.findById(req.params.id).populate('course tutor');
+    
+    if (!session) {
+      return res.status(404).json({
+        success: false,
+        message: 'Session not found'
+      });
+    }
+    
+    // Can't reassign completed or ongoing sessions
+    if (session.status === 'completed' || session.status === 'ongoing') {
+      return res.status(400).json({
+        success: false,
+        message: 'Cannot reassign completed or ongoing sessions'
+      });
+    }
+    
+    // Verify new tutor exists and is actually a tutor
+    const newTutor = await require('../models/User.model').findById(newTutorId);
+    if (!newTutor || newTutor.role !== 'tutor') {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid tutor selected'
+      });
+    }
+    
+    session.tutor = newTutorId;
+    
+    await session.save();
+    
+    // Populate the updated session
+    await session.populate('tutor', 'name email avatar');
+    
+    res.json({
+      success: true,
+      message: 'Session reassigned successfully',
+      session
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.getPendingSessions = async (req, res, next) => {
+  try {
+    const { limit } = req.query;
+    
+    const query = { status: 'pending_approval' };
+    
+    let sessions;
+    if (limit) {
+      sessions = await Session.find(query)
+        .populate('tutor', 'name email avatar')
+        .populate('course', 'title subject grade')
+        .sort({ createdAt: -1 })
+        .limit(parseInt(limit));
+    } else {
+      sessions = await Session.find(query)
+        .populate('tutor', 'name email avatar')
+        .populate('course', 'title subject grade')
+        .sort({ createdAt: -1 });
+    }
+    
+    res.json({
+      success: true,
+      data: sessions,
+      count: sessions.length
     });
   } catch (error) {
     next(error);

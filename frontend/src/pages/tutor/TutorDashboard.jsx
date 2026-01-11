@@ -4,7 +4,7 @@ import {
   BookOpen,
   Users,
   Calendar,
-  DollarSign,
+  IndianRupee,
   TrendingUp,
   Clock,
   Video,
@@ -64,8 +64,8 @@ export default function TutorDashboard() {
     },
     {
       label: 'Total Earnings',
-      value: '$2,850',
-      icon: DollarSign,
+      value: '₹2,850',
+      icon: IndianRupee,
       color: 'yellow',
       change: '+15% this month',
     },
@@ -193,7 +193,7 @@ export default function TutorDashboard() {
                       </div>
                     </div>
                     <div className="text-right">
-                      <p className="font-semibold text-primary-600">${course.price}</p>
+                      <p className="font-semibold text-primary-600">₹{course.price}</p>
                     </div>
                   </div>
                 ))}

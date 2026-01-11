@@ -151,7 +151,7 @@ export default function TutorSessionCreation() {
                       </h3>
                       <p className="text-sm text-gray-500">{course.subject} - Grade {course.grade}</p>
                       <p className="text-xs text-gray-400 mt-1">
-                        ${course.price} • {course.duration}h
+                        ₹{course.price} • {course.duration}h
                       </p>
                     </div>
                   </div>

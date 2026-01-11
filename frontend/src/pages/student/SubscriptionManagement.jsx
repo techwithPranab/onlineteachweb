@@ -122,7 +122,7 @@ export default function SubscriptionManagement() {
               <div>
                 <p className="text-sm text-gray-600 mb-1">Plan Price</p>
                 <p className="text-2xl font-bold text-gray-900">
-                  ${currentSubscription.plan?.price || 0}
+                  ₹{currentSubscription.plan?.price || 0}
                   <span className="text-sm text-gray-600 font-normal">/month</span>
                 </p>
               </div>
@@ -181,7 +181,7 @@ export default function SubscriptionManagement() {
                 <div className="p-6">
                   <h3 className="text-xl font-bold text-gray-900 mb-2">{plan.name}</h3>
                   <div className="mb-6">
-                    <span className="text-4xl font-bold text-gray-900">${plan.price}</span>
+                    <span className="text-4xl font-bold text-gray-900">₹{plan.price}</span>
                     <span className="text-gray-600">/{plan.interval}</span>
                   </div>
 
@@ -247,7 +247,7 @@ export default function SubscriptionManagement() {
                     </td>
                     <td className="py-3 px-4 text-sm text-gray-900">{invoice.description}</td>
                     <td className="py-3 px-4 text-sm font-medium text-gray-900">
-                      ${invoice.amount.toFixed(2)}
+                      ₹{invoice.amount.toFixed(2)}
                     </td>
                     <td className="py-3 px-4">
                       <span className="px-2 py-1 bg-green-100 text-green-700 rounded text-xs font-medium capitalize">
@@ -285,7 +285,7 @@ export default function SubscriptionManagement() {
               </div>
               <div className="flex justify-between mb-2">
                 <span className="text-gray-600">Price:</span>
-                <span className="font-semibold">${selectedPlan.price}/month</span>
+                <span className="font-semibold">₹{selectedPlan.price}/month</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-gray-600">Billing Date:</span>

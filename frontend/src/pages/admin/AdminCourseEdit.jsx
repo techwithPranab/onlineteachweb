@@ -1,14 +1,15 @@
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { useMutation, useQueryClient } from 'react-query'
+import { useState, useEffect } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
+import { useMutation, useQuery, useQueryClient } from 'react-query'
 import { ArrowLeft, Save, Plus, X } from 'lucide-react'
 import { courseService } from '@/services/apiServices'
 import { useAuthStore } from '@/store/authStore'
 import LoadingSpinner from '@/components/common/LoadingSpinner'
 import ErrorMessage from '@/components/common/ErrorMessage'
 
-export default function AdminCourseCreation() {
+export default function AdminCourseEdit() {
   const navigate = useNavigate()
+  const { id } = useParams()
   const { user } = useAuthStore()
   const queryClient = useQueryClient()
 
@@ -36,8 +37,40 @@ export default function AdminCourseCreation() {
   const [learningObjectives, setLearningObjectives] = useState([''])
   const [prerequisites, setPrerequisites] = useState([''])
 
-  const createCourseMutation = useMutation(
-    (courseData) => courseService.createCourse(courseData),
+  // Fetch course data
+  const { data: courseData, isLoading: isLoadingCourse, error: courseError } = useQuery(
+    ['course', id],
+    () => courseService.getCourseById(id),
+    {
+      enabled: !!id,
+      onSuccess: (data) => {
+        console.log('Course data loaded:', data) // Debug log
+        const course = data.course || data // Handle both response formats
+        if (course) {
+          // Populate form with existing data
+          setFormData({
+            title: course.title || '',
+            description: course.description || '',
+            subject: course.subject || '',
+            grade: course.grade?.toString() || '',
+            price: course.price?.toString() || '',
+            syllabus: Array.isArray(course.syllabus) ? course.syllabus.join('\n') : (course.syllabus || ''),
+            topics: Array.isArray(course.topics) ? course.topics.join(', ') : (course.topics || ''),
+            duration: course.duration?.toString() || '12',
+            level: course.level || 'beginner',
+            language: course.language || 'English',
+            maxStudents: course.maxStudents?.toString() || '50',
+            tags: Array.isArray(course.tags) ? course.tags.join(', ') : (course.tags || '')
+          })
+          setLearningObjectives(course.learningObjectives && course.learningObjectives.length > 0 ? course.learningObjectives : [''])
+          setPrerequisites(course.prerequisites && course.prerequisites.length > 0 ? course.prerequisites : [''])
+        }
+      }
+    }
+  )
+
+  const updateCourseMutation = useMutation(
+    (courseData) => courseService.updateCourse(id, courseData),
     {
       onSuccess: () => {
         queryClient.invalidateQueries('adminCourses')
@@ -48,7 +81,7 @@ export default function AdminCourseCreation() {
 
   const subjects = [
     'Mathematics',
-    'Science', 
+    'Science',
     'English',
     'Social Studies',
     'Physics',
@@ -106,11 +139,11 @@ export default function AdminCourseCreation() {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    
+
     const syllabusArray = formData.syllabus.split('\n').filter(item => item.trim())
     const topicsArray = formData.topics.split(',').map(topic => topic.trim()).filter(Boolean)
     const tagsArray = formData.tags.split(',').map(tag => tag.trim()).filter(Boolean)
-    
+
     const courseData = {
       ...formData,
       grade: parseInt(formData.grade),
@@ -121,14 +154,21 @@ export default function AdminCourseCreation() {
       topics: topicsArray,
       tags: tagsArray,
       learningObjectives: learningObjectives.filter(obj => obj.trim()),
-      prerequisites: prerequisites.filter(req => req.trim()),
-      status: 'draft' // Default to draft, admin can publish later
+      prerequisites: prerequisites.filter(req => req.trim())
     }
 
-    createCourseMutation.mutate(courseData)
+    updateCourseMutation.mutate(courseData)
   }
 
-  if (createCourseMutation.isLoading) {
+  if (isLoadingCourse) {
+    return <LoadingSpinner />
+  }
+
+  if (courseError) {
+    return <ErrorMessage message="Failed to load course data" />
+  }
+
+  if (updateCourseMutation.isLoading) {
     return <LoadingSpinner />
   }
 
@@ -142,19 +182,19 @@ export default function AdminCourseCreation() {
           <ArrowLeft className="h-4 w-4 mr-2" />
           Back to Courses
         </button>
-        <h1 className="text-2xl font-bold text-gray-900">Create New Course</h1>
-        <p className="text-gray-600 mt-1">Create a new course for tutors to teach</p>
+        <h1 className="text-2xl font-bold text-gray-900">Edit Course</h1>
+        <p className="text-gray-600 mt-1">Update course information</p>
       </div>
 
-      {createCourseMutation.isError && (
-        <ErrorMessage message={createCourseMutation.error?.message || 'Failed to create course'} />
+      {updateCourseMutation.isError && (
+        <ErrorMessage message={updateCourseMutation.error?.message || 'Failed to update course'} />
       )}
 
       <form onSubmit={handleSubmit} className="space-y-4">
         {/* Basic Information */}
         <div className="bg-white rounded-lg shadow p-4">
           <h2 className="text-lg font-semibold mb-3">Basic Information</h2>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -201,42 +241,10 @@ export default function AdminCourseCreation() {
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
                 <option value="">Select Grade</option>
-                {[...Array(12)].map((_, i) => (
-                  <option key={i + 1} value={i + 1}>Grade {i + 1}</option>
+                {Array.from({ length: 12 }, (_, i) => i + 1).map(grade => (
+                  <option key={grade} value={grade}>{grade}</option>
                 ))}
               </select>
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Difficulty Level *
-              </label>
-              <select
-                name="level"
-                value={formData.level}
-                onChange={handleInputChange}
-                required
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              >
-                {levels.map(level => (
-                  <option key={level.value} value={level.value}>{level.label}</option>
-                ))}
-              </select>
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Course Duration (hours) *
-              </label>
-              <input
-                type="number"
-                name="duration"
-                value={formData.duration}
-                onChange={handleInputChange}
-                required
-                min="1"
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
             </div>
 
             <div>
@@ -257,38 +265,73 @@ export default function AdminCourseCreation() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Max Students
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Duration (weeks) *
               </label>
               <input
                 type="number"
-                name="maxStudents"
-                value={formData.maxStudents}
+                name="duration"
+                value={formData.duration}
                 onChange={handleInputChange}
+                required
                 min="1"
-                max="100"
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="12"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Language
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Difficulty Level *
+              </label>
+              <select
+                name="level"
+                value={formData.level}
+                onChange={handleInputChange}
+                required
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                {levels.map(level => (
+                  <option key={level.value} value={level.value}>{level.label}</option>
+                ))}
+              </select>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Language *
               </label>
               <input
                 type="text"
                 name="language"
                 value={formData.language}
                 onChange={handleInputChange}
+                required
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="English"
               />
             </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Max Students *
+              </label>
+              <input
+                type="number"
+                name="maxStudents"
+                value={formData.maxStudents}
+                onChange={handleInputChange}
+                required
+                min="1"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="50"
+              />
+            </div>
           </div>
 
-          <div className="mt-6">
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Course Description *
+          <div className="mt-4">
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Description *
             </label>
             <textarea
               name="description"
@@ -297,35 +340,7 @@ export default function AdminCourseCreation() {
               required
               rows={4}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Provide a detailed description of the course"
-            />
-          </div>
-
-          <div className="mt-4">
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Topics (comma-separated)
-            </label>
-            <input
-              type="text"
-              name="topics"
-              value={formData.topics}
-              onChange={handleInputChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="algebra, geometry, calculus"
-            />
-          </div>
-
-          <div className="mt-4">
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Tags (comma-separated)
-            </label>
-            <input
-              type="text"
-              name="tags"
-              value={formData.tags}
-              onChange={handleInputChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="math, advanced, exam-prep"
+              placeholder="Enter course description"
             />
           </div>
         </div>
@@ -335,16 +350,49 @@ export default function AdminCourseCreation() {
           <h2 className="text-lg font-semibold mb-3">Syllabus</h2>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              Course Syllabus (one topic per line)
+              Syllabus Items (one per line)
             </label>
             <textarea
               name="syllabus"
               value={formData.syllabus}
               onChange={handleInputChange}
-              rows={8}
+              rows={6}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder={`Week 1: Introduction to Algebra\nWeek 2: Linear Equations\nWeek 3: Quadratic Equations\n...`}
+              placeholder="Week 1: Introduction&#10;Week 2: Basic Concepts&#10;Week 3: Advanced Topics"
             />
+          </div>
+        </div>
+
+        {/* Topics and Tags */}
+        <div className="bg-white rounded-lg shadow p-4">
+          <h2 className="text-lg font-semibold mb-3">Topics & Tags</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Topics (comma-separated)
+              </label>
+              <input
+                type="text"
+                name="topics"
+                value={formData.topics}
+                onChange={handleInputChange}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Algebra, Geometry, Calculus"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Tags (comma-separated)
+              </label>
+              <input
+                type="text"
+                name="tags"
+                value={formData.tags}
+                onChange={handleInputChange}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="math, algebra, high-school"
+              />
+            </div>
           </div>
         </div>
 
@@ -359,79 +407,74 @@ export default function AdminCourseCreation() {
                   value={objective}
                   onChange={(e) => updateObjective(index, e.target.value)}
                   className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="Students will be able to..."
+                  placeholder="Enter learning objective"
                 />
-                <button
-                  type="button"
-                  onClick={() => removeObjective(index)}
-                  className="text-red-600 hover:text-red-800"
-                  disabled={learningObjectives.length === 1}
-                >
-                  <X className="h-4 w-4" />
-                </button>
+                {learningObjectives.length > 1 && (
+                  <button
+                    type="button"
+                    onClick={() => removeObjective(index)}
+                    className="p-2 text-red-600 hover:text-red-800"
+                  >
+                    <X className="h-4 w-4" />
+                  </button>
+                )}
               </div>
             ))}
+            <button
+              type="button"
+              onClick={addObjective}
+              className="flex items-center text-blue-600 hover:text-blue-800"
+            >
+              <Plus className="h-4 w-4 mr-1" />
+              Add Objective
+            </button>
           </div>
-          <button
-            type="button"
-            onClick={addObjective}
-            className="mt-2 flex items-center text-blue-600 hover:text-blue-800"
-          >
-            <Plus className="h-4 w-4 mr-1" />
-            Add Objective
-          </button>
         </div>
 
         {/* Prerequisites */}
         <div className="bg-white rounded-lg shadow p-4">
           <h2 className="text-lg font-semibold mb-3">Prerequisites</h2>
           <div className="space-y-2">
-            {prerequisites.map((prereq, index) => (
+            {prerequisites.map((prerequisite, index) => (
               <div key={index} className="flex items-center gap-2">
                 <input
                   type="text"
-                  value={prereq}
+                  value={prerequisite}
                   onChange={(e) => updatePrerequisite(index, e.target.value)}
                   className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="Basic knowledge of..."
+                  placeholder="Enter prerequisite"
                 />
-                <button
-                  type="button"
-                  onClick={() => removePrerequisite(index)}
-                  className="text-red-600 hover:text-red-800"
-                  disabled={prerequisites.length === 1}
-                >
-                  <X className="h-4 w-4" />
-                </button>
+                {prerequisites.length > 1 && (
+                  <button
+                    type="button"
+                    onClick={() => removePrerequisite(index)}
+                    className="p-2 text-red-600 hover:text-red-800"
+                  >
+                    <X className="h-4 w-4" />
+                  </button>
+                )}
               </div>
             ))}
+            <button
+              type="button"
+              onClick={addPrerequisite}
+              className="flex items-center text-blue-600 hover:text-blue-800"
+            >
+              <Plus className="h-4 w-4 mr-1" />
+              Add Prerequisite
+            </button>
           </div>
-          <button
-            type="button"
-            onClick={addPrerequisite}
-            className="mt-2 flex items-center text-blue-600 hover:text-blue-800"
-          >
-            <Plus className="h-4 w-4 mr-1" />
-            Add Prerequisite
-          </button>
         </div>
 
         {/* Submit Button */}
-        <div className="flex justify-end space-x-3">
-          <button
-            type="button"
-            onClick={() => navigate('/admin/courses')}
-            className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
-          >
-            Cancel
-          </button>
+        <div className="flex justify-end">
           <button
             type="submit"
-            disabled={createCourseMutation.isLoading}
-            className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50 flex items-center"
+            disabled={updateCourseMutation.isLoading}
+            className="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 flex items-center"
           >
             <Save className="h-4 w-4 mr-2" />
-            {createCourseMutation.isLoading ? 'Creating...' : 'Create Course'}
+            {updateCourseMutation.isLoading ? 'Updating...' : 'Update Course'}
           </button>
         </div>
       </form>

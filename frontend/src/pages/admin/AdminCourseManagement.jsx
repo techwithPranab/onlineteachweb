@@ -4,24 +4,7 @@ import { Link } from 'react-router-dom'
 import { Plus, Search, Filter, Edit, Trash2, Eye, BookOpen } from 'lucide-react'
 import LoadingSpinner from '@/components/common/LoadingSpinner'
 import ErrorMessage from '@/components/common/ErrorMessage'
-
-const courseService = {
-  getAdminCourses: async (params) => {
-    const response = await fetch(`/api/admin/courses?${new URLSearchParams(params)}`)
-    if (!response.ok) throw new Error('Failed to fetch courses')
-    return response.json()
-  },
-  getCourseStats: async () => {
-    const response = await fetch('/api/admin/courses/stats')
-    if (!response.ok) throw new Error('Failed to fetch course stats')
-    return response.json()
-  },
-  deleteCourse: async (courseId) => {
-    const response = await fetch(`/api/courses/${courseId}`, { method: 'DELETE' })
-    if (!response.ok) throw new Error('Failed to delete course')
-    return response.json()
-  }
-}
+import { adminService, courseService } from '@/services/apiServices'
 
 export default function AdminCourseManagement() {
   const [filters, setFilters] = useState({
@@ -37,13 +20,13 @@ export default function AdminCourseManagement() {
 
   const { data: coursesData, isLoading, error } = useQuery(
     ['adminCourses', filters],
-    () => courseService.getAdminCourses(filters),
+    () => adminService.getAdminCourses(filters),
     { keepPreviousData: true }
   )
 
   const { data: statsData } = useQuery(
     'courseStats',
-    courseService.getCourseStats
+    adminService.getCourseStats
   )
 
   const deleteMutation = useMutation(
@@ -79,16 +62,16 @@ export default function AdminCourseManagement() {
   const stats = statsData?.stats || {}
 
   return (
-    <div className="p-6">
-      <div className="mb-8">
-        <div className="flex justify-between items-center mb-6">
+    <div className="p-4">
+      <div className="mb-4">
+        <div className="flex justify-between items-center mb-3">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">Course Management</h1>
-            <p className="text-gray-600 mt-2">Manage all courses in the system</p>
+            <h1 className="text-2xl font-bold text-gray-900">Course Management</h1>
+            <p className="text-gray-600 mt-1">Manage all courses in the system</p>
           </div>
           <Link
             to="/admin/courses/new"
-            className="bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center hover:bg-blue-700"
+            className="bg-blue-600 text-white px-3 py-2 rounded-lg flex items-center hover:bg-blue-700 text-sm"
           >
             <Plus className="h-4 w-4 mr-2" />
             Create Course
@@ -96,49 +79,49 @@ export default function AdminCourseManagement() {
         </div>
 
         {/* Course Statistics */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
-          <div className="bg-white rounded-lg shadow p-6">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
+          <div className="bg-white rounded-lg shadow p-4">
             <div className="flex items-center">
-              <BookOpen className="h-8 w-8 text-blue-600" />
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Total Courses</p>
-                <p className="text-2xl font-semibold text-gray-900">{stats.totalCourses || 0}</p>
+              <BookOpen className="h-6 w-6 text-blue-600" />
+              <div className="ml-3">
+                <p className="text-xs font-medium text-gray-600">Total Courses</p>
+                <p className="text-xl font-semibold text-gray-900">{stats.totalCourses || 0}</p>
               </div>
             </div>
           </div>
           
-          <div className="bg-white rounded-lg shadow p-6">
+          <div className="bg-white rounded-lg shadow p-4">
             <div className="flex items-center">
-              <div className="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center">
-                <div className="w-4 h-4 bg-green-600 rounded"></div>
+              <div className="w-6 h-6 bg-green-100 rounded-lg flex items-center justify-center">
+                <div className="w-3 h-3 bg-green-600 rounded"></div>
               </div>
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Published</p>
-                <p className="text-2xl font-semibold text-gray-900">{stats.publishedCourses || 0}</p>
+              <div className="ml-3">
+                <p className="text-xs font-medium text-gray-600">Published</p>
+                <p className="text-xl font-semibold text-gray-900">{stats.publishedCourses || 0}</p>
               </div>
             </div>
           </div>
           
-          <div className="bg-white rounded-lg shadow p-6">
+          <div className="bg-white rounded-lg shadow p-4">
             <div className="flex items-center">
-              <div className="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center">
-                <div className="w-4 h-4 bg-gray-600 rounded"></div>
+              <div className="w-6 h-6 bg-gray-100 rounded-lg flex items-center justify-center">
+                <div className="w-3 h-3 bg-gray-600 rounded"></div>
               </div>
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Drafts</p>
-                <p className="text-2xl font-semibold text-gray-900">{stats.draftCourses || 0}</p>
+              <div className="ml-3">
+                <p className="text-xs font-medium text-gray-600">Drafts</p>
+                <p className="text-xl font-semibold text-gray-900">{stats.draftCourses || 0}</p>
               </div>
             </div>
           </div>
           
-          <div className="bg-white rounded-lg shadow p-6">
+          <div className="bg-white rounded-lg shadow p-4">
             <div className="flex items-center">
-              <div className="w-8 h-8 bg-red-100 rounded-lg flex items-center justify-center">
-                <div className="w-4 h-4 bg-red-600 rounded"></div>
+              <div className="w-6 h-6 bg-red-100 rounded-lg flex items-center justify-center">
+                <div className="w-3 h-3 bg-red-600 rounded"></div>
               </div>
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Archived</p>
-                <p className="text-2xl font-semibold text-gray-900">{stats.archivedCourses || 0}</p>
+              <div className="ml-3">
+                <p className="text-xs font-medium text-gray-600">Archived</p>
+                <p className="text-xl font-semibold text-gray-900">{stats.archivedCourses || 0}</p>
               </div>
             </div>
           </div>
@@ -146,8 +129,8 @@ export default function AdminCourseManagement() {
       </div>
 
       {/* Filters */}
-      <div className="bg-white rounded-lg shadow p-6 mb-6">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div className="bg-white rounded-lg shadow p-4 mb-4">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Search</label>
             <div className="relative">
@@ -214,22 +197,22 @@ export default function AdminCourseManagement() {
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-50">
             <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Course
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Subject & Grade
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Status
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Price
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Created By
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Actions
               </th>
             </tr>
@@ -237,32 +220,32 @@ export default function AdminCourseManagement() {
           <tbody className="bg-white divide-y divide-gray-200">
             {courses.map((course) => (
               <tr key={course._id}>
-                <td className="px-6 py-4 whitespace-nowrap">
+                <td className="px-4 py-3 whitespace-nowrap">
                   <div>
                     <div className="text-sm font-medium text-gray-900">{course.title}</div>
                     <div className="text-sm text-gray-500">{course.description?.substring(0, 50)}...</div>
                   </div>
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap">
+                <td className="px-4 py-3 whitespace-nowrap">
                   <div className="text-sm text-gray-900">{course.subject}</div>
                   <div className="text-sm text-gray-500">Grade {course.grade}</div>
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap">
+                <td className="px-4 py-3 whitespace-nowrap">
                   <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${statusColors[course.status]}`}>
                     {course.status}
                   </span>
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                  ${course.price}
+                <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-900">
+                  ₹{course.price}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap">
+                <td className="px-4 py-3 whitespace-nowrap">
                   <div className="text-sm text-gray-900">{course.createdBy?.name}</div>
                   <div className="text-sm text-gray-500">{course.createdBy?.email}</div>
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                <td className="px-4 py-3 whitespace-nowrap text-right text-sm font-medium">
                   <div className="flex space-x-2">
                     <Link
-                      to={`/courses/${course._id}`}
+                      to={`/admin/courses/${course._id}/view`}
                       className="text-blue-600 hover:text-blue-900"
                     >
                       <Eye className="h-4 w-4" />
@@ -289,22 +272,22 @@ export default function AdminCourseManagement() {
 
         {/* Pagination */}
         {coursesData && (
-          <div className="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200">
-            <div className="text-sm text-gray-700">
+          <div className="bg-white px-4 py-2 flex items-center justify-between border-t border-gray-200">
+            <div className="text-xs text-gray-700">
               Showing {((filters.page - 1) * filters.limit) + 1} to {Math.min(filters.page * filters.limit, coursesData.total)} of {coursesData.total} results
             </div>
             <div className="flex space-x-2">
               <button
                 onClick={() => handleFilterChange('page', filters.page - 1)}
                 disabled={filters.page === 1}
-                className="px-3 py-1 text-sm border border-gray-300 rounded disabled:opacity-50"
+                className="px-3 py-1 text-xs border border-gray-300 rounded disabled:opacity-50"
               >
                 Previous
               </button>
               <button
                 onClick={() => handleFilterChange('page', filters.page + 1)}
                 disabled={filters.page >= coursesData.pages}
-                className="px-3 py-1 text-sm border border-gray-300 rounded disabled:opacity-50"
+                className="px-3 py-1 text-xs border border-gray-300 rounded disabled:opacity-50"
               >
                 Next
               </button>

@@ -89,19 +89,19 @@ export default function ForTutors() {
               <div className="space-y-6">
                 <EarningTier
                   level="Beginner Tutor"
-                  amount="$500 - $1,500"
+                  amount="₹500 - ₹1,500"
                   period="per month"
                   description="5-10 students, part-time schedule"
                 />
                 <EarningTier
                   level="Experienced Tutor"
-                  amount="$2,000 - $4,000"
+                  amount="₹2,000 - ₹4,000"
                   period="per month"
                   description="15-30 students, consistent schedule"
                 />
                 <EarningTier
                   level="Top Rated Tutor"
-                  amount="$5,000+"
+                  amount="₹5,000+"
                   period="per month"
                   description="40+ students, full-time commitment"
                 />

@@ -172,56 +172,56 @@ export default function TutorApproval() {
   return (
     <div className="max-w-7xl mx-auto">
       {/* Header */}
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">Tutor Approval</h1>
+      <div className="mb-4">
+        <h1 className="text-2xl font-bold text-gray-900 mb-1">Tutor Approval</h1>
         <p className="text-gray-600">Review and approve tutor applications</p>
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
         <div className="card">
-          <div className="p-6">
+          <div className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600 mb-1">Pending Review</p>
-                <p className="text-2xl font-bold text-yellow-600">
+                <p className="text-xs text-gray-600 mb-1">Pending Review</p>
+                <p className="text-xl font-bold text-yellow-600">
                   {tutors.filter(t => t.status === 'pending').length}
                 </p>
               </div>
-              <div className="p-3 bg-yellow-100 text-yellow-600 rounded-lg">
-                <Clock className="w-6 h-6" />
+              <div className="p-2 bg-yellow-100 text-yellow-600 rounded-lg">
+                <Clock className="w-5 h-5" />
               </div>
             </div>
           </div>
         </div>
 
         <div className="card">
-          <div className="p-6">
+          <div className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600 mb-1">Approved</p>
-                <p className="text-2xl font-bold text-green-600">
+                <p className="text-xs text-gray-600 mb-1">Approved</p>
+                <p className="text-xl font-bold text-green-600">
                   {tutors.filter(t => t.status === 'approved').length}
                 </p>
               </div>
-              <div className="p-3 bg-green-100 text-green-600 rounded-lg">
-                <CheckCircle2 className="w-6 h-6" />
+              <div className="p-2 bg-green-100 text-green-600 rounded-lg">
+                <CheckCircle2 className="w-5 h-5" />
               </div>
             </div>
           </div>
         </div>
 
         <div className="card">
-          <div className="p-6">
+          <div className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600 mb-1">Rejected</p>
-                <p className="text-2xl font-bold text-red-600">
+                <p className="text-xs text-gray-600 mb-1">Rejected</p>
+                <p className="text-xl font-bold text-red-600">
                   {tutors.filter(t => t.status === 'rejected').length}
                 </p>
               </div>
-              <div className="p-3 bg-red-100 text-red-600 rounded-lg">
-                <XCircle className="w-6 h-6" />
+              <div className="p-2 bg-red-100 text-red-600 rounded-lg">
+                <XCircle className="w-5 h-5" />
               </div>
             </div>
           </div>
@@ -229,7 +229,7 @@ export default function TutorApproval() {
       </div>
 
       {/* Filters & Actions */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
+      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 mb-4">
         <div className="flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-3 w-full md:w-auto">
             <div className="relative flex-1 md:w-64">

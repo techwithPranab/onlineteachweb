@@ -5,6 +5,7 @@ import { sessionService, adminService } from '@/services/apiServices'
 import { useAuthStore } from '@/store/authStore'
 import LoadingSpinner from '@/components/common/LoadingSpinner'
 import ErrorMessage from '@/components/common/ErrorMessage'
+import Modal from '@/components/common/Modal'
 import { format } from 'date-fns'
 
 export default function SessionManagement() {
@@ -18,6 +19,8 @@ export default function SessionManagement() {
     subject: ''
   })
   const [selectedSession, setSelectedSession] = useState(null)
+  const [showReassignModal, setShowReassignModal] = useState(false)
+  const [selectedTutor, setSelectedTutor] = useState('')
 
   // Redirect if not admin
   if (user?.role !== 'admin') {
@@ -36,8 +39,15 @@ export default function SessionManagement() {
     () => sessionService.getSessionStats()
   )
 
+  // Fetch all tutors for reassign modal
+  const { data: tutorsData } = useQuery(
+    'allTutors',
+    () => adminService.getUsers({ role: 'tutor', limit: 100 })
+  )
+
   const sessions = sessionsData?.data || []
   const stats = statsData?.data || {}
+  const tutors = tutorsData?.data || []
 
   // End session mutation
   const endSessionMutation = useMutation(
@@ -49,28 +59,125 @@ export default function SessionManagement() {
     }
   )
 
+  // Approve session mutation
+  const approveSessionMutation = useMutation(
+    (sessionId) => sessionService.approveSession(sessionId),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(['adminSessions'])
+        alert('Session approved successfully!')
+      },
+      onError: (error) => {
+        alert(`Failed to approve session: ${error.response?.data?.message || error.message}`)
+      }
+    }
+  )
+
+  // Reject session mutation
+  const rejectSessionMutation = useMutation(
+    ({ sessionId, reason }) => sessionService.rejectSession(sessionId, reason),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(['adminSessions'])
+        alert('Session rejected successfully!')
+      },
+      onError: (error) => {
+        alert(`Failed to reject session: ${error.response?.data?.message || error.message}`)
+      }
+    }
+  )
+
+  // Cancel session mutation
+  const cancelSessionMutation = useMutation(
+    ({ sessionId, reason }) => sessionService.cancelSession(sessionId, reason),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(['adminSessions'])
+        alert('Session cancelled successfully!')
+      },
+      onError: (error) => {
+        alert(`Failed to cancel session: ${error.response?.data?.message || error.message}`)
+      }
+    }
+  )
+
+  // Reassign session mutation
+  const reassignSessionMutation = useMutation(
+    ({ sessionId, newTutorId }) => sessionService.reassignSession(sessionId, newTutorId),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(['adminSessions'])
+        setShowReassignModal(false)
+        setSelectedSession(null)
+        alert('Session reassigned successfully!')
+      },
+      onError: (error) => {
+        alert(`Failed to reassign session: ${error.response?.data?.message || error.message}`)
+      }
+    }
+  )
+
   const handleEndSession = async (sessionId) => {
     if (confirm('Are you sure you want to end this session?')) {
       await endSessionMutation.mutateAsync(sessionId)
     }
   }
 
+  const handleApproveSession = async (sessionId) => {
+    if (confirm('Are you sure you want to approve this session? It will be published to students.')) {
+      await approveSessionMutation.mutateAsync(sessionId)
+    }
+  }
+
+  const handleRejectSession = async (sessionId) => {
+    const reason = prompt('Please provide a reason for rejection:')
+    if (reason && reason.trim()) {
+      await rejectSessionMutation.mutateAsync({ sessionId, reason: reason.trim() })
+    }
+  }
+
+  const handleCancelSession = async (sessionId) => {
+    const reason = prompt('Please provide a reason for cancellation:')
+    if (reason && reason.trim()) {
+      await cancelSessionMutation.mutateAsync({ sessionId, reason: reason.trim() })
+    }
+  }
+
+  const handleReassignSession = (session) => {
+    setSelectedSession(session)
+    setSelectedTutor('')
+    setShowReassignModal(true)
+  }
+
+  const confirmReassign = () => {
+    if (selectedTutor && selectedSession) {
+      reassignSessionMutation.mutateAsync({
+        sessionId: selectedSession._id,
+        newTutorId: selectedTutor
+      })
+    }
+  }
+
   const getStatusColor = (status) => {
     const colors = {
+      'pending_approval': 'bg-yellow-100 text-yellow-800',
       'scheduled': 'bg-blue-100 text-blue-800',
       'live': 'bg-green-100 text-green-800',
       'completed': 'bg-gray-100 text-gray-800',
-      'cancelled': 'bg-red-100 text-red-800'
+      'cancelled': 'bg-red-100 text-red-800',
+      'rejected': 'bg-red-100 text-red-800'
     }
     return colors[status] || 'bg-gray-100 text-gray-800'
   }
 
   const getStatusIcon = (status) => {
     const icons = {
+      'pending_approval': Clock,
       'scheduled': Calendar,
       'live': Play,
       'completed': Stop,
-      'cancelled': Pause
+      'cancelled': Pause,
+      'rejected': Pause
     }
     const Icon = icons[status] || Clock
     return Icon
@@ -80,7 +187,7 @@ export default function SessionManagement() {
   if (error) return <ErrorMessage message={error.message || 'Failed to load sessions'} />
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
         <div>
@@ -90,7 +197,7 @@ export default function SessionManagement() {
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <div className="card">
           <div className="flex items-center justify-between">
             <div>
@@ -167,10 +274,12 @@ export default function SessionManagement() {
             onChange={(e) => setFilters({ ...filters, status: e.target.value })}
           >
             <option value="">All Statuses</option>
+            <option value="pending_approval">Pending Approval</option>
             <option value="scheduled">Scheduled</option>
             <option value="live">Live</option>
             <option value="completed">Completed</option>
             <option value="cancelled">Cancelled</option>
+            <option value="rejected">Rejected</option>
           </select>
 
           <select
@@ -215,22 +324,22 @@ export default function SessionManagement() {
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-50">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Session Details
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Tutor & Course
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Schedule
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Attendance
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Status
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Actions
                 </th>
               </tr>
@@ -240,7 +349,7 @@ export default function SessionManagement() {
                 const StatusIcon = getStatusIcon(session.status)
                 return (
                   <tr key={session._id} className="hover:bg-gray-50">
-                    <td className="px-6 py-4 whitespace-nowrap">
+                    <td className="px-4 py-3 whitespace-nowrap">
                       <div>
                         <div className="text-sm font-medium text-gray-900">
                           {session.title}
@@ -250,7 +359,7 @@ export default function SessionManagement() {
                         </div>
                       </div>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
+                    <td className="px-4 py-3 whitespace-nowrap">
                       <div>
                         <div className="text-sm font-medium text-gray-900">
                           {session.tutor?.name}
@@ -260,7 +369,7 @@ export default function SessionManagement() {
                         </div>
                       </div>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
+                    <td className="px-4 py-3 whitespace-nowrap">
                       <div className="text-sm text-gray-900">
                         {format(new Date(session.scheduledAt), 'MMM dd, yyyy')}
                       </div>
@@ -268,7 +377,7 @@ export default function SessionManagement() {
                         {format(new Date(session.scheduledAt), 'hh:mm a')} ({session.duration}min)
                       </div>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
+                    <td className="px-4 py-3 whitespace-nowrap">
                       <div className="text-sm text-gray-900">
                         {session.attendanceCount || 0}/{session.maxStudents}
                       </div>
@@ -276,19 +385,62 @@ export default function SessionManagement() {
                         {Math.round(((session.attendanceCount || 0) / session.maxStudents) * 100)}% attendance
                       </div>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
+                    <td className="px-4 py-3 whitespace-nowrap">
                       <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusColor(session.status)}`}>
                         <StatusIcon className="h-3 w-3 mr-1" />
                         {session.status}
                       </span>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
+                    <td className="px-4 py-3 whitespace-nowrap text-sm font-medium space-x-2">
                       <button
                         onClick={() => setSelectedSession(session)}
                         className="text-indigo-600 hover:text-indigo-900"
+                        title="View Details"
                       >
                         <Eye className="h-4 w-4" />
                       </button>
+                      
+                      {session.status === 'pending_approval' && (
+                        <>
+                          <button
+                            onClick={() => handleApproveSession(session._id)}
+                            disabled={approveSessionMutation.isLoading}
+                            className="text-green-600 hover:text-green-900 disabled:opacity-50"
+                            title="Approve Session"
+                          >
+                            ✓
+                          </button>
+                          <button
+                            onClick={() => handleRejectSession(session._id)}
+                            disabled={rejectSessionMutation.isLoading}
+                            className="text-red-600 hover:text-red-900 disabled:opacity-50"
+                            title="Reject Session"
+                          >
+                            ✕
+                          </button>
+                        </>
+                      )}
+                      
+                      {session.status === 'scheduled' && (
+                        <>
+                          <button
+                            onClick={() => handleCancelSession(session._id)}
+                            disabled={cancelSessionMutation.isLoading}
+                            className="text-red-600 hover:text-red-900 disabled:opacity-50"
+                            title="Cancel Session"
+                          >
+                            🚫
+                          </button>
+                          <button
+                            onClick={() => handleReassignSession(session)}
+                            disabled={reassignSessionMutation.isLoading}
+                            className="text-blue-600 hover:text-blue-900 disabled:opacity-50"
+                            title="Reassign Tutor"
+                          >
+                            👤
+                          </button>
+                        </>
+                      )}
                       
                       {session.status === 'live' && (
                         <button
@@ -423,6 +575,69 @@ export default function SessionManagement() {
           </div>
         </div>
       )}
+
+      {/* Reassign Tutor Modal */}
+      <Modal
+        isOpen={showReassignModal}
+        onClose={() => {
+          setShowReassignModal(false)
+          setSelectedSession(null)
+          setSelectedTutor('')
+        }}
+        title="Reassign Session to Different Tutor"
+        size="md"
+      >
+        <div className="space-y-4">
+          {selectedSession && (
+            <div className="bg-gray-50 p-4 rounded-lg">
+              <h4 className="font-medium text-gray-900">{selectedSession.title}</h4>
+              <p className="text-sm text-gray-600">Current tutor: {selectedSession.tutor?.name}</p>
+              <p className="text-sm text-gray-600">
+                Scheduled: {format(new Date(selectedSession.scheduledAt), 'MMM dd, yyyy hh:mm a')}
+              </p>
+            </div>
+          )}
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Select New Tutor *
+            </label>
+            <select
+              value={selectedTutor}
+              onChange={(e) => setSelectedTutor(e.target.value)}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+              required
+            >
+              <option value="">Choose a tutor...</option>
+              {tutors.map((tutor) => (
+                <option key={tutor._id} value={tutor._id}>
+                  {tutor.name} - {tutor.email}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+
+        <div className="flex justify-end gap-3 mt-6 pt-6 border-t border-gray-200">
+          <button
+            onClick={() => {
+              setShowReassignModal(false)
+              setSelectedSession(null)
+              setSelectedTutor('')
+            }}
+            className="px-4 py-2 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
+          >
+            Cancel
+          </button>
+          <button
+            onClick={confirmReassign}
+            disabled={!selectedTutor || reassignSessionMutation.isLoading}
+            className="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          >
+            {reassignSessionMutation.isLoading ? 'Reassigning...' : 'Reassign Session'}
+          </button>
+        </div>
+      </Modal>
     </div>
   )
 }
