@@ -1,0 +1,608 @@
+You are a senior full-stack engineer and system architect.
+
+Build a scalable ONLINE TEACHING PLATFORM with the following requirements.
+
+--------------------------------------------------
+PROJECT STRUCTURE
+--------------------------------------------------
+There are TWO repositories:
+
+1. backend/
+   - Node.js (Express.js)
+   - MongoDB (Mongoose)
+   - JWT authentication
+   - REST APIs
+   - WebSocket / WebRTC support
+   - Clean architecture (routes, controllers, services, models, middleware)
+
+2. frontend/
+   - React.js (Vite or CRA)
+   - Modern professional UI
+   - Responsive design
+   - Role-based routing
+   - Component-driven architecture
+
+--------------------------------------------------
+USER ROLES
+--------------------------------------------------
+1. Student
+2. Tutor
+3. Admin
+
+--------------------------------------------------
+CORE FUNCTIONALITY
+--------------------------------------------------
+✔ Role-based login & signup
+✔ Free trial classes
+✔ Paid subscription model
+✔ Live teaching with video + whiteboard
+✔ Learning progress & evaluation reports
+✔ Admin monitoring & analytics
+
+--------------------------------------------------
+BACKEND – FUNCTIONAL FEATURES
+--------------------------------------------------
+
+AUTH & USER MANAGEMENT
+- Student signup/login
+- Tutor signup with approval flow
+- Admin login
+- JWT + Refresh token
+- Role-based authorization
+
+COURSES & GRADES
+- Grades (e.g., Class 1–12)
+- Subjects
+- Topics
+- Course mapping
+
+TUTOR FEATURES
+- Create teaching sessions
+- Schedule live classes
+- Upload study materials (PDF, video, PPT)
+- Create quizzes, tests, assignments
+- Evaluate students
+- Publish results & feedback
+
+STUDENT FEATURES
+- Browse courses by grade & subject
+- Attend free classes (limited)
+- Subscribe to paid plans
+- Join live video classroom
+- Access learning material
+- View progress reports & evaluation
+- Receive recommendations for extra classes
+
+ADMIN FEATURES
+- Approve/reject tutors
+- Manage users
+- Manage courses & grades
+- Configure subscription plans
+- View revenue analytics
+- Platform monitoring
+
+LIVE CLASS FEATURES
+- Video call (WebRTC)
+- Whiteboard (canvas-based)
+- Screen sharing
+- Chat
+- Session recording
+- Attendance tracking
+
+PAYMENTS
+- Subscription plans
+- Free vs paid access
+- Stripe integration
+- Invoices & billing history
+
+--------------------------------------------------
+BACKEND API DETAILS (REST)
+--------------------------------------------------
+
+AUTH ENDPOINTS
+
+POST /api/auth/register
+- Description: Register new user (Student/Tutor)
+- Auth: None
+- Request Body: { name: string, email: string, password: string, role: "student"|"tutor", grade?: number, subjects?: string[] }
+- Response: { success: true, user: User, token: string, refreshToken: string }
+- Errors: 400 (validation), 409 (email exists)
+
+POST /api/auth/login
+- Description: User login
+- Auth: None
+- Request Body: { email: string, password: string }
+- Response: { success: true, user: User, token: string, refreshToken: string }
+- Errors: 401 (invalid credentials), 403 (account disabled)
+
+POST /api/auth/refresh
+- Description: Refresh access token
+- Auth: None (requires refresh token in body)
+- Request Body: { refreshToken: string }
+- Response: { success: true, token: string }
+- Errors: 401 (invalid refresh token)
+
+POST /api/auth/logout
+- Description: Logout user
+- Auth: Bearer token
+- Request Body: { refreshToken: string }
+- Response: { success: true, message: string }
+- Errors: 401 (invalid token)
+
+USER ENDPOINTS
+
+GET /api/users/me
+- Description: Get current user profile
+- Auth: Bearer token
+- Query Params: None
+- Response: { success: true, user: User }
+- Errors: 401 (unauthorized)
+
+GET /api/users/:id
+- Description: Get user by ID (public profile for students/tutors)
+- Auth: Bearer token
+- Path Params: id (user ID)
+- Response: { success: true, user: PublicUser }
+- Errors: 401 (unauthorized), 404 (user not found)
+
+PUT /api/users/:id
+- Description: Update user profile (own profile only)
+- Auth: Bearer token
+- Path Params: id (user ID)
+- Request Body: { name?: string, bio?: string, avatar?: string, subjects?: string[] }
+- Response: { success: true, user: User }
+- Errors: 401 (unauthorized), 403 (not own profile), 404 (user not found)
+
+GET /api/admin/users
+- Description: Get all users (Admin only)
+- Auth: Bearer token (Admin)
+- Query Params: page, limit, role, status, search
+- Response: { success: true, users: User[], total: number, page: number }
+- Errors: 401 (unauthorized), 403 (not admin)
+
+PUT /api/admin/users/:id/status
+- Description: Update user status (Admin only)
+- Auth: Bearer token (Admin)
+- Path Params: id (user ID)
+- Request Body: { status: "active"|"inactive"|"suspended", reason?: string }
+- Response: { success: true, user: User }
+- Errors: 401 (unauthorized), 403 (not admin), 404 (user not found)
+
+COURSE ENDPOINTS
+
+POST /api/courses
+- Description: Create new course (Tutor/Admin)
+- Auth: Bearer token (Tutor/Admin)
+- Request Body: { title: string, description: string, grade: number, subject: string, price: number, thumbnail?: string, syllabus: string[] }
+- Response: { success: true, course: Course }
+- Errors: 401 (unauthorized), 403 (not tutor/admin), 400 (validation)
+
+GET /api/courses
+- Description: Get courses with filters
+- Auth: Bearer token
+- Query Params: page, limit, grade, subject, tutor, search, sortBy, sortOrder
+- Response: { success: true, courses: Course[], total: number, page: number }
+- Errors: 401 (unauthorized)
+
+GET /api/courses/:id
+- Description: Get course details
+- Auth: Bearer token
+- Path Params: id (course ID)
+- Response: { success: true, course: Course, materials: Material[], sessions: Session[] }
+- Errors: 401 (unauthorized), 404 (course not found)
+
+PUT /api/courses/:id
+- Description: Update course (Tutor/Admin)
+- Auth: Bearer token (Tutor/Admin)
+- Path Params: id (course ID)
+- Request Body: { title?: string, description?: string, price?: number, thumbnail?: string, syllabus?: string[] }
+- Response: { success: true, course: Course }
+- Errors: 401 (unauthorized), 403 (not owner/admin), 404 (course not found)
+
+DELETE /api/courses/:id
+- Description: Delete course (Tutor/Admin)
+- Auth: Bearer token (Tutor/Admin)
+- Path Params: id (course ID)
+- Response: { success: true, message: string }
+- Errors: 401 (unauthorized), 403 (not owner/admin), 404 (course not found)
+
+SESSION ENDPOINTS
+
+POST /api/sessions
+- Description: Create new session (Tutor)
+- Auth: Bearer token (Tutor)
+- Request Body: { courseId: string, title: string, description: string, scheduledAt: Date, duration: number, maxStudents: number, isPaid: boolean }
+- Response: { success: true, session: Session }
+- Errors: 401 (unauthorized), 403 (not tutor), 400 (validation), 404 (course not found)
+
+GET /api/sessions
+- Description: Get sessions with filters
+- Auth: Bearer token
+- Query Params: page, limit, courseId, tutorId, studentId, status, upcoming, search
+- Response: { success: true, sessions: Session[], total: number, page: number }
+- Errors: 401 (unauthorized)
+
+GET /api/sessions/:id
+- Description: Get session details
+- Auth: Bearer token
+- Path Params: id (session ID)
+- Response: { success: true, session: Session, attendees: User[], materials: Material[] }
+- Errors: 401 (unauthorized), 404 (session not found)
+
+PUT /api/sessions/:id
+- Description: Update session (Tutor)
+- Auth: Bearer token (Tutor)
+- Path Params: id (session ID)
+- Request Body: { title?: string, description?: string, scheduledAt?: Date, duration?: number, maxStudents?: number }
+- Response: { success: true, session: Session }
+- Errors: 401 (unauthorized), 403 (not tutor), 404 (session not found)
+
+DELETE /api/sessions/:id
+- Description: Delete session (Tutor)
+- Auth: Bearer token (Tutor)
+- Path Params: id (session ID)
+- Response: { success: true, message: string }
+- Errors: 401 (unauthorized), 403 (not tutor), 404 (session not found)
+
+MATERIAL ENDPOINTS
+
+POST /api/materials
+- Description: Upload material (Tutor)
+- Auth: Bearer token (Tutor)
+- Request Body: { courseId: string, title: string, description: string, type: "pdf"|"video"|"ppt"|"document", fileUrl: string, isFree: boolean }
+- Response: { success: true, material: Material }
+- Errors: 401 (unauthorized), 403 (not tutor), 400 (validation), 404 (course not found)
+
+GET /api/materials/:courseId
+- Description: Get materials for course
+- Auth: Bearer token
+- Path Params: courseId
+- Query Params: type, isFree
+- Response: { success: true, materials: Material[] }
+- Errors: 401 (unauthorized), 404 (course not found)
+
+EVALUATION ENDPOINTS
+
+POST /api/evaluations
+- Description: Create evaluation (Tutor)
+- Auth: Bearer token (Tutor)
+- Request Body: { sessionId: string, studentId: string, grade: number, feedback: string, achievements: string[] }
+- Response: { success: true, evaluation: Evaluation }
+- Errors: 401 (unauthorized), 403 (not tutor), 400 (validation), 404 (session/student not found)
+
+GET /api/evaluations/student/:id
+- Description: Get evaluations for student
+- Auth: Bearer token (Student/Tutor/Admin)
+- Path Params: id (student ID)
+- Query Params: sessionId, limit
+- Response: { success: true, evaluations: Evaluation[] }
+- Errors: 401 (unauthorized), 403 (not authorized), 404 (student not found)
+
+GET /api/evaluations/session/:id
+- Description: Get evaluations for session (Tutor)
+- Auth: Bearer token (Tutor)
+- Path Params: id (session ID)
+- Response: { success: true, evaluations: Evaluation[] }
+- Errors: 401 (unauthorized), 403 (not tutor), 404 (session not found)
+
+SUBSCRIPTION ENDPOINTS
+
+POST /api/subscriptions/checkout
+- Description: Create subscription checkout (Student)
+- Auth: Bearer token (Student)
+- Request Body: { planId: string, paymentMethodId: string }
+- Response: { success: true, subscription: Subscription, clientSecret: string }
+- Errors: 401 (unauthorized), 403 (not student), 400 (validation), 402 (payment failed)
+
+GET /api/subscriptions/status
+- Description: Get subscription status
+- Auth: Bearer token
+- Response: { success: true, subscription: Subscription, plan: Plan }
+- Errors: 401 (unauthorized)
+
+POST /api/subscriptions/cancel
+- Description: Cancel subscription (Student)
+- Auth: Bearer token (Student)
+- Request Body: { reason?: string }
+- Response: { success: true, subscription: Subscription }
+- Errors: 401 (unauthorized), 403 (not student), 400 (no active subscription)
+
+LIVE CLASS ENDPOINTS
+
+POST /api/live/token
+- Description: Generate live class token
+- Auth: Bearer token
+- Request Body: { sessionId: string }
+- Response: { success: true, token: string, roomId: string }
+- Errors: 401 (unauthorized), 403 (not enrolled), 404 (session not found)
+
+POST /api/live/start
+- Description: Start live session (Tutor)
+- Auth: Bearer token (Tutor)
+- Request Body: { sessionId: string }
+- Response: { success: true, session: Session }
+- Errors: 401 (unauthorized), 403 (not tutor), 404 (session not found)
+
+POST /api/live/end
+- Description: End live session (Tutor)
+- Auth: Bearer token (Tutor)
+- Request Body: { sessionId: string }
+- Response: { success: true, session: Session, recordingUrl?: string }
+- Errors: 401 (unauthorized), 403 (not tutor), 404 (session not found)
+
+REPORT ENDPOINTS
+
+GET /api/reports/student/:id
+- Description: Get student progress report
+- Auth: Bearer token (Student/Tutor/Admin)
+- Path Params: id (student ID)
+- Query Params: startDate, endDate
+- Response: { success: true, report: { attendance: number, grades: Grade[], progress: Progress[] } }
+- Errors: 401 (unauthorized), 403 (not authorized), 404 (student not found)
+
+GET /api/reports/tutor/:id
+- Description: Get tutor performance report (Tutor)
+- Auth: Bearer token (Tutor)
+- Path Params: id (tutor ID)
+- Query Params: startDate, endDate
+- Response: { success: true, report: { sessions: number, students: number, rating: number, earnings: number } }
+- Errors: 401 (unauthorized), 403 (not tutor), 404 (tutor not found)
+
+GET /api/admin/analytics
+- Description: Get platform analytics (Admin)
+- Auth: Bearer token (Admin)
+- Query Params: startDate, endDate
+- Response: { success: true, analytics: { users: number, sessions: number, revenue: number, growth: GrowthStats[] } }
+- Errors: 401 (unauthorized), 403 (not admin)
+
+--------------------------------------------------
+DATABASE MODELS (MongoDB)
+--------------------------------------------------
+- User (Student, Tutor, Admin)
+- Course
+- Grade
+- Subject
+- Session
+- Material
+- Evaluation
+- Subscription
+- Payment
+- Attendance
+- Notification
+
+--------------------------------------------------
+FRONTEND – SCREEN LIST
+--------------------------------------------------
+
+PUBLIC
+- Landing Page
+- Pricing Page
+- Login
+- Signup
+- About / Contact
+
+STUDENT SCREENS
+- Student Dashboard
+- Course Listing
+- Course Detail
+- Live Class Room
+- Learning Materials
+- Progress & Reports
+- Subscription Management
+- Profile Settings
+
+TUTOR SCREENS
+- Tutor Dashboard
+- Schedule Management
+- Course Creation
+- Upload Materials
+- Live Teaching Room
+- Student Evaluation
+- Earnings Summary
+- Profile Settings
+
+ADMIN SCREENS
+- Admin Dashboard
+- User Management
+- Tutor Approval
+- Course & Grade Management
+- Subscription Plans
+- Revenue Analytics
+- System Settings
+
+--------------------------------------------------
+FRONTEND – PAGE DETAILS WITH FLOW & FIELDS
+--------------------------------------------------
+
+PUBLIC PAGES
+
+LANDING PAGE
+Structure: Hero section, Features grid, Testimonials, CTA buttons
+Flow: User visits → Views features → Signs up/Login
+Fields: Email signup form (Name, Email, Password), Login link
+
+PRICING PAGE
+Structure: Plan comparison table, Feature lists, Payment buttons
+Flow: User browses plans → Selects plan → Redirects to signup/payment
+Fields: Plan selection buttons, Stripe payment form
+
+LOGIN PAGE
+Structure: Login form, Social login options, Forgot password link
+Flow: User enters credentials → Validates → Redirects to dashboard
+Fields: Email, Password, Remember me checkbox, Login button
+
+SIGNUP PAGE
+Structure: Multi-step form (Personal info, Role selection, Verification)
+Flow: User fills form → Selects role → Email verification → Dashboard
+Fields: Name, Email, Password, Confirm Password, Role (Student/Tutor), Terms checkbox
+
+ABOUT/CONTACT PAGE
+Structure: Company info, Team section, Contact form
+Flow: User views info → Fills contact form → Submits inquiry
+Fields: Name, Email, Message, Submit button
+
+STUDENT PAGES
+
+STUDENT DASHBOARD
+Structure: Welcome header, Quick stats, Upcoming classes, Recent materials
+Flow: Login → Dashboard loads → User navigates to features
+Fields: Search bar, Filter dropdowns, Action buttons
+
+COURSE LISTING
+Structure: Filter sidebar, Course grid/cards, Pagination
+Flow: User applies filters → Browses courses → Views details
+Fields: Search input, Grade filter, Subject filter, Sort dropdown
+
+COURSE DETAIL
+Structure: Course header, Description, Syllabus, Enroll button, Reviews
+Flow: User selects course → Views details → Enrolls or browses materials
+Fields: Enroll button, Rating system, Review form (if enrolled)
+
+LIVE CLASS ROOM
+Structure: Video player, Whiteboard canvas, Chat panel, Controls
+Flow: User joins → Video starts → Interacts during class → Leaves
+Fields: Chat input, Whiteboard tools, Screen share toggle, Raise hand button
+
+LEARNING MATERIALS
+Structure: Material list, Preview player, Download buttons
+Flow: User selects material → Views/previews → Downloads if needed
+Fields: Search materials, Filter by type, Download buttons
+
+PROGRESS & REPORTS
+Structure: Progress charts, Grade reports, Achievement badges
+Flow: User views stats → Downloads reports → Sets goals
+Fields: Date range picker, Export buttons
+
+SUBSCRIPTION MANAGEMENT
+Structure: Current plan card, Upgrade options, Billing history
+Flow: User views plan → Upgrades/downgrades → Manages payments
+Fields: Plan change buttons, Payment method form, Cancel subscription button
+
+PROFILE SETTINGS
+Structure: Profile form, Password change, Notification preferences
+Flow: User edits info → Saves changes → Updates profile
+Fields: Name, Email, Bio, Profile picture upload, Password fields, Notification toggles
+
+TUTOR PAGES
+
+TUTOR DASHBOARD
+Structure: Stats overview, Upcoming sessions, Student list, Earnings
+Flow: Login → Dashboard loads → Manages schedule/materials
+Fields: Quick action buttons, Calendar view, Search students
+
+SCHEDULE MANAGEMENT
+Structure: Calendar view, Session creation form, Time slots
+Flow: Tutor selects date → Creates session → Sets availability
+Fields: Date picker, Time slots, Session type, Capacity, Description
+
+COURSE CREATION
+Structure: Multi-step wizard (Basic info, Content, Settings)
+Flow: Tutor starts → Fills details → Adds materials → Publishes
+Fields: Title, Description, Grade/Subject, Price, Thumbnail upload, Content sections
+
+UPLOAD MATERIALS
+Structure: File upload area, Material type selection, Metadata form
+Flow: Tutor selects type → Uploads file → Adds details → Saves
+Fields: File upload, Title, Description, Tags, Access level
+
+LIVE TEACHING ROOM
+Structure: Video controls, Whiteboard, Student list, Recording toggle
+Flow: Tutor starts session → Manages class → Records → Ends
+Fields: Start/end buttons, Mute controls, Student management, Whiteboard tools
+
+STUDENT EVALUATION
+Structure: Student selector, Evaluation form, Grade inputs, Feedback
+Flow: Tutor selects student → Fills evaluation → Submits grades
+Fields: Grade dropdown, Comments, Achievement checkboxes, Submit button
+
+EARNINGS SUMMARY
+Structure: Earnings chart, Payout history, Tax documents
+Flow: Tutor views earnings → Downloads statements → Manages payouts
+Fields: Date filters, Export buttons, Bank details form
+
+PROFILE SETTINGS (Tutor)
+Structure: Profile form, Qualifications, Subjects taught, Availability
+Flow: Tutor updates info → Adds credentials → Saves profile
+Fields: Bio, Experience, Certificates upload, Subject selection, Schedule preferences
+
+ADMIN PAGES
+
+ADMIN DASHBOARD
+Structure: Analytics charts, Recent activities, Quick stats, Alerts
+Flow: Admin logs in → Views overview → Manages platform
+Fields: Date range filters, Export reports, Action buttons
+
+USER MANAGEMENT
+Structure: User table, Search filters, Bulk actions, User details modal
+Flow: Admin searches users → Views details → Takes actions
+Fields: Search input, Role filter, Status filter, Bulk action dropdown
+
+TUTOR APPROVAL
+Structure: Pending tutors list, Approval form, Rejection reasons
+Flow: Admin reviews applications → Approves/rejects → Sends notifications
+Fields: Approval checkbox, Rejection reason dropdown, Comments field
+
+COURSE & GRADE MANAGEMENT
+Structure: Grade/Subject tree, Course editor, Bulk operations
+Flow: Admin selects grade → Manages subjects → Edits courses
+Fields: Add/edit forms, Drag-drop ordering, Status toggles
+
+SUBSCRIPTION PLANS
+Structure: Plan cards, Feature toggles, Pricing editor
+Flow: Admin creates/edits plans → Sets features/pricing → Publishes
+Fields: Plan name, Price, Features list, Duration, Publish toggle
+
+REVENUE ANALYTICS
+Structure: Revenue charts, Subscription metrics, Payout reports
+Flow: Admin selects period → Views trends → Downloads reports
+Fields: Date range, Metric filters, Export options
+
+SYSTEM SETTINGS
+Structure: Settings categories, Configuration forms, Save buttons
+Flow: Admin navigates sections → Updates settings → Saves changes
+Fields: Various config inputs (API keys, limits, notifications, etc.)
+
+--------------------------------------------------
+FRONTEND TECHNICAL REQUIREMENTS
+--------------------------------------------------
+- React Router (role-based routing)
+- Context API or Redux Toolkit
+- Protected routes
+- API service layer
+- Reusable components
+- Form validation
+- Lazy loading
+
+--------------------------------------------------
+UI / UX REQUIREMENTS
+--------------------------------------------------
+- Professional corporate design
+- Clean typography
+- Consistent spacing
+- Dashboard-style layout
+- Responsive (desktop, tablet, mobile)
+- Dark/light mode ready
+- Accessibility (WCAG)
+
+--------------------------------------------------
+CODING GUIDELINES
+--------------------------------------------------
+- Modular & scalable code
+- Industry best practices
+- Meaningful variable names
+- Error handling
+- API validation
+- Secure coding standards
+
+--------------------------------------------------
+DELIVERABLES
+--------------------------------------------------
+1. Backend folder structure
+2. Mongoose schemas with seed scripts
+3. REST API implementation with all the functionality
+4. Frontend component structure
+5. Complete pages with all the FUNCTIONALITY
+6. Environment config examples
+7. README.md for both projects
+
+Start by scaffolding the backend project first, then frontend.
