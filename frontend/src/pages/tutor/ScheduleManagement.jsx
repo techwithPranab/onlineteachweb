@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useCallback, useMemo } from 'react'
 import { useQuery, useMutation, useQueryClient } from 'react-query'
 import { Calendar as CalendarIcon, Plus, Edit, Trash2, Clock, Users, Video, ChevronLeft, ChevronRight, Filter } from 'lucide-react'
 import { sessionService, courseService } from '@/services/apiServices'
@@ -7,6 +7,161 @@ import LoadingSpinner from '@/components/common/LoadingSpinner'
 import ErrorMessage from '@/components/common/ErrorMessage'
 import Modal from '@/components/common/Modal'
 import ConfirmDialog from '@/components/common/ConfirmDialog'
+
+// SessionForm component moved outside to prevent re-renders
+const SessionForm = ({ 
+  formData, 
+  handleInputChange, 
+  onSubmit, 
+  isEdit = false, 
+  selectedGrade, 
+  setSelectedGrade,
+  filteredCourses,
+  gradeOptions,
+  onCancel,
+  isLoading
+}) => (
+  <form onSubmit={onSubmit} className="space-y-4">
+    {/* Grade Filter */}
+    <div>
+      <label className="block text-sm font-medium text-gray-700 mb-2">Filter by Grade</label>
+      <select
+        value={selectedGrade}
+        onChange={(e) => setSelectedGrade(e.target.value)}
+        className="input-field w-full"
+      >
+        <option value="">All Grades</option>
+        {gradeOptions.map((grade) => (
+          <option key={grade} value={grade}>
+            Grade {grade}
+          </option>
+        ))}
+      </select>
+    </div>
+
+    <div>
+      <label className="block text-sm font-medium text-gray-700 mb-2">Course *</label>
+      <select
+        name="courseId"
+        value={formData.courseId}
+        onChange={handleInputChange}
+        required
+        className="input-field w-full"
+      >
+        <option value="">Select Course</option>
+        {filteredCourses.map((course) => (
+          <option key={course._id} value={course._id}>
+            {course.title} - Grade {course.grade}
+          </option>
+        ))}
+      </select>
+      {filteredCourses.length === 0 && selectedGrade && (
+        <p className="text-sm text-gray-500 mt-1">No courses available for Grade {selectedGrade}</p>
+      )}
+    </div>
+
+    <div>
+      <label className="block text-sm font-medium text-gray-700 mb-2">Session Title *</label>
+      <input
+        type="text"
+        name="title"
+        value={formData.title}
+        onChange={handleInputChange}
+        required
+        className="input-field w-full"
+        placeholder="e.g., Introduction to Algebra"
+      />
+    </div>
+
+    <div>
+      <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
+      <textarea
+        name="description"
+        value={formData.description}
+        onChange={handleInputChange}
+        rows={3}
+        className="input-field w-full"
+        placeholder="What will be covered in this session?"
+      />
+    </div>
+
+    <div className="grid grid-cols-2 gap-4">
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-2">Date & Time *</label>
+        <input
+          type="datetime-local"
+          name="scheduledAt"
+          value={formData.scheduledAt}
+          onChange={handleInputChange}
+          required
+          className="input-field w-full"
+        />
+      </div>
+
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-2">Duration (minutes) *</label>
+        <input
+          type="number"
+          name="duration"
+          value={formData.duration}
+          onChange={handleInputChange}
+          required
+          min="15"
+          step="15"
+          className="input-field w-full"
+        />
+      </div>
+    </div>
+
+    <div className="grid grid-cols-2 gap-4">
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-2">Max Students</label>
+        <input
+          type="number"
+          name="maxStudents"
+          value={formData.maxStudents}
+          onChange={handleInputChange}
+          min="1"
+          className="input-field w-full"
+        />
+      </div>
+
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-2">Access</label>
+        <select
+          name="isPaid"
+          value={formData.isPaid.toString()}
+          onChange={handleInputChange}
+          className="input-field w-full"
+        >
+          <option value="false">Free</option>
+          <option value="true">Paid Only</option>
+        </select>
+      </div>
+    </div>
+
+    <div className="flex gap-3 pt-4">
+      <button
+        type="button"
+        onClick={onCancel}
+        className="flex-1 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
+      >
+        Cancel
+      </button>
+      <button
+        type="submit"
+        disabled={isLoading}
+        className="flex-1 btn-primary"
+      >
+        {isLoading ? (
+          <><LoadingSpinner size="sm" /> Saving...</>
+        ) : (
+          isEdit ? 'Update Session' : 'Create Session'
+        )}
+      </button>
+    </div>
+  </form>
+)
 
 export default function ScheduleManagement() {
   const { user } = useAuthStore()
@@ -39,9 +194,17 @@ export default function ScheduleManagement() {
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target
+    let newValue = value
+    
+    if (type === 'checkbox') {
+      newValue = checked
+    } else if (name === 'isPaid') {
+      newValue = value === 'true'
+    }
+    
     setFormData(prev => ({
       ...prev,
-      [name]: type === 'checkbox' ? checked : name === 'isPaid' ? value === 'true' : value
+      [name]: newValue
     }))
   }
 
@@ -98,9 +261,11 @@ export default function ScheduleManagement() {
   const sessions = sessionsData?.sessions || []
 
   // Filter courses based on selected grade
-  const filteredCourses = selectedGrade
-    ? courses.filter(course => course.grade === parseInt(selectedGrade))
-    : courses
+  const filteredCourses = useMemo(() => {
+    return selectedGrade
+      ? courses.filter(course => course.grade === parseInt(selectedGrade))
+      : courses
+  }, [courses, selectedGrade])
 
   // Generate grade options (1-12)
   const gradeOptions = Array.from({ length: 12 }, (_, i) => i + 1)
@@ -254,161 +419,6 @@ export default function ScheduleManagement() {
 
   if (isLoading) return <LoadingSpinner fullScreen />
   if (error) return <ErrorMessage message={error.message || 'Failed to load schedule'} onRetry={refetch} />
-
-  const SessionForm = ({ onSubmit, isEdit = false }) => (
-    <form onSubmit={onSubmit} className="space-y-4">
-      {/* Grade Filter */}
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">Filter by Grade</label>
-        <select
-          value={selectedGrade}
-          onChange={(e) => setSelectedGrade(e.target.value)}
-          className="input-field w-full"
-        >
-          <option value="">All Grades</option>
-          {gradeOptions.map((grade) => (
-            <option key={grade} value={grade}>
-              Grade {grade}
-            </option>
-          ))}
-        </select>
-      </div>
-
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">Course *</label>
-        <select
-          name="courseId"
-          value={formData.courseId}
-          onChange={handleInputChange}
-          required
-          className="input-field w-full"
-        >
-          <option value="">Select Course</option>
-          {filteredCourses.map((course) => (
-            <option key={course._id} value={course._id}>
-              {course.title} - Grade {course.grade}
-            </option>
-          ))}
-        </select>
-        {filteredCourses.length === 0 && selectedGrade && (
-          <p className="text-sm text-gray-500 mt-1">No courses available for Grade {selectedGrade}</p>
-        )}
-      </div>
-
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">Session Title *</label>
-        <input
-          type="text"
-          name="title"
-          value={formData.title}
-          onChange={handleInputChange}
-          required
-          className="input-field w-full"
-          placeholder="e.g., Introduction to Algebra"
-        />
-      </div>
-
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
-        <textarea
-          name="description"
-          value={formData.description}
-          onChange={handleInputChange}
-          rows={3}
-          className="input-field w-full"
-          placeholder="What will be covered in this session?"
-        />
-      </div>
-
-      <div className="grid grid-cols-2 gap-4">
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">Date & Time *</label>
-          <input
-            type="datetime-local"
-            name="scheduledAt"
-            value={formData.scheduledAt}
-            onChange={handleInputChange}
-            required
-            className="input-field w-full"
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">Duration (minutes) *</label>
-          <input
-            type="number"
-            value={formData.duration}
-            onChange={(e) => {
-              const value = e.target.value;
-              const numValue = value === '' ? '' : parseInt(value);
-              setFormData({ ...formData, duration: numValue === '' ? 60 : Math.max(15, numValue) });
-            }}
-            onBlur={(e) => {
-              const value = formData.duration;
-              if (value === '' || value < 15) {
-                setFormData({ ...formData, duration: 60 });
-              }
-            }}
-            required
-            min="15"
-            step="15"
-            className="input-field w-full"
-          />
-        </div>
-      </div>
-
-      <div className="grid grid-cols-2 gap-4">
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">Max Students</label>
-          <input
-            type="number"
-            name="maxStudents"
-            value={formData.maxStudents}
-            onChange={handleInputChange}
-            min="1"
-            className="input-field w-full"
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">Access</label>
-          <select
-            name="isPaid"
-            value={formData.isPaid.toString()}
-            onChange={handleInputChange}
-            className="input-field w-full"
-          >
-            <option value="false">Free</option>
-            <option value="true">Paid Only</option>
-          </select>
-        </div>
-      </div>
-
-      <div className="flex gap-3 pt-4">
-        <button
-          type="button"
-          onClick={() => {
-            isEdit ? setShowEditModal(false) : setShowCreateModal(false)
-            resetForm()
-          }}
-          className="flex-1 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
-        >
-          Cancel
-        </button>
-        <button
-          type="submit"
-          disabled={createSessionMutation.isLoading || updateSessionMutation.isLoading}
-          className="flex-1 btn-primary"
-        >
-          {createSessionMutation.isLoading || updateSessionMutation.isLoading ? (
-            <><LoadingSpinner size="sm" /> Saving...</>
-          ) : (
-            isEdit ? 'Update Session' : 'Create Session'
-          )}
-        </button>
-      </div>
-    </form>
-  )
 
   return (
     <div className="max-w-7xl mx-auto">
@@ -589,7 +599,20 @@ export default function ScheduleManagement() {
         title="Create New Session"
         size="lg"
       >
-        <SessionForm onSubmit={handleCreateSession} />
+        <SessionForm 
+          formData={formData}
+          handleInputChange={handleInputChange}
+          onSubmit={handleCreateSession}
+          selectedGrade={selectedGrade}
+          setSelectedGrade={setSelectedGrade}
+          filteredCourses={filteredCourses}
+          gradeOptions={gradeOptions}
+          onCancel={() => {
+            setShowCreateModal(false)
+            resetForm()
+          }}
+          isLoading={createSessionMutation.isLoading}
+        />
       </Modal>
 
       {/* Edit Session Modal */}
@@ -603,7 +626,22 @@ export default function ScheduleManagement() {
         title="Edit Session"
         size="lg"
       >
-        <SessionForm onSubmit={handleUpdateSession} isEdit />
+        <SessionForm 
+          formData={formData}
+          handleInputChange={handleInputChange}
+          onSubmit={handleUpdateSession}
+          isEdit
+          selectedGrade={selectedGrade}
+          setSelectedGrade={setSelectedGrade}
+          filteredCourses={filteredCourses}
+          gradeOptions={gradeOptions}
+          onCancel={() => {
+            setShowEditModal(false)
+            setSelectedSession(null)
+            resetForm()
+          }}
+          isLoading={updateSessionMutation.isLoading}
+        />
       </Modal>
 
       {/* Delete Confirmation */}

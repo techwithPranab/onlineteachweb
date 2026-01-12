@@ -154,6 +154,16 @@ export const materialService = {
     const { data } = await api.post('/materials', materialData)
     return data
   },
+
+  updateMaterial: async (id, materialData) => {
+    const { data } = await api.put(`/materials/${id}`, materialData)
+    return data
+  },
+
+  deleteMaterial: async (id) => {
+    const { data } = await api.delete(`/materials/${id}`)
+    return data
+  },
 }
 
 export const evaluationService = {

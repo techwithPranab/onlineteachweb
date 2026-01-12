@@ -32,12 +32,25 @@ export default function ProfileSettings() {
   })
   const [avatarPreview, setAvatarPreview] = useState(null)
   const [showDeleteDialog, setShowDeleteDialog] = useState(false)
+  const [qualifications, setQualifications] = useState([])
   const [notifications, setNotifications] = useState({
     email: true,
     push: true,
-    sms: false,
-    marketing: false
+    sms: false
   })
+  const addQualification = () => {
+    setQualifications([...qualifications, { degree: '', institution: '', year: '' }])
+  }
+
+  const removeQualification = (index) => {
+    setQualifications(qualifications.filter((_, i) => i !== index))
+  }
+
+  const updateQualification = (index, field, value) => {
+    const updated = [...qualifications]
+    updated[index][field] = value
+    setQualifications(updated)
+  }
 
   // Form for profile information
   const profileForm = useForm({
@@ -48,7 +61,6 @@ export default function ProfileSettings() {
       bio: user?.bio || '',
       subjects: user?.subjects || [],
       experience: user?.experience || '',
-      qualifications: user?.qualifications || ''
     }
   })
 
@@ -67,8 +79,9 @@ export default function ProfileSettings() {
     () => userService.getProfile(),
     {
       onSuccess: (data) => {
-        profileForm.reset(data)
-        setNotifications(data.notifications || notifications)
+        profileForm.reset(data.user)
+        setQualifications(data.user.qualifications || [])
+        setNotifications(data.user.notifications || notifications)
       }
     }
   )
@@ -139,7 +152,11 @@ export default function ProfileSettings() {
   )
 
   const handleProfileSubmit = (data) => {
-    updateProfileMutation.mutate(data)
+    const profileData = {
+      ...data,
+      qualifications: qualifications.filter(q => q.degree.trim() || q.institution.trim()) // Filter out empty qualifications
+    }
+    updateProfileMutation.mutate(profileData)
   }
 
   const handlePasswordSubmit = (data) => {
@@ -380,15 +397,61 @@ export default function ProfileSettings() {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Qualifications
-                    </label>
-                    <textarea
-                      {...profileForm.register('qualifications')}
-                      rows="3"
-                      placeholder="List your educational qualifications and certifications..."
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
-                    />
+                    <div className="flex items-center justify-between mb-2">
+                      <label className="block text-sm font-medium text-gray-700">
+                        Qualifications
+                      </label>
+                      <button
+                        type="button"
+                        onClick={addQualification}
+                        className="text-sm text-primary-600 hover:text-primary-700 font-medium"
+                      >
+                        + Add Qualification
+                      </button>
+                    </div>
+                    
+                    <div className="space-y-3">
+                      {qualifications.map((qual, index) => (
+                        <div key={index} className="flex items-center gap-3 p-3 border border-gray-200 rounded-lg">
+                          <div className="flex-1 grid grid-cols-1 md:grid-cols-3 gap-3">
+                            <input
+                              type="text"
+                              placeholder="Degree/Certificate"
+                              value={qual.degree}
+                              onChange={(e) => updateQualification(index, 'degree', e.target.value)}
+                              className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm"
+                            />
+                            <input
+                              type="text"
+                              placeholder="Institution"
+                              value={qual.institution}
+                              onChange={(e) => updateQualification(index, 'institution', e.target.value)}
+                              className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm"
+                            />
+                            <input
+                              type="number"
+                              placeholder="Year"
+                              value={qual.year}
+                              onChange={(e) => updateQualification(index, 'year', e.target.value)}
+                              className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm"
+                              min="1950"
+                              max={new Date().getFullYear()}
+                            />
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => removeQualification(index)}
+                            className="text-red-500 hover:text-red-700 p-1"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        </div>
+                      ))}
+                      
+                      {qualifications.length === 0 && (
+                        <p className="text-sm text-gray-500 italic">No qualifications added yet. Click "Add Qualification" to add your educational background.</p>
+                      )}
+                    </div>
                   </div>
                 </>
               )}
