@@ -19,18 +19,29 @@ export default function TutorApproval() {
   const [rejectionReason, setRejectionReason] = useState('')
   const [selectedTutors, setSelectedTutors] = useState([])
 
-  // Fetch pending tutors
+  // Fetch tutors with status filter
   const { data: tutorsData, isLoading, error, refetch } = useQuery(
-    ['pendingTutors', statusFilter],
-    () => adminService.getPendingTutors({ status: statusFilter })
+    ['tutors', statusFilter],
+    () => {
+      // Map frontend status values to backend values
+      const backendStatus = statusFilter === 'approved' ? 'active' 
+                         : statusFilter === 'rejected' ? 'inactive' 
+                         : statusFilter;
+      
+      return adminService.getUsers({ 
+        role: 'tutor', 
+        status: backendStatus || undefined,
+        limit: 100 // Get more tutors for approval page
+      });
+    }
   )
 
   // Approve tutor mutation
   const approveMutation = useMutation(
-    (tutorId) => adminService.approveTutor(tutorId),
+    (tutorId) => adminService.approveTutor(tutorId, true),
     {
       onSuccess: () => {
-        queryClient.invalidateQueries('pendingTutors')
+        queryClient.invalidateQueries('tutors')
         setShowApproveDialog(false)
         setSelectedTutor(null)
       },
@@ -39,10 +50,10 @@ export default function TutorApproval() {
 
   // Reject tutor mutation
   const rejectMutation = useMutation(
-    ({ tutorId, reason }) => adminService.rejectTutor(tutorId, reason),
+    ({ tutorId, reason }) => adminService.approveTutor(tutorId, false, reason),
     {
       onSuccess: () => {
-        queryClient.invalidateQueries('pendingTutors')
+        queryClient.invalidateQueries('tutors')
         setShowRejectDialog(false)
         setSelectedTutor(null)
         setRejectionReason('')
@@ -52,10 +63,14 @@ export default function TutorApproval() {
 
   // Bulk approve mutation
   const bulkApproveMutation = useMutation(
-    (tutorIds) => adminService.bulkApproveTutors(tutorIds),
+    async (tutorIds) => {
+      // Approve each tutor individually
+      const promises = tutorIds.map(id => adminService.approveTutor(id, true));
+      return Promise.all(promises);
+    },
     {
       onSuccess: () => {
-        queryClient.invalidateQueries('pendingTutors')
+        queryClient.invalidateQueries('tutors')
         setSelectedTutors([])
       },
     }
@@ -63,10 +78,14 @@ export default function TutorApproval() {
 
   // Bulk reject mutation
   const bulkRejectMutation = useMutation(
-    ({ tutorIds, reason }) => adminService.bulkRejectTutors(tutorIds, reason),
+    async ({ tutorIds, reason }) => {
+      // Reject each tutor individually
+      const promises = tutorIds.map(id => adminService.approveTutor(id, false, reason));
+      return Promise.all(promises);
+    },
     {
       onSuccess: () => {
-        queryClient.invalidateQueries('pendingTutors')
+        queryClient.invalidateQueries('tutors')
         setSelectedTutors([])
         setRejectionReason('')
       },

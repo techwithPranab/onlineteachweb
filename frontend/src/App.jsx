@@ -10,7 +10,10 @@ import DashboardLayout from './layouts/DashboardLayout'
 import LandingPage from './pages/public/LandingPage'
 import Login from './pages/public/Login'
 import Signup from './pages/public/Signup'
+import SignupSuccess from './pages/public/SignupSuccess'
 import PricingPage from './pages/public/PricingPage'
+import Courses from './pages/public/Courses'
+import CourseList from './pages/public/CourseList'
 import ForStudents from './pages/public/ForStudents'
 import ForTutors from './pages/public/ForTutors'
 import HelpCenter from './pages/public/HelpCenter'
@@ -18,6 +21,7 @@ import ContactUs from './pages/public/ContactUs'
 import FAQs from './pages/public/FAQs'
 import PrivacyPolicy from './pages/public/PrivacyPolicy'
 import TermsOfService from './pages/public/TermsOfService'
+import CourseDetails from './pages/public/CourseDetails'
 
 // Student Pages
 import StudentDashboard from './pages/student/StudentDashboard'
@@ -78,7 +82,11 @@ function App() {
             <Route path="/" element={<LandingPage />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
+            <Route path="/signup-success" element={<SignupSuccess />} />
             <Route path="/pricing" element={<PricingPage />} />
+            <Route path="/courses" element={<Courses />} />
+            <Route path="/courses/:grade/:subject" element={<CourseList />} />
+            <Route path="/course/:id" element={<CourseDetails />} />
             <Route path="/for-students" element={<ForStudents />} />
             <Route path="/for-tutors" element={<ForTutors />} />
             <Route path="/help-center" element={<HelpCenter />} />

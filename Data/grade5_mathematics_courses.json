@@ -1,0 +1,1012 @@
+[
+  {
+    "title": "Grade 5 Mathematics - Number System and Place Value",
+    "description": "Understanding large numbers up to crores, place value concepts, and number formation. This course covers reading and writing large numbers, Indian and International number systems, forming numbers, comparing and ordering numbers, and rounding off techniques.",
+    "grade": 5,
+    "subject": "Mathematics",
+    "board": ["ICSE", "CBSE"],
+    "price": 499,
+    "thumbnail": "",
+    "status": "published",
+    "syllabus": [
+      "Reading and Writing Large Numbers up to crores",
+      "Indian and International number systems",
+      "Place value and face value concepts",
+      "Forming largest and smallest numbers",
+      "Comparing and ordering large numbers",
+      "Rounding off numbers to nearest 10, 100, 1000",
+      "Successor and predecessor",
+      "Expanded form and standard form"
+    ],
+    "chapters": [
+      {
+        "name": "Reading and Writing Large Numbers",
+        "topics": [
+          "Numbers up to 10,00,000 (10 lakhs)",
+          "Numbers up to 1,00,00,000 (1 crore)",
+          "Indian and International number systems",
+          "Place value and face value",
+          "Expanded form and standard form"
+        ],
+        "learningObjectives": [
+          "Read and write numbers up to crores",
+          "Identify place value of digits",
+          "Convert between Indian and International systems",
+          "Compare and order large numbers"
+        ],
+        "estimatedHours": 6
+      },
+      {
+        "name": "Forming Numbers",
+        "topics": [
+          "Forming largest and smallest numbers",
+          "Arranging numbers in ascending/descending order",
+          "Successor and predecessor",
+          "Rounding off numbers"
+        ],
+        "learningObjectives": [
+          "Form numbers using given digits",
+          "Arrange numbers systematically",
+          "Round off numbers to nearest 10, 100, 1000"
+        ],
+        "estimatedHours": 6
+      }
+    ],
+    "topics": ["Number System", "Place Value", "Large Numbers", "Rounding", "Number Formation"],
+    "duration": "4 weeks",
+    "estimatedHours": 12,
+    "level": "beginner",
+    "difficulty": 2,
+    "language": "English",
+    "prerequisites": ["Grade 4 Mathematics"],
+    "learningOutcomes": [
+      "Master reading and writing of large numbers",
+      "Understand place value system thoroughly",
+      "Develop number sense and estimation skills",
+      "Compare and order numbers confidently"
+    ],
+    "certificate": true,
+    "status": "published",
+    "enrollmentCount": 0,
+    "rating": 0,
+    "reviewCount": 0,
+    "totalRatings": 0,
+    "maxStudents": 50,
+    "tags": ["Mathematics", "Grade 5", "Number System", "ICSE", "CBSE", "Place Value"],
+    "isActive": true,
+    "reviews": []
+  },
+  {
+    "title": "Grade 5 Mathematics - Four Operations on Large Numbers",
+    "description": "Master addition, subtraction, multiplication, and division of large numbers with real-life applications. Learn BODMAS rules, mental math strategies, and solve complex word problems involving all four operations.",
+    "grade": 5,
+    "subject": "Mathematics",
+    "board": ["ICSE", "CBSE"],
+    "price": 599,
+    "thumbnail": "",
+    "status": "published",
+    "syllabus": [
+      "Addition of 5-7 digit numbers",
+      "Subtraction of 5-7 digit numbers",
+      "Multiplication by 2-3 digit numbers",
+      "Division by 2-3 digit numbers",
+      "Properties of addition and multiplication",
+      "BODMAS/PEMDAS rules",
+      "Word problems on all four operations",
+      "Mental addition and subtraction strategies"
+    ],
+    "chapters": [
+      {
+        "name": "Addition and Subtraction",
+        "topics": [
+          "Addition of 5-7 digit numbers",
+          "Subtraction of 5-7 digit numbers",
+          "Word problems on addition and subtraction",
+          "Properties of addition",
+          "Mental addition and subtraction strategies"
+        ],
+        "learningObjectives": [
+          "Add and subtract large numbers accurately",
+          "Apply operations to real-life situations",
+          "Use mental math techniques",
+          "Verify answers using inverse operations"
+        ],
+        "estimatedHours": 7
+      },
+      {
+        "name": "Multiplication and Division",
+        "topics": [
+          "Multiplication by 2-3 digit numbers",
+          "Division by 2-3 digit numbers",
+          "Long multiplication method",
+          "Long division method",
+          "Word problems involving all four operations",
+          "BODMAS/PEMDAS rules"
+        ],
+        "learningObjectives": [
+          "Multiply and divide large numbers",
+          "Solve multi-step word problems",
+          "Apply BODMAS correctly",
+          "Check divisibility and find remainders"
+        ],
+        "estimatedHours": 8
+      }
+    ],
+    "topics": ["Addition", "Subtraction", "Multiplication", "Division", "BODMAS", "Word Problems"],
+    "duration": "5 weeks",
+    "estimatedHours": 15,
+    "level": "beginner",
+    "difficulty": 2,
+    "language": "English",
+    "prerequisites": ["Number System and Place Value"],
+    "learningOutcomes": [
+      "Perform all four operations on large numbers confidently",
+      "Apply operations to solve real-world problems",
+      "Develop computational accuracy and speed",
+      "Master BODMAS rules for order of operations"
+    ],
+    "certificate": true,
+    "status": "published",
+    "enrollmentCount": 0,
+    "rating": 0,
+    "reviewCount": 0,
+    "totalRatings": 0,
+    "maxStudents": 50,
+    "tags": ["Mathematics", "Grade 5", "Operations", "BODMAS", "ICSE", "CBSE"],
+    "isActive": true,
+    "reviews": []
+  },
+  {
+    "title": "Grade 5 Mathematics - Factors and Multiples",
+    "description": "Explore number theory concepts including factors, multiples, prime and composite numbers. Learn to calculate HCF and LCM using various methods and apply these concepts to solve practical problems.",
+    "grade": 5,
+    "subject": "Mathematics",
+    "board": ["ICSE", "CBSE"],
+    "price": 499,
+    "thumbnail": "",
+    "status": "published",
+    "syllabus": [
+      "Finding factors of a number",
+      "Finding multiples of a number",
+      "Prime numbers and composite numbers",
+      "Prime factorization",
+      "Factor tree method",
+      "Highest Common Factor (HCF)",
+      "Lowest Common Multiple (LCM)",
+      "Word problems on HCF and LCM"
+    ],
+    "chapters": [
+      {
+        "name": "Factors and Multiples",
+        "topics": [
+          "Finding factors of a number",
+          "Finding multiples of a number",
+          "Common factors and common multiples",
+          "Prime numbers and composite numbers",
+          "Prime factorization",
+          "Factor tree method"
+        ],
+        "learningObjectives": [
+          "Identify factors and multiples",
+          "Distinguish between prime and composite numbers",
+          "Find prime factors using different methods",
+          "List prime numbers up to 100"
+        ],
+        "estimatedHours": 5
+      },
+      {
+        "name": "HCF and LCM",
+        "topics": [
+          "Highest Common Factor (HCF)",
+          "Lowest Common Multiple (LCM)",
+          "Finding HCF by listing factors",
+          "Finding HCF by prime factorization",
+          "Finding LCM by listing multiples",
+          "Finding LCM by prime factorization",
+          "Relationship between HCF and LCM",
+          "Word problems on HCF and LCM"
+        ],
+        "learningObjectives": [
+          "Calculate HCF and LCM using different methods",
+          "Apply HCF and LCM to real-life situations",
+          "Understand the relationship between HCF and LCM",
+          "Solve practical problems efficiently"
+        ],
+        "estimatedHours": 5
+      }
+    ],
+    "topics": ["Factors", "Multiples", "Prime Numbers", "HCF", "LCM", "Number Theory"],
+    "duration": "3 weeks",
+    "estimatedHours": 10,
+    "level": "intermediate",
+    "difficulty": 3,
+    "language": "English",
+    "prerequisites": ["Four Operations on Large Numbers"],
+    "learningOutcomes": [
+      "Master concepts of factors and multiples",
+      "Calculate HCF and LCM accurately",
+      "Apply number theory to solve problems",
+      "Identify prime and composite numbers"
+    ],
+    "certificate": true,
+    "status": "published",
+    "enrollmentCount": 0,
+    "rating": 0,
+    "reviewCount": 0,
+    "totalRatings": 0,
+    "maxStudents": 50,
+    "tags": ["Mathematics", "Grade 5", "Factors", "Multiples", "HCF", "LCM", "ICSE", "CBSE"],
+    "isActive": true,
+    "reviews": []
+  },
+  {
+    "title": "Grade 5 Mathematics - Fractions and Decimals",
+    "description": "Comprehensive study of fractions and decimals including all operations, conversions, and practical applications. Learn proper, improper, mixed fractions, decimal place value, and solve real-world problems.",
+    "grade": 5,
+    "subject": "Mathematics",
+    "board": ["ICSE", "CBSE"],
+    "price": 699,
+    "thumbnail": "",
+    "status": "published",
+    "syllabus": [
+      "Types of fractions (proper, improper, mixed)",
+      "Operations on fractions",
+      "Equivalent and simplified fractions",
+      "Place value in decimals",
+      "Operations on decimals",
+      "Converting fractions to decimals",
+      "Converting decimals to fractions",
+      "Word problems on fractions and decimals"
+    ],
+    "chapters": [
+      {
+        "name": "Fractions",
+        "topics": [
+          "Types of fractions (proper, improper, mixed)",
+          "Equivalent fractions",
+          "Simplifying fractions",
+          "Comparing and ordering fractions",
+          "Addition and subtraction of like fractions",
+          "Addition and subtraction of unlike fractions",
+          "Multiplication of fractions",
+          "Division of fractions",
+          "Word problems on fractions"
+        ],
+        "learningObjectives": [
+          "Identify and classify different types of fractions",
+          "Perform all operations on fractions",
+          "Convert between mixed and improper fractions",
+          "Solve real-life problems involving fractions"
+        ],
+        "estimatedHours": 9
+      },
+      {
+        "name": "Decimals",
+        "topics": [
+          "Place value in decimals (tenths, hundredths, thousandths)",
+          "Reading and writing decimals",
+          "Comparing and ordering decimals",
+          "Addition and subtraction of decimals",
+          "Multiplication of decimals",
+          "Division of decimals",
+          "Converting fractions to decimals",
+          "Converting decimals to fractions",
+          "Rounding off decimals",
+          "Word problems on decimals"
+        ],
+        "learningObjectives": [
+          "Understand decimal place value system",
+          "Perform operations on decimals accurately",
+          "Convert between fractions and decimals",
+          "Apply decimals in measurement and money"
+        ],
+        "estimatedHours": 9
+      }
+    ],
+    "topics": ["Fractions", "Decimals", "Conversion", "Operations", "Word Problems"],
+    "duration": "6 weeks",
+    "estimatedHours": 18,
+    "level": "intermediate",
+    "difficulty": 3,
+    "language": "English",
+    "prerequisites": ["Four Operations on Large Numbers"],
+    "learningOutcomes": [
+      "Master fraction and decimal concepts thoroughly",
+      "Perform operations on fractions and decimals confidently",
+      "Apply fractional thinking to everyday situations",
+      "Convert between different number forms fluently"
+    ],
+    "certificate": true,
+    "status": "published",
+    "enrollmentCount": 0,
+    "rating": 0,
+    "reviewCount": 0,
+    "totalRatings": 0,
+    "maxStudents": 50,
+    "tags": ["Mathematics", "Grade 5", "Fractions", "Decimals", "ICSE", "CBSE"],
+    "isActive": true,
+    "reviews": []
+  },
+  {
+    "title": "Grade 5 Mathematics - Percentage and Ratio",
+    "description": "Understanding percentages, ratios, and proportions with practical applications. Learn conversions between fractions, decimals, and percentages. Master unitary method and solve real-world problems.",
+    "grade": 5,
+    "subject": "Mathematics",
+    "board": ["ICSE", "CBSE"],
+    "price": 549,
+    "thumbnail": "",
+    "status": "published",
+    "syllabus": [
+      "Concept of percentage",
+      "Converting between fractions, decimals, and percentages",
+      "Finding percentage of a quantity",
+      "Percentage increase and decrease",
+      "Concept of ratio",
+      "Equivalent ratios",
+      "Unitary method",
+      "Direct proportion",
+      "Word problems on percentage and ratio"
+    ],
+    "chapters": [
+      {
+        "name": "Percentage",
+        "topics": [
+          "Concept of percentage",
+          "Converting fractions to percentages",
+          "Converting decimals to percentages",
+          "Converting percentages to fractions and decimals",
+          "Finding percentage of a quantity",
+          "Finding what percentage one quantity is of another",
+          "Percentage increase and decrease",
+          "Word problems on percentage"
+        ],
+        "learningObjectives": [
+          "Understand the concept of percentage",
+          "Convert between fractions, decimals, and percentages",
+          "Calculate percentages in practical situations",
+          "Solve problems involving percentage changes"
+        ],
+        "estimatedHours": 6
+      },
+      {
+        "name": "Ratio and Proportion",
+        "topics": [
+          "Concept of ratio",
+          "Expressing ratios in simplest form",
+          "Equivalent ratios",
+          "Comparing ratios",
+          "Dividing quantities in given ratios",
+          "Unitary method",
+          "Direct proportion",
+          "Word problems on ratio and proportion"
+        ],
+        "learningObjectives": [
+          "Express and simplify ratios",
+          "Solve problems using unitary method",
+          "Divide quantities in given ratios",
+          "Apply proportion to real-life scenarios"
+        ],
+        "estimatedHours": 6
+      }
+    ],
+    "topics": ["Percentage", "Ratio", "Proportion", "Unitary Method", "Conversions"],
+    "duration": "4 weeks",
+    "estimatedHours": 12,
+    "level": "intermediate",
+    "difficulty": 3,
+    "language": "English",
+    "prerequisites": ["Fractions and Decimals"],
+    "learningOutcomes": [
+      "Develop strong understanding of percentage and ratio",
+      "Apply concepts to money, discounts, and measurements",
+      "Build proportional reasoning skills",
+      "Master unitary method for problem solving"
+    ],
+    "certificate": true,
+    "status": "published",
+    "enrollmentCount": 0,
+    "rating": 0,
+    "reviewCount": 0,
+    "totalRatings": 0,
+    "maxStudents": 50,
+    "tags": ["Mathematics", "Grade 5", "Percentage", "Ratio", "Proportion", "ICSE", "CBSE"],
+    "isActive": true,
+    "reviews": []
+  },
+  {
+    "title": "Grade 5 Mathematics - Geometry (Lines, Angles, and Shapes)",
+    "description": "Exploring geometric concepts including lines, angles, triangles, quadrilaterals, and circles. Learn to measure and draw angles, identify properties of shapes, and understand symmetry.",
+    "grade": 5,
+    "subject": "Mathematics",
+    "board": ["ICSE", "CBSE"],
+    "price": 599,
+    "thumbnail": "",
+    "status": "published",
+    "syllabus": [
+      "Types of lines and angles",
+      "Measuring angles using protractor",
+      "Drawing angles",
+      "Complementary and supplementary angles",
+      "Triangles - types and properties",
+      "Quadrilaterals - types and properties",
+      "Circles - parts and properties",
+      "Symmetry in shapes"
+    ],
+    "chapters": [
+      {
+        "name": "Lines and Angles",
+        "topics": [
+          "Types of lines (horizontal, vertical, oblique)",
+          "Parallel and perpendicular lines",
+          "Line segments and rays",
+          "Types of angles (acute, obtuse, right, straight, reflex)",
+          "Measuring angles using protractor",
+          "Drawing angles",
+          "Complementary and supplementary angles",
+          "Adjacent angles and linear pairs",
+          "Vertically opposite angles"
+        ],
+        "learningObjectives": [
+          "Identify different types of lines and angles",
+          "Measure and draw angles accurately",
+          "Understand angle relationships",
+          "Solve problems involving angle properties"
+        ],
+        "estimatedHours": 7
+      },
+      {
+        "name": "2D Shapes",
+        "topics": [
+          "Triangles - types and properties",
+          "Quadrilaterals - square, rectangle, parallelogram, rhombus, trapezium",
+          "Properties of quadrilaterals",
+          "Circles - radius, diameter, chord, arc, sector, segment",
+          "Polygons - regular and irregular",
+          "Symmetry in shapes",
+          "Tessellations"
+        ],
+        "learningObjectives": [
+          "Classify shapes based on properties",
+          "Identify properties of different shapes",
+          "Draw geometric shapes accurately",
+          "Recognize symmetry and patterns"
+        ],
+        "estimatedHours": 7
+      }
+    ],
+    "topics": ["Geometry", "Lines", "Angles", "Shapes", "Triangles", "Quadrilaterals", "Circles"],
+    "duration": "5 weeks",
+    "estimatedHours": 14,
+    "level": "beginner",
+    "difficulty": 2,
+    "language": "English",
+    "prerequisites": ["Basic shapes knowledge from Grade 4"],
+    "learningOutcomes": [
+      "Understand fundamental geometric concepts",
+      "Develop spatial reasoning and visualization skills",
+      "Use geometric tools accurately",
+      "Identify and classify 2D shapes"
+    ],
+    "certificate": true,
+    "status": "published",
+    "enrollmentCount": 0,
+    "rating": 0,
+    "reviewCount": 0,
+    "totalRatings": 0,
+    "maxStudents": 50,
+    "tags": ["Mathematics", "Grade 5", "Geometry", "Angles", "Shapes", "ICSE", "CBSE"],
+    "isActive": true,
+    "reviews": []
+  },
+  {
+    "title": "Grade 5 Mathematics - Perimeter, Area, and Volume",
+    "description": "Calculating perimeter and area of 2D shapes, and introduction to volume of 3D shapes. Learn formulas, solve real-world measurement problems, and convert between units.",
+    "grade": 5,
+    "subject": "Mathematics",
+    "board": ["ICSE", "CBSE"],
+    "price": 649,
+    "thumbnail": "",
+    "status": "published",
+    "syllabus": [
+      "Perimeter of rectangles, squares, and triangles",
+      "Area of rectangles, squares, and triangles",
+      "Circumference and area of circles",
+      "Perimeter and area of composite shapes",
+      "Volume of cubes and cuboids",
+      "Surface area of cubes and cuboids",
+      "Units of measurement conversion",
+      "Word problems on measurement"
+    ],
+    "chapters": [
+      {
+        "name": "Perimeter and Area",
+        "topics": [
+          "Perimeter of rectangles and squares",
+          "Perimeter of triangles",
+          "Perimeter of composite shapes",
+          "Area of rectangles and squares",
+          "Area of triangles",
+          "Area of parallelograms",
+          "Circumference of circles",
+          "Area of circles",
+          "Word problems on perimeter and area",
+          "Units of measurement conversion"
+        ],
+        "learningObjectives": [
+          "Calculate perimeter of various shapes",
+          "Calculate area using appropriate formulas",
+          "Solve real-life measurement problems",
+          "Convert between different units"
+        ],
+        "estimatedHours": 8
+      },
+      {
+        "name": "Volume and Capacity",
+        "topics": [
+          "Concept of volume and capacity",
+          "Volume of cubes",
+          "Volume of cuboids",
+          "Surface area of cubes and cuboids",
+          "Units of volume (cubic cm, cubic m)",
+          "Units of capacity (ml, L)",
+          "Conversion between units",
+          "Word problems on volume"
+        ],
+        "learningObjectives": [
+          "Understand the concept of volume",
+          "Calculate volume of cubes and cuboids",
+          "Convert between different units of capacity",
+          "Apply volume concepts practically"
+        ],
+        "estimatedHours": 8
+      }
+    ],
+    "topics": ["Perimeter", "Area", "Volume", "Measurement", "Formulas", "Units"],
+    "duration": "6 weeks",
+    "estimatedHours": 16,
+    "level": "intermediate",
+    "difficulty": 3,
+    "language": "English",
+    "prerequisites": ["Geometry - Lines, Angles, and Shapes"],
+    "learningOutcomes": [
+      "Master measurement formulas for 2D and 3D shapes",
+      "Apply measurement concepts to real-world situations",
+      "Develop estimation and approximation skills",
+      "Convert between different units of measurement"
+    ],
+    "certificate": true,
+    "status": "published",
+    "enrollmentCount": 0,
+    "rating": 0,
+    "reviewCount": 0,
+    "totalRatings": 0,
+    "maxStudents": 50,
+    "tags": ["Mathematics", "Grade 5", "Perimeter", "Area", "Volume", "Measurement", "ICSE", "CBSE"],
+    "isActive": true,
+    "reviews": []
+  },
+  {
+    "title": "Grade 5 Mathematics - Data Handling and Statistics",
+    "description": "Collection, organization, and interpretation of data using tables, graphs, and charts. Learn to calculate mean, mode, median, and draw conclusions from data representations.",
+    "grade": 5,
+    "subject": "Mathematics",
+    "board": ["ICSE", "CBSE"],
+    "price": 449,
+    "thumbnail": "",
+    "status": "published",
+    "syllabus": [
+      "Methods of data collection",
+      "Organizing data in tables and frequency tables",
+      "Reading and creating pictographs",
+      "Reading and creating bar graphs",
+      "Reading and creating line graphs",
+      "Introduction to pie charts",
+      "Mean, mode, and median",
+      "Drawing conclusions from data"
+    ],
+    "chapters": [
+      {
+        "name": "Data Collection and Organization",
+        "topics": [
+          "Methods of data collection",
+          "Organizing data in tables",
+          "Tally marks",
+          "Frequency tables",
+          "Grouped and ungrouped data",
+          "Range of data"
+        ],
+        "learningObjectives": [
+          "Collect data systematically",
+          "Organize data in meaningful ways",
+          "Create frequency tables",
+          "Identify range and patterns in data"
+        ],
+        "estimatedHours": 5
+      },
+      {
+        "name": "Data Representation and Interpretation",
+        "topics": [
+          "Reading and interpreting pictographs",
+          "Reading and interpreting bar graphs",
+          "Drawing bar graphs (single and double)",
+          "Reading and interpreting line graphs",
+          "Drawing line graphs",
+          "Reading and interpreting pie charts (introduction)",
+          "Mean (average) of data",
+          "Mode and median (introduction)",
+          "Drawing conclusions from data"
+        ],
+        "learningObjectives": [
+          "Create different types of graphs",
+          "Interpret data from various representations",
+          "Calculate mean, mode, and median",
+          "Make predictions based on data"
+        ],
+        "estimatedHours": 5
+      }
+    ],
+    "topics": ["Data Handling", "Statistics", "Graphs", "Charts", "Mean", "Mode", "Median"],
+    "duration": "3 weeks",
+    "estimatedHours": 10,
+    "level": "beginner",
+    "difficulty": 2,
+    "language": "English",
+    "prerequisites": ["Basic number operations"],
+    "learningOutcomes": [
+      "Develop data literacy skills",
+      "Represent data visually in multiple formats",
+      "Interpret and analyze statistical information",
+      "Calculate basic statistical measures"
+    ],
+    "certificate": true,
+    "status": "published",
+    "enrollmentCount": 0,
+    "rating": 0,
+    "reviewCount": 0,
+    "totalRatings": 0,
+    "maxStudents": 50,
+    "tags": ["Mathematics", "Grade 5", "Data Handling", "Statistics", "Graphs", "ICSE", "CBSE"],
+    "isActive": true,
+    "reviews": []
+  },
+  {
+    "title": "Grade 5 Mathematics - Time, Speed, and Distance",
+    "description": "Understanding time calculations, speed, distance relationships, and calendars. Learn to convert between time formats, solve scheduling problems, and apply speed-distance-time formulas.",
+    "grade": 5,
+    "subject": "Mathematics",
+    "board": ["ICSE", "CBSE"],
+    "price": 499,
+    "thumbnail": "",
+    "status": "published",
+    "syllabus": [
+      "Reading time in 12-hour and 24-hour formats",
+      "Addition and subtraction of time",
+      "Calculating duration",
+      "Calendar problems and leap years",
+      "Concept of speed and distance",
+      "Relationship between speed, distance, and time",
+      "Calculating speed, distance, and time",
+      "Word problems on motion"
+    ],
+    "chapters": [
+      {
+        "name": "Time Calculations",
+        "topics": [
+          "Reading time in 12-hour and 24-hour formats",
+          "Converting between 12-hour and 24-hour formats",
+          "Addition and subtraction of time",
+          "Calculating duration",
+          "Time zones (introduction)",
+          "Railway timings",
+          "Calendar problems",
+          "Leap years"
+        ],
+        "learningObjectives": [
+          "Tell and write time accurately",
+          "Perform calculations with time",
+          "Solve problems involving schedules",
+          "Understand calendar concepts"
+        ],
+        "estimatedHours": 5
+      },
+      {
+        "name": "Speed and Distance",
+        "topics": [
+          "Concept of speed",
+          "Units of speed (km/h, m/s)",
+          "Relationship between speed, distance, and time",
+          "Calculating speed",
+          "Calculating distance",
+          "Calculating time",
+          "Word problems on speed and distance",
+          "Average speed"
+        ],
+        "learningObjectives": [
+          "Understand the relationship between speed, distance, and time",
+          "Calculate any one quantity when other two are given",
+          "Solve real-life problems involving motion",
+          "Apply formulas correctly"
+        ],
+        "estimatedHours": 5
+      }
+    ],
+    "topics": ["Time", "Speed", "Distance", "Calendar", "Motion", "Formulas"],
+    "duration": "3 weeks",
+    "estimatedHours": 10,
+    "level": "intermediate",
+    "difficulty": 3,
+    "language": "English",
+    "prerequisites": ["Four Operations on Large Numbers", "Fractions and Decimals"],
+    "learningOutcomes": [
+      "Master time-related calculations",
+      "Understand speed-distance-time relationships",
+      "Apply concepts to travel and scheduling problems",
+      "Solve calendar-based problems"
+    ],
+    "certificate": true,
+    "status": "published",
+    "enrollmentCount": 0,
+    "rating": 0,
+    "reviewCount": 0,
+    "totalRatings": 0,
+    "maxStudents": 50,
+    "tags": ["Mathematics", "Grade 5", "Time", "Speed", "Distance", "ICSE", "CBSE"],
+    "isActive": true,
+    "reviews": []
+  },
+  {
+    "title": "Grade 5 Mathematics - Money and Profit-Loss",
+    "description": "Working with money, understanding profit, loss, simple interest, and financial literacy. Learn to calculate bills, profit and loss percentages, discounts, and simple interest.",
+    "grade": 5,
+    "subject": "Mathematics",
+    "board": ["ICSE", "CBSE"],
+    "price": 499,
+    "thumbnail": "",
+    "status": "published",
+    "syllabus": [
+      "Indian currency system",
+      "Operations with money",
+      "Bill preparation and calculation",
+      "Cost price and selling price",
+      "Profit and loss concepts",
+      "Calculating profit and loss percentage",
+      "Discount calculations",
+      "Simple interest - principal, rate, time"
+    ],
+    "chapters": [
+      {
+        "name": "Money Operations",
+        "topics": [
+          "Indian currency system",
+          "Addition and subtraction of money",
+          "Multiplication and division of money",
+          "Converting between rupees and paise",
+          "Bill preparation",
+          "Making change",
+          "Rounding off money amounts"
+        ],
+        "learningObjectives": [
+          "Perform operations with money",
+          "Calculate bills and totals",
+          "Make financial calculations accurately",
+          "Apply decimal concepts to money"
+        ],
+        "estimatedHours": 5
+      },
+      {
+        "name": "Profit, Loss, and Simple Interest",
+        "topics": [
+          "Cost price and selling price",
+          "Profit and loss concepts",
+          "Calculating profit and loss",
+          "Profit and loss percentage (introduction)",
+          "Discount (introduction)",
+          "Simple interest (introduction)",
+          "Principal, rate, time, and interest",
+          "Word problems on financial transactions"
+        ],
+        "learningObjectives": [
+          "Understand basic financial concepts",
+          "Calculate profit, loss, and discounts",
+          "Solve simple interest problems",
+          "Apply percentage to financial situations"
+        ],
+        "estimatedHours": 5
+      }
+    ],
+    "topics": ["Money", "Profit", "Loss", "Discount", "Simple Interest", "Financial Literacy"],
+    "duration": "3 weeks",
+    "estimatedHours": 10,
+    "level": "intermediate",
+    "difficulty": 3,
+    "language": "English",
+    "prerequisites": ["Fractions and Decimals", "Percentage and Ratio"],
+    "learningOutcomes": [
+      "Develop financial literacy and money management skills",
+      "Apply mathematical concepts to real-world financial situations",
+      "Build foundation for advanced financial mathematics",
+      "Understand basic business concepts"
+    ],
+    "certificate": true,
+    "status": "published",
+    "enrollmentCount": 0,
+    "rating": 0,
+    "reviewCount": 0,
+    "totalRatings": 0,
+    "maxStudents": 50,
+    "tags": ["Mathematics", "Grade 5", "Money", "Profit Loss", "Financial Literacy", "ICSE", "CBSE"],
+    "isActive": true,
+    "reviews": []
+  },
+  {
+    "title": "Grade 5 Mathematics - Patterns and Sequences",
+    "description": "Identifying and creating number patterns, sequences, and algebraic thinking introduction. Learn to recognize patterns, formulate rules, and solve basic algebraic equations.",
+    "grade": 5,
+    "subject": "Mathematics",
+    "board": ["ICSE", "CBSE"],
+    "price": 449,
+    "thumbnail": "",
+    "status": "published",
+    "syllabus": [
+      "Identifying patterns in numbers",
+      "Arithmetic sequences",
+      "Geometric patterns",
+      "Finding and applying pattern rules",
+      "Square and cube numbers",
+      "Introduction to variables and expressions",
+      "Solving simple equations",
+      "Number sentences and missing numbers"
+    ],
+    "chapters": [
+      {
+        "name": "Number Patterns",
+        "topics": [
+          "Identifying patterns in numbers",
+          "Arithmetic sequences",
+          "Geometric patterns",
+          "Skip counting patterns",
+          "Finding the rule for a pattern",
+          "Continuing patterns",
+          "Creating patterns",
+          "Patterns in multiplication tables",
+          "Square and cube numbers"
+        ],
+        "learningObjectives": [
+          "Recognize various types of patterns",
+          "Identify and apply pattern rules",
+          "Extend patterns logically",
+          "Create original patterns"
+        ],
+        "estimatedHours": 4
+      },
+      {
+        "name": "Introduction to Algebra",
+        "topics": [
+          "Variables and constants",
+          "Simple algebraic expressions",
+          "Using letters to represent numbers",
+          "Simplifying simple expressions",
+          "Solving simple equations (addition and subtraction)",
+          "Number sentences",
+          "Missing number problems"
+        ],
+        "learningObjectives": [
+          "Understand the concept of variables",
+          "Form simple algebraic expressions",
+          "Solve basic equations",
+          "Translate word problems into expressions"
+        ],
+        "estimatedHours": 4
+      }
+    ],
+    "topics": ["Patterns", "Sequences", "Algebra", "Variables", "Equations", "Number Patterns"],
+    "duration": "3 weeks",
+    "estimatedHours": 8,
+    "level": "intermediate",
+    "difficulty": 3,
+    "language": "English",
+    "prerequisites": ["Four Operations on Large Numbers"],
+    "learningOutcomes": [
+      "Develop algebraic thinking and reasoning",
+      "Recognize and extend mathematical patterns",
+      "Build foundation for higher-level algebra",
+      "Think abstractly using symbols"
+    ],
+    "certificate": true,
+    "status": "published",
+    "enrollmentCount": 0,
+    "rating": 0,
+    "reviewCount": 0,
+    "totalRatings": 0,
+    "maxStudents": 50,
+    "tags": ["Mathematics", "Grade 5", "Patterns", "Algebra", "Sequences", "ICSE", "CBSE"],
+    "isActive": true,
+    "reviews": []
+  },
+  {
+    "title": "Grade 5 Mathematics - Mental Math and Vedic Mathematics",
+    "description": "Developing mental calculation skills and introducing Vedic math techniques for faster computation. Learn shortcuts, estimation strategies, and traditional Vedic sutras for quick calculations.",
+    "grade": 5,
+    "subject": "Mathematics",
+    "board": ["ICSE", "CBSE"],
+    "price": 549,
+    "thumbnail": "",
+    "status": "published",
+    "syllabus": [
+      "Mental addition and subtraction tricks",
+      "Multiplication shortcuts",
+      "Division shortcuts",
+      "Estimation techniques",
+      "Introduction to Vedic math sutras",
+      "Nikhilam sutra for multiplication",
+      "Fast squaring techniques",
+      "Verification methods"
+    ],
+    "chapters": [
+      {
+        "name": "Mental Math Strategies",
+        "topics": [
+          "Mental addition and subtraction tricks",
+          "Multiplication shortcuts",
+          "Division shortcuts",
+          "Estimation techniques",
+          "Rounding strategies",
+          "Breaking numbers for easier calculation",
+          "Using number bonds",
+          "Doubling and halving",
+          "Compensating method"
+        ],
+        "learningObjectives": [
+          "Perform calculations mentally with speed",
+          "Apply estimation in daily life",
+          "Use mental math strategies efficiently",
+          "Build number sense and flexibility"
+        ],
+        "estimatedHours": 5
+      },
+      {
+        "name": "Vedic Mathematics Basics",
+        "topics": [
+          "Introduction to Vedic math sutras",
+          "Nikhilam sutra for multiplication",
+          "Vinculum method",
+          "Base method for multiplication",
+          "Squaring numbers near 50",
+          "Squaring numbers ending in 5",
+          "Fast division techniques",
+          "Checking answers using casting out nines"
+        ],
+        "learningObjectives": [
+          "Apply Vedic math techniques for faster calculation",
+          "Multiply and square numbers mentally",
+          "Verify answers using alternative methods",
+          "Appreciate different mathematical approaches"
+        ],
+        "estimatedHours": 5
+      }
+    ],
+    "topics": ["Mental Math", "Vedic Mathematics", "Quick Calculation", "Estimation", "Shortcuts"],
+    "duration": "3 weeks",
+    "estimatedHours": 10,
+    "level": "beginner",
+    "difficulty": 2,
+    "language": "English",
+    "prerequisites": ["Four Operations on Large Numbers"],
+    "learningOutcomes": [
+      "Enhance computational speed and accuracy",
+      "Develop multiple approaches to problem-solving",
+      "Build confidence in mental mathematics",
+      "Apply Vedic math techniques effectively"
+    ],
+    "certificate": true,
+    "status": "published",
+    "enrollmentCount": 0,
+    "rating": 0,
+    "reviewCount": 0,
+    "totalRatings": 0,
+    "maxStudents": 50,
+    "tags": ["Mathematics", "Grade 5", "Mental Math", "Vedic Math", "Quick Calculation", "ICSE", "CBSE"],
+    "isActive": true,
+    "reviews": []
+  }
+]

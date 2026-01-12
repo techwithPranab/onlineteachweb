@@ -20,11 +20,32 @@ router.post('/',
   courseController.createCourse
 );
 
+// Get all courses - Public
+router.get('/public', courseController.getPublicCourses);
+
 // Get all courses
 router.get('/', authenticate, courseController.getCourses);
 
-// Get course by ID
-router.get('/:id', authenticate, courseController.getCourseById);
+// Get course by ID - Make it public for course details page
+router.get('/:id', courseController.getCourseById);
+
+// Submit review - Authenticated users
+router.post('/:id/review',
+  authenticate,
+  [
+    body('rating').isInt({ min: 1, max: 5 }).withMessage('Rating must be between 1 and 5'),
+    body('comment').optional().trim(),
+    validate
+  ],
+  courseController.submitReview
+);
+
+// Get course students - Tutor/Admin only
+router.get('/:id/students',
+  authenticate,
+  authorize('tutor', 'admin'),
+  courseController.getCourseStudents
+);
 
 // Update course - Admin only
 router.put('/:id',

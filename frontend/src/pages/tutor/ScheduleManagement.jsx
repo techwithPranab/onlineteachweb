@@ -37,6 +37,14 @@ export default function ScheduleManagement() {
     () => courseService.getCourses({ tutorId: user._id })
   )
 
+  const handleInputChange = (e) => {
+    const { name, value, type, checked } = e.target
+    setFormData(prev => ({
+      ...prev,
+      [name]: type === 'checkbox' ? checked : name === 'isPaid' ? value === 'true' : value
+    }))
+  }
+
   // Fetch sessions
   const { data: sessionsData, isLoading, error, refetch } = useQuery(
     ['tutorSessions', user?._id, selectedCourse],
@@ -269,8 +277,9 @@ export default function ScheduleManagement() {
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-2">Course *</label>
         <select
+          name="courseId"
           value={formData.courseId}
-          onChange={(e) => setFormData({ ...formData, courseId: e.target.value })}
+          onChange={handleInputChange}
           required
           className="input-field w-full"
         >
@@ -290,9 +299,9 @@ export default function ScheduleManagement() {
         <label className="block text-sm font-medium text-gray-700 mb-2">Session Title *</label>
         <input
           type="text"
+          name="title"
           value={formData.title}
-          onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-          onBlur={(e) => setFormData({ ...formData, title: e.target.value.trim() })}
+          onChange={handleInputChange}
           required
           className="input-field w-full"
           placeholder="e.g., Introduction to Algebra"
@@ -302,9 +311,9 @@ export default function ScheduleManagement() {
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
         <textarea
+          name="description"
           value={formData.description}
-          onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-          onBlur={(e) => setFormData({ ...formData, description: e.target.value.trim() })}
+          onChange={handleInputChange}
           rows={3}
           className="input-field w-full"
           placeholder="What will be covered in this session?"
@@ -316,8 +325,9 @@ export default function ScheduleManagement() {
           <label className="block text-sm font-medium text-gray-700 mb-2">Date & Time *</label>
           <input
             type="datetime-local"
+            name="scheduledAt"
             value={formData.scheduledAt}
-            onChange={(e) => setFormData({ ...formData, scheduledAt: e.target.value })}
+            onChange={handleInputChange}
             required
             className="input-field w-full"
           />
@@ -352,18 +362,9 @@ export default function ScheduleManagement() {
           <label className="block text-sm font-medium text-gray-700 mb-2">Max Students</label>
           <input
             type="number"
+            name="maxStudents"
             value={formData.maxStudents}
-            onChange={(e) => {
-              const value = e.target.value;
-              const numValue = value === '' ? '' : parseInt(value);
-              setFormData({ ...formData, maxStudents: numValue === '' ? '' : Math.max(1, numValue) });
-            }}
-            onBlur={(e) => {
-              const value = formData.maxStudents;
-              if (value === '' || value < 1) {
-                setFormData({ ...formData, maxStudents: 30 });
-              }
-            }}
+            onChange={handleInputChange}
             min="1"
             className="input-field w-full"
           />
@@ -372,8 +373,9 @@ export default function ScheduleManagement() {
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">Access</label>
           <select
+            name="isPaid"
             value={formData.isPaid.toString()}
-            onChange={(e) => setFormData({ ...formData, isPaid: e.target.value === 'true' })}
+            onChange={handleInputChange}
             className="input-field w-full"
           >
             <option value="false">Free</option>

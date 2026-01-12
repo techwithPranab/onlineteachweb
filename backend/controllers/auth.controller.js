@@ -100,6 +100,13 @@ exports.login = async (req, res, next) => {
       });
     }
     
+    if (user.status === 'pending') {
+      return res.status(403).json({
+        success: false,
+        message: 'Your account is pending approval. Please wait for admin approval before logging in.'
+      });
+    }
+    
     // Generate tokens
     const token = generateToken(user._id);
     const refreshToken = generateRefreshToken(user._id);

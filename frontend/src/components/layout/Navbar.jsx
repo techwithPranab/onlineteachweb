@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import { useAuthStore } from '../../store/authStore'
-import { BookOpen, LogIn, UserPlus } from 'lucide-react'
+import { BookOpen } from 'lucide-react'
 
 export default function Navbar() {
   const { isAuthenticated, user } = useAuthStore()
@@ -16,11 +16,14 @@ export default function Navbar() {
             </Link>
           </div>
 
-          <div className="flex items-center space-x-4">
-            <Link to="/pricing" className="text-gray-700 hover:text-primary-600 transition">
+          <div className="flex items-center space-x-8">
+            <Link to="/courses" className="text-gray-700 hover:text-primary-600 transition font-medium">
+              Courses
+            </Link>
+            <Link to="/pricing" className="text-gray-700 hover:text-primary-600 transition font-medium">
               Pricing
             </Link>
-            <Link to="/" className="text-gray-700 hover:text-primary-600 transition">
+            <Link to="/" className="text-gray-700 hover:text-primary-600 transition font-medium">
               About
             </Link>
 
@@ -32,17 +35,18 @@ export default function Navbar() {
                 <span>Dashboard</span>
               </Link>
             ) : (
-              <div className="flex items-center space-x-3">
+              <div className="flex items-center space-x-6">
                 <Link
                   to="/login"
-                  className="inline-flex items-center space-x-2 text-gray-700 hover:text-primary-600"
+                  className="text-gray-700 hover:text-primary-600 font-medium transition"
                 >
-                  <LogIn className="h-4 w-4" />
-                  <span>Login</span>
+                  Login
                 </Link>
-                <Link to="/signup" className="btn-primary inline-flex items-center space-x-2">
-                  <UserPlus className="h-4 w-4" />
-                  <span>Sign Up</span>
+                <Link 
+                  to="/signup" 
+                  className="text-gray-700 hover:text-primary-600 font-medium transition"
+                >
+                  Sign Up
                 </Link>
               </div>
             )}

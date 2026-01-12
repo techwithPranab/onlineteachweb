@@ -27,7 +27,6 @@ const studentLinks = [
 const tutorLinks = [
   { to: '/tutor', icon: LayoutDashboard, label: 'Dashboard', end: true },
   { to: '/tutor/schedule', icon: Calendar, label: 'Schedule' },
-  { to: '/tutor/courses/new', icon: BookOpen, label: 'My Courses' },
   { to: '/tutor/materials', icon: FileText, label: 'Materials' },
   { to: '/tutor/evaluation', icon: CheckSquare, label: 'Evaluation' },
   { to: '/tutor/profile', icon: Settings, label: 'Settings' },

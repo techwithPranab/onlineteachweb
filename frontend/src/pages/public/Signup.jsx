@@ -48,8 +48,19 @@ export default function Signup() {
 
       await register(userData)
       
-      // Redirect based on role
-      navigate(formData.role === 'student' ? '/student' : '/tutor')
+      // Handle different flows based on role
+      if (formData.role === 'tutor') {
+        // Show success message for tutor registration
+        navigate('/signup-success', { 
+          state: { 
+            role: 'tutor',
+            message: 'Your tutor application has been submitted successfully! Your account is currently under review by our administrators. You will receive an email notification once your application is approved, after which you can log in to start teaching.'
+          }
+        })
+      } else {
+        // Redirect students to dashboard
+        navigate('/student')
+      }
     } catch (err) {
       setError(err.message || 'Registration failed')
     } finally {

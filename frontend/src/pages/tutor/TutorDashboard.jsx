@@ -78,29 +78,22 @@ export default function TutorDashboard() {
           <h1 className="text-3xl font-bold text-gray-900 mb-2">Welcome back, {user?.name}!</h1>
           <p className="text-gray-600">Here's what's happening with your courses today</p>
         </div>
-        <button
-          onClick={() => navigate('/tutor/create-course')}
-          className="btn-primary flex items-center gap-2"
-        >
-          <Plus className="w-4 h-4" />
-          Create Course
-        </button>
       </div>
 
       {/* Stats Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         {stats.map((stat, index) => (
           <div key={index} className="card">
-            <div className="p-6">
-              <div className="flex items-center justify-between mb-4">
-                <div className={`w-12 h-12 bg-${stat.color}-100 rounded-lg flex items-center justify-center`}>
-                  <stat.icon className={`w-6 h-6 text-${stat.color}-600`} />
+            <div className="p-4">
+              <div className="flex items-center justify-between mb-2">
+                <div className={`w-10 h-10 bg-${stat.color}-100 rounded-lg flex items-center justify-center`}>
+                  <stat.icon className={`w-5 h-5 text-${stat.color}-600`} />
                 </div>
-                <TrendingUp className="w-5 h-5 text-green-500" />
+                <TrendingUp className="w-4 h-4 text-green-500" />
               </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-1">{stat.value}</h3>
-              <p className="text-sm text-gray-600 mb-2">{stat.label}</p>
-              <p className="text-xs text-green-600">{stat.change}</p>
+              <h3 className="text-xl font-bold text-gray-900">{stat.value}</h3>
+              <p className="text-sm text-gray-600">{stat.label}</p>
+              <p className="text-xs text-green-600 mt-1">{stat.change}</p>
             </div>
           </div>
         ))}
@@ -164,10 +157,10 @@ export default function TutorDashboard() {
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-xl font-semibold text-gray-900">Active Courses</h2>
               <button
-                onClick={() => navigate('/tutor/create-course')}
+                onClick={() => navigate('/tutor/schedule')}
                 className="text-primary-600 hover:text-primary-700 text-sm font-medium"
               >
-                + Add New
+                View Schedule
               </button>
             </div>
 
@@ -201,13 +194,7 @@ export default function TutorDashboard() {
             ) : (
               <div className="text-center py-8">
                 <BookOpen className="w-12 h-12 text-gray-400 mx-auto mb-3" />
-                <p className="text-gray-600 mb-4">No courses yet</p>
-                <button
-                  onClick={() => navigate('/tutor/create-course')}
-                  className="btn-primary"
-                >
-                  Create Your First Course
-                </button>
+                <p className="text-gray-600">No courses assigned yet</p>
               </div>
             )}
           </div>

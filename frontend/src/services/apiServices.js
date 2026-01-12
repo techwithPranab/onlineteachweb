@@ -34,6 +34,12 @@ export const courseService = {
     return data
   },
 
+  getPublicCourses: async (params = {}) => {
+    const { data } = await api.get('/courses/public', { params })
+    console.log('Public courses data:', data);
+    return data.courses || data
+  },
+
   getCourseById: async (id) => {
     const { data } = await api.get(`/courses/${id}`)
     return data
@@ -51,6 +57,16 @@ export const courseService = {
 
   deleteCourse: async (id) => {
     const { data } = await api.delete(`/courses/${id}`)
+    return data
+  },
+
+  submitReview: async (courseId, reviewData) => {
+    const { data } = await api.post(`/courses/${courseId}/review`, reviewData)
+    return data
+  },
+
+  getCourseStudents: async (courseId) => {
+    const { data } = await api.get(`/courses/${courseId}/students`)
     return data
   },
 }
