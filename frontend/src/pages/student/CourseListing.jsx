@@ -1,18 +1,27 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useQuery } from 'react-query'
 import { Search, BookOpen, Star, DollarSign, Filter, X } from 'lucide-react'
 import { courseService } from '@/services/apiServices'
+import { useAuthStore } from '@/store/authStore'
 import LoadingSpinner from '@/components/common/LoadingSpinner'
 import ErrorMessage from '@/components/common/ErrorMessage'
 import EmptyState from '@/components/common/EmptyState'
 
 export default function CourseListing() {
   const navigate = useNavigate()
+  const { user } = useAuthStore()
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedGrade, setSelectedGrade] = useState('')
   const [selectedSubject, setSelectedSubject] = useState('')
   const [showFilters, setShowFilters] = useState(false)
+
+  // Set default grade to student's grade on mount
+  useEffect(() => {
+    if (user?.grade && !selectedGrade) {
+      setSelectedGrade(user.grade.toString())
+    }
+  }, [user, selectedGrade])
 
   const { data: coursesData, isLoading, error, refetch } = useQuery(
     ['courses', { search: searchQuery, grade: selectedGrade, subject: selectedSubject }],
@@ -126,7 +135,7 @@ export default function CourseListing() {
         <LoadingSpinner fullScreen />
       ) : error ? (
         <ErrorMessage message={error.message || 'Failed to load courses'} onRetry={refetch} />
-      ) : !coursesData?.data?.length ? (
+      ) : !coursesData?.courses?.length ? (
         <EmptyState
           icon={BookOpen}
           title="No courses found"
@@ -141,7 +150,7 @@ export default function CourseListing() {
         />
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {coursesData.data.map((course) => (
+          {coursesData.courses.map((course) => (
             <div
               key={course._id}
               onClick={() => navigate(`/student/courses/${course._id}`)}

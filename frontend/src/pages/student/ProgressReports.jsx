@@ -27,54 +27,56 @@ export default function ProgressReports() {
   const report = reportData?.data || {}
   const evaluations = evaluationsData?.data || []
 
-  // Sample data for charts
-  const attendanceData = [
-    { month: 'Jan', attendance: 85 },
-    { month: 'Feb', attendance: 90 },
-    { month: 'Mar', attendance: 88 },
-    { month: 'Apr', attendance: 92 },
-    { month: 'May', attendance: 95 },
-    { month: 'Jun', attendance: 91 },
-  ]
-
-  const performanceData = [
-    { subject: 'Math', score: 85 },
-    { subject: 'Science', score: 78 },
-    { subject: 'English', score: 92 },
-    { subject: 'History', score: 88 },
-    { subject: 'Physics', score: 82 },
-  ]
-
+  // Use actual data from backend instead of hardcoded values
   const stats = [
     {
       label: 'Overall Progress',
-      value: '87%',
-      change: '+5%',
+      value: `${report.averageGrade || 0}%`,
+      change: '',
       icon: TrendingUp,
       color: 'primary',
     },
     {
       label: 'Attendance Rate',
-      value: '92%',
-      change: '+3%',
+      value: `${report.attendanceRate || 0}%`,
+      change: '',
       icon: Calendar,
       color: 'green',
     },
     {
-      label: 'Achievements',
-      value: '12',
-      change: '+2',
+      label: 'Total Sessions',
+      value: report.totalSessions || 0,
+      change: '',
       icon: Award,
       color: 'yellow',
     },
     {
-      label: 'Goals Completed',
-      value: '8/10',
+      label: 'Hours Learned',
+      value: report.totalHours || 0,
       change: '',
       icon: Target,
       color: 'blue',
     },
   ]
+
+  // Map evaluations to performance data by subject
+  const performanceBySubject = {}
+  evaluations.forEach(evaluation => {
+    const subject = evaluation.course?.subject || 'Other'
+    if (!performanceBySubject[subject]) {
+      performanceBySubject[subject] = { total: 0, count: 0 }
+    }
+    performanceBySubject[subject].total += evaluation.grade || 0
+    performanceBySubject[subject].count += 1
+  })
+
+  const performanceData = Object.keys(performanceBySubject).map(subject => ({
+    subject,
+    score: Math.round(performanceBySubject[subject].total / performanceBySubject[subject].count)
+  }))
+
+  // Use attendance data from report
+  const attendanceData = report.progress || []
 
   return (
     <div className="max-w-7xl mx-auto">
@@ -126,16 +128,22 @@ export default function ProgressReports() {
         <div className="card">
           <div className="p-6">
             <h3 className="text-lg font-semibold text-gray-900 mb-4">Attendance Trend</h3>
-            <ResponsiveContainer width="100%" height={300}>
-              <LineChart data={attendanceData}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="month" />
-                <YAxis />
-                <Tooltip />
-                <Legend />
-                <Line type="monotone" dataKey="attendance" stroke="#6366f1" strokeWidth={2} />
-              </LineChart>
-            </ResponsiveContainer>
+            {attendanceData.length > 0 ? (
+              <ResponsiveContainer width="100%" height={300}>
+                <LineChart data={attendanceData}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="month" />
+                  <YAxis />
+                  <Tooltip />
+                  <Legend />
+                  <Line type="monotone" dataKey="attendance" stroke="#6366f1" strokeWidth={2} />
+                </LineChart>
+              </ResponsiveContainer>
+            ) : (
+              <div className="flex items-center justify-center h-64 text-gray-500">
+                <p>No attendance data available</p>
+              </div>
+            )}
           </div>
         </div>
 
@@ -143,16 +151,22 @@ export default function ProgressReports() {
         <div className="card">
           <div className="p-6">
             <h3 className="text-lg font-semibold text-gray-900 mb-4">Performance by Subject</h3>
-            <ResponsiveContainer width="100%" height={300}>
-              <BarChart data={performanceData}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="subject" />
-                <YAxis />
-                <Tooltip />
-                <Legend />
-                <Bar dataKey="score" fill="#6366f1" />
-              </BarChart>
-            </ResponsiveContainer>
+            {performanceData.length > 0 ? (
+              <ResponsiveContainer width="100%" height={300}>
+                <BarChart data={performanceData}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="subject" />
+                  <YAxis />
+                  <Tooltip />
+                  <Legend />
+                  <Bar dataKey="score" fill="#6366f1" />
+                </BarChart>
+              </ResponsiveContainer>
+            ) : (
+              <div className="flex items-center justify-center h-64 text-gray-500">
+                <p>No performance data available</p>
+              </div>
+            )}
           </div>
         </div>
       </div>

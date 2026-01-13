@@ -1,5 +1,5 @@
-import { useQuery } from 'react-query'
-import { BookOpen, Calendar, TrendingUp, Video, FileText, Play } from 'lucide-react'
+import { useQuery, useMutation, useQueryClient } from 'react-query'
+import { BookOpen, Calendar, TrendingUp, Video, FileText, Play, UserPlus } from 'lucide-react'
 import { courseService, sessionService, materialService, reportService } from '@/services/apiServices'
 import { useAuthStore } from '@/store/authStore'
 import LoadingSpinner from '@/components/common/LoadingSpinner'
@@ -7,6 +7,7 @@ import ErrorMessage from '@/components/common/ErrorMessage'
 
 export default function StudentDashboard() {
   const { user } = useAuthStore()
+  const queryClient = useQueryClient()
 
   // Fetch enrolled courses
   const { data: coursesData, isLoading: coursesLoading, error: coursesError } = useQuery(
@@ -25,7 +26,7 @@ export default function StudentDashboard() {
   // Fetch recent materials
   const { data: materialsData, isLoading: materialsLoading } = useQuery(
     ['recentMaterials', user?._id],
-    () => materialService.getMaterials({ recent: true, limit: 6 }),
+    () => materialService.getRecentMaterials({ limit: 6 }),
     { enabled: !!user }
   )
 
@@ -42,6 +43,26 @@ export default function StudentDashboard() {
   const report = reportData?.data || {}
 
   const isLoading = coursesLoading || sessionsLoading || materialsLoading
+
+  // Enrollment mutation
+  const enrollMutation = useMutation(
+    (sessionId) => sessionService.enrollInSession(sessionId),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(['upcomingSessions'])
+        alert('Successfully enrolled in session!')
+      },
+      onError: (error) => {
+        alert(error.response?.data?.message || 'Failed to enroll in session')
+      }
+    }
+  )
+
+  const handleEnroll = (sessionId) => {
+    if (window.confirm('Do you want to enroll in this session?')) {
+      enrollMutation.mutate(sessionId)
+    }
+  }
 
   if (coursesError) {
     return <ErrorMessage message={coursesError.message || 'Failed to load dashboard'} />
@@ -105,6 +126,8 @@ export default function StudentDashboard() {
               <ClassItem
                 key={session._id}
                 session={session}
+                onEnroll={handleEnroll}
+                isEnrolling={enrollMutation.isLoading}
               />
             ))}
           </div>
@@ -157,7 +180,7 @@ function StatCard({ icon, label, value, bgColor }) {
   )
 }
 
-function ClassItem({ session }) {
+function ClassItem({ session, onEnroll, isEnrolling }) {
   const scheduledDate = new Date(session.scheduledAt)
   const now = new Date()
   const isToday = scheduledDate.toDateString() === now.toDateString()
@@ -178,22 +201,44 @@ function ClassItem({ session }) {
     })
   }
 
+  const isEnrolled = session.attendees?.some(a => a.student === session.userId)
+
   return (
     <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition">
-      <div className="flex items-center space-x-4">
+      <div className="flex items-center space-x-4 flex-1">
         <div className="w-12 h-12 bg-primary-600 rounded-lg flex items-center justify-center">
           <Video className="h-6 w-6 text-white" />
         </div>
-        <div>
+        <div className="flex-1">
           <h3 className="font-semibold text-gray-900">{session.title}</h3>
           <p className="text-sm text-gray-600">
             {session.course?.title || 'Course'} • {session.tutor?.name || 'Tutor'}
           </p>
+          <p className="text-sm text-gray-900 mt-1">{timeText}</p>
         </div>
       </div>
-      <div className="text-right">
-        <p className="text-sm font-medium text-gray-900">{timeText}</p>
-        <p className="text-sm text-gray-600">{session.duration} min</p>
+      <div className="flex items-center gap-3">
+        <div className="text-right">
+          <p className="text-sm text-gray-600">{session.duration} min</p>
+          <p className="text-xs text-gray-500">
+            {session.attendees?.length || 0}/{session.maxStudents} enrolled
+          </p>
+        </div>
+        {!isEnrolled && (
+          <button
+            onClick={() => onEnroll(session._id)}
+            disabled={isEnrolling}
+            className="btn-primary text-sm flex items-center gap-1 whitespace-nowrap"
+          >
+            <UserPlus className="w-4 h-4" />
+            Enroll
+          </button>
+        )}
+        {isEnrolled && (
+          <span className="px-3 py-1 bg-green-100 text-green-700 text-sm font-medium rounded">
+            Enrolled
+          </span>
+        )}
       </div>
     </div>
   )

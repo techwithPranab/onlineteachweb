@@ -43,7 +43,7 @@ export default function CourseDetail() {
     { enabled: !!id }
   )
 
-  const course = courseData?.data
+  const course = courseData?.course
   const isEnrolled = course?.enrolledStudents?.includes(user?._id)
 
   const handleEnroll = () => {
@@ -216,9 +216,9 @@ export default function CourseDetail() {
           {activeTab === 'schedule' && (
             <div>
               <h3 className="text-lg font-semibold mb-4">Upcoming Sessions</h3>
-              {sessionsData?.data?.length > 0 ? (
+              {sessionsData?.sessions?.length > 0 ? (
                 <div className="space-y-3">
-                  {sessionsData.data.map((session) => (
+                  {sessionsData.sessions.map((session) => (
                     <div key={session._id} className="flex items-center gap-4 p-4 border border-gray-200 rounded-lg">
                       <div className="w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center">
                         <Calendar className="w-6 h-6 text-primary-600" />

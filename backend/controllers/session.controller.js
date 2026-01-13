@@ -127,6 +127,81 @@ exports.getSessions = async (req, res, next) => {
   }
 };
 
+// @desc    Enroll in session
+// @route   POST /api/sessions/:id/enroll
+// @access  Private (Student)
+exports.enrollInSession = async (req, res, next) => {
+  try {
+    const session = await Session.findById(req.params.id)
+      .populate('course', 'title price enrolledStudents');
+    
+    if (!session) {
+      return res.status(404).json({
+        success: false,
+        message: 'Session not found'
+      });
+    }
+    
+    // Check if session is approved/scheduled
+    if (session.status !== 'scheduled') {
+      return res.status(400).json({
+        success: false,
+        message: 'This session is not available for enrollment'
+      });
+    }
+    
+    // Check if student is enrolled in the course
+    const course = session.course;
+    const isEnrolledInCourse = course.enrolledStudents && 
+      course.enrolledStudents.some(s => s.toString() === req.user._id.toString());
+    
+    if (!isEnrolledInCourse) {
+      return res.status(403).json({
+        success: false,
+        message: 'You must be enrolled in the course to join this session'
+      });
+    }
+    
+    // Check if already enrolled
+    const alreadyEnrolled = session.attendees.some(
+      a => a.student.toString() === req.user._id.toString()
+    );
+    
+    if (alreadyEnrolled) {
+      return res.status(400).json({
+        success: false,
+        message: 'You are already enrolled in this session'
+      });
+    }
+    
+    // Check if session is full
+    if (session.attendees.length >= session.maxStudents) {
+      return res.status(400).json({
+        success: false,
+        message: 'This session is full'
+      });
+    }
+    
+    // Add student to attendees
+    session.attendees.push({
+      student: req.user._id,
+      attended: false
+    });
+    
+    await session.save();
+    
+    await session.populate('attendees.student', 'name avatar');
+    
+    res.json({
+      success: true,
+      message: 'Successfully enrolled in session',
+      session
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 // @desc    Get session by ID
 // @route   GET /api/sessions/:id
 // @access  Private

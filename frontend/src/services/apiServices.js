@@ -42,6 +42,7 @@ export const courseService = {
 
   getCourseById: async (id) => {
     const { data } = await api.get(`/courses/${id}`)
+    console.log('Course data:', data);
     return data
   },
 
@@ -137,6 +138,11 @@ export const sessionService = {
     const { data } = await api.put(`/sessions/${id}/reassign`, { newTutorId })
     return data
   },
+
+  enrollInSession: async (id) => {
+    const { data } = await api.post(`/sessions/${id}/enroll`)
+    return data
+  },
 }
 
 export const materialService = {
@@ -147,6 +153,11 @@ export const materialService = {
 
   getMaterials: async (params = {}) => {
     const { data } = await api.get('/materials', { params })
+    return data
+  },
+
+  getRecentMaterials: async (params = {}) => {
+    const { data } = await api.get('/materials/student/recent', { params })
     return data
   },
 

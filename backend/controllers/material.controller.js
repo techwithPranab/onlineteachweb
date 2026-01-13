@@ -1,5 +1,6 @@
 const Material = require('../models/Material.model');
 const Course = require('../models/Course.model');
+const User = require('../models/User.model');
 
 // @desc    Get all materials for tutor
 // @route   GET /api/materials
@@ -153,6 +154,41 @@ exports.deleteMaterial = async (req, res, next) => {
   }
 };
 
+// @desc    Get recent materials for student
+// @route   GET /api/materials/student/recent
+// @access  Private (Student)
+exports.getRecentMaterialsForStudent = async (req, res, next) => {
+  try {
+    const { limit = 6 } = req.query;
+    
+    // Find user's enrolled courses
+    const user = await User.findById(req.user._id).select('enrolledCourses');
+    
+    if (!user || !user.enrolledCourses || user.enrolledCourses.length === 0) {
+      return res.json({
+        success: true,
+        data: []
+      });
+    }
+    
+    // Get materials from enrolled courses
+    const materials = await Material.find({
+      course: { $in: user.enrolledCourses },
+      isActive: true
+    })
+      .populate('course', 'title grade')
+      .sort('-createdAt')
+      .limit(parseInt(limit));
+    
+    res.json({
+      success: true,
+      data: materials
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 // @desc    Get materials for course
 // @route   GET /api/materials/:courseId
 // @access  Private
@@ -168,7 +204,21 @@ exports.getMaterialsByCourse = async (req, res, next) => {
     if (type) query.type = type;
     if (isFree !== undefined) query.isFree = isFree === 'true';
     
-    const materials = await Material.find(query).sort('order');
+    // Students can only access materials if enrolled or if material is free
+    if (req.user.role === 'student') {
+      const course = await Course.findById(req.params.courseId);
+      const isEnrolled = course && course.enrolledStudents && 
+                        course.enrolledStudents.some(s => s.toString() === req.user._id.toString());
+      
+      if (!isEnrolled) {
+        // If not enrolled, only show free materials
+        query.isFree = true;
+      }
+    }
+    
+    const materials = await Material.find(query)
+      .populate('course', 'title grade')
+      .sort('order');
     
     res.json({
       success: true,

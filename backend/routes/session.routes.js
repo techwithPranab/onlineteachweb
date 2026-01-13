@@ -23,6 +23,13 @@ router.post('/',
 // Get sessions
 router.get('/', authenticate, sessionController.getSessions);
 
+// Enroll in session (students)
+router.post('/:id/enroll',
+  authenticate,
+  authorize('student'),
+  sessionController.enrollInSession
+);
+
 // Get session by ID
 router.get('/:id', authenticate, sessionController.getSessionById);
 

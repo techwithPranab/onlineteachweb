@@ -43,6 +43,13 @@ router.get('/',
   materialController.getMaterialsByTutor
 );
 
+// Get recent materials for student
+router.get('/student/recent',
+  authenticate,
+  authorize('student'),
+  materialController.getRecentMaterialsForStudent
+);
+
 // Upload material
 router.post('/',
   authenticate,

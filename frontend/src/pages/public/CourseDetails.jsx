@@ -88,26 +88,26 @@ export default function CourseDetails() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12">
+    <div className="min-h-screen bg-gray-50 py-6">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Back Button */}
         <button
           onClick={() => navigate(-1)}
-          className="flex items-center text-primary-600 hover:text-primary-700 mb-6"
+          className="flex items-center text-primary-600 hover:text-primary-700 mb-4"
         >
           <ArrowLeft className="w-5 h-5 mr-2" />
           Back
         </button>
 
         {/* Course Header */}
-        <div className="bg-white rounded-lg shadow-lg overflow-hidden mb-8">
-          <div className="p-8">
-            <div className="flex items-start justify-between mb-4">
+        <div className="bg-white rounded-lg shadow-lg overflow-hidden mb-6">
+          <div className="p-6">
+            <div className="flex items-start justify-between mb-3">
               <div className="flex-1">
-                <h1 className="text-4xl font-bold text-gray-900 mb-2">{course.title}</h1>
-                <p className="text-xl text-gray-600 mb-4">{course.description}</p>
+                <h1 className="text-3xl font-bold text-gray-900 mb-2">{course.title}</h1>
+                <p className="text-lg text-gray-600 mb-3">{course.description}</p>
                 
-                <div className="flex items-center gap-6 mb-4">
+                <div className="flex items-center gap-6 mb-3">
                   <div className="flex items-center gap-2">
                     {renderStars(course.rating || course.averageRating || 0)}
                     <span className="text-gray-600">
@@ -116,7 +116,7 @@ export default function CourseDetails() {
                   </div>
                 </div>
 
-                <div className="flex flex-wrap gap-3 mb-4">
+                <div className="flex flex-wrap gap-2 mb-3">
                   <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
                     Grade {course.grade}
                   </span>
@@ -141,12 +141,12 @@ export default function CourseDetails() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Main Content */}
-          <div className="lg:col-span-2 space-y-8">
+          <div className="lg:col-span-2 space-y-6">
             {/* Course Info */}
-            <div className="bg-white rounded-lg shadow p-6">
-              <h2 className="text-2xl font-bold text-gray-900 mb-4">Course Information</h2>
+            <div className="bg-white rounded-lg shadow p-4">
+              <h2 className="text-xl font-bold text-gray-900 mb-3">Course Information</h2>
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <p className="text-sm text-gray-500">Duration</p>
@@ -179,12 +179,12 @@ export default function CourseDetails() {
 
             {/* Syllabus */}
             {course.syllabus && course.syllabus.length > 0 && (
-              <div className="bg-white rounded-lg shadow p-6">
-                <h2 className="text-2xl font-bold text-gray-900 mb-4">Syllabus</h2>
+              <div className="bg-white rounded-lg shadow p-4">
+                <h2 className="text-xl font-bold text-gray-900 mb-3">Syllabus</h2>
                 <ul className="space-y-2">
                   {course.syllabus.map((item, index) => (
                     <li key={index} className="flex items-start">
-                      <svg className="h-6 w-6 text-green-500 mr-2 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <svg className="h-5 w-5 text-green-500 mr-2 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                       </svg>
                       <span className="text-gray-700">{item}</span>
@@ -196,9 +196,9 @@ export default function CourseDetails() {
 
             {/* Chapters */}
             {course.chapters && course.chapters.length > 0 && (
-              <div className="bg-white rounded-lg shadow p-6">
-                <h2 className="text-2xl font-bold text-gray-900 mb-4">Course Chapters</h2>
-                <div className="space-y-4">
+              <div className="bg-white rounded-lg shadow p-4">
+                <h2 className="text-xl font-bold text-gray-900 mb-3">Course Chapters</h2>
+                <div className="space-y-3">
                   {course.chapters.map((chapter, index) => (
                     <div key={index} className="border-l-4 border-primary-500 pl-4 py-2">
                       <h3 className="text-lg font-semibold text-gray-900 mb-2">{chapter.name}</h3>
@@ -232,12 +232,12 @@ export default function CourseDetails() {
 
             {/* Learning Outcomes */}
             {course.learningOutcomes && course.learningOutcomes.length > 0 && (
-              <div className="bg-white rounded-lg shadow p-6">
-                <h2 className="text-2xl font-bold text-gray-900 mb-4">What You'll Learn</h2>
+              <div className="bg-white rounded-lg shadow p-4">
+                <h2 className="text-xl font-bold text-gray-900 mb-3">What You'll Learn</h2>
                 <ul className="grid grid-cols-1 md:grid-cols-2 gap-3">
                   {course.learningOutcomes.map((outcome, index) => (
                     <li key={index} className="flex items-start">
-                      <svg className="h-6 w-6 text-primary-500 mr-2 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <svg className="h-5 w-5 text-primary-500 mr-2 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                       </svg>
                       <span className="text-gray-700">{outcome}</span>
@@ -248,9 +248,9 @@ export default function CourseDetails() {
             )}
 
             {/* Reviews Section */}
-            <div className="bg-white rounded-lg shadow p-6">
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="text-2xl font-bold text-gray-900">Student Reviews</h2>
+            <div className="bg-white rounded-lg shadow p-4">
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-xl font-bold text-gray-900">Student Reviews</h2>
                 {isAuthenticated && !showReviewForm && (
                   <button
                     onClick={() => setShowReviewForm(true)}
@@ -263,7 +263,7 @@ export default function CourseDetails() {
 
               {/* Review Form */}
               {showReviewForm && (
-                <form onSubmit={handleSubmitReview} className="mb-8 p-4 bg-gray-50 rounded-lg">
+                <form onSubmit={handleSubmitReview} className="mb-6 p-4 bg-gray-50 rounded-lg">
                   <h3 className="text-lg font-semibold mb-4">Write Your Review</h3>
                   
                   <div className="mb-4">
@@ -313,10 +313,10 @@ export default function CourseDetails() {
               )}
 
               {/* Reviews List */}
-              <div className="space-y-6">
+              <div className="space-y-4">
                 {course.reviews && course.reviews.length > 0 ? (
                   course.reviews.map((review, index) => (
-                    <div key={index} className="border-b border-gray-200 pb-6 last:border-b-0">
+                    <div key={index} className="border-b border-gray-200 pb-4 last:border-b-0">
                       <div className="flex items-start justify-between mb-2">
                         <div>
                           <p className="font-semibold text-gray-900">
@@ -350,8 +350,8 @@ export default function CourseDetails() {
           <div className="lg:col-span-1">
             {/* Prerequisites */}
             {course.prerequisites && course.prerequisites.length > 0 && (
-              <div className="bg-white rounded-lg shadow p-6 mb-6">
-                <h3 className="text-lg font-bold text-gray-900 mb-3">Prerequisites</h3>
+              <div className="bg-white rounded-lg shadow p-4 mb-4">
+                <h3 className="text-lg font-bold text-gray-900 mb-2">Prerequisites</h3>
                 <ul className="space-y-2">
                   {course.prerequisites.map((prereq, index) => (
                     <li key={index} className="text-sm text-gray-700">
@@ -364,8 +364,8 @@ export default function CourseDetails() {
 
             {/* Tags */}
             {course.tags && course.tags.length > 0 && (
-              <div className="bg-white rounded-lg shadow p-6 mb-6">
-                <h3 className="text-lg font-bold text-gray-900 mb-3">Tags</h3>
+              <div className="bg-white rounded-lg shadow p-4 mb-4">
+                <h3 className="text-lg font-bold text-gray-900 mb-2">Tags</h3>
                 <div className="flex flex-wrap gap-2">
                   {course.tags.map((tag, index) => (
                     <span
@@ -381,8 +381,8 @@ export default function CourseDetails() {
 
             {/* Topics */}
             {course.topics && course.topics.length > 0 && (
-              <div className="bg-white rounded-lg shadow p-6">
-                <h3 className="text-lg font-bold text-gray-900 mb-3">Topics Covered</h3>
+              <div className="bg-white rounded-lg shadow p-4">
+                <h3 className="text-lg font-bold text-gray-900 mb-2">Topics Covered</h3>
                 <ul className="space-y-2">
                   {course.topics.map((topic, index) => (
                     <li key={index} className="text-sm text-gray-700">
