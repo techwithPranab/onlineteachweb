@@ -30,6 +30,11 @@ import CourseDetail from './pages/student/CourseDetail'
 import LiveClassRoom from './pages/student/LiveClassRoom'
 import ProgressReports from './pages/student/ProgressReports'
 import SubscriptionManagement from './pages/student/SubscriptionManagement'
+import SessionDetail from './pages/student/SessionDetail'
+import UpcomingSessions from './pages/student/UpcomingSessions'
+import QuizListing from './pages/student/QuizListing'
+import QuizAttempt from './pages/student/QuizAttempt'
+import QuizResults from './pages/student/QuizResults'
 
 // Tutor Pages
 import TutorDashboard from './pages/tutor/TutorDashboard'
@@ -37,6 +42,15 @@ import ScheduleManagement from './pages/tutor/ScheduleManagement'
 import SessionCreation from './pages/tutor/SessionCreation'
 import UploadMaterials from './pages/tutor/UploadMaterials'
 import StudentEvaluation from './pages/tutor/StudentEvaluation'
+import QuizManagement from './pages/tutor/QuizManagement'
+import QuizCreate from './pages/tutor/QuizCreate'
+import QuizPreview from './pages/tutor/QuizPreview'
+import QuestionBank from './pages/tutor/QuestionBank'
+import ManualEvaluation from './pages/tutor/ManualEvaluation'
+import QuizAnalytics from './pages/tutor/QuizAnalytics'
+import AIQuestionGenerator from './pages/tutor/AIQuestionGenerator'
+import AIQuestionReview from './pages/tutor/AIQuestionReview'
+import QuestionImportExport from './pages/tutor/QuestionImportExport'
 
 // Admin Pages
 import AdminDashboard from './pages/admin/AdminDashboard'
@@ -50,9 +64,11 @@ import RevenueAnalytics from './pages/admin/RevenueAnalytics'
 import PaymentManagement from './pages/admin/PaymentManagement'
 import SessionManagement from './pages/admin/SessionManagement'
 import AdminSubscriptionManagement from './pages/admin/SubscriptionManagement'
+import AdminAIQuestionsDashboard from './pages/admin/AIQuestionsDashboard'
 
 // Shared
 import ProfileSettings from './pages/shared/ProfileSettings'
+import NotificationsPage from './pages/shared/NotificationsPage'
 import NotFound from './pages/NotFound'
 
 const queryClient = new QueryClient()
@@ -108,10 +124,17 @@ function App() {
             <Route index element={<StudentDashboard />} />
             <Route path="courses" element={<CourseListing />} />
             <Route path="courses/:id" element={<CourseDetail />} />
+            <Route path="sessions" element={<UpcomingSessions />} />
+            <Route path="sessions/:id" element={<SessionDetail />} />
             <Route path="session/:id" element={<LiveClassRoom />} />
             <Route path="progress" element={<ProgressReports />} />
             <Route path="subscription" element={<SubscriptionManagement />} />
             <Route path="profile" element={<ProfileSettings />} />
+            <Route path="notifications" element={<NotificationsPage />} />
+            {/* Quiz Routes */}
+            <Route path="quizzes" element={<QuizListing />} />
+            <Route path="quiz/:quizId/attempt" element={<QuizAttempt />} />
+            <Route path="quiz/:sessionId/results" element={<QuizResults />} />
           </Route>
 
           {/* Tutor Routes */}
@@ -130,6 +153,21 @@ function App() {
             <Route path="evaluation" element={<StudentEvaluation />} />
             <Route path="session/:id" element={<LiveClassRoom />} />
             <Route path="profile" element={<ProfileSettings />} />
+            <Route path="notifications" element={<NotificationsPage />} />
+            {/* Quiz Routes */}
+            <Route path="quizzes" element={<QuizManagement />} />
+            <Route path="quizzes/new" element={<QuizCreate />} />
+            <Route path="quizzes/:quizId/edit" element={<QuizCreate />} />
+            <Route path="quizzes/:quizId/preview" element={<QuizPreview />} />
+            <Route path="questions" element={<QuestionBank />} />
+            <Route path="ai-questions" element={<AIQuestionReview />} />
+            <Route path="ai-questions/generate" element={<AIQuestionGenerator />} />
+            <Route path="ai-questions/review" element={<AIQuestionReview />} />
+            <Route path="questions/import-export" element={<QuestionImportExport />} />
+            <Route path="evaluate" element={<ManualEvaluation />} />
+            <Route path="evaluate/:sessionId" element={<ManualEvaluation />} />
+            <Route path="analytics" element={<QuizAnalytics />} />
+            <Route path="analytics/:quizId" element={<QuizAnalytics />} />
           </Route>
 
           {/* Admin Routes */}
@@ -153,6 +191,20 @@ function App() {
             <Route path="subscriptions" element={<AdminSubscriptionManagement />} />
             <Route path="analytics" element={<RevenueAnalytics />} />
             <Route path="profile" element={<ProfileSettings />} />
+            <Route path="notifications" element={<NotificationsPage />} />
+            {/* Quiz Routes - Admin can also manage */}
+            <Route path="quizzes" element={<QuizManagement />} />
+            <Route path="quizzes/new" element={<QuizCreate />} />
+            <Route path="quizzes/:quizId/edit" element={<QuizCreate />} />
+            <Route path="quizzes/:quizId/preview" element={<QuizPreview />} />
+            <Route path="questions" element={<QuestionBank />} />
+            <Route path="ai-questions" element={<AdminAIQuestionsDashboard />} />
+            <Route path="ai-questions/generate" element={<AIQuestionGenerator />} />
+            <Route path="ai-questions/review" element={<AIQuestionReview />} />
+            <Route path="quiz-analytics" element={<QuizAnalytics />} />
+            <Route path="quiz-analytics/:quizId" element={<QuizAnalytics />} />
+            <Route path="evaluate" element={<ManualEvaluation />} />
+            <Route path="evaluate/:sessionId" element={<ManualEvaluation />} />
           </Route>
 
           {/* 404 */}

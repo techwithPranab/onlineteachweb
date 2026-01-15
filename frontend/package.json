@@ -14,7 +14,6 @@
     "axios": "^1.6.2",
     "clsx": "^2.0.0",
     "date-fns": "^3.0.0",
-    "fabric": "^7.1.0",
     "katex": "^0.16.27",
     "lucide-react": "^0.294.0",
     "react": "^18.2.0",
@@ -26,6 +25,7 @@
     "recharts": "^2.10.3",
     "simple-peer": "^9.11.1",
     "socket.io-client": "^4.8.3",
+    "tldraw": "^4.2.3",
     "zustand": "^4.4.7"
   },
   "devDependencies": {

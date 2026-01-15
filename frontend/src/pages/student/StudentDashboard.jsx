@@ -1,9 +1,11 @@
 import { useQuery, useMutation, useQueryClient } from 'react-query'
-import { BookOpen, Calendar, TrendingUp, Video, FileText, Play, UserPlus } from 'lucide-react'
+import { BookOpen, Calendar, TrendingUp, Video, FileText, Play, UserPlus, ArrowRight } from 'lucide-react'
 import { courseService, sessionService, materialService, reportService } from '@/services/apiServices'
 import { useAuthStore } from '@/store/authStore'
+import { Link } from 'react-router-dom'
 import LoadingSpinner from '@/components/common/LoadingSpinner'
 import ErrorMessage from '@/components/common/ErrorMessage'
+import { UpcomingQuizzesWidget } from '@/components/dashboard'
 
 export default function StudentDashboard() {
   const { user } = useAuthStore()
@@ -18,8 +20,8 @@ export default function StudentDashboard() {
 
   // Fetch upcoming sessions
   const { data: sessionsData, isLoading: sessionsLoading } = useQuery(
-    ['upcomingSessions', user?._id],
-    () => sessionService.getSessions({ upcoming: true, limit: 5 }),
+    ['upcomingSessions', user?._id, user?.grade],
+    () => sessionService.getSessions({ upcoming: true, limit: 5, grade: user?.grade }),
     { enabled: !!user }
   )
 
@@ -38,7 +40,7 @@ export default function StudentDashboard() {
   )
 
   const courses = coursesData?.data || []
-  const sessions = sessionsData?.data || []
+  const sessions = sessionsData?.sessions || []
   const materials = materialsData?.data || []
   const report = reportData?.data || {}
 
@@ -81,7 +83,7 @@ export default function StudentDashboard() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
+        <h1 className="text-2xl font-bold text-gray-900">Dashboard</h1>
         <p className="text-gray-600 mt-1">Track your learning progress</p>
       </div>
 
@@ -115,7 +117,16 @@ export default function StudentDashboard() {
 
       {/* Upcoming Classes */}
       <div className="card">
-        <h2 className="text-xl font-bold text-gray-900 mb-4">Upcoming Classes</h2>
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-xl font-bold text-gray-900">Upcoming Classes</h2>
+          <Link 
+            to="/student/sessions"
+            className="text-primary-600 hover:text-primary-700 font-medium text-sm flex items-center gap-1"
+          >
+            View All
+            <ArrowRight className="w-4 h-4" />
+          </Link>
+        </div>
         {sessionsLoading ? (
           <div className="flex justify-center py-8">
             <LoadingSpinner />
@@ -138,6 +149,9 @@ export default function StudentDashboard() {
           </div>
         )}
       </div>
+
+      {/* Upcoming Quizzes Widget */}
+      <UpcomingQuizzesWidget />
 
       {/* Recent Materials */}
       <div className="card">

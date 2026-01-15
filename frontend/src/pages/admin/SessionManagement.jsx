@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from 'react-query'
 import { useState } from 'react'
-import { Video, Users, Calendar, Clock, Play, Pause, Stop, Eye, Download } from 'lucide-react'
+import { Video, Users, Calendar, Clock, Play, Pause, Square, Eye, Download } from 'lucide-react'
 import { sessionService, adminService } from '@/services/apiServices'
 import { useAuthStore } from '@/store/authStore'
 import LoadingSpinner from '@/components/common/LoadingSpinner'
@@ -175,7 +175,7 @@ export default function SessionManagement() {
       'pending_approval': Clock,
       'scheduled': Calendar,
       'live': Play,
-      'completed': Stop,
+      'completed': Square,
       'cancelled': Pause,
       'rejected': Pause
     }
@@ -449,7 +449,7 @@ export default function SessionManagement() {
                           className="text-red-600 hover:text-red-900 disabled:opacity-50"
                           title="End Session"
                         >
-                          <Stop className="h-4 w-4" />
+                          <Square className="h-4 w-4" />
                         </button>
                       )}
                       

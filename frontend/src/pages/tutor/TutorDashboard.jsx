@@ -9,11 +9,13 @@ import {
   Clock,
   Video,
   Plus,
+  Brain,
 } from 'lucide-react'
 import { courseService, sessionService, reportService } from '@/services/apiServices'
 import { useAuthStore } from '@/store/authStore'
 import LoadingSpinner from '@/components/common/LoadingSpinner'
 import ErrorMessage from '@/components/common/ErrorMessage'
+import { AIQuestionsDashboardWidget, QuizStatsDashboardWidget } from '@/components/dashboard'
 
 export default function TutorDashboard() {
   const navigate = useNavigate()
@@ -201,8 +203,14 @@ export default function TutorDashboard() {
         </div>
       </div>
 
+      {/* AI & Quiz Widgets */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+        <AIQuestionsDashboardWidget />
+        <QuizStatsDashboardWidget />
+      </div>
+
       {/* Quick Actions */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
         <button
           onClick={() => navigate('/tutor/schedule')}
           className="card hover:shadow-lg transition-shadow text-left"
@@ -233,6 +241,17 @@ export default function TutorDashboard() {
             <Users className="w-8 h-8 text-primary-600 mb-4" />
             <h3 className="text-lg font-semibold text-gray-900 mb-2">Student Evaluation</h3>
             <p className="text-gray-600 text-sm">Grade and provide feedback</p>
+          </div>
+        </button>
+
+        <button
+          onClick={() => navigate('/tutor/ai-questions/generate')}
+          className="card hover:shadow-lg transition-shadow text-left"
+        >
+          <div className="p-6">
+            <Brain className="w-8 h-8 text-purple-600 mb-4" />
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">AI Question Generator</h3>
+            <p className="text-gray-600 text-sm">Generate quiz questions with AI</p>
           </div>
         </button>
       </div>

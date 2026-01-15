@@ -1,5 +1,6 @@
-import { useState } from 'react'
-import { X } from 'lucide-react'
+import { useState, useEffect } from 'react'
+import { X, Copy, Eye } from 'lucide-react'
+import 'katex/dist/katex.min.css'
 
 const MATH_TEMPLATES = [
   {
@@ -67,10 +68,62 @@ const MATH_TEMPLATES = [
 
 export default function MathTemplates({ isOpen, onClose, onSelectTemplate }) {
   const [selectedCategory, setSelectedCategory] = useState(MATH_TEMPLATES[0].category)
+  const [previewTemplate, setPreviewTemplate] = useState(null)
+
+  // Load KaTeX when component mounts
+  useEffect(() => {
+    if (isOpen && typeof window !== 'undefined') {
+      // Dynamically load KaTeX for rendering
+      const script = document.createElement('script')
+      script.src = 'https://cdn.jsdelivr.net/npm/katex@0.13.11/dist/katex.min.js'
+      script.async = true
+      document.head.appendChild(script)
+
+      return () => {
+        if (document.head.contains(script)) {
+          document.head.removeChild(script)
+        }
+      }
+    }
+  }, [isOpen])
 
   if (!isOpen) return null
 
   const currentTemplates = MATH_TEMPLATES.find(cat => cat.category === selectedCategory)?.templates || []
+
+  const handleSelectTemplate = (latex) => {
+    onSelectTemplate(latex)
+    onClose()
+  }
+
+  const copyToClipboard = (text) => {
+    navigator.clipboard.writeText(text).then(() => {
+      // Show a brief success message
+      const notification = document.createElement('div')
+      notification.textContent = 'Copied to clipboard!'
+      notification.className = 'fixed top-4 right-4 bg-green-600 text-white px-4 py-2 rounded-lg z-50'
+      document.body.appendChild(notification)
+      setTimeout(() => {
+        if (document.body.contains(notification)) {
+          document.body.removeChild(notification)
+        }
+      }, 2000)
+    })
+  }
+
+  const renderMath = (latex) => {
+    if (typeof window !== 'undefined' && window.katex) {
+      try {
+        return window.katex.renderToString(latex, {
+          displayMode: true,
+          throwOnError: false,
+        })
+      } catch (error) {
+        return latex
+      }
+    }
+    return latex
+  }
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
@@ -113,25 +166,55 @@ export default function MathTemplates({ isOpen, onClose, onSelectTemplate }) {
               {currentTemplates.map((template, index) => (
                 <div
                   key={index}
-                  className="border border-gray-200 rounded-lg p-4 hover:border-blue-300 cursor-pointer transition-colors"
-                  onClick={() => onSelectTemplate(template.latex)}
+                  className="border border-gray-200 rounded-lg p-4 hover:border-blue-300 transition-colors group"
                 >
                   <div className="flex items-center justify-between mb-2">
                     <h4 className="font-medium text-gray-800">{template.name}</h4>
-                    <span className="text-xs text-gray-500">{template.description}</span>
+                    <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <button
+                        onClick={() => setPreviewTemplate(template)}
+                        className="p-1 text-blue-600 hover:bg-blue-100 rounded"
+                        title="Preview"
+                      >
+                        <Eye className="w-4 h-4" />
+                      </button>
+                      <button
+                        onClick={() => copyToClipboard(template.latex)}
+                        className="p-1 text-gray-600 hover:bg-gray-100 rounded"
+                        title="Copy LaTeX"
+                      >
+                        <Copy className="w-4 h-4" />
+                      </button>
+                    </div>
                   </div>
                   
+                  <p className="text-xs text-gray-500 mb-3">{template.description}</p>
+                  
                   {/* Math Preview */}
-                  <div className="bg-gray-50 p-3 rounded text-center">
-                    <div className="math-preview text-lg" dangerouslySetInnerHTML={{
-                      __html: `<script type="math/tex">${template.latex}</script>`
-                    }} />
+                  <div 
+                    className="bg-gray-50 p-3 rounded text-center cursor-pointer hover:bg-blue-50 transition-colors"
+                    onClick={() => handleSelectTemplate(template.latex)}
+                  >
+                    <div 
+                      className="math-preview text-lg"
+                      dangerouslySetInnerHTML={{
+                        __html: renderMath(template.latex)
+                      }}
+                    />
                   </div>
                   
                   {/* LaTeX Code */}
-                  <div className="mt-2 text-xs text-gray-600 font-mono bg-gray-100 p-2 rounded">
+                  <div className="mt-2 text-xs text-gray-600 font-mono bg-gray-100 p-2 rounded select-all">
                     {template.latex}
                   </div>
+                  
+                  {/* Select Button */}
+                  <button
+                    onClick={() => handleSelectTemplate(template.latex)}
+                    className="w-full mt-3 py-2 px-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium"
+                  >
+                    Add to Whiteboard
+                  </button>
                 </div>
               ))}
             </div>
@@ -140,9 +223,59 @@ export default function MathTemplates({ isOpen, onClose, onSelectTemplate }) {
 
         <div className="mt-4 pt-4 border-t border-gray-200">
           <p className="text-sm text-gray-600">
-            Click on any template to add it to your whiteboard. You can then edit the formula as needed.
+            Click "Add to Whiteboard" or click on the preview to add a template to your whiteboard. 
+            You can edit the formula after adding it. Use the copy button to copy LaTeX code.
           </p>
         </div>
+
+        {/* Preview Modal */}
+        {previewTemplate && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-60">
+            <div className="bg-white rounded-lg p-6 max-w-md w-full mx-4">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-lg font-bold">{previewTemplate.name}</h3>
+                <button
+                  onClick={() => setPreviewTemplate(null)}
+                  className="p-1 hover:bg-gray-100 rounded"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+              
+              <div className="text-center mb-4">
+                <div 
+                  className="text-xl p-4 bg-gray-50 rounded"
+                  dangerouslySetInnerHTML={{
+                    __html: renderMath(previewTemplate.latex)
+                  }}
+                />
+              </div>
+              
+              <div className="text-sm text-gray-600 mb-4">
+                {previewTemplate.description}
+              </div>
+              
+              <div className="text-xs font-mono bg-gray-100 p-3 rounded mb-4 select-all">
+                {previewTemplate.latex}
+              </div>
+              
+              <div className="flex gap-2">
+                <button
+                  onClick={() => handleSelectTemplate(previewTemplate.latex)}
+                  className="flex-1 py-2 px-4 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
+                >
+                  Add to Whiteboard
+                </button>
+                <button
+                  onClick={() => copyToClipboard(previewTemplate.latex)}
+                  className="py-2 px-4 border border-gray-300 rounded hover:bg-gray-50 transition-colors"
+                >
+                  Copy LaTeX
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   )

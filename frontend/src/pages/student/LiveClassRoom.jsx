@@ -20,10 +20,10 @@ import {
 } from 'lucide-react'
 import { useAuthStore } from '@/store/authStore'
 import { liveService } from '@/services/apiServices'
-import Whiteboard from '@/components/whiteboard/Whiteboard'
+import Whiteboard from '../../components/whiteboard/TldrawWhiteboard'
 
 export default function LiveClassRoom() {
-  const { sessionId } = useParams()
+  const { id: sessionId } = useParams()
   const navigate = useNavigate()
   const { user } = useAuthStore()
   

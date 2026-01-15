@@ -91,6 +91,7 @@ export const sessionService = {
 
   getSessionById: async (id) => {
     const { data } = await api.get(`/sessions/${id}`)
+    console.log('Session data:', data);
     return data
   },
 
@@ -111,6 +112,11 @@ export const sessionService = {
 
   endSession: async (id) => {
     const { data } = await api.post(`/live/end`, { sessionId: id })
+    return data
+  },
+
+  startSession: async (id) => {
+    const { data } = await api.post(`/live/start`, { sessionId: id })
     return data
   },
 
@@ -365,6 +371,231 @@ export const userService = {
         'Content-Type': 'multipart/form-data'
       }
     })
+    return data
+  },
+}
+
+// =====================
+// QUIZ & QUESTION SERVICES
+// =====================
+
+export const questionService = {
+  // Create a new question
+  createQuestion: async (questionData) => {
+    const { data } = await api.post('/questions', questionData)
+    return data
+  },
+
+  // Create multiple questions
+  createBulkQuestions: async (questions) => {
+    const { data } = await api.post('/questions/bulk', { questions })
+    return data
+  },
+
+  // Get questions with filters
+  getQuestions: async (params = {}) => {
+    const { data } = await api.get('/questions', { params })
+    return data
+  },
+
+  // Get a single question
+  getQuestionById: async (id) => {
+    const { data } = await api.get(`/questions/${id}`)
+    return data
+  },
+
+  // Update a question
+  updateQuestion: async (id, questionData) => {
+    const { data } = await api.put(`/questions/${id}`, questionData)
+    return data
+  },
+
+  // Delete a question
+  deleteQuestion: async (id) => {
+    const { data } = await api.delete(`/questions/${id}`)
+    return data
+  },
+
+  // Get topics for a course
+  getTopicsForCourse: async (courseId) => {
+    const { data } = await api.get(`/questions/topics/${courseId}`)
+    return data
+  },
+
+  // Get question statistics
+  getQuestionStats: async (courseId) => {
+    const { data } = await api.get(`/questions/stats/${courseId}`)
+    return data
+  },
+}
+
+export const quizService = {
+  // Create a new quiz
+  createQuiz: async (quizData) => {
+    const { data } = await api.post('/quizzes', quizData)
+    return data
+  },
+
+  // Get all quizzes (for tutor/admin)
+  getQuizzes: async (params = {}) => {
+    const { data } = await api.get('/quizzes', { params })
+    return data
+  },
+
+  // Get available quizzes for a course (student)
+  getAvailableQuizzes: async (courseId) => {
+    const { data } = await api.get(`/quizzes/course/${courseId}/available`)
+    return data
+  },
+
+  // Get quiz by ID
+  getQuizById: async (id) => {
+    const { data } = await api.get(`/quizzes/${id}`)
+    return data
+  },
+
+  // Update quiz
+  updateQuiz: async (id, quizData) => {
+    const { data } = await api.put(`/quizzes/${id}`, quizData)
+    return data
+  },
+
+  // Delete quiz
+  deleteQuiz: async (id) => {
+    const { data } = await api.delete(`/quizzes/${id}`)
+    return data
+  },
+
+  // Publish quiz
+  publishQuiz: async (id) => {
+    const { data } = await api.post(`/quizzes/${id}/publish`)
+    return data
+  },
+
+  // Get quiz attempts (tutor/admin)
+  getQuizAttempts: async (quizId, params = {}) => {
+    const { data } = await api.get(`/quizzes/${quizId}/attempts`, { params })
+    return data
+  },
+
+  // Start a quiz (student)
+  startQuiz: async (quizId, strategyName = null) => {
+    const { data } = await api.post(`/quizzes/${quizId}/start`, { strategyName })
+    return data
+  },
+
+  // Save answer
+  saveAnswer: async (sessionId, questionId, answer, timeSpent = 0) => {
+    const { data } = await api.post(`/quizzes/sessions/${sessionId}/answer`, {
+      questionId,
+      answer,
+      timeSpent
+    })
+    return data
+  },
+
+  // Mark question for review
+  markForReview: async (sessionId, questionId, marked) => {
+    const { data } = await api.post(`/quizzes/sessions/${sessionId}/mark-review`, {
+      questionId,
+      marked
+    })
+    return data
+  },
+
+  // Submit quiz
+  submitQuiz: async (quizId, sessionId, answers = []) => {
+    const { data } = await api.post(`/quizzes/${quizId}/submit`, {
+      sessionId,
+      answers
+    })
+    return data
+  },
+
+  // Get quiz result
+  getQuizResult: async (quizId, sessionId = null) => {
+    const params = sessionId ? { sessionId } : {}
+    const { data } = await api.get(`/quizzes/${quizId}/result`, { params })
+    return data
+  },
+
+  // Get session details (tutor/admin)
+  getSessionDetails: async (sessionId) => {
+    const { data } = await api.get(`/quizzes/sessions/${sessionId}`)
+    return data
+  },
+}
+
+export const quizEvaluationService = {
+  // Get pending evaluations
+  getPendingEvaluations: async (params = {}) => {
+    const { data } = await api.get('/quiz-evaluations/pending', { params })
+    return data
+  },
+
+  // Get session for manual evaluation
+  getSessionForEvaluation: async (sessionId) => {
+    const { data } = await api.get(`/quiz-evaluations/session/${sessionId}`)
+    return data
+  },
+
+  // Submit manual evaluation (single question)
+  submitSingleEvaluation: async (sessionId, questionId, marksAwarded, feedback = '') => {
+    const { data } = await api.post('/quiz-evaluations/manual', {
+      sessionId,
+      questionId,
+      marksAwarded,
+      feedback
+    })
+    return data
+  },
+
+  // Submit manual evaluation (bulk - used by ManualEvaluation.jsx)
+  submitManualEvaluation: async (sessionId, evaluationPayload) => {
+    const { data } = await api.post('/quiz-evaluations/manual/bulk', {
+      sessionId,
+      evaluations: evaluationPayload.evaluations,
+      overallFeedback: evaluationPayload.overallFeedback
+    })
+    return data
+  },
+
+  // Submit bulk evaluations
+  submitBulkEvaluations: async (sessionId, evaluations) => {
+    const { data } = await api.post('/quiz-evaluations/manual/bulk', {
+      sessionId,
+      evaluations
+    })
+    return data
+  },
+
+  // Override score
+  overrideScore: async (sessionId, questionId, newMarks, reason) => {
+    const { data } = await api.post('/quiz-evaluations/override', {
+      sessionId,
+      questionId,
+      newMarks,
+      reason
+    })
+    return data
+  },
+
+  // Get student analytics
+  getStudentAnalytics: async (studentId, courseId = null) => {
+    const params = courseId ? { courseId } : {}
+    const { data } = await api.get(`/quiz-evaluations/analytics/student/${studentId}`, { params })
+    return data
+  },
+
+  // Get quiz analytics
+  getQuizAnalytics: async (quizId) => {
+    const { data } = await api.get(`/quiz-evaluations/analytics/quiz/${quizId}`)
+    return data
+  },
+
+  // Publish evaluation
+  publishEvaluation: async (evaluationId) => {
+    const { data } = await api.post(`/quiz-evaluations/${evaluationId}/publish`)
     return data
   },
 }

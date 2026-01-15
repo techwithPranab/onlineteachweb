@@ -1,6 +1,6 @@
 import { useState, useCallback, useMemo } from 'react'
 import { useQuery, useMutation, useQueryClient } from 'react-query'
-import { Calendar as CalendarIcon, Plus, Edit, Trash2, Clock, Users, Video, ChevronLeft, ChevronRight, Filter } from 'lucide-react'
+import { Calendar as CalendarIcon, Plus, Edit, Trash2, Clock, Users, Video, ChevronLeft, ChevronRight, Filter, Eye, Play, LogIn } from 'lucide-react'
 import { sessionService, courseService } from '@/services/apiServices'
 import { useAuthStore } from '@/store/authStore'
 import LoadingSpinner from '@/components/common/LoadingSpinner'
@@ -175,6 +175,7 @@ export default function ScheduleManagement() {
   const [selectedSession, setSelectedSession] = useState(null)
   const [selectedCourse, setSelectedCourse] = useState('')
   const [selectedGrade, setSelectedGrade] = useState('')
+  const [startingSessionId, setStartingSessionId] = useState(null)
   
   const [formData, setFormData] = useState({
     courseId: '',
@@ -254,6 +255,40 @@ export default function ScheduleManagement() {
         setShowDeleteDialog(false)
         setSelectedSession(null)
       },
+    }
+  )
+
+  // Start session mutation
+  const startSessionMutation = useMutation(
+    ({ id, newWindow }) => {
+      setStartingSessionId(id)
+      return sessionService.startSession(id).then(data => ({ data, newWindow }))
+    },
+    {
+      onSuccess: ({ data, newWindow }, { id }) => {
+        queryClient.invalidateQueries('tutorSessions')
+        console.log('Session started successfully, redirecting window to:', id)
+        setStartingSessionId(null)
+        // Redirect the pre-opened window to the session page
+        if (newWindow && !newWindow.closed) {
+          newWindow.location.href = `/tutor/session/${id}`
+        } else {
+          // Fallback: try to open a new window
+          const fallbackWindow = window.open(`/tutor/session/${id}`, '_blank')
+          if (!fallbackWindow) {
+            alert('Please allow popups for this site to open the live session')
+          }
+        }
+      },
+      onError: (error, { id, newWindow }) => {
+        console.error('Error starting session:', error)
+        setStartingSessionId(null)
+        // Close the pre-opened window on error
+        if (newWindow && !newWindow.closed) {
+          newWindow.close()
+        }
+        alert('Failed to start session. Please try again.')
+      }
     }
   )
 
@@ -353,6 +388,77 @@ export default function ScheduleManagement() {
   const handleDeleteClick = (session) => {
     setSelectedSession(session)
     setShowDeleteDialog(true)
+  }
+
+  const handleViewSession = (session) => {
+    // Navigate to session details page (using student session detail for now)
+    window.open(`/student/sessions/${session._id}`, '_blank')
+  }
+
+  const handleStartSession = (session) => {
+    console.log('Starting session:', session._id)
+    
+    // Open a blank window immediately (user interaction context)
+    const newWindow = window.open('about:blank', '_blank')
+    
+    if (!newWindow) {
+      alert('Please allow popups for this site to open the live session')
+      return
+    }
+    
+    // Add loading content to the new window
+    newWindow.document.write(`
+      <html>
+        <head>
+          <title>Starting Live Session...</title>
+          <style>
+            body { 
+              font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+              display: flex; 
+              align-items: center; 
+              justify-content: center; 
+              height: 100vh; 
+              margin: 0; 
+              background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+              color: white;
+            }
+            .loading { text-align: center; }
+            .spinner { 
+              border: 4px solid rgba(255,255,255,0.3);
+              border-radius: 50%;
+              border-top: 4px solid white;
+              width: 40px;
+              height: 40px;
+              animation: spin 1s linear infinite;
+              margin: 0 auto 20px;
+            }
+            @keyframes spin {
+              0% { transform: rotate(0deg); }
+              100% { transform: rotate(360deg); }
+            }
+          </style>
+        </head>
+        <body>
+          <div class="loading">
+            <div class="spinner"></div>
+            <h2>Starting Live Session...</h2>
+            <p>Please wait while we prepare your classroom</p>
+          </div>
+        </body>
+      </html>
+    `)
+    
+    // Call the backend API to start the session
+    startSessionMutation.mutate({ id: session._id, newWindow })
+  }
+
+  const handleJoinSession = (session) => {
+    console.log('Joining session:', session._id)
+    // Directly open the live classroom for ongoing sessions
+    const newWindow = window.open(`/tutor/session/${session._id}`, '_blank')
+    if (!newWindow) {
+      alert('Please allow popups for this site to open the live session')
+    }
   }
 
   const confirmDelete = () => {
@@ -557,6 +663,36 @@ export default function ScheduleManagement() {
                     </div>
 
                     <div className="flex items-center gap-2 ml-4">
+                      <button
+                        onClick={() => handleViewSession(session)}
+                        className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg"
+                        title="View Session Details"
+                      >
+                        <Eye className="w-4 h-4" />
+                      </button>
+                      {session.status === 'scheduled' && (
+                        <button
+                          onClick={() => handleStartSession(session)}
+                          disabled={startingSessionId === session._id}
+                          className="p-2 text-green-600 hover:bg-green-50 disabled:opacity-50 disabled:cursor-not-allowed rounded-lg"
+                          title="Start Live Session"
+                        >
+                          {startingSessionId === session._id ? (
+                            <div className="w-4 h-4 border-2 border-green-600 border-t-transparent rounded-full animate-spin" />
+                          ) : (
+                            <Play className="w-4 h-4" />
+                          )}
+                        </button>
+                      )}
+                      {session.status === 'ongoing' && (
+                        <button
+                          onClick={() => handleJoinSession(session)}
+                          className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg"
+                          title="Join Live Session"
+                        >
+                          <LogIn className="w-4 h-4" />
+                        </button>
+                      )}
                       <button
                         onClick={() => handleEditClick(session)}
                         className="p-2 text-gray-600 hover:bg-gray-100 rounded-lg"

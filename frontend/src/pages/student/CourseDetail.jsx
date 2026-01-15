@@ -6,12 +6,10 @@ import {
   BookOpen,
   Star,
   Clock,
-  Users,
   Calendar,
   Video,
   FileText,
   CheckCircle,
-  DollarSign,
 } from 'lucide-react'
 import { courseService, materialService, sessionService } from '@/services/apiServices'
 import { useAuthStore } from '@/store/authStore'
@@ -79,7 +77,7 @@ export default function CourseDetail() {
           <div className="flex-1">
             <div className="flex items-start justify-between mb-4">
               <div>
-                <h1 className="text-3xl font-bold text-gray-900 mb-2">{course.title}</h1>
+                <h1 className="text-2xl font-bold text-gray-900 mb-2">{course.title}</h1>
                 <p className="text-gray-600">
                   Grade {course.grade} • {course.subject}
                 </p>
@@ -102,55 +100,27 @@ export default function CourseDetail() {
                 <span className="text-sm">({course.reviews?.length || 0} reviews)</span>
               </div>
               <div className="flex items-center gap-2 text-gray-600">
-                <Users className="w-5 h-5" />
-                <span>{course.enrolledStudents?.length || 0} students enrolled</span>
+                <Clock className="w-5 h-5" />
+                <span>{course.duration || '12'} weeks duration</span>
               </div>
               <div className="flex items-center gap-2 text-gray-600">
-                <Clock className="w-5 h-5" />
-                <span>12 weeks duration</span>
+                <BookOpen className="w-5 h-5" />
+                <span className="capitalize">{course.level || 'Intermediate'} level</span>
               </div>
             </div>
           </div>
 
           {/* Enrollment Card */}
-          <div className="lg:w-80 bg-gray-50 rounded-lg p-6 border border-gray-200">
-            <div className="text-center mb-6">
-              <div className="flex items-center justify-center gap-1 text-3xl font-bold text-primary-600 mb-2">
-                <DollarSign className="w-8 h-8" />
-                <span>{course.price || 'Free'}</span>
-              </div>
-              <p className="text-sm text-gray-600">One-time payment</p>
-            </div>
-
-            {isEnrolled ? (
-              <button
-                onClick={() => navigate(`/student/live-class`)}
-                className="btn-primary w-full mb-3"
-              >
-                Go to Classroom
-              </button>
-            ) : (
+          {!isEnrolled && (
+            <div className="lg:w-80 bg-gray-50 rounded-lg p-6 border border-gray-200">
               <button onClick={handleEnroll} className="btn-primary w-full mb-3">
                 Enroll Now
               </button>
-            )}
-
-            {/* Instructor Info */}
-            <div className="pt-6 border-t border-gray-200">
-              <p className="text-sm text-gray-600 mb-3">Instructor</p>
-              <div className="flex items-center gap-3">
-                <div className="w-12 h-12 bg-primary-100 rounded-full flex items-center justify-center">
-                  <span className="text-primary-600 font-semibold text-lg">
-                    {course.tutor?.name?.charAt(0) || 'T'}
-                  </span>
-                </div>
-                <div>
-                  <p className="font-medium text-gray-900">{course.tutor?.name}</p>
-                  <p className="text-sm text-gray-500">{course.tutor?.email}</p>
-                </div>
-              </div>
+              <p className="text-sm text-gray-600 text-center">
+                Start learning today!
+              </p>
             </div>
-          </div>
+          )}
         </div>
       </div>
 

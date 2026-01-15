@@ -71,7 +71,8 @@ exports.getSessions = async (req, res, next) => {
       tutorId,
       studentId,
       status,
-      upcoming
+      upcoming,
+      grade
     } = req.query;
     
     const query = {};
@@ -79,6 +80,12 @@ exports.getSessions = async (req, res, next) => {
     if (courseId) query.course = courseId;
     if (tutorId) query.tutor = tutorId;
     if (status) query.status = status;
+    if (grade) {
+      // Filter by course grade - need to populate and match
+      const Course = require('../models/Course.model');
+      const courseIds = await Course.find({ grade: parseInt(grade) }).distinct('_id');
+      query.course = { $in: courseIds };
+    }
     
     // Filter sessions based on user role
     if (req.user.role === 'student') {
@@ -107,7 +114,7 @@ exports.getSessions = async (req, res, next) => {
     
     const [sessions, total] = await Promise.all([
       Session.find(query)
-        .populate('course', 'title thumbnail')
+        .populate('course', 'title thumbnail grade subject')
         .populate('tutor', 'name avatar')
         .sort({ scheduledAt: -1 })
         .skip(skip)
@@ -133,7 +140,7 @@ exports.getSessions = async (req, res, next) => {
 exports.enrollInSession = async (req, res, next) => {
   try {
     const session = await Session.findById(req.params.id)
-      .populate('course', 'title price enrolledStudents');
+      .populate('course', 'title price');
     
     if (!session) {
       return res.status(404).json({
@@ -147,18 +154,6 @@ exports.enrollInSession = async (req, res, next) => {
       return res.status(400).json({
         success: false,
         message: 'This session is not available for enrollment'
-      });
-    }
-    
-    // Check if student is enrolled in the course
-    const course = session.course;
-    const isEnrolledInCourse = course.enrolledStudents && 
-      course.enrolledStudents.some(s => s.toString() === req.user._id.toString());
-    
-    if (!isEnrolledInCourse) {
-      return res.status(403).json({
-        success: false,
-        message: 'You must be enrolled in the course to join this session'
       });
     }
     
@@ -208,7 +203,7 @@ exports.enrollInSession = async (req, res, next) => {
 exports.getSessionById = async (req, res, next) => {
   try {
     const session = await Session.findById(req.params.id)
-      .populate('course', 'title thumbnail')
+      .populate('course', 'title thumbnail grade subject')
       .populate('tutor', 'name avatar bio')
       .populate('attendees.student', 'name avatar');
     

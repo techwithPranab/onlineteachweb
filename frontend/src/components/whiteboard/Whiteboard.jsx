@@ -1,43 +1,18 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
-import { fabric } from 'fabric'
+import { Tldraw, createTLStore, defaultShapeUtils, getSnapshot, loadSnapshot } from 'tldraw'
+import 'tldraw/tldraw.css'
 import 'katex/dist/katex.min.css'
 import { InlineMath, BlockMath } from 'react-katex'
 import MathTemplates from './MathTemplates'
 import {
-  Pen,
-  Eraser,
-  Square,
-  Circle,
-  Minus,
-  Type,
-  Palette,
-  Undo2,
-  Redo2,
   Download,
   Upload,
   Trash2,
-  Function,
   Calculator,
-  Ruler,
-  Triangle,
-  Grid,
-  MousePointer2,
-  RotateCcw,
-  Move,
-  Library,
-  Save
+  Save,
+  X,
+  Library
 } from 'lucide-react'
-
-const DRAWING_TOOLS = {
-  SELECT: 'select',
-  PEN: 'pen',
-  ERASER: 'eraser',
-  LINE: 'line',
-  RECTANGLE: 'rectangle',
-  CIRCLE: 'circle',
-  TEXT: 'text',
-  MATH: 'math',
-}
 
 const MATH_SYMBOLS = [
   { label: '√', value: '\\sqrt{}', description: 'Square root' },
@@ -67,251 +42,137 @@ const MATH_SYMBOLS = [
   { label: '⊆', value: '\\subseteq', description: 'Subset or equal' },
 ]
 
-const COLORS = [
-  '#000000', '#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#FF00FF', 
-  '#00FFFF', '#FFA500', '#800080', '#FFC0CB', '#A52A2A', '#808080'
-]
-
 export default function Whiteboard({ socket, sessionId, userRole, className = '' }) {
-  // Canvas and fabric refs
-  const canvasRef = useRef(null)
-  const fabricCanvasRef = useRef(null)
+  // Store and editor refs
+  const editorRef = useRef(null)
+  const storeRef = useRef(null)
   
   // State
-  const [activeTool, setActiveTool] = useState(DRAWING_TOOLS.PEN)
-  const [brushSize, setBrushSize] = useState(3)
-  const [currentColor, setCurrentColor] = useState('#000000')
-  const [showColorPalette, setShowColorPalette] = useState(false)
+  const [showMathTemplates, setShowMathTemplates] = useState(false)
   const [showMathSymbols, setShowMathSymbols] = useState(false)
   const [mathInput, setMathInput] = useState('')
   const [mathPreview, setMathPreview] = useState('')
-  const [isDrawing, setIsDrawing] = useState(false)
-  const [showGrid, setShowGrid] = useState(false)
-  const [history, setHistory] = useState([])
-  const [historyIndex, setHistoryIndex] = useState(-1)
-  const [showToolbar, setShowToolbar] = useState(true)
-  const [showMathTemplates, setShowMathTemplates] = useState(false)
+  const [isReady, setIsReady] = useState(false)
 
-  // Initialize fabric canvas
+  // Initialize tldraw store
   useEffect(() => {
-    const canvas = new fabric.Canvas(canvasRef.current, {
-      width: 1200,
-      height: 800,
-      backgroundColor: '#ffffff',
-      selection: activeTool === DRAWING_TOOLS.SELECT,
+    if (!storeRef.current) {
+      storeRef.current = createTLStore({ shapeUtils: defaultShapeUtils })
+      setIsReady(true)
+    }
+  }, [])
+
+  // Save and broadcast whiteboard state
+  const saveAndBroadcast = useCallback(() => {
+    if (!storeRef.current || !socket || !sessionId) return
+
+    const snapshot = getSnapshot(storeRef.current)
+    socket.emit('whiteboard:update', {
+      sessionId,
+      data: snapshot,
+      userId: socket.userId
     })
+  }, [socket, sessionId])
 
-    fabricCanvasRef.current = canvas
-
-    // Grid pattern
-    if (showGrid) {
-      addGridPattern(canvas)
+  // Handle remote whiteboard updates
+  const handleRemoteUpdate = useCallback((data) => {
+    if (!storeRef.current || !data.data || data.userId === socket?.userId) return
+    
+    try {
+      loadSnapshot(storeRef.current, data.data)
+    } catch (error) {
+      console.error('Failed to load whiteboard snapshot:', error)
     }
+  }, [socket])
 
-    // Set drawing mode based on active tool
-    updateCanvasMode(canvas, activeTool)
-
-    // Canvas events
-    canvas.on('path:created', handleDrawingComplete)
-    canvas.on('object:added', saveState)
-    canvas.on('object:modified', saveState)
-    canvas.on('object:removed', saveState)
-
-    return () => {
-      canvas.dispose()
+  // Handle remote clear
+  const handleRemoteClear = useCallback(() => {
+    if (storeRef.current) {
+      storeRef.current.clear()
     }
-  }, [activeTool, showGrid])
+  }, [])
 
-  // Socket events for real-time collaboration
+  // Socket event listeners
   useEffect(() => {
     if (!socket) return
 
     socket.on('whiteboard:update', handleRemoteUpdate)
     socket.on('whiteboard:clear', handleRemoteClear)
-    socket.on('whiteboard:undo', handleRemoteUndo)
-    socket.on('whiteboard:redo', handleRemoteRedo)
 
     return () => {
-      socket.off('whiteboard:update')
-      socket.off('whiteboard:clear')
-      socket.off('whiteboard:undo')
-      socket.off('whiteboard:redo')
+      socket.off('whiteboard:update', handleRemoteUpdate)
+      socket.off('whiteboard:clear', handleRemoteClear)
     }
-  }, [socket])
+  }, [socket, handleRemoteUpdate, handleRemoteClear])
 
-  const addGridPattern = (canvas) => {
-    const grid = 20
-    const width = canvas.width
-    const height = canvas.height
-
-    // Create grid lines
-    for (let i = 0; i < width / grid; i++) {
-      const line = new fabric.Line([i * grid, 0, i * grid, height], {
-        stroke: '#e0e0e0',
-        strokeWidth: 1,
-        selectable: false,
-        evented: false,
-        excludeFromExport: true,
-      })
-      canvas.add(line)
-      canvas.sendToBack(line)
-    }
-
-    for (let i = 0; i < height / grid; i++) {
-      const line = new fabric.Line([0, i * grid, width, i * grid], {
-        stroke: '#e0e0e0',
-        strokeWidth: 1,
-        selectable: false,
-        evented: false,
-        excludeFromExport: true,
-      })
-      canvas.add(line)
-      canvas.sendToBack(line)
-    }
-  }
-
-  const updateCanvasMode = (canvas, tool) => {
-    canvas.isDrawingMode = tool === DRAWING_TOOLS.PEN || tool === DRAWING_TOOLS.ERASER
+  // Handle store changes
+  const handleMount = useCallback((editor) => {
+    editorRef.current = editor
     
-    if (tool === DRAWING_TOOLS.PEN) {
-      canvas.freeDrawingBrush.width = brushSize
-      canvas.freeDrawingBrush.color = currentColor
-    } else if (tool === DRAWING_TOOLS.ERASER) {
-      canvas.freeDrawingBrush.width = brushSize * 2
-      canvas.freeDrawingBrush.color = '#ffffff'
+    if (!storeRef.current) return
+
+    // Listen for changes and broadcast them (only for tutors or when allowed)
+    const handleChange = () => {
+      if (userRole === 'tutor') {
+        saveAndBroadcast()
+      }
     }
 
-    canvas.selection = tool === DRAWING_TOOLS.SELECT
-    canvas.defaultCursor = tool === DRAWING_TOOLS.SELECT ? 'default' : 'crosshair'
-  }
-
-  const handleToolChange = (tool) => {
-    setActiveTool(tool)
-    if (fabricCanvasRef.current) {
-      updateCanvasMode(fabricCanvasRef.current, tool)
-    }
-  }
-
-  const handleColorChange = (color) => {
-    setCurrentColor(color)
-    if (fabricCanvasRef.current && activeTool === DRAWING_TOOLS.PEN) {
-      fabricCanvasRef.current.freeDrawingBrush.color = color
-    }
-    setShowColorPalette(false)
-  }
-
-  const handleBrushSizeChange = (size) => {
-    setBrushSize(size)
-    if (fabricCanvasRef.current) {
-      const multiplier = activeTool === DRAWING_TOOLS.ERASER ? 2 : 1
-      fabricCanvasRef.current.freeDrawingBrush.width = size * multiplier
-    }
-  }
-
-  const addShape = (shapeType) => {
-    const canvas = fabricCanvasRef.current
-    if (!canvas) return
-
-    let shape
-    const options = {
-      left: 100,
-      top: 100,
-      fill: 'transparent',
-      stroke: currentColor,
-      strokeWidth: brushSize,
+    // Throttle the change handler to avoid too many updates
+    let timeoutId = null
+    const throttledHandleChange = () => {
+      if (timeoutId) clearTimeout(timeoutId)
+      timeoutId = setTimeout(handleChange, 300)
     }
 
-    switch (shapeType) {
-      case 'rectangle':
-        shape = new fabric.Rect({ ...options, width: 100, height: 60 })
-        break
-      case 'circle':
-        shape = new fabric.Circle({ ...options, radius: 50 })
-        break
-      case 'line':
-        shape = new fabric.Line([100, 100, 200, 100], {
-          ...options,
-          fill: currentColor,
-        })
-        break
-      case 'triangle':
-        const trianglePoints = [
-          { x: 150, y: 100 },
-          { x: 100, y: 180 },
-          { x: 200, y: 180 }
-        ]
-        shape = new fabric.Polygon(trianglePoints, options)
-        break
-    }
+    const unsubscribe = editor.store.listen(throttledHandleChange)
+    return unsubscribe
+  }, [saveAndBroadcast, userRole])
 
-    if (shape) {
-      canvas.add(shape)
-      canvas.setActiveObject(shape)
-      emitCanvasUpdate()
-    }
-  }
-
-  const addText = () => {
-    const canvas = fabricCanvasRef.current
-    if (!canvas) return
-
-    const text = new fabric.IText('Click to edit', {
-      left: 100,
-      top: 100,
-      fontSize: 20,
-      fill: currentColor,
-      fontFamily: 'Arial',
-    })
-
-    canvas.add(text)
-    canvas.setActiveObject(text)
-    text.enterEditing()
-    emitCanvasUpdate()
-  }
-
-  const addMathFormula = () => {
-    if (!mathInput.trim()) return
-
-    const canvas = fabricCanvasRef.current
-    if (!canvas) return
-
-    // Create a temporary div to render the math
-    const tempDiv = document.createElement('div')
-    tempDiv.style.position = 'absolute'
-    tempDiv.style.top = '-9999px'
-    tempDiv.innerHTML = `<div id="math-temp"></div>`
-    document.body.appendChild(tempDiv)
+  // Math formula functions
+  const addMathFormula = (latex = null) => {
+    const formula = latex || mathInput.trim()
+    if (!formula || !editorRef.current) return
 
     try {
-      // Import katex dynamically to render math
-      import('katex').then((katex) => {
-        katex.render(mathInput, tempDiv.firstChild, {
-          displayMode: true,
-          throwOnError: false,
-        })
-
-        // Convert to SVG or image (simplified approach)
-        const mathText = new fabric.IText(mathInput, {
-          left: 100,
-          top: 100,
-          fontSize: 24,
-          fill: currentColor,
-          fontFamily: 'Times New Roman',
-          backgroundColor: '#f0f0f0',
-          padding: 10,
-        })
-
-        canvas.add(mathText)
-        canvas.setActiveObject(mathText)
-        emitCanvasUpdate()
-        
+      // Create a text shape with the LaTeX formula
+      const editor = editorRef.current
+      const { x, y } = editor.getViewportScreenCenter()
+      
+      // Use the correct tldraw v4 API
+      editor.createShapes([{
+        type: 'text',
+        x: x - 50,
+        y: y - 20,
+        props: {
+          text: `$${formula}$`,
+          color: 'black',
+          size: 'm',
+          font: 'serif'
+        }
+      }])
+      
+      setMathInput('')
+      setShowMathSymbols(false)
+    } catch (error) {
+      console.error('Error adding math formula:', error)
+      // Fallback: try simpler approach
+      try {
+        const editor = editorRef.current
+        editor.createShapes([{
+          type: 'text',
+          x: 100,
+          y: 100,
+          props: {
+            text: formula
+          }
+        }])
         setMathInput('')
         setShowMathSymbols(false)
-        document.body.removeChild(tempDiv)
-      })
-    } catch (error) {
-      console.error('Error rendering math:', error)
-      document.body.removeChild(tempDiv)
+      } catch (fallbackError) {
+        console.error('Fallback error:', fallbackError)
+        alert('Unable to add formula. Please try again.')
+      }
     }
   }
 
@@ -320,19 +181,23 @@ export default function Whiteboard({ socket, sessionId, userRole, className = ''
   }
 
   const selectMathTemplate = (template) => {
-    setMathInput(template)
+    // Add the template directly to the whiteboard
+    addMathFormula(template)
     setShowMathTemplates(false)
+    
+    // Also set it in the input for potential editing
+    setMathInput(template)
     setShowMathSymbols(true)
   }
 
+  // Whiteboard utility functions
   const saveWhiteboard = () => {
-    const canvas = fabricCanvasRef.current
-    if (!canvas || !socket) return
+    if (!storeRef.current || !socket) return
 
-    const canvasData = canvas.toJSON()
+    const snapshot = getSnapshot(storeRef.current)
     socket.emit('whiteboard:save', {
       sessionId,
-      canvasData,
+      data: snapshot,
       userId: socket.userId,
     })
     
@@ -342,304 +207,121 @@ export default function Whiteboard({ socket, sessionId, userRole, className = ''
     notification.className = 'fixed top-4 right-4 bg-green-600 text-white px-4 py-2 rounded-lg z-50'
     document.body.appendChild(notification)
     setTimeout(() => {
-      document.body.removeChild(notification)
+      if (document.body.contains(notification)) {
+        document.body.removeChild(notification)
+      }
     }, 2000)
   }
 
   const clearCanvas = () => {
-    const canvas = fabricCanvasRef.current
-    if (!canvas) return
+    if (!editorRef.current) return
 
-    canvas.clear()
-    canvas.backgroundColor = '#ffffff'
-    if (showGrid) {
-      addGridPattern(canvas)
-    }
+    editorRef.current.selectAll()
+    editorRef.current.deleteShapes()
     
     socket?.emit('whiteboard:clear', { sessionId })
-    saveState()
-  }
-
-  const undo = () => {
-    if (historyIndex > 0) {
-      const canvas = fabricCanvasRef.current
-      if (!canvas) return
-
-      const newIndex = historyIndex - 1
-      setHistoryIndex(newIndex)
-      canvas.loadFromJSON(history[newIndex], canvas.renderAll.bind(canvas))
-      
-      socket?.emit('whiteboard:undo', { sessionId })
-    }
-  }
-
-  const redo = () => {
-    if (historyIndex < history.length - 1) {
-      const canvas = fabricCanvasRef.current
-      if (!canvas) return
-
-      const newIndex = historyIndex + 1
-      setHistoryIndex(newIndex)
-      canvas.loadFromJSON(history[newIndex], canvas.renderAll.bind(canvas))
-      
-      socket?.emit('whiteboard:redo', { sessionId })
-    }
-  }
-
-  const saveState = () => {
-    const canvas = fabricCanvasRef.current
-    if (!canvas) return
-
-    const state = JSON.stringify(canvas.toJSON())
-    const newHistory = history.slice(0, historyIndex + 1)
-    newHistory.push(state)
-    
-    setHistory(newHistory)
-    setHistoryIndex(newHistory.length - 1)
   }
 
   const exportCanvas = () => {
-    const canvas = fabricCanvasRef.current
-    if (!canvas) return
+    if (!editorRef.current) return
 
-    const link = document.createElement('a')
-    link.download = 'whiteboard.png'
-    link.href = canvas.toDataURL()
-    link.click()
+    editorRef.current.exportAs(['selected'], 'png', { scale: 2, background: true })
+      .then(blob => {
+        const url = URL.createObjectURL(blob)
+        const link = document.createElement('a')
+        link.download = 'whiteboard.png'
+        link.href = url
+        link.click()
+        URL.revokeObjectURL(url)
+      })
+      .catch(error => {
+        console.error('Export failed:', error)
+      })
   }
 
-  const handleDrawingComplete = (e) => {
-    emitCanvasUpdate()
-  }
+  // Math preview effect
+  useEffect(() => {
+    if (mathInput.trim()) {
+      setMathPreview(mathInput.trim())
+    } else {
+      setMathPreview('')
+    }
+  }, [mathInput])
 
-  const emitCanvasUpdate = () => {
-    const canvas = fabricCanvasRef.current
-    if (!canvas || !socket) return
-
-    const canvasData = canvas.toJSON()
-    socket.emit('whiteboard:update', {
-      sessionId,
-      data: canvasData,
-      userId: socket.userId,
-    })
-  }
-
-  const handleRemoteUpdate = (data) => {
-    const canvas = fabricCanvasRef.current
-    if (!canvas || data.userId === socket?.userId) return
-
-    canvas.loadFromJSON(data.data, canvas.renderAll.bind(canvas))
-  }
-
-  const handleRemoteClear = () => {
-    clearCanvas()
-  }
-
-  const handleRemoteUndo = () => {
-    undo()
-  }
-
-  const handleRemoteRedo = () => {
-    redo()
+  if (!isReady || !storeRef.current) {
+    return (
+      <div className={`relative bg-white rounded-lg shadow-lg ${className} flex items-center justify-center h-96`}>
+        <div className="text-gray-500">Loading whiteboard...</div>
+      </div>
+    )
   }
 
   return (
     <div className={`relative bg-white rounded-lg shadow-lg ${className}`}>
-      {/* Toolbar */}
-      {showToolbar && (
-        <div className="absolute top-2 left-2 bg-gray-800 rounded-lg p-2 z-10 flex flex-col gap-2 shadow-lg">
-          {/* Drawing Tools */}
-          <div className="flex flex-col gap-1">
-            <button
-              onClick={() => handleToolChange(DRAWING_TOOLS.SELECT)}
-              className={`p-2 rounded ${activeTool === DRAWING_TOOLS.SELECT ? 'bg-blue-600' : 'bg-gray-700 hover:bg-gray-600'} text-white`}
-              title="Select"
-            >
-              <MousePointer2 className="w-4 h-4" />
-            </button>
+      {/* Custom Toolbar Overlay */}
+      <div className="absolute top-4 right-4 z-10 bg-white rounded-lg shadow-lg p-2 flex gap-2">
+        <button
+          onClick={() => setShowMathSymbols(!showMathSymbols)}
+          className={`p-2 rounded ${showMathSymbols ? 'bg-blue-600 text-white' : 'bg-gray-100 hover:bg-gray-200 text-gray-700'}`}
+          title="Math Formula"
+        >
+          <Calculator className="w-4 h-4" />
+        </button>
 
-            <button
-              onClick={() => handleToolChange(DRAWING_TOOLS.PEN)}
-              className={`p-2 rounded ${activeTool === DRAWING_TOOLS.PEN ? 'bg-blue-600' : 'bg-gray-700 hover:bg-gray-600'} text-white`}
-              title="Pen"
-            >
-              <Pen className="w-4 h-4" />
-            </button>
+        <button
+          onClick={() => setShowMathTemplates(true)}
+          className="p-2 rounded bg-gray-100 hover:bg-gray-200 text-gray-700"
+          title="Math Templates"
+        >
+          <Library className="w-4 h-4" />
+        </button>
 
-            <button
-              onClick={() => handleToolChange(DRAWING_TOOLS.ERASER)}
-              className={`p-2 rounded ${activeTool === DRAWING_TOOLS.ERASER ? 'bg-blue-600' : 'bg-gray-700 hover:bg-gray-600'} text-white`}
-              title="Eraser"
-            >
-              <Eraser className="w-4 h-4" />
-            </button>
-          </div>
+        <button
+          onClick={saveWhiteboard}
+          className="p-2 rounded bg-green-100 hover:bg-green-200 text-green-700"
+          title="Save Whiteboard"
+        >
+          <Save className="w-4 h-4" />
+        </button>
 
-          {/* Shape Tools */}
-          <div className="border-t border-gray-600 pt-2 flex flex-col gap-1">
-            <button
-              onClick={() => addShape('line')}
-              className="p-2 rounded bg-gray-700 hover:bg-gray-600 text-white"
-              title="Line"
-            >
-              <Minus className="w-4 h-4" />
-            </button>
+        <button
+          onClick={clearCanvas}
+          className="p-2 rounded bg-red-100 hover:bg-red-200 text-red-700"
+          title="Clear All"
+        >
+          <Trash2 className="w-4 h-4" />
+        </button>
 
-            <button
-              onClick={() => addShape('rectangle')}
-              className="p-2 rounded bg-gray-700 hover:bg-gray-600 text-white"
-              title="Rectangle"
-            >
-              <Square className="w-4 h-4" />
-            </button>
-
-            <button
-              onClick={() => addShape('circle')}
-              className="p-2 rounded bg-gray-700 hover:bg-gray-600 text-white"
-              title="Circle"
-            >
-              <Circle className="w-4 h-4" />
-            </button>
-
-            <button
-              onClick={() => addShape('triangle')}
-              className="p-2 rounded bg-gray-700 hover:bg-gray-600 text-white"
-              title="Triangle"
-            >
-              <Triangle className="w-4 h-4" />
-            </button>
-          </div>
-
-          {/* Text and Math */}
-          <div className="border-t border-gray-600 pt-2 flex flex-col gap-1">
-            <button
-              onClick={addText}
-              className="p-2 rounded bg-gray-700 hover:bg-gray-600 text-white"
-              title="Text"
-            >
-              <Type className="w-4 h-4" />
-            </button>
-
-            <button
-              onClick={() => setShowMathSymbols(!showMathSymbols)}
-              className={`p-2 rounded ${showMathSymbols ? 'bg-blue-600' : 'bg-gray-700 hover:bg-gray-600'} text-white`}
-              title="Math Formula"
-            >
-              <Function className="w-4 h-4" />
-            </button>
-
-            <button
-              onClick={() => setShowMathTemplates(true)}
-              className="p-2 rounded bg-gray-700 hover:bg-gray-600 text-white"
-              title="Math Templates"
-            >
-              <Library className="w-4 h-4" />
-            </button>
-          </div>
-
-          {/* Utilities */}
-          <div className="border-t border-gray-600 pt-2 flex flex-col gap-1">
-            <button
-              onClick={saveWhiteboard}
-              className="p-2 rounded bg-green-600 hover:bg-green-700 text-white"
-              title="Save Whiteboard"
-            >
-              <Save className="w-4 h-4" />
-            </button>
-            <button
-              onClick={() => setShowColorPalette(!showColorPalette)}
-              className="p-2 rounded bg-gray-700 hover:bg-gray-600 text-white"
-              title="Colors"
-            >
-              <Palette className="w-4 h-4" />
-            </button>
-
-            <button
-              onClick={() => setShowGrid(!showGrid)}
-              className={`p-2 rounded ${showGrid ? 'bg-blue-600' : 'bg-gray-700 hover:bg-gray-600'} text-white`}
-              title="Grid"
-            >
-              <Grid className="w-4 h-4" />
-            </button>
-
-            <button
-              onClick={undo}
-              disabled={historyIndex <= 0}
-              className="p-2 rounded bg-gray-700 hover:bg-gray-600 text-white disabled:opacity-50"
-              title="Undo"
-            >
-              <Undo2 className="w-4 h-4" />
-            </button>
-
-            <button
-              onClick={redo}
-              disabled={historyIndex >= history.length - 1}
-              className="p-2 rounded bg-gray-700 hover:bg-gray-600 text-white disabled:opacity-50"
-              title="Redo"
-            >
-              <Redo2 className="w-4 h-4" />
-            </button>
-
-            <button
-              onClick={clearCanvas}
-              className="p-2 rounded bg-red-600 hover:bg-red-700 text-white"
-              title="Clear All"
-            >
-              <Trash2 className="w-4 h-4" />
-            </button>
-
-            <button
-              onClick={exportCanvas}
-              className="p-2 rounded bg-gray-700 hover:bg-gray-600 text-white"
-              title="Export"
-            >
-              <Download className="w-4 h-4" />
-            </button>
-          </div>
-        </div>
-      )}
-
-      {/* Brush Size Control */}
-      {(activeTool === DRAWING_TOOLS.PEN || activeTool === DRAWING_TOOLS.ERASER) && (
-        <div className="absolute top-2 left-20 bg-gray-800 rounded-lg p-2 z-10">
-          <div className="flex items-center gap-2 text-white">
-            <span className="text-xs">Size:</span>
-            <input
-              type="range"
-              min="1"
-              max="20"
-              value={brushSize}
-              onChange={(e) => handleBrushSizeChange(parseInt(e.target.value))}
-              className="w-16"
-            />
-            <span className="text-xs w-8">{brushSize}</span>
-          </div>
-        </div>
-      )}
-
-      {/* Color Palette */}
-      {showColorPalette && (
-        <div className="absolute top-12 left-20 bg-gray-800 rounded-lg p-3 z-20">
-          <div className="grid grid-cols-4 gap-2">
-            {COLORS.map((color) => (
-              <button
-                key={color}
-                onClick={() => handleColorChange(color)}
-                className={`w-8 h-8 rounded border-2 ${
-                  currentColor === color ? 'border-white' : 'border-gray-600'
-                }`}
-                style={{ backgroundColor: color }}
-              />
-            ))}
-          </div>
-        </div>
-      )}
+        <button
+          onClick={exportCanvas}
+          className="p-2 rounded bg-blue-100 hover:bg-blue-200 text-blue-700"
+          title="Export"
+        >
+          <Download className="w-4 h-4" />
+        </button>
+      </div>
 
       {/* Math Symbols Panel */}
       {showMathSymbols && (
-        <div className="absolute top-2 right-2 bg-gray-800 rounded-lg p-4 z-20 w-96">
-          <div className="text-white mb-3">
-            <h3 className="font-semibold mb-2">Mathematical Formula</h3>
+        <div className="absolute top-16 right-4 bg-white rounded-lg shadow-lg p-4 z-20 w-96 max-h-96 overflow-y-auto">
+          <div className="mb-3">
+            <div className="flex items-center justify-between mb-2">
+              <h3 className="font-semibold text-gray-800">Mathematical Formula</h3>
+              <div className="flex gap-2">
+                <button
+                  onClick={() => setShowMathTemplates(true)}
+                  className="px-3 py-1 bg-blue-600 hover:bg-blue-700 text-white text-sm rounded"
+                >
+                  Templates
+                </button>
+                <button
+                  onClick={() => setShowMathSymbols(false)}
+                  className="p-1 text-gray-500 hover:text-gray-700"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
             
             {/* Math Input */}
             <div className="mb-3">
@@ -647,62 +329,96 @@ export default function Whiteboard({ socket, sessionId, userRole, className = ''
                 value={mathInput}
                 onChange={(e) => setMathInput(e.target.value)}
                 placeholder="Enter LaTeX formula (e.g., \\frac{a}{b}, x^2, \\sqrt{x})"
-                className="w-full p-2 bg-gray-700 text-white rounded border border-gray-600 resize-none"
+                className="w-full p-2 border border-gray-300 rounded resize-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 rows="3"
               />
               
-              {mathInput && (
-                <div className="mt-2 p-2 bg-white rounded text-black">
-                  <strong>Preview:</strong>
+              {mathPreview && (
+                <div className="mt-2 p-2 bg-gray-50 rounded border">
+                  <strong className="text-sm text-gray-600">Preview:</strong>
                   <div className="mt-1">
-                    <InlineMath math={mathInput} />
+                    <InlineMath math={mathPreview} />
                   </div>
                 </div>
               )}
               
-              <button
-                onClick={addMathFormula}
-                disabled={!mathInput.trim()}
-                className="mt-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-600 text-white rounded"
-              >
-                Add Formula
-              </button>
+              <div className="flex gap-2 mt-2">
+                <button
+                  onClick={() => addMathFormula()}
+                  disabled={!mathInput.trim()}
+                  className="flex-1 px-4 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed text-white rounded"
+                >
+                  Add Formula
+                </button>
+                <button
+                  onClick={() => setMathInput('')}
+                  className="px-4 py-2 bg-gray-300 hover:bg-gray-400 text-gray-700 rounded"
+                >
+                  Clear
+                </button>
+              </div>
             </div>
 
             {/* Math Symbols Grid */}
-            <div className="max-h-64 overflow-y-auto">
-              <h4 className="text-sm font-medium mb-2">Common Symbols:</h4>
+            <div>
+              <h4 className="text-sm font-medium mb-2 text-gray-700">Common Symbols:</h4>
               <div className="grid grid-cols-6 gap-2">
                 {MATH_SYMBOLS.map((symbol, index) => (
                   <button
                     key={index}
                     onClick={() => insertMathSymbol(symbol.value)}
-                    className="p-2 bg-gray-700 hover:bg-gray-600 rounded text-center"
+                    className="p-2 bg-gray-100 hover:bg-gray-200 border border-gray-200 rounded text-center transition-colors"
                     title={symbol.description}
                   >
                     {symbol.label}
                   </button>
                 ))}
               </div>
+              
+              {/* Quick Actions */}
+              <div className="mt-3 pt-3 border-t border-gray-200">
+                <h4 className="text-sm font-medium mb-2 text-gray-700">Quick Actions:</h4>
+                <div className="flex gap-2 text-xs flex-wrap">
+                  <button
+                    onClick={() => setMathInput('\\frac{a}{b}')}
+                    className="px-2 py-1 bg-blue-100 hover:bg-blue-200 text-blue-700 rounded"
+                  >
+                    Fraction
+                  </button>
+                  <button
+                    onClick={() => setMathInput('x^{2}')}
+                    className="px-2 py-1 bg-blue-100 hover:bg-blue-200 text-blue-700 rounded"
+                  >
+                    Power
+                  </button>
+                  <button
+                    onClick={() => setMathInput('\\sqrt{x}')}
+                    className="px-2 py-1 bg-blue-100 hover:bg-blue-200 text-blue-700 rounded"
+                  >
+                    Root
+                  </button>
+                  <button
+                    onClick={() => setMathInput('\\sum_{i=1}^{n}')}
+                    className="px-2 py-1 bg-blue-100 hover:bg-blue-200 text-blue-700 rounded"
+                  >
+                    Sum
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       )}
 
-      {/* Canvas */}
-      <canvas
-        ref={canvasRef}
-        className="border border-gray-300 rounded-lg"
-      />
-
-      {/* Hide/Show Toolbar Toggle */}
-      <button
-        onClick={() => setShowToolbar(!showToolbar)}
-        className="absolute bottom-2 left-2 p-2 bg-gray-800 text-white rounded-lg z-10"
-        title={showToolbar ? 'Hide Toolbar' : 'Show Toolbar'}
-      >
-        {showToolbar ? <Move className="w-4 h-4" /> : <MousePointer2 className="w-4 h-4" />}
-      </button>
+      {/* Tldraw Whiteboard */}
+      <div className="h-96 w-full rounded-lg overflow-hidden border border-gray-300">
+        <Tldraw
+          store={storeRef.current}
+          onMount={handleMount}
+          hideUi={false}
+          inferDarkMode
+        />
+      </div>
 
       {/* Math Templates Modal */}
       <MathTemplates

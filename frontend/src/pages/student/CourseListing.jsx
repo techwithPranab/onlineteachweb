@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useQuery } from 'react-query'
-import { Search, BookOpen, Star, DollarSign, Filter, X } from 'lucide-react'
+import { Search, BookOpen, Star, Filter, X } from 'lucide-react'
 import { courseService } from '@/services/apiServices'
 import { useAuthStore } from '@/store/authStore'
 import LoadingSpinner from '@/components/common/LoadingSpinner'
@@ -50,8 +50,8 @@ export default function CourseListing() {
 
   return (
     <div className="max-w-7xl mx-auto">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">Browse Courses</h1>
+      <div className="mb-6">
+        <h1 className="text-2xl font-bold text-gray-900 mb-2">Browse Courses</h1>
         <p className="text-gray-600">Find the perfect course to enhance your learning journey</p>
       </div>
 
@@ -173,43 +173,25 @@ export default function CourseListing() {
                   {course.description}
                 </p>
 
-                {/* Tutor Info */}
-                <div className="flex items-center gap-2 mb-4">
-                  <div className="w-8 h-8 bg-primary-100 rounded-full flex items-center justify-center">
-                    <span className="text-primary-600 font-medium text-sm">
-                      {course.tutor?.name?.charAt(0) || 'T'}
-                    </span>
-                  </div>
-                  <div className="text-sm">
-                    <p className="text-gray-900 font-medium">{course.tutor?.name}</p>
-                    <p className="text-gray-500 text-xs">Instructor</p>
-                  </div>
-                </div>
-
-                {/* Stats */}
+                {/* Course Stats */}
                 <div className="flex items-center gap-4 text-sm text-gray-600 mb-4">
                   <div className="flex items-center gap-1">
                     <Star className="w-4 h-4 text-yellow-400 fill-current" />
                     <span>{course.averageRating?.toFixed(1) || 'N/A'}</span>
                   </div>
-                  <div className="flex items-center gap-1">
-                    <BookOpen className="w-4 h-4" />
-                    <span>{course.enrolledStudents?.length || 0} students</span>
+                  <div className="text-gray-500">
+                    {course.level && <span className="capitalize">{course.level}</span>}
                   </div>
                 </div>
 
-                {/* Price and Action */}
-                <div className="flex items-center justify-between pt-4 border-t border-gray-200">
-                  <div className="flex items-center gap-1 text-primary-600 font-semibold">
-                    <DollarSign className="w-5 h-5" />
-                    <span>{course.price || 'Free'}</span>
-                  </div>
+                {/* Action Button */}
+                <div className="pt-4 border-t border-gray-200">
                   <button
                     onClick={(e) => {
                       e.stopPropagation()
                       navigate(`/student/courses/${course._id}`)
                     }}
-                    className="btn-primary text-sm"
+                    className="btn-primary text-sm w-full"
                   >
                     View Details
                   </button>

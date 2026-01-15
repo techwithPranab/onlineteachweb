@@ -17,16 +17,16 @@ import {
   Settings,
   PhoneOff
 } from 'lucide-react'
-import { sessionService } from '@/services/apiServices'
-import { useAuthStore } from '@/store/authStore'
-import Whiteboard from '@/components/whiteboard/Whiteboard'
-import LoadingSpinner from '@/components/common/LoadingSpinner'
-import ErrorMessage from '@/components/common/ErrorMessage'
+import { sessionService } from '../../services/apiServices'
+import { useAuthStore } from '../../store/authStore'
+import Whiteboard from '../../components/whiteboard/TldrawWhiteboard'
+import LoadingSpinner from '../../components/common/LoadingSpinner'
+import ErrorMessage from '../../components/common/ErrorMessage'
 
 const SOCKET_URL = process.env.NEXT_PUBLIC_WS_URL || 'http://localhost:5000'
 
 export default function LiveClassRoom() {
-  const { sessionId } = useParams()
+  const { id: sessionId } = useParams()
   const navigate = useNavigate()
   const queryClient = useQueryClient()
   const { user } = useAuthStore()
