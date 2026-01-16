@@ -40,7 +40,11 @@ export default function AdminCourseManagement() {
   )
 
   const handleFilterChange = (key, value) => {
-    setFilters(prev => ({ ...prev, [key]: value, page: 1 }))
+    setFilters(prev => ({ 
+      ...prev, 
+      [key]: value, 
+      ...(key !== 'page' && { page: 1 }) // Only reset page to 1 when changing other filters
+    }))
   }
 
   const handleDelete = async (courseId) => {
@@ -204,10 +208,10 @@ export default function AdminCourseManagement() {
                 Subject & Grade
               </th>
               <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Status
+                Board
               </th>
               <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Price
+                Status
               </th>
               <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Created By
@@ -231,12 +235,12 @@ export default function AdminCourseManagement() {
                   <div className="text-sm text-gray-500">Grade {course.grade}</div>
                 </td>
                 <td className="px-4 py-3 whitespace-nowrap">
+                  <div className="text-sm text-gray-900">{Array.isArray(course.board) ? course.board.join(', ') : course.board || 'CBSE'}</div>
+                </td>
+                <td className="px-4 py-3 whitespace-nowrap">
                   <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${statusColors[course.status]}`}>
                     {course.status}
                   </span>
-                </td>
-                <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-900">
-                  ₹{course.price}
                 </td>
                 <td className="px-4 py-3 whitespace-nowrap">
                   <div className="text-sm text-gray-900">{course.createdBy?.name}</div>

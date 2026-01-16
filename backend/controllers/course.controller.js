@@ -201,15 +201,24 @@ exports.updateCourse = async (req, res, next) => {
       });
     }
     
-    const { title, description, price, thumbnail, syllabus, status } = req.body;
+    const { title, description, grade, subject, board, duration, level, language, maxStudents, price, thumbnail, syllabus, topics, status, tags } = req.body;
     
     const updateData = {};
-    if (title) updateData.title = title;
-    if (description) updateData.description = description;
+    if (title !== undefined) updateData.title = title;
+    if (description !== undefined) updateData.description = description;
+    if (grade !== undefined) updateData.grade = grade;
+    if (subject !== undefined) updateData.subject = subject;
+    if (board !== undefined) updateData.board = board;
+    if (duration !== undefined) updateData.duration = duration;
+    if (level !== undefined) updateData.level = level;
+    if (language !== undefined) updateData.language = language;
+    if (maxStudents !== undefined) updateData.maxStudents = maxStudents;
     if (price !== undefined) updateData.price = price;
-    if (thumbnail) updateData.thumbnail = thumbnail;
-    if (syllabus) updateData.syllabus = syllabus;
-    if (status) updateData.status = status;
+    if (thumbnail !== undefined) updateData.thumbnail = thumbnail;
+    if (syllabus !== undefined) updateData.syllabus = syllabus;
+    if (topics !== undefined) updateData.topics = topics;
+    if (status !== undefined) updateData.status = status;
+    if (tags !== undefined) updateData.tags = tags;
     
     const updatedCourse = await Course.findByIdAndUpdate(
       req.params.id,

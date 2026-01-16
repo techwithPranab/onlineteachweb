@@ -96,23 +96,6 @@ export default function AIQuestionGenerator() {
     }
   }
 
-  const handleTopicToggle = (topic) => {
-    setFormData(prev => ({
-      ...prev,
-      topics: prev.topics.includes(topic)
-        ? prev.topics.filter(t => t !== topic)
-        : [...prev.topics, topic]
-    }))
-  }
-
-  const handleSelectAllTopics = () => {
-    if (formData.topics.length === availableTopics.length) {
-      setFormData(prev => ({ ...prev, topics: [] }))
-    } else {
-      setFormData(prev => ({ ...prev, topics: [...availableTopics] }))
-    }
-  }
-
   const handleGenerate = async () => {
     if (!formData.courseId) {
       setError('Please select a course')
@@ -231,39 +214,45 @@ export default function AIQuestionGenerator() {
         {/* Topics Selection */}
         {availableTopics.length > 0 && (
           <div>
-            <div className="flex items-center justify-between mb-2">
-              <label className="block text-sm font-semibold text-gray-700">
-                Select Topics (leave empty for all)
-              </label>
-              <button
-                type="button"
-                onClick={handleSelectAllTopics}
-                className="text-sm text-blue-600 hover:text-blue-800"
-              >
-                {formData.topics.length === availableTopics.length ? 'Deselect All' : 'Select All'}
-              </button>
-            </div>
-            <div className="max-h-48 overflow-y-auto border border-gray-200 rounded-lg p-3 space-y-2">
+            <label className="block text-sm font-semibold text-gray-700 mb-2">
+              Select Topics (leave empty for all)
+            </label>
+            <select
+              multiple
+              value={formData.topics}
+              onChange={(e) => {
+                const selectedOptions = Array.from(e.target.selectedOptions, option => option.value)
+                setFormData(prev => ({ ...prev, topics: selectedOptions }))
+              }}
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent min-h-32"
+            >
               {availableTopics.map(topic => (
-                <label 
-                  key={topic} 
-                  className="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-1 rounded"
-                >
-                  <input
-                    type="checkbox"
-                    checked={formData.topics.includes(topic)}
-                    onChange={() => handleTopicToggle(topic)}
-                    className="rounded text-blue-600 focus:ring-blue-500"
-                  />
-                  <span className="text-sm text-gray-700">{topic}</span>
-                </label>
+                <option key={topic} value={topic}>
+                  {topic}
+                </option>
               ))}
-            </div>
-            {formData.topics.length > 0 && (
-              <p className="mt-1 text-xs text-gray-500">
-                {formData.topics.length} topic(s) selected
+            </select>
+            <div className="flex items-center justify-between mt-2">
+              <p className="text-xs text-gray-500">
+                {formData.topics.length > 0 ? `${formData.topics.length} topic(s) selected` : 'No topics selected (will use all)'}
               </p>
-            )}
+              <div className="flex gap-2">
+                <button
+                  type="button"
+                  onClick={() => setFormData(prev => ({ ...prev, topics: [] }))}
+                  className="text-xs text-gray-500 hover:text-gray-700"
+                >
+                  Clear All
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setFormData(prev => ({ ...prev, topics: [...availableTopics] }))}
+                  className="text-xs text-blue-600 hover:text-blue-800"
+                >
+                  Select All
+                </button>
+              </div>
+            </div>
           </div>
         )}
 

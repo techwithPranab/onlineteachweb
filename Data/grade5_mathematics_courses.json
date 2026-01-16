@@ -2,12 +2,11 @@
   {
     "title": "Grade 5 Mathematics - Number System and Place Value",
     "description": "Understanding large numbers up to crores, place value concepts, and number formation. This course covers reading and writing large numbers, Indian and International number systems, forming numbers, comparing and ordering numbers, and rounding off techniques.",
+    "createdBy": "ADMIN_USER_ID_PLACEHOLDER",
     "grade": 5,
     "subject": "Mathematics",
     "board": ["ICSE", "CBSE"],
-    "price": 499,
     "thumbnail": "",
-    "status": "published",
     "syllabus": [
       "Reading and Writing Large Numbers up to crores",
       "Indian and International number systems",
@@ -79,12 +78,11 @@
   {
     "title": "Grade 5 Mathematics - Four Operations on Large Numbers",
     "description": "Master addition, subtraction, multiplication, and division of large numbers with real-life applications. Learn BODMAS rules, mental math strategies, and solve complex word problems involving all four operations.",
+    "createdBy": "ADMIN_USER_ID_PLACEHOLDER",    "createdBy": "ADMIN_USER_ID_PLACEHOLDER",
     "grade": 5,
     "subject": "Mathematics",
     "board": ["ICSE", "CBSE"],
-    "price": 599,
     "thumbnail": "",
-    "status": "published",
     "syllabus": [
       "Addition of 5-7 digit numbers",
       "Subtraction of 5-7 digit numbers",
@@ -159,12 +157,11 @@
   {
     "title": "Grade 5 Mathematics - Factors and Multiples",
     "description": "Explore number theory concepts including factors, multiples, prime and composite numbers. Learn to calculate HCF and LCM using various methods and apply these concepts to solve practical problems.",
+    "createdBy": "ADMIN_USER_ID_PLACEHOLDER",
     "grade": 5,
     "subject": "Mathematics",
     "board": ["ICSE", "CBSE"],
-    "price": 499,
     "thumbnail": "",
-    "status": "published",
     "syllabus": [
       "Finding factors of a number",
       "Finding multiples of a number",
@@ -242,12 +239,10 @@
   {
     "title": "Grade 5 Mathematics - Fractions and Decimals",
     "description": "Comprehensive study of fractions and decimals including all operations, conversions, and practical applications. Learn proper, improper, mixed fractions, decimal place value, and solve real-world problems.",
-    "grade": 5,
+    "createdBy": "ADMIN_USER_ID_PLACEHOLDER",    "grade": 5,
     "subject": "Mathematics",
     "board": ["ICSE", "CBSE"],
-    "price": 699,
     "thumbnail": "",
-    "status": "published",
     "syllabus": [
       "Types of fractions (proper, improper, mixed)",
       "Operations on fractions",
@@ -330,12 +325,10 @@
   {
     "title": "Grade 5 Mathematics - Percentage and Ratio",
     "description": "Understanding percentages, ratios, and proportions with practical applications. Learn conversions between fractions, decimals, and percentages. Master unitary method and solve real-world problems.",
-    "grade": 5,
+    "createdBy": "ADMIN_USER_ID_PLACEHOLDER",    "grade": 5,
     "subject": "Mathematics",
     "board": ["ICSE", "CBSE"],
-    "price": 549,
     "thumbnail": "",
-    "status": "published",
     "syllabus": [
       "Concept of percentage",
       "Converting between fractions, decimals, and percentages",
@@ -416,12 +409,10 @@
   {
     "title": "Grade 5 Mathematics - Geometry (Lines, Angles, and Shapes)",
     "description": "Exploring geometric concepts including lines, angles, triangles, quadrilaterals, and circles. Learn to measure and draw angles, identify properties of shapes, and understand symmetry.",
-    "grade": 5,
+    "createdBy": "ADMIN_USER_ID_PLACEHOLDER",    "grade": 5,
     "subject": "Mathematics",
     "board": ["ICSE", "CBSE"],
-    "price": 599,
     "thumbnail": "",
-    "status": "published",
     "syllabus": [
       "Types of lines and angles",
       "Measuring angles using protractor",
@@ -501,12 +492,10 @@
   {
     "title": "Grade 5 Mathematics - Perimeter, Area, and Volume",
     "description": "Calculating perimeter and area of 2D shapes, and introduction to volume of 3D shapes. Learn formulas, solve real-world measurement problems, and convert between units.",
-    "grade": 5,
+    "createdBy": "ADMIN_USER_ID_PLACEHOLDER",    "grade": 5,
     "subject": "Mathematics",
     "board": ["ICSE", "CBSE"],
-    "price": 649,
     "thumbnail": "",
-    "status": "published",
     "syllabus": [
       "Perimeter of rectangles, squares, and triangles",
       "Area of rectangles, squares, and triangles",
@@ -588,12 +577,10 @@
   {
     "title": "Grade 5 Mathematics - Data Handling and Statistics",
     "description": "Collection, organization, and interpretation of data using tables, graphs, and charts. Learn to calculate mean, mode, median, and draw conclusions from data representations.",
-    "grade": 5,
+    "createdBy": "ADMIN_USER_ID_PLACEHOLDER",    "grade": 5,
     "subject": "Mathematics",
     "board": ["ICSE", "CBSE"],
-    "price": 449,
     "thumbnail": "",
-    "status": "published",
     "syllabus": [
       "Methods of data collection",
       "Organizing data in tables and frequency tables",
@@ -672,12 +659,10 @@
   {
     "title": "Grade 5 Mathematics - Time, Speed, and Distance",
     "description": "Understanding time calculations, speed, distance relationships, and calendars. Learn to convert between time formats, solve scheduling problems, and apply speed-distance-time formulas.",
-    "grade": 5,
+    "createdBy": "ADMIN_USER_ID_PLACEHOLDER",    "grade": 5,
     "subject": "Mathematics",
     "board": ["ICSE", "CBSE"],
-    "price": 499,
     "thumbnail": "",
-    "status": "published",
     "syllabus": [
       "Reading time in 12-hour and 24-hour formats",
       "Addition and subtraction of time",
@@ -757,12 +742,10 @@
   {
     "title": "Grade 5 Mathematics - Money and Profit-Loss",
     "description": "Working with money, understanding profit, loss, simple interest, and financial literacy. Learn to calculate bills, profit and loss percentages, discounts, and simple interest.",
-    "grade": 5,
+    "createdBy": "ADMIN_USER_ID_PLACEHOLDER",    "grade": 5,
     "subject": "Mathematics",
     "board": ["ICSE", "CBSE"],
-    "price": 499,
     "thumbnail": "",
-    "status": "published",
     "syllabus": [
       "Indian currency system",
       "Operations with money",
@@ -841,12 +824,10 @@
   {
     "title": "Grade 5 Mathematics - Patterns and Sequences",
     "description": "Identifying and creating number patterns, sequences, and algebraic thinking introduction. Learn to recognize patterns, formulate rules, and solve basic algebraic equations.",
-    "grade": 5,
+    "createdBy": "ADMIN_USER_ID_PLACEHOLDER",    "grade": 5,
     "subject": "Mathematics",
     "board": ["ICSE", "CBSE"],
-    "price": 449,
     "thumbnail": "",
-    "status": "published",
     "syllabus": [
       "Identifying patterns in numbers",
       "Arithmetic sequences",
@@ -926,12 +907,10 @@
   {
     "title": "Grade 5 Mathematics - Mental Math and Vedic Mathematics",
     "description": "Developing mental calculation skills and introducing Vedic math techniques for faster computation. Learn shortcuts, estimation strategies, and traditional Vedic sutras for quick calculations.",
-    "grade": 5,
+    "createdBy": "ADMIN_USER_ID_PLACEHOLDER",    "grade": 5,
     "subject": "Mathematics",
     "board": ["ICSE", "CBSE"],
-    "price": 549,
     "thumbnail": "",
-    "status": "published",
     "syllabus": [
       "Mental addition and subtraction tricks",
       "Multiplication shortcuts",

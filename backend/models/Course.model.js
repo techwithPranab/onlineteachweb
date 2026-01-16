@@ -35,12 +35,6 @@ const courseSchema = new mongoose.Schema({
     enum: ['CBSE', 'ICSE', 'State Board', 'Other'],
     default: ['CBSE']
   }],
-  price: {
-    type: Number,
-    required: true,
-    min: 0,
-    default: 0
-  },
   thumbnail: {
     type: String,
     default: ''

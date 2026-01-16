@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
-import { ArrowLeft, Save, Plus, X } from 'lucide-react'
+import { ArrowLeft, Save, Plus, X, Edit, Trash2, BookOpen } from 'lucide-react'
 import { courseService } from '@/services/apiServices'
 import { useAuthStore } from '@/store/authStore'
 import LoadingSpinner from '@/components/common/LoadingSpinner'
 import ErrorMessage from '@/components/common/ErrorMessage'
+import Modal from '@/components/common/Modal'
 
 export default function AdminCourseEdit() {
   const navigate = useNavigate()
@@ -24,9 +25,8 @@ export default function AdminCourseEdit() {
     description: '',
     subject: '',
     grade: '',
-    price: '',
+    board: ['CBSE'],
     syllabus: '',
-    topics: '',
     duration: '12',
     level: 'beginner',
     language: 'English',
@@ -34,8 +34,18 @@ export default function AdminCourseEdit() {
     tags: ''
   })
 
-  const [learningObjectives, setLearningObjectives] = useState([''])
   const [prerequisites, setPrerequisites] = useState([''])
+  const [chapters, setChapters] = useState([])
+
+  // Chapter modal state
+  const [showChapterModal, setShowChapterModal] = useState(false)
+  const [editingChapterIndex, setEditingChapterIndex] = useState(null)
+  const [chapterForm, setChapterForm] = useState({
+    name: '',
+    topics: [''],
+    learningObjectives: [''],
+    estimatedHours: 0
+  })
 
   // Fetch course data
   const { data: courseData, isLoading: isLoadingCourse, error: courseError } = useQuery(
@@ -53,17 +63,16 @@ export default function AdminCourseEdit() {
             description: course.description || '',
             subject: course.subject || '',
             grade: course.grade?.toString() || '',
-            price: course.price?.toString() || '',
+            board: Array.isArray(course.board) && course.board.length > 0 ? course.board : ['CBSE'],
             syllabus: Array.isArray(course.syllabus) ? course.syllabus.join('\n') : (course.syllabus || ''),
-            topics: Array.isArray(course.topics) ? course.topics.join(', ') : (course.topics || ''),
             duration: course.duration?.toString() || '12',
             level: course.level || 'beginner',
             language: course.language || 'English',
             maxStudents: course.maxStudents?.toString() || '50',
             tags: Array.isArray(course.tags) ? course.tags.join(', ') : (course.tags || '')
           })
-          setLearningObjectives(course.learningObjectives && course.learningObjectives.length > 0 ? course.learningObjectives : [''])
           setPrerequisites(course.prerequisites && course.prerequisites.length > 0 ? course.prerequisites : [''])
+          setChapters(course.chapters && course.chapters.length > 0 ? course.chapters : [])
         }
       }
     }
@@ -109,18 +118,13 @@ export default function AdminCourseEdit() {
     }))
   }
 
-  const addObjective = () => {
-    setLearningObjectives([...learningObjectives, ''])
-  }
-
-  const removeObjective = (index) => {
-    setLearningObjectives(learningObjectives.filter((_, i) => i !== index))
-  }
-
-  const updateObjective = (index, value) => {
-    const updated = [...learningObjectives]
-    updated[index] = value
-    setLearningObjectives(updated)
+  const handleBoardChange = (boardValue) => {
+    setFormData(prev => ({
+      ...prev,
+      board: prev.board.includes(boardValue)
+        ? prev.board.filter(b => b !== boardValue)
+        : [...prev.board, boardValue]
+    }))
   }
 
   const addPrerequisite = () => {
@@ -137,24 +141,92 @@ export default function AdminCourseEdit() {
     setPrerequisites(updated)
   }
 
+  // Chapter Management Functions
+  const handleOpenChapterModal = (chapterIndex = null) => {
+    if (chapterIndex !== null) {
+      // Edit existing chapter
+      setEditingChapterIndex(chapterIndex)
+      setChapterForm(chapters[chapterIndex])
+    } else {
+      // Add new chapter
+      setEditingChapterIndex(null)
+      setChapterForm({
+        name: '',
+        topics: [''],
+        learningObjectives: [''],
+        estimatedHours: 0
+      })
+    }
+    setShowChapterModal(true)
+  }
+
+  const handleCloseChapterModal = () => {
+    setShowChapterModal(false)
+    setEditingChapterIndex(null)
+    setChapterForm({
+      name: '',
+      topics: [''],
+      learningObjectives: [''],
+      estimatedHours: 0
+    })
+  }
+
+  const handleSaveChapter = () => {
+    if (editingChapterIndex !== null) {
+      // Update existing chapter
+      const updatedChapters = [...chapters]
+      updatedChapters[editingChapterIndex] = chapterForm
+      setChapters(updatedChapters)
+    } else {
+      // Add new chapter
+      setChapters([...chapters, chapterForm])
+    }
+    handleCloseChapterModal()
+  }
+
+  const handleDeleteChapter = (chapterIndex) => {
+    if (window.confirm('Are you sure you want to delete this chapter?')) {
+      setChapters(chapters.filter((_, index) => index !== chapterIndex))
+    }
+  }
+
+  const handleAddChapterArrayItem = (field) => {
+    setChapterForm({
+      ...chapterForm,
+      [field]: [...chapterForm[field], '']
+    })
+  }
+
+  const handleUpdateChapterArrayItem = (field, index, value) => {
+    const updated = [...chapterForm[field]]
+    updated[index] = value
+    setChapterForm({
+      ...chapterForm,
+      [field]: updated
+    })
+  }
+
+  const handleRemoveChapterArrayItem = (field, index) => {
+    setChapterForm({
+      ...chapterForm,
+      [field]: chapterForm[field].filter((_, i) => i !== index)
+    })
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault()
 
     const syllabusArray = formData.syllabus.split('\n').filter(item => item.trim())
-    const topicsArray = formData.topics.split(',').map(topic => topic.trim()).filter(Boolean)
     const tagsArray = formData.tags.split(',').map(tag => tag.trim()).filter(Boolean)
 
     const courseData = {
       ...formData,
       grade: parseInt(formData.grade),
-      price: parseFloat(formData.price),
-      duration: parseInt(formData.duration),
       maxStudents: parseInt(formData.maxStudents),
       syllabus: syllabusArray,
-      topics: topicsArray,
       tags: tagsArray,
-      learningObjectives: learningObjectives.filter(obj => obj.trim()),
-      prerequisites: prerequisites.filter(req => req.trim())
+      prerequisites: prerequisites.filter(req => req.trim()),
+      chapters: chapters
     }
 
     updateCourseMutation.mutate(courseData)
@@ -248,35 +320,36 @@ export default function AdminCourseEdit() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Price (INR) *
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Board *
               </label>
-              <input
-                type="number"
-                name="price"
-                value={formData.price}
-                onChange={handleInputChange}
-                required
-                min="0"
-                step="0.01"
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="0.00"
-              />
+              <div className="space-y-2">
+                {['CBSE', 'ICSE', 'State Board', 'Other'].map(board => (
+                  <label key={board} className="flex items-center">
+                    <input
+                      type="checkbox"
+                      checked={formData.board.includes(board)}
+                      onChange={() => handleBoardChange(board)}
+                      className="mr-2"
+                    />
+                    {board}
+                  </label>
+                ))}
+              </div>
             </div>
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                Duration (weeks) *
+                Duration *
               </label>
               <input
-                type="number"
+                type="text"
                 name="duration"
                 value={formData.duration}
                 onChange={handleInputChange}
                 required
-                min="1"
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="12"
+                placeholder="12 weeks"
               />
             </div>
 
@@ -363,72 +436,84 @@ export default function AdminCourseEdit() {
           </div>
         </div>
 
-        {/* Topics and Tags */}
+        {/* Chapters */}
         <div className="bg-white rounded-lg shadow p-4">
-          <h2 className="text-lg font-semibold mb-3">Topics & Tags</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Topics (comma-separated)
-              </label>
-              <input
-                type="text"
-                name="topics"
-                value={formData.topics}
-                onChange={handleInputChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="Algebra, Geometry, Calculus"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Tags (comma-separated)
-              </label>
-              <input
-                type="text"
-                name="tags"
-                value={formData.tags}
-                onChange={handleInputChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="math, algebra, high-school"
-              />
-            </div>
-          </div>
-        </div>
-
-        {/* Learning Objectives */}
-        <div className="bg-white rounded-lg shadow p-4">
-          <h2 className="text-lg font-semibold mb-3">Learning Objectives</h2>
-          <div className="space-y-2">
-            {learningObjectives.map((objective, index) => (
-              <div key={index} className="flex items-center gap-2">
-                <input
-                  type="text"
-                  value={objective}
-                  onChange={(e) => updateObjective(index, e.target.value)}
-                  className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="Enter learning objective"
-                />
-                {learningObjectives.length > 1 && (
-                  <button
-                    type="button"
-                    onClick={() => removeObjective(index)}
-                    className="p-2 text-red-600 hover:text-red-800"
-                  >
-                    <X className="h-4 w-4" />
-                  </button>
-                )}
-              </div>
-            ))}
+          <div className="flex justify-between items-center mb-3">
+            <h2 className="text-lg font-semibold flex items-center">
+              <BookOpen className="h-5 w-5 mr-2" />
+              Chapters
+            </h2>
             <button
               type="button"
-              onClick={addObjective}
-              className="flex items-center text-blue-600 hover:text-blue-800"
+              onClick={() => handleOpenChapterModal()}
+              className="flex items-center px-3 py-1.5 bg-blue-600 text-white rounded-md hover:bg-blue-700"
             >
               <Plus className="h-4 w-4 mr-1" />
-              Add Objective
+              Add Chapter
             </button>
           </div>
+          
+          {chapters.length === 0 ? (
+            <div className="text-center py-8 text-gray-500">
+              <BookOpen className="h-12 w-12 mx-auto mb-2 text-gray-400" />
+              <p>No chapters added yet</p>
+              <p className="text-sm">Click "Add Chapter" to create your first chapter</p>
+            </div>
+          ) : (
+            <div className="overflow-x-auto">
+              <table className="min-w-full divide-y divide-gray-200">
+                <thead className="bg-gray-50">
+                  <tr>
+                    <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">#</th>
+                    <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Chapter Name</th>
+                    <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Topics</th>
+                    <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Objectives</th>
+                    <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Hours</th>
+                    <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                  </tr>
+                </thead>
+                <tbody className="bg-white divide-y divide-gray-200">
+                  {chapters.map((chapter, index) => (
+                    <tr key={index}>
+                      <td className="px-3 py-2 whitespace-nowrap text-sm text-gray-900">{index + 1}</td>
+                      <td className="px-3 py-2 text-sm text-gray-900">{chapter.name}</td>
+                      <td className="px-3 py-2 text-sm text-gray-500">
+                        <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800">
+                          {chapter.topics.filter(t => t.trim()).length} topics
+                        </span>
+                      </td>
+                      <td className="px-3 py-2 text-sm text-gray-500">
+                        <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800">
+                          {chapter.learningObjectives.filter(o => o.trim()).length} objectives
+                        </span>
+                      </td>
+                      <td className="px-3 py-2 whitespace-nowrap text-sm text-gray-900">{chapter.estimatedHours}h</td>
+                      <td className="px-3 py-2 whitespace-nowrap text-sm text-gray-500">
+                        <div className="flex items-center gap-2">
+                          <button
+                            type="button"
+                            onClick={() => handleOpenChapterModal(index)}
+                            className="text-blue-600 hover:text-blue-800"
+                            title="Edit chapter"
+                          >
+                            <Edit className="h-4 w-4" />
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => handleDeleteChapter(index)}
+                            className="text-red-600 hover:text-red-800"
+                            title="Delete chapter"
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
         </div>
 
         {/* Prerequisites */}
@@ -478,6 +563,137 @@ export default function AdminCourseEdit() {
           </button>
         </div>
       </form>
+
+      {/* Chapter Modal */}
+      <Modal
+        isOpen={showChapterModal}
+        onClose={handleCloseChapterModal}
+        title={editingChapterIndex !== null ? 'Edit Chapter' : 'Add Chapter'}
+      >
+        <div className="space-y-4">
+          {/* Chapter Name */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Chapter Name *
+            </label>
+            <input
+              type="text"
+              value={chapterForm.name}
+              onChange={(e) => setChapterForm({ ...chapterForm, name: e.target.value })}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="Enter chapter name"
+            />
+          </div>
+
+          {/* Topics */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Topics *
+            </label>
+            <div className="space-y-2">
+              {chapterForm.topics.map((topic, index) => (
+                <div key={index} className="flex items-center gap-2">
+                  <input
+                    type="text"
+                    value={topic}
+                    onChange={(e) => handleUpdateChapterArrayItem('topics', index, e.target.value)}
+                    className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="Enter topic"
+                  />
+                  {chapterForm.topics.length > 1 && (
+                    <button
+                      type="button"
+                      onClick={() => handleRemoveChapterArrayItem('topics', index)}
+                      className="p-2 text-red-600 hover:text-red-800"
+                    >
+                      <X className="h-4 w-4" />
+                    </button>
+                  )}
+                </div>
+              ))}
+              <button
+                type="button"
+                onClick={() => handleAddChapterArrayItem('topics')}
+                className="flex items-center text-blue-600 hover:text-blue-800 text-sm"
+              >
+                <Plus className="h-4 w-4 mr-1" />
+                Add Topic
+              </button>
+            </div>
+          </div>
+
+          {/* Learning Objectives */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Learning Objectives *
+            </label>
+            <div className="space-y-2">
+              {chapterForm.learningObjectives.map((objective, index) => (
+                <div key={index} className="flex items-center gap-2">
+                  <input
+                    type="text"
+                    value={objective}
+                    onChange={(e) => handleUpdateChapterArrayItem('learningObjectives', index, e.target.value)}
+                    className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="Enter learning objective"
+                  />
+                  {chapterForm.learningObjectives.length > 1 && (
+                    <button
+                      type="button"
+                      onClick={() => handleRemoveChapterArrayItem('learningObjectives', index)}
+                      className="p-2 text-red-600 hover:text-red-800"
+                    >
+                      <X className="h-4 w-4" />
+                    </button>
+                  )}
+                </div>
+              ))}
+              <button
+                type="button"
+                onClick={() => handleAddChapterArrayItem('learningObjectives')}
+                className="flex items-center text-blue-600 hover:text-blue-800 text-sm"
+              >
+                <Plus className="h-4 w-4 mr-1" />
+                Add Objective
+              </button>
+            </div>
+          </div>
+
+          {/* Estimated Hours */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Estimated Hours *
+            </label>
+            <input
+              type="number"
+              value={chapterForm.estimatedHours}
+              onChange={(e) => setChapterForm({ ...chapterForm, estimatedHours: parseInt(e.target.value) || 0 })}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="Enter estimated hours"
+              min="0"
+            />
+          </div>
+
+          {/* Modal Actions */}
+          <div className="flex justify-end gap-2 pt-4 border-t">
+            <button
+              type="button"
+              onClick={handleCloseChapterModal}
+              className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
+            >
+              Cancel
+            </button>
+            <button
+              type="button"
+              onClick={handleSaveChapter}
+              disabled={!chapterForm.name.trim() || chapterForm.topics.filter(t => t.trim()).length === 0 || chapterForm.learningObjectives.filter(o => o.trim()).length === 0}
+              className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {editingChapterIndex !== null ? 'Update Chapter' : 'Add Chapter'}
+            </button>
+          </div>
+        </div>
+      </Modal>
     </div>
   )
 }
