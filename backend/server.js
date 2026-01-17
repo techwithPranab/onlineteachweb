@@ -25,6 +25,7 @@ const quizRoutes = require('./routes/quiz.routes');
 const quizEvaluationRoutes = require('./routes/quizEvaluation.routes');
 const aiQuestionRoutes = require('./routes/aiQuestion.routes');
 const questionExportRoutes = require('./routes/questionExport.routes');
+const testRoutes = require('./routes/test.routes');
 
 const app = express();
 const server = http.createServer(app);
@@ -82,6 +83,7 @@ app.use('/api/quiz-evaluations', quizEvaluationRoutes);
 app.use('/api/ai', aiQuestionRoutes);
 app.use('/api/questions', questionExportRoutes); // Import/Export endpoints (merged with question routes)
 app.use('/api/notifications', require('./routes/notification.routes'));
+app.use('/api/test', testRoutes); // Test endpoints (no auth required)
 
 // Health check
 app.get('/health', (req, res) => {

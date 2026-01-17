@@ -1,0 +1,880 @@
+[
+  {
+    "title": "Grade 4 Mathematics - Number System and Place Value",
+    "description": "Foundation of number system including place value concepts up to ten thousands, number formation, and basic operations. This course covers reading and writing 4-digit numbers, comparing numbers, and understanding place value in Indian and International systems.",
+    "createdBy": "ADMIN_USER_ID_PLACEHOLDER",
+    "grade": 4,
+    "subject": "Mathematics",
+    "board": ["ICSE", "CBSE"],
+    "thumbnail": "",
+    "syllabus": [
+      "Reading and writing 4-digit numbers",
+      "Place value and face value up to ten thousands",
+      "Forming numbers using given digits",
+      "Comparing and ordering 4-digit numbers",
+      "Number line representation",
+      "Rounding off to nearest 10 and 100",
+      "Successor and predecessor",
+      "Expanded and standard form"
+    ],
+    "chapters": [
+      {
+        "name": "4-Digit Numbers",
+        "topics": [
+          "Reading numbers up to 9999",
+          "Writing numbers in words and figures",
+          "Place value: thousands, hundreds, tens, ones",
+          "Face value concept",
+          "Indian number system",
+          "International number system"
+        ],
+        "learningObjectives": [
+          "Read and write 4-digit numbers correctly",
+          "Identify place value of each digit",
+          "Understand face value vs place value",
+          "Convert between number words and figures"
+        ],
+        "estimatedHours": 5
+      },
+      {
+        "name": "Number Operations and Comparison",
+        "topics": [
+          "Forming largest and smallest numbers",
+          "Comparing numbers using symbols",
+          "Arranging numbers in ascending/descending order",
+          "Number line representation",
+          "Rounding off numbers",
+          "Finding successor and predecessor"
+        ],
+        "learningObjectives": [
+          "Form numbers systematically using digits",
+          "Compare and order numbers correctly",
+          "Use number line for visualization",
+          "Round numbers to nearest 10 and 100"
+        ],
+        "estimatedHours": 4
+      }
+    ],
+    "topics": ["4-Digit Numbers", "Place Value", "Number Formation", "Comparison", "Rounding"],
+    "duration": "3 weeks",
+    "estimatedHours": 9,
+    "level": "beginner",
+    "difficulty": 1,
+    "language": "English",
+    "prerequisites": ["Grade 3 Mathematics"],
+    "learningOutcomes": [
+      "Master 4-digit number concepts",
+      "Understand place value system",
+      "Develop number sense and comparison skills",
+      "Apply rounding in practical situations"
+    ],
+    "certificate": true,
+    "status": "published",
+    "enrollmentCount": 0,
+    "rating": 0,
+    "reviewCount": 0,
+    "totalRatings": 0,
+    "maxStudents": 50,
+    "tags": ["Mathematics", "Grade 4", "Number System", "ICSE", "CBSE", "Place Value"],
+    "isActive": true,
+    "reviews": []
+  },
+  {
+    "title": "Grade 4 Mathematics - Addition and Subtraction",
+    "description": "Master addition and subtraction of 3-4 digit numbers with and without regrouping. Learn different strategies, mental math techniques, and solve word problems involving real-life situations.",
+    "createdBy": "ADMIN_USER_ID_PLACEHOLDER",
+    "grade": 4,
+    "subject": "Mathematics",
+    "board": ["ICSE", "CBSE"],
+    "thumbnail": "",
+    "syllabus": [
+      "Addition of 3-4 digit numbers with regrouping",
+      "Subtraction of 3-4 digit numbers with regrouping",
+      "Properties of addition and subtraction",
+      "Mental addition and subtraction strategies",
+      "Word problems on addition and subtraction",
+      "Estimation and checking answers",
+      "Adding and subtracting using number line"
+    ],
+    "chapters": [
+      {
+        "name": "Addition",
+        "topics": [
+          "Addition without regrouping",
+          "Addition with regrouping (carrying)",
+          "Adding 3-digit and 4-digit numbers",
+          "Properties of addition (commutative, associative)",
+          "Mental addition strategies",
+          "Estimation in addition",
+          "Word problems on addition"
+        ],
+        "learningObjectives": [
+          "Add numbers with and without regrouping",
+          "Apply properties of addition",
+          "Use mental math strategies effectively",
+          "Solve addition word problems"
+        ],
+        "estimatedHours": 6
+      },
+      {
+        "name": "Subtraction",
+        "topics": [
+          "Subtraction without regrouping",
+          "Subtraction with regrouping (borrowing)",
+          "Subtracting from 3-digit and 4-digit numbers",
+          "Relationship between addition and subtraction",
+          "Mental subtraction strategies",
+          "Estimation in subtraction",
+          "Word problems on subtraction"
+        ],
+        "learningObjectives": [
+          "Subtract numbers with and without regrouping",
+          "Use inverse relationship to check answers",
+          "Apply mental subtraction techniques",
+          "Solve subtraction word problems"
+        ],
+        "estimatedHours": 6
+      }
+    ],
+    "topics": ["Addition", "Subtraction", "Regrouping", "Mental Math", "Word Problems", "Estimation"],
+    "duration": "4 weeks",
+    "estimatedHours": 12,
+    "level": "beginner",
+    "difficulty": 2,
+    "language": "English",
+    "prerequisites": ["Number System and Place Value"],
+    "learningOutcomes": [
+      "Perform addition and subtraction accurately",
+      "Apply mental math strategies",
+      "Solve real-world problems",
+      "Check answers using estimation"
+    ],
+    "certificate": true,
+    "status": "published",
+    "enrollmentCount": 0,
+    "rating": 0,
+    "reviewCount": 0,
+    "totalRatings": 0,
+    "maxStudents": 50,
+    "tags": ["Mathematics", "Grade 4", "Addition", "Subtraction", "ICSE", "CBSE"],
+    "isActive": true,
+    "reviews": []
+  },
+  {
+    "title": "Grade 4 Mathematics - Multiplication and Division",
+    "description": "Learn multiplication and division concepts, tables, long multiplication and division methods. Master multiplication tables up to 12, understand the relationship between operations, and solve practical problems.",
+    "createdBy": "ADMIN_USER_ID_PLACEHOLDER",
+    "grade": 4,
+    "subject": "Mathematics",
+    "board": ["ICSE", "CBSE"],
+    "thumbnail": "",
+    "syllabus": [
+      "Multiplication tables up to 12",
+      "Multiplication of 2-digit by 1-digit numbers",
+      "Multiplication of 2-digit by 2-digit numbers",
+      "Long multiplication method",
+      "Division as repeated subtraction",
+      "Division with and without remainder",
+      "Long division method",
+      "Relationship between multiplication and division"
+    ],
+    "chapters": [
+      {
+        "name": "Multiplication",
+        "topics": [
+          "Multiplication tables 1-12",
+          "Multiplication as repeated addition",
+          "Multiplying 2-digit by 1-digit",
+          "Multiplying 2-digit by 2-digit",
+          "Long multiplication method",
+          "Properties of multiplication",
+          "Word problems on multiplication",
+          "Estimation in multiplication"
+        ],
+        "learningObjectives": [
+          "Master multiplication tables fluently",
+          "Multiply larger numbers using algorithms",
+          "Apply multiplication in real situations",
+          "Estimate products for reasonableness"
+        ],
+        "estimatedHours": 8
+      },
+      {
+        "name": "Division",
+        "topics": [
+          "Division as sharing and grouping",
+          "Division facts from multiplication tables",
+          "Division with single-digit divisor",
+          "Division with remainder",
+          "Long division method",
+          "Checking division using multiplication",
+          "Word problems on division",
+          "Estimation in division"
+        ],
+        "learningObjectives": [
+          "Understand division concepts clearly",
+          "Perform division with and without remainder",
+          "Use long division algorithm",
+          "Check division answers using multiplication"
+        ],
+        "estimatedHours": 7
+      }
+    ],
+    "topics": ["Multiplication", "Division", "Tables", "Long Division", "Remainder", "Word Problems"],
+    "duration": "5 weeks",
+    "estimatedHours": 15,
+    "level": "intermediate",
+    "difficulty": 2,
+    "language": "English",
+    "prerequisites": ["Addition and Subtraction"],
+    "learningOutcomes": [
+      "Master multiplication and division operations",
+      "Memorize multiplication tables up to 12",
+      "Solve complex word problems",
+      "Apply operations in daily life situations"
+    ],
+    "certificate": true,
+    "status": "published",
+    "enrollmentCount": 0,
+    "rating": 0,
+    "reviewCount": 0,
+    "totalRatings": 0,
+    "maxStudents": 50,
+    "tags": ["Mathematics", "Grade 4", "Multiplication", "Division", "Tables", "ICSE", "CBSE"],
+    "isActive": true,
+    "reviews": []
+  },
+  {
+    "title": "Grade 4 Mathematics - Factors and Multiples",
+    "description": "Introduction to factors and multiples, understanding prime and composite numbers, and basic concepts that form foundation for advanced number theory in higher grades.",
+    "createdBy": "ADMIN_USER_ID_PLACEHOLDER",
+    "grade": 4,
+    "subject": "Mathematics",
+    "board": ["ICSE", "CBSE"],
+    "thumbnail": "",
+    "syllabus": [
+      "Understanding factors of numbers",
+      "Finding multiples of single-digit numbers",
+      "Even and odd numbers",
+      "Prime numbers up to 20",
+      "Composite numbers",
+      "Common factors and common multiples",
+      "Skip counting patterns",
+      "Number patterns and sequences"
+    ],
+    "chapters": [
+      {
+        "name": "Factors and Multiples",
+        "topics": [
+          "What are factors?",
+          "Finding factors of numbers up to 50",
+          "What are multiples?",
+          "Finding multiples of numbers 1-10",
+          "Factor pairs",
+          "Common factors",
+          "Common multiples"
+        ],
+        "learningObjectives": [
+          "Identify factors of given numbers",
+          "List multiples of single-digit numbers",
+          "Find factor pairs systematically",
+          "Understand relationship between factors and multiples"
+        ],
+        "estimatedHours": 4
+      },
+      {
+        "name": "Prime and Composite Numbers",
+        "topics": [
+          "Even and odd numbers",
+          "Prime numbers (introduction)",
+          "Composite numbers (introduction)",
+          "Identifying prime numbers up to 20",
+          "Number patterns",
+          "Skip counting by 2s, 5s, 10s",
+          "Simple number sequences"
+        ],
+        "learningObjectives": [
+          "Distinguish between even and odd numbers",
+          "Identify prime and composite numbers up to 20",
+          "Recognize number patterns",
+          "Continue simple sequences"
+        ],
+        "estimatedHours": 3
+      }
+    ],
+    "topics": ["Factors", "Multiples", "Prime Numbers", "Composite Numbers", "Patterns", "Even-Odd"],
+    "duration": "2 weeks",
+    "estimatedHours": 7,
+    "level": "intermediate",
+    "difficulty": 2,
+    "language": "English",
+    "prerequisites": ["Multiplication and Division"],
+    "learningOutcomes": [
+      "Understand basic concepts of factors and multiples",
+      "Identify prime and composite numbers",
+      "Recognize number patterns",
+      "Develop foundation for advanced number theory"
+    ],
+    "certificate": true,
+    "status": "published",
+    "enrollmentCount": 0,
+    "rating": 0,
+    "reviewCount": 0,
+    "totalRatings": 0,
+    "maxStudents": 50,
+    "tags": ["Mathematics", "Grade 4", "Factors", "Multiples", "Prime Numbers", "ICSE", "CBSE"],
+    "isActive": true,
+    "reviews": []
+  },
+  {
+    "title": "Grade 4 Mathematics - Fractions",
+    "description": "Introduction to fractions, understanding parts of a whole, proper fractions, and basic operations. Learn to identify, compare, and perform simple operations on fractions with visual aids and real-life examples.",
+    "createdBy": "ADMIN_USER_ID_PLACEHOLDER",
+    "grade": 4,
+    "subject": "Mathematics",
+    "board": ["ICSE", "CBSE"],
+    "thumbnail": "",
+    "syllabus": [
+      "Understanding fractions as parts of a whole",
+      "Proper fractions and unit fractions",
+      "Reading and writing fractions",
+      "Fractions on number line",
+      "Equivalent fractions (basic)",
+      "Comparing fractions with same denominator",
+      "Addition of fractions with same denominator",
+      "Subtraction of fractions with same denominator"
+    ],
+    "chapters": [
+      {
+        "name": "Introduction to Fractions",
+        "topics": [
+          "Fractions as parts of a whole",
+          "Numerator and denominator",
+          "Unit fractions (1/2, 1/3, 1/4, etc.)",
+          "Proper fractions",
+          "Reading and writing fractions",
+          "Fractions in daily life",
+          "Visual representation of fractions"
+        ],
+        "learningObjectives": [
+          "Understand concept of fractions",
+          "Identify numerator and denominator",
+          "Read and write fractions correctly",
+          "Relate fractions to real-life situations"
+        ],
+        "estimatedHours": 5
+      },
+      {
+        "name": "Working with Fractions",
+        "topics": [
+          "Fractions on number line",
+          "Equivalent fractions (simple cases)",
+          "Comparing fractions with same denominator",
+          "Ordering fractions",
+          "Addition of like fractions",
+          "Subtraction of like fractions",
+          "Word problems on fractions"
+        ],
+        "learningObjectives": [
+          "Represent fractions on number line",
+          "Compare and order simple fractions",
+          "Add and subtract like fractions",
+          "Solve basic fraction word problems"
+        ],
+        "estimatedHours": 6
+      }
+    ],
+    "topics": ["Fractions", "Parts of Whole", "Equivalent Fractions", "Comparison", "Addition", "Subtraction"],
+    "duration": "3 weeks",
+    "estimatedHours": 11,
+    "level": "intermediate",
+    "difficulty": 2,
+    "language": "English",
+    "prerequisites": ["Multiplication and Division"],
+    "learningOutcomes": [
+      "Understand fraction concepts thoroughly",
+      "Perform basic operations on fractions",
+      "Apply fractions in practical situations",
+      "Build foundation for advanced fraction work"
+    ],
+    "certificate": true,
+    "status": "published",
+    "enrollmentCount": 0,
+    "rating": 0,
+    "reviewCount": 0,
+    "totalRatings": 0,
+    "maxStudents": 50,
+    "tags": ["Mathematics", "Grade 4", "Fractions", "Parts of Whole", "ICSE", "CBSE"],
+    "isActive": true,
+    "reviews": []
+  },
+  {
+    "title": "Grade 4 Mathematics - Decimals",
+    "description": "Introduction to decimal numbers, understanding tenths and hundredths, place value in decimals, and basic operations. Learn to read, write, and work with decimal numbers in practical contexts.",
+    "createdBy": "ADMIN_USER_ID_PLACEHOLDER",
+    "grade": 4,
+    "subject": "Mathematics",
+    "board": ["ICSE", "CBSE"],
+    "thumbnail": "",
+    "syllabus": [
+      "Introduction to decimal numbers",
+      "Place value in decimals (tenths, hundredths)",
+      "Reading and writing decimals",
+      "Decimals and fractions relationship",
+      "Comparing decimals",
+      "Addition of decimals (simple)",
+      "Subtraction of decimals (simple)",
+      "Money and decimals"
+    ],
+    "chapters": [
+      {
+        "name": "Understanding Decimals",
+        "topics": [
+          "What are decimal numbers?",
+          "Decimal point and place value",
+          "Tenths place",
+          "Hundredths place",
+          "Reading decimal numbers",
+          "Writing decimal numbers",
+          "Decimal and fraction relationship"
+        ],
+        "learningObjectives": [
+          "Understand decimal number system",
+          "Identify place values in decimals",
+          "Read and write decimals correctly",
+          "Connect decimals with fractions"
+        ],
+        "estimatedHours": 4
+      },
+      {
+        "name": "Working with Decimals",
+        "topics": [
+          "Comparing decimal numbers",
+          "Ordering decimals",
+          "Adding decimals (tenths)",
+          "Subtracting decimals (tenths)",
+          "Money as decimals",
+          "Practical applications of decimals",
+          "Simple word problems"
+        ],
+        "learningObjectives": [
+          "Compare and order decimal numbers",
+          "Perform basic operations on decimals",
+          "Apply decimals in money context",
+          "Solve simple decimal problems"
+        ],
+        "estimatedHours": 5
+      }
+    ],
+    "topics": ["Decimals", "Place Value", "Tenths", "Hundredths", "Money", "Comparison"],
+    "duration": "2 weeks",
+    "estimatedHours": 9,
+    "level": "intermediate",
+    "difficulty": 2,
+    "language": "English",
+    "prerequisites": ["Fractions"],
+    "learningOutcomes": [
+      "Master basic decimal concepts",
+      "Perform simple operations on decimals",
+      "Apply decimals in money calculations",
+      "Prepare for advanced decimal work"
+    ],
+    "certificate": true,
+    "status": "published",
+    "enrollmentCount": 0,
+    "rating": 0,
+    "reviewCount": 0,
+    "totalRatings": 0,
+    "maxStudents": 50,
+    "tags": ["Mathematics", "Grade 4", "Decimals", "Money", "Place Value", "ICSE", "CBSE"],
+    "isActive": true,
+    "reviews": []
+  },
+  {
+    "title": "Grade 4 Mathematics - Measurement",
+    "description": "Comprehensive study of measurement including length, weight, capacity, and time. Learn standard units, conversions, and practical applications in daily life situations.",
+    "createdBy": "ADMIN_USER_ID_PLACEHOLDER",
+    "grade": 4,
+    "subject": "Mathematics",
+    "board": ["ICSE", "CBSE"],
+    "thumbnail": "",
+    "syllabus": [
+      "Units of length (mm, cm, m, km)",
+      "Units of weight (g, kg)",
+      "Units of capacity (ml, l)",
+      "Time and calendar",
+      "Conversion between units",
+      "Perimeter of simple shapes",
+      "Area (introduction)",
+      "Measurement word problems"
+    ],
+    "chapters": [
+      {
+        "name": "Length and Distance",
+        "topics": [
+          "Standard units: millimeter, centimeter, meter, kilometer",
+          "Choosing appropriate units",
+          "Converting between units of length",
+          "Measuring with ruler and measuring tape",
+          "Estimating lengths",
+          "Perimeter of rectangles and squares",
+          "Word problems on length"
+        ],
+        "learningObjectives": [
+          "Use appropriate units for measuring length",
+          "Convert between different units of length",
+          "Calculate perimeter of simple shapes",
+          "Solve measurement problems accurately"
+        ],
+        "estimatedHours": 5
+      },
+      {
+        "name": "Weight, Capacity, and Time",
+        "topics": [
+          "Units of weight: gram and kilogram",
+          "Converting between g and kg",
+          "Units of capacity: milliliter and liter",
+          "Converting between ml and l",
+          "Reading time on analog and digital clocks",
+          "Calendar and dates",
+          "Duration and elapsed time",
+          "Word problems on measurement"
+        ],
+        "learningObjectives": [
+          "Use correct units for weight and capacity",
+          "Convert between metric units",
+          "Tell time and calculate duration",
+          "Apply measurement in real situations"
+        ],
+        "estimatedHours": 6
+      },
+      {
+        "name": "Area and Practical Applications",
+        "topics": [
+          "Introduction to area concept",
+          "Area using unit squares",
+          "Area of rectangles (length × width)",
+          "Comparing areas",
+          "Practical measurement activities",
+          "Real-life measurement problems",
+          "Estimation skills"
+        ],
+        "learningObjectives": [
+          "Understand concept of area",
+          "Calculate area using simple methods",
+          "Apply measurement in practical situations",
+          "Develop estimation skills"
+        ],
+        "estimatedHours": 4
+      }
+    ],
+    "topics": ["Measurement", "Length", "Weight", "Capacity", "Time", "Perimeter", "Area"],
+    "duration": "4 weeks",
+    "estimatedHours": 15,
+    "level": "intermediate",
+    "difficulty": 2,
+    "language": "English",
+    "prerequisites": ["Decimals"],
+    "learningOutcomes": [
+      "Master various units of measurement",
+      "Perform unit conversions accurately",
+      "Calculate perimeter and basic area",
+      "Apply measurement skills practically"
+    ],
+    "certificate": true,
+    "status": "published",
+    "enrollmentCount": 0,
+    "rating": 0,
+    "reviewCount": 0,
+    "totalRatings": 0,
+    "maxStudents": 50,
+    "tags": ["Mathematics", "Grade 4", "Measurement", "Units", "Conversion", "ICSE", "CBSE"],
+    "isActive": true,
+    "reviews": []
+  },
+  {
+    "title": "Grade 4 Mathematics - Geometry",
+    "description": "Explore geometric shapes, their properties, symmetry, and basic constructions. Learn about 2D and 3D shapes, lines, angles, and develop spatial reasoning skills through hands-on activities.",
+    "createdBy": "ADMIN_USER_ID_PLACEHOLDER",
+    "grade": 4,
+    "subject": "Mathematics",
+    "board": ["ICSE", "CBSE"],
+    "thumbnail": "",
+    "syllabus": [
+      "2D shapes and their properties",
+      "3D shapes and their properties",
+      "Lines: straight, curved, parallel, intersecting",
+      "Angles: right angle, acute angle, obtuse angle",
+      "Symmetry in shapes",
+      "Basic constructions with ruler and compass",
+      "Patterns and tessellations",
+      "Spatial reasoning activities"
+    ],
+    "chapters": [
+      {
+        "name": "2D and 3D Shapes",
+        "topics": [
+          "2D shapes: triangle, quadrilateral, circle",
+          "Properties of triangles and quadrilaterals",
+          "Regular and irregular shapes",
+          "3D shapes: cube, cuboid, sphere, cylinder, cone",
+          "Faces, edges, and vertices",
+          "Nets of 3D shapes",
+          "Real-life examples of shapes"
+        ],
+        "learningObjectives": [
+          "Identify and classify 2D and 3D shapes",
+          "Understand properties of shapes",
+          "Count faces, edges, and vertices",
+          "Relate shapes to real-world objects"
+        ],
+        "estimatedHours": 6
+      },
+      {
+        "name": "Lines and Angles",
+        "topics": [
+          "Straight lines and curved lines",
+          "Parallel lines and intersecting lines",
+          "Perpendicular lines",
+          "Introduction to angles",
+          "Right angles",
+          "Acute and obtuse angles",
+          "Angles in shapes",
+          "Using protractor (basic)"
+        ],
+        "learningObjectives": [
+          "Identify different types of lines",
+          "Recognize parallel and perpendicular lines",
+          "Understand angle concepts",
+          "Measure angles using protractor"
+        ],
+        "estimatedHours": 4
+      },
+      {
+        "name": "Symmetry and Patterns",
+        "topics": [
+          "Line symmetry",
+          "Symmetrical shapes",
+          "Creating symmetrical patterns",
+          "Tessellations and tiling patterns",
+          "Geometric patterns in art",
+          "Basic constructions",
+          "Drawing shapes accurately"
+        ],
+        "learningObjectives": [
+          "Identify lines of symmetry",
+          "Create symmetrical designs",
+          "Recognize and create patterns",
+          "Draw geometric shapes accurately"
+        ],
+        "estimatedHours": 4
+      }
+    ],
+    "topics": ["Geometry", "2D Shapes", "3D Shapes", "Lines", "Angles", "Symmetry", "Patterns"],
+    "duration": "4 weeks",
+    "estimatedHours": 14,
+    "level": "intermediate",
+    "difficulty": 2,
+    "language": "English",
+    "prerequisites": ["Measurement"],
+    "learningOutcomes": [
+      "Identify and classify geometric shapes",
+      "Understand properties of shapes and angles",
+      "Develop spatial reasoning skills",
+      "Apply geometric concepts in art and design"
+    ],
+    "certificate": true,
+    "status": "published",
+    "enrollmentCount": 0,
+    "rating": 0,
+    "reviewCount": 0,
+    "totalRatings": 0,
+    "maxStudents": 50,
+    "tags": ["Mathematics", "Grade 4", "Geometry", "Shapes", "Symmetry", "ICSE", "CBSE"],
+    "isActive": true,
+    "reviews": []
+  },
+  {
+    "title": "Grade 4 Mathematics - Data Handling",
+    "description": "Introduction to data collection, organization, and representation. Learn to create and interpret pictographs, bar graphs, and tables. Develop skills in data analysis and drawing conclusions.",
+    "createdBy": "ADMIN_USER_ID_PLACEHOLDER",
+    "grade": 4,
+    "subject": "Mathematics",
+    "board": ["ICSE", "CBSE"],
+    "thumbnail": "",
+    "syllabus": [
+      "Collecting and organizing data",
+      "Tally marks and frequency tables",
+      "Pictographs and bar graphs",
+      "Reading and interpreting graphs",
+      "Simple probability concepts",
+      "Surveys and questionnaires",
+      "Drawing conclusions from data",
+      "Real-life data applications"
+    ],
+    "chapters": [
+      {
+        "name": "Data Collection and Organization",
+        "topics": [
+          "What is data?",
+          "Collecting data through surveys",
+          "Organizing data in tables",
+          "Tally marks",
+          "Frequency tables",
+          "Sorting and grouping data",
+          "Simple questionnaires"
+        ],
+        "learningObjectives": [
+          "Understand the concept of data",
+          "Collect data systematically",
+          "Organize data using tally marks",
+          "Create frequency tables"
+        ],
+        "estimatedHours": 4
+      },
+      {
+        "name": "Data Representation",
+        "topics": [
+          "Pictographs with symbols",
+          "Reading pictographs",
+          "Creating simple bar graphs",
+          "Reading bar graphs",
+          "Comparing data from graphs",
+          "Drawing conclusions",
+          "Real-life applications"
+        ],
+        "learningObjectives": [
+          "Create and interpret pictographs",
+          "Draw and read bar graphs",
+          "Compare data effectively",
+          "Draw logical conclusions from data"
+        ],
+        "estimatedHours": 5
+      },
+      {
+        "name": "Simple Probability",
+        "topics": [
+          "Certain, possible, and impossible events",
+          "Likelihood of events",
+          "Simple probability experiments",
+          "Recording outcomes",
+          "Making predictions",
+          "Games involving chance",
+          "Fair and unfair situations"
+        ],
+        "learningObjectives": [
+          "Understand basic probability concepts",
+          "Identify certain, possible, impossible events",
+          "Conduct simple probability experiments",
+          "Make reasonable predictions"
+        ],
+        "estimatedHours": 3
+      }
+    ],
+    "topics": ["Data Handling", "Pictographs", "Bar Graphs", "Probability", "Surveys", "Tables"],
+    "duration": "3 weeks",
+    "estimatedHours": 12,
+    "level": "intermediate",
+    "difficulty": 2,
+    "language": "English",
+    "prerequisites": ["Geometry"],
+    "learningOutcomes": [
+      "Collect and organize data effectively",
+      "Create and interpret various graphs",
+      "Understand basic probability concepts",
+      "Apply data skills in real situations"
+    ],
+    "certificate": true,
+    "status": "published",
+    "enrollmentCount": 0,
+    "rating": 0,
+    "reviewCount": 0,
+    "totalRatings": 0,
+    "maxStudents": 50,
+    "tags": ["Mathematics", "Grade 4", "Data Handling", "Graphs", "Probability", "ICSE", "CBSE"],
+    "isActive": true,
+    "reviews": []
+  },
+  {
+    "title": "Grade 4 Mathematics - Money and Practical Mathematics",
+    "description": "Learn about money calculations, profit and loss concepts, simple interest, and practical applications of mathematics in daily life. Develop financial literacy and problem-solving skills.",
+    "createdBy": "ADMIN_USER_ID_PLACEHOLDER",
+    "grade": 4,
+    "subject": "Mathematics",
+    "board": ["ICSE", "CBSE"],
+    "thumbnail": "",
+    "syllabus": [
+      "Money: rupees and paisa",
+      "Addition and subtraction of money",
+      "Multiplication and division of money",
+      "Making change calculations",
+      "Simple profit and loss",
+      "Unitary method (introduction)",
+      "Word problems involving money",
+      "Practical applications"
+    ],
+    "chapters": [
+      {
+        "name": "Money Calculations",
+        "topics": [
+          "Indian currency: rupees and paisa",
+          "Converting between rupees and paisa",
+          "Addition of money amounts",
+          "Subtraction of money amounts",
+          "Multiplication of money by numbers",
+          "Division of money by numbers",
+          "Making change problems"
+        ],
+        "learningObjectives": [
+          "Perform operations with money accurately",
+          "Convert between rupees and paisa",
+          "Calculate change in purchases",
+          "Solve money-related word problems"
+        ],
+        "estimatedHours": 5
+      },
+      {
+        "name": "Practical Applications",
+        "topics": [
+          "Shopping and billing",
+          "Simple profit and loss",
+          "Cost price and selling price",
+          "Introduction to unitary method",
+          "Time and work problems (simple)",
+          "Distance and speed (basic)",
+          "Real-life problem solving"
+        ],
+        "learningObjectives": [
+          "Apply mathematics in shopping situations",
+          "Understand basic profit and loss",
+          "Use unitary method for simple problems",
+          "Solve practical mathematical problems"
+        ],
+        "estimatedHours": 6
+      }
+    ],
+    "topics": ["Money", "Profit Loss", "Unitary Method", "Shopping", "Change", "Practical Math"],
+    "duration": "3 weeks",
+    "estimatedHours": 11,
+    "level": "intermediate",
+    "difficulty": 2,
+    "language": "English",
+    "prerequisites": ["Data Handling"],
+    "learningOutcomes": [
+      "Master money calculations and conversions",
+      "Understand basic business mathematics",
+      "Apply mathematics in daily life",
+      "Develop financial literacy skills"
+    ],
+    "certificate": true,
+    "status": "published",
+    "enrollmentCount": 0,
+    "rating": 0,
+    "reviewCount": 0,
+    "totalRatings": 0,
+    "maxStudents": 50,
+    "tags": ["Mathematics", "Grade 4", "Money", "Practical Math", "Financial Literacy", "ICSE", "CBSE"],
+    "isActive": true,
+    "reviews": []
+  }
+]

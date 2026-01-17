@@ -304,6 +304,14 @@ class QuestionValidator {
       tags: Array.isArray(question.tags) ? question.tags.map(t => t.trim()) : []
     };
     
+    // Preserve required fields from Question model
+    if (question.correctAnswer) {
+      sanitized.correctAnswer = question.correctAnswer.trim();
+    }
+    if (question.chapterName) {
+      sanitized.chapterName = question.chapterName.trim();
+    }
+    
     // Type-specific fields
     if (question.options) {
       sanitized.options = question.options.map(opt => ({

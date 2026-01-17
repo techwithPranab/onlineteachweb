@@ -56,13 +56,7 @@ const generateQuestionsValidation = [
   body('sources.*')
     .optional()
     .isIn(['syllabus', 'materials', 'external'])
-    .withMessage('Invalid source type'),
-  
-  body('providerName')
-    .optional()
-    .isString()
-    .trim()
-    .withMessage('providerName must be a string')
+    .withMessage('Invalid source type')
 ];
 
 const getDraftsValidation = [

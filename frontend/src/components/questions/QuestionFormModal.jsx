@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react'
+import { useQuery } from 'react-query'
 import Modal from '../common/Modal'
+import { questionService } from '@/services/apiServices'
 
 const QUESTION_TYPES = [
   { value: 'mcq-single', label: 'Multiple Choice (Single Answer)', hasOptions: true },
@@ -27,6 +29,8 @@ export default function QuestionFormModal({
 }) {
   const [formData, setFormData] = useState({
     courseId: defaultCourseId,
+    chapterId: '',
+    chapterName: '',
     topic: '',
     difficultyLevel: 'medium',
     type: 'mcq-single',
@@ -53,6 +57,31 @@ export default function QuestionFormModal({
   const [errors, setErrors] = useState({})
   const [tagInput, setTagInput] = useState('')
   const [keywordInput, setKeywordInput] = useState('')
+  const [chapters, setChapters] = useState([])
+  const [topics, setTopics] = useState([])
+
+  // Fetch courses if not provided
+  const { data: coursesData, isLoading: loadingCourses } = useQuery(
+    'courses',
+    () => questionService.getCourses(),
+    {
+      enabled: isOpen && courses.length === 0
+    }
+  )
+
+  const availableCourses = courses.length > 0 ? courses : (coursesData || [])
+
+  // Fetch course structure when courseId changes
+  const { data: courseStructure, isLoading: loadingStructure } = useQuery(
+    ['courseStructure', formData.courseId],
+    () => questionService.getCourseStructure(formData.courseId),
+    {
+      enabled: !!formData.courseId,
+      onSuccess: (data) => {
+        setChapters(data.chapters || [])
+      }
+    }
+  )
 
   useEffect(() => {
     if (question) {
@@ -63,11 +92,21 @@ export default function QuestionFormModal({
         keywords: question.keywords || [],
         tags: question.tags || []
       })
+      
+      // Set chapter and topics if editing
+      if (question.chapterId && chapters.length > 0) {
+        const chapter = chapters.find(c => c._id === question.chapterId)
+        if (chapter) {
+          setTopics(chapter.topics || [])
+        }
+      }
     } else {
       // Reset form for new question
       setFormData({
         ...formData,
         courseId: defaultCourseId,
+        chapterId: '',
+        chapterName: '',
         topic: '',
         text: '',
         options: [
@@ -77,14 +116,53 @@ export default function QuestionFormModal({
           { text: '', isCorrect: false, explanation: '' }
         ]
       })
+      setTopics([])
     }
-  }, [question, defaultCourseId, isOpen])
+  }, [question, defaultCourseId, isOpen, chapters])
 
   const handleChange = (field, value) => {
-    setFormData(prev => ({ ...prev, [field]: value }))
+    let updatedFormData = { ...formData, [field]: value }
+    
     if (errors[field]) {
       setErrors(prev => ({ ...prev, [field]: null }))
     }
+    
+    // Handle chapter change - populate topics
+    if (field === 'chapterId') {
+      const selectedChapter = chapters.find(c => c._id === value)
+      if (selectedChapter) {
+        setTopics(selectedChapter.topics || [])
+        updatedFormData = {
+          ...updatedFormData,
+          chapterId: value,
+          chapterName: selectedChapter.name,
+          topic: '' // Reset topic when chapter changes
+        }
+      } else {
+        setTopics([])
+        updatedFormData = {
+          ...updatedFormData,
+          chapterId: '',
+          chapterName: '',
+          topic: ''
+        }
+      }
+    }
+    
+    // Handle course change - reset chapter and topic
+    if (field === 'courseId') {
+      setChapters([])
+      setTopics([])
+      updatedFormData = {
+        ...updatedFormData,
+        courseId: value,
+        chapterId: '',
+        chapterName: '',
+        topic: ''
+      }
+    }
+
+    setFormData(updatedFormData)
   }
 
   const handleOptionChange = (index, field, value) => {
@@ -157,6 +235,7 @@ export default function QuestionFormModal({
     const newErrors = {}
     
     if (!formData.courseId) newErrors.courseId = 'Course is required'
+    if (!formData.chapterId) newErrors.chapterId = 'Chapter is required'
     if (!formData.topic?.trim()) newErrors.topic = 'Topic is required'
     if (!formData.text?.trim()) newErrors.text = 'Question text is required'
     
@@ -234,10 +313,13 @@ export default function QuestionFormModal({
             <select
               value={formData.courseId}
               onChange={(e) => handleChange('courseId', e.target.value)}
+              disabled={loadingCourses}
               className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 ${errors.courseId ? 'border-red-500' : 'border-gray-300'}`}
             >
-              <option value="">Select Course</option>
-              {courses.map(course => (
+              <option value="">
+                {loadingCourses ? 'Loading courses...' : 'Select Course'}
+              </option>
+              {availableCourses.map(course => (
                 <option key={course._id} value={course._id}>{course.title}</option>
               ))}
             </select>
@@ -245,19 +327,48 @@ export default function QuestionFormModal({
           </div>
           
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Topic *</label>
-            <input
-              type="text"
-              value={formData.topic}
-              onChange={(e) => handleChange('topic', e.target.value)}
-              placeholder="e.g., Linear Equations"
-              className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 ${errors.topic ? 'border-red-500' : 'border-gray-300'}`}
-            />
-            {errors.topic && <p className="text-red-500 text-xs mt-1">{errors.topic}</p>}
+            <label className="block text-sm font-medium text-gray-700 mb-1">Chapter *</label>
+            <select
+              value={formData.chapterId}
+              onChange={(e) => handleChange('chapterId', e.target.value)}
+              disabled={!formData.courseId || loadingStructure}
+              className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 ${errors.chapterId ? 'border-red-500' : 'border-gray-300'} ${!formData.courseId ? 'bg-gray-100' : ''}`}
+            >
+              <option value="">
+                {loadingStructure ? 'Loading chapters...' : 'Select Chapter'}
+              </option>
+              {chapters.map(chapter => (
+                <option key={chapter._id} value={chapter._id}>{chapter.name}</option>
+              ))}
+            </select>
+            {errors.chapterId && <p className="text-red-500 text-xs mt-1">{errors.chapterId}</p>}
+            {!formData.courseId && <p className="text-gray-500 text-xs mt-1">Please select a course first</p>}
           </div>
         </div>
 
         <div className="grid grid-cols-2 gap-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Topic *</label>
+            <select
+              value={formData.topic}
+              onChange={(e) => handleChange('topic', e.target.value)}
+              disabled={!formData.chapterId}
+              className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 ${errors.topic ? 'border-red-500' : 'border-gray-300'} ${!formData.chapterId ? 'bg-gray-100' : ''}`}
+            >
+              <option value="">
+                {!formData.chapterId ? 'Select a chapter first' : 'Select Topic'}
+              </option>
+              {topics.map((topic, index) => (
+                <option key={index} value={topic}>{topic}</option>
+              ))}
+            </select>
+            {errors.topic && <p className="text-red-500 text-xs mt-1">{errors.topic}</p>}
+            {formData.chapterId && topics.length === 0 && (
+              <p className="text-amber-600 text-xs mt-1">No topics available for this chapter</p>
+            )}
+            {!formData.chapterId && <p className="text-gray-500 text-xs mt-1">Please select a chapter first</p>}
+          </div>
+
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Question Type *</label>
             <select
@@ -279,25 +390,25 @@ export default function QuestionFormModal({
               ))}
             </select>
           </div>
-          
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Difficulty *</label>
-            <div className="flex gap-2">
-              {DIFFICULTY_LEVELS.map(level => (
-                <button
-                  key={level.value}
-                  type="button"
-                  onClick={() => handleChange('difficultyLevel', level.value)}
-                  className={`flex-1 py-2 px-3 rounded-lg text-sm font-medium transition ${
-                    formData.difficultyLevel === level.value
-                      ? level.color + ' ring-2 ring-offset-2 ring-gray-400'
-                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                  }`}
-                >
-                  {level.label}
-                </button>
-              ))}
-            </div>
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Difficulty *</label>
+          <div className="flex gap-2">
+            {DIFFICULTY_LEVELS.map(level => (
+              <button
+                key={level.value}
+                type="button"
+                onClick={() => handleChange('difficultyLevel', level.value)}
+                className={`flex-1 py-2 px-3 rounded-lg text-sm font-medium transition ${
+                  formData.difficultyLevel === level.value
+                    ? level.color + ' ring-2 ring-offset-2 ring-gray-400'
+                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                }`}
+              >
+                {level.label}
+              </button>
+            ))}
           </div>
         </div>
 

@@ -12,7 +12,7 @@ import {
   Video,
   GraduationCap,
   CreditCard,
-  CheckSquare,
+  ClipboardCheck,
   DollarSign,
   Monitor,
   ClipboardList,
@@ -41,11 +41,19 @@ const tutorLinks = [
   { to: '/tutor/materials', icon: FileText, label: 'Materials' },
   { to: '/tutor/quizzes', icon: ClipboardList, label: 'Quizzes' },
   { to: '/tutor/questions', icon: HelpCircle, label: 'Question Bank' },
-  { to: '/tutor/ai-questions/generate', icon: Sparkles, label: 'AI Questions' },
+  // AI Questions submenu
+  {
+    type: 'group',
+    label: 'AI Questions',
+    items: [
+      { to: '/tutor/ai-questions/generate', icon: Sparkles, label: 'Generate Questions' },
+      { to: '/tutor/ai-questions/review', icon: ClipboardCheck, label: 'Review Questions' },
+    ]
+  },
   { to: '/tutor/questions/import-export', icon: ArrowUpDown, label: 'Import/Export' },
   { to: '/tutor/evaluate', icon: PenTool, label: 'Manual Evaluation' },
   { to: '/tutor/analytics', icon: TrendingUp, label: 'Quiz Analytics' },
-  { to: '/tutor/evaluation', icon: CheckSquare, label: 'Student Evaluation' },
+  { to: '/tutor/evaluation', icon: ClipboardCheck, label: 'Student Evaluation' },
   { to: '/tutor/profile', icon: Settings, label: 'Settings' },
 ]
 
@@ -61,7 +69,11 @@ const adminLinks = [
       { to: '/admin/courses', icon: BookOpen, label: 'Course Management' },
       { to: '/admin/quizzes', icon: ClipboardList, label: 'Quiz Management' },
       { to: '/admin/questions', icon: HelpCircle, label: 'Question Bank' },
-      { to: '/admin/ai-questions', icon: Sparkles, label: 'AI Questions' },
+      { to: '/admin/ai-questions/generate', icon: Sparkles, label: 'Generate Questions' },
+      { to: '/admin/ai-questions/review', icon: ClipboardCheck, label: 'Review Questions' },
+        
+      // AI Questions submenu
+     
     ]
   },
 

@@ -14,6 +14,8 @@ export default function QuestionBank() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [filters, setFilters] = useState({
+    grade: '',
+    subject: '',
     courseId: '',
     topic: '',
     difficultyLevel: '',
@@ -25,11 +27,26 @@ export default function QuestionBank() {
   const [editQuestion, setEditQuestion] = useState(null)
   const [deleteQuestion, setDeleteQuestion] = useState(null)
   const [topics, setTopics] = useState([])
+  const [grades, setGrades] = useState([])
+  const [subjects, setSubjects] = useState([])
+  const [filteredCourses, setFilteredCourses] = useState([])
 
   useEffect(() => {
-    fetchCourses()
+    fetchGrades()
     fetchQuestions()
   }, [filters])
+
+  useEffect(() => {
+    if (filters.grade) {
+      fetchSubjects()
+    }
+  }, [filters.grade])
+
+  useEffect(() => {
+    if (filters.grade && filters.subject) {
+      fetchCoursesByGradeAndSubject()
+    }
+  }, [filters.grade, filters.subject])
 
   useEffect(() => {
     if (filters.courseId) {
@@ -37,10 +54,28 @@ export default function QuestionBank() {
     }
   }, [filters.courseId])
 
-  const fetchCourses = async () => {
+  const fetchGrades = async () => {
     try {
-      const response = await courseService.getCourses()
-      setCourses(response.courses || [])
+      const response = await courseService.getGrades()
+      setGrades(response.grades || [])
+    } catch (err) {
+      console.error('Failed to load grades:', err)
+    }
+  }
+
+  const fetchSubjects = async () => {
+    try {
+      const response = await courseService.getSubjectsByGrade(filters.grade)
+      setSubjects(response.subjects || [])
+    } catch (err) {
+      console.error('Failed to load subjects:', err)
+    }
+  }
+
+  const fetchCoursesByGradeAndSubject = async () => {
+    try {
+      const response = await courseService.getCoursesByGradeAndSubject(filters.grade, filters.subject)
+      setFilteredCourses(response.courses || [])
     } catch (err) {
       console.error('Failed to load courses:', err)
     }
@@ -154,14 +189,42 @@ export default function QuestionBank() {
       <div className="bg-white rounded-lg shadow-sm p-4 mb-6">
         <div className="grid grid-cols-1 md:grid-cols-6 gap-4">
           <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Grade</label>
+            <select
+              value={filters.grade}
+              onChange={(e) => setFilters({ ...filters, grade: e.target.value, subject: '', courseId: '', topic: '' })}
+              className="w-full border border-gray-300 rounded-lg px-3 py-2"
+            >
+              <option value="">All Grades</option>
+              {grades.map(grade => (
+                <option key={grade} value={grade}>Grade {grade}</option>
+              ))}
+            </select>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Subject</label>
+            <select
+              value={filters.subject}
+              onChange={(e) => setFilters({ ...filters, subject: e.target.value, courseId: '', topic: '' })}
+              className="w-full border border-gray-300 rounded-lg px-3 py-2"
+              disabled={!filters.grade}
+            >
+              <option value="">All Subjects</option>
+              {subjects.map(subject => (
+                <option key={subject} value={subject}>{subject}</option>
+              ))}
+            </select>
+          </div>
+          <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Course</label>
             <select
               value={filters.courseId}
               onChange={(e) => setFilters({ ...filters, courseId: e.target.value, topic: '' })}
               className="w-full border border-gray-300 rounded-lg px-3 py-2"
+              disabled={!filters.subject}
             >
               <option value="">All Courses</option>
-              {courses.map(course => (
+              {filteredCourses.map(course => (
                 <option key={course._id} value={course._id}>{course.title}</option>
               ))}
             </select>

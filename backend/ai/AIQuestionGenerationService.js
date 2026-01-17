@@ -7,6 +7,7 @@ const MaterialExtractor = require('./ingestion/MaterialExtractor');
 const Course = require('../models/Course.model');
 const Material = require('../models/Material.model');
 const Question = require('../models/Question.model');
+const QuestionGeneration = require('../models/QuestionGeneration.model');
 const AIQuestionDraft = require('../models/AIQuestionDraft.model');
 const logger = require('../utils/logger');
 
@@ -35,8 +36,7 @@ class AIQuestionGenerationService {
     questionTypes = ['mcq-single'],
     questionsPerTopic = 5,
     sources = ['syllabus'],
-    userId,
-    providerName = null
+    userId
   }) {
     const startTime = Date.now();
     const jobId = this._generateJobId();
@@ -50,10 +50,8 @@ class AIQuestionGenerationService {
         throw new Error('Course not found');
       }
       
-      // 2. Get AI provider
-      const provider = providerName 
-        ? this.providerFactory.get(providerName)
-        : await this.providerFactory.getBestAvailable();
+      // 2. Get AI provider (always use best available from .env)
+      const provider = await this.providerFactory.getBestAvailable();
       
       logger.info(`Using AI provider: ${provider.getName()}`);
       
@@ -84,10 +82,15 @@ class AIQuestionGenerationService {
                 type,
                 count: questionsPerTopic,
                 content,
-                course
+                course,
+                courseId,
+                userId,
+                jobId
               });
               
-              allGeneratedQuestions.push(...generated);
+              if (generated && Array.isArray(generated)) {
+                allGeneratedQuestions.push(...generated);
+              }
             } catch (error) {
               logger.error(`Error generating ${type}/${difficulty} for topic ${topic}:`, error);
               errors.push({
@@ -122,6 +125,7 @@ class AIQuestionGenerationService {
       const drafts = await this._saveDrafts({
         questions: duplicateResults.uniqueQuestions,
         courseId,
+        course,
         userId,
         provider,
         jobId
@@ -159,15 +163,17 @@ class AIQuestionGenerationService {
   /**
    * Generate questions for a single combination
    */
-  async _generateForCombination({ provider, topic, difficulty, type, count, content, course }) {
+  async _generateForCombination({ provider, topic, difficulty, type, count, content, course, courseId, userId, jobId }) {
     const context = {
       grade: course.grade,
       subject: course.subject,
       board: course.board,
       learningObjectives: this._getLearningObjectives(course, topic)
     };
-    
-    const generated = await provider.generateQuestions({
+
+    // Import the prompt generator function to create prompts for logging
+    const { generateQuestionPrompt } = require('./prompts/questionPrompts');
+    const { systemPrompt, userPrompt } = generateQuestionPrompt({
       topic,
       content: content.combinedContent,
       difficultyLevel: difficulty,
@@ -175,8 +181,71 @@ class AIQuestionGenerationService {
       count,
       context
     });
+
+    const finalPrompt = `${systemPrompt}\n\n${userPrompt}`;
     
-    return generated;
+    // Create QuestionGeneration record before calling AI provider
+    let generationRecord = null;
+    try {
+      generationRecord = await QuestionGeneration.create({
+        courseId: courseId,
+        chapterId: course._id, // Using course ID as chapter ID for now
+        chapterName: course.title,
+        topic,
+        aiProvider: provider.getName(),
+        model: provider.model || 'unknown',
+        prompt: systemPrompt,
+        finalPrompt: finalPrompt,
+        generationParams: {
+          difficultyLevel: difficulty,
+          questionType: type,
+          count,
+          temperature: provider.temperatureSettings?.[difficulty] || 0.5,
+          maxTokens: (provider.maxTokenSettings?.[type] || 800) * count
+        },
+        status: 'pending',
+        generatedBy: userId || null
+      });
+      
+      logger.info(`Created QuestionGeneration record ${generationRecord._id} for ${topic} - ${difficulty} ${type}`);
+    } catch (error) {
+      logger.error(`Failed to create QuestionGeneration record: ${error.message}`);
+      // Continue with generation even if record creation fails
+    }
+    
+    try {
+      const generated = await provider.generateQuestions({
+        topic,
+        content: content.combinedContent,
+        difficultyLevel: difficulty,
+        questionType: type,
+        count,
+        context
+      });
+
+      // Update the generation record with success status
+      if (generationRecord) {
+        await QuestionGeneration.findByIdAndUpdate(generationRecord._id, {
+          status: 'success',
+          aiResponse: JSON.stringify(generated),
+          generatedQuestions: [], // Will be populated when questions are saved
+          tokensUsed: generated.tokensUsed || { prompt: 0, completion: 0, total: 0 }
+        });
+        logger.info(`Updated QuestionGeneration record ${generationRecord._id} with success status`);
+      }
+      
+      return generated;
+    } catch (error) {
+      // Update the generation record with error status
+      if (generationRecord) {
+        await QuestionGeneration.findByIdAndUpdate(generationRecord._id, {
+          status: 'failed',
+          errorMessage: error.message
+        });
+        logger.error(`Updated QuestionGeneration record ${generationRecord._id} with error: ${error.message}`);
+      }
+      throw error;
+    }
   }
 
   /**
@@ -260,16 +329,17 @@ class AIQuestionGenerationService {
   /**
    * Save questions as drafts
    */
-  async _saveDrafts({ questions, courseId, userId, provider, jobId }) {
+  async _saveDrafts({ questions, courseId, course, userId, provider, jobId }) {
     const drafts = [];
     
     for (const question of questions) {
       const draft = await AIQuestionDraft.create({
         courseId,
+        chapterName: course.title, // Store chapter name at draft level
         topic: question.topic,
         difficultyLevel: question.difficultyLevel,
         type: question.type,
-        questionPayload: question,
+        questionPayload: question, // Keep original question without chapter info
         sourceType: 'ai_generated',
         modelUsed: `${provider.getName()}/${provider.getVersion()}`,
         confidenceScore: question._metadata?.confidenceScore || 0.8,
@@ -340,9 +410,31 @@ class AIQuestionGenerationService {
     // Apply edits if provided
     let questionData = draft.questionPayload;
     if (edits) {
-      questionData = { ...questionData, ...edits };
+      // Preserve required fields if not explicitly provided in edits
+      const preservedFields = {};
+      if (edits.correctAnswer === undefined && questionData.correctAnswer) {
+        preservedFields.correctAnswer = questionData.correctAnswer;
+      }
       
-      // Re-validate after edits
+      questionData = { ...questionData, ...edits, ...preservedFields };
+    }
+    
+    // Ensure required fields are present BEFORE validation
+    // Generate correctAnswer from options if not present
+    if (!questionData.correctAnswer && questionData.options) {
+      const correctOption = questionData.options.find(opt => opt.isCorrect);
+      if (correctOption) {
+        questionData.correctAnswer = correctOption.text;
+      }
+    }
+    
+    // Use draft-level chapterName if question payload doesn't have it
+    if (!questionData.chapterName) {
+      questionData.chapterName = draft.chapterName; // Use chapterName from draft
+    }
+    
+    // Validate after ensuring all required fields are present
+    if (edits) {
       const validation = this.validator.validate(questionData);
       if (!validation.isValid) {
         throw new Error(`Validation failed after edits: ${validation.errors.join(', ')}`);
@@ -354,7 +446,7 @@ class AIQuestionGenerationService {
     const question = await Question.create({
       ...questionData,
       courseId: draft.courseId,
-      createdBy: userId,
+      createdBy: draft.modelUsed.split('/')[0], // Extract provider name from modelUsed
       isActive: true
     });
     

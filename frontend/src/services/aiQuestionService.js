@@ -104,6 +104,7 @@ const aiQuestionService = {
    */
   getProviderStatus: async () => {
     const response = await api.get('/ai/providers/status');
+    console.log('AI Provider Status:', response.data);
     return response.data;
   },
 

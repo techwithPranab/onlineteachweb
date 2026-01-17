@@ -23,6 +23,12 @@ const questionSchema = new mongoose.Schema({
     required: true,
     index: true
   },
+  chapterName: {
+    type: String,
+    required: true,
+    trim: true,
+    index: true
+  },
   topic: {
     type: String,
     required: true,
@@ -71,6 +77,12 @@ const questionSchema = new mongoose.Schema({
     type: String,
     trim: true
   },
+  // Correct answer text (normalized across all question types)
+  correctAnswer: {
+    type: String,
+    required: true,
+    trim: true
+  },
   // Keywords for auto-evaluation of short answers
   keywords: [{
     type: String,
@@ -103,8 +115,7 @@ const questionSchema = new mongoose.Schema({
     trim: true
   }],
   createdBy: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
+    type: String,
     required: true
   },
   isActive: {
@@ -140,20 +151,14 @@ questionSchema.virtual('successRate').get(function() {
 
 // Method to validate answer
 questionSchema.methods.validateAnswer = function(answer) {
+  if (!answer || !this.correctAnswer) return false;
+  
   switch (this.type) {
     case 'mcq-single':
-      const correctOption = this.options.find(opt => opt.isCorrect);
-      return correctOption && correctOption._id.toString() === answer;
-    
     case 'mcq-multiple':
-      const correctOptions = this.options.filter(opt => opt.isCorrect).map(opt => opt._id.toString());
-      const answerArray = Array.isArray(answer) ? answer : [answer];
-      return correctOptions.length === answerArray.length && 
-             correctOptions.every(opt => answerArray.includes(opt));
-    
     case 'true-false':
-      const tfCorrect = this.options.find(opt => opt.isCorrect);
-      return tfCorrect && tfCorrect.text.toLowerCase() === answer.toLowerCase();
+      // For MCQ questions, compare with the correct option text
+      return this.correctAnswer.toLowerCase() === answer.toLowerCase();
     
     case 'numerical':
       const numAnswer = parseFloat(answer);
@@ -163,11 +168,20 @@ questionSchema.methods.validateAnswer = function(answer) {
     case 'short-answer':
     case 'long-answer':
     case 'case-based':
-      // These require manual evaluation
-      return null;
+      // For text-based answers, use keyword matching or exact match
+      if (this.keywords && this.keywords.length > 0) {
+        const answerWords = answer.toLowerCase().split(/\s+/);
+        const matchedKeywords = this.keywords.filter(keyword => 
+          answerWords.some(word => word.includes(keyword.toLowerCase()))
+        );
+        return matchedKeywords.length > 0;
+      }
+      // Fallback to exact match with expected answer
+      return this.expectedAnswer && 
+             this.expectedAnswer.toLowerCase() === answer.toLowerCase();
     
     default:
-      return null;
+      return false;
   }
 };
 

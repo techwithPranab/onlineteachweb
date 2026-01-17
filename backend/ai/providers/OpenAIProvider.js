@@ -10,8 +10,8 @@ class OpenAIProvider extends AIProviderInterface {
   constructor(config = {}) {
     super();
     this.apiKey = config.apiKey || process.env.OPENAI_API_KEY;
-    this.model = config.model || process.env.OPENAI_MODEL || 'gpt-4-turbo-preview';
-    this.baseUrl = config.baseUrl || 'https://api.openai.com/v1';
+    this.model = config.model || process.env.OPENAI_MODEL || 'gpt-4.1-nano';
+    this.baseUrl = config.OPENAI_BASEURL || 'https://api.openai.com/v1';
     this.version = '1.0.0';
     
     // Temperature settings per difficulty (lower = more deterministic)
@@ -128,7 +128,7 @@ class OpenAIProvider extends AIProviderInterface {
       const questions = Array.isArray(parsed) ? parsed : (parsed.questions || [parsed]);
       
       // Add metadata and ensure correct answer is properly set
-      return questions.map(q => {
+      const result = questions.map(q => {
         // Ensure correctAnswer is set for MCQ questions
         if ((q.type?.startsWith('mcq') || q.type === 'true-false') && q.options) {
           const correctOption = q.options.find(opt => opt.isCorrect === true);
@@ -163,6 +163,9 @@ class OpenAIProvider extends AIProviderInterface {
           }
         };
       });
+
+      // Return result with final prompt
+      return result;
 
     } catch (error) {
       logger.error('OpenAI question generation failed:', error);

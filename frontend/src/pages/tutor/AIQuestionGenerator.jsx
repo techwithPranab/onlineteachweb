@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useQuery } from 'react-query'
 import aiQuestionService from '../../services/aiQuestionService'
-import { courseService } from '../../services/apiServices'
+import { courseService, questionService } from '../../services/apiServices'
 import LoadingSpinner from '../../components/common/LoadingSpinner'
 import ErrorMessage from '../../components/common/ErrorMessage'
 import Modal from '../../components/common/Modal'
@@ -18,7 +19,12 @@ export default function AIQuestionGenerator() {
 
   // Form state
   const [formData, setFormData] = useState({
+    grade: '',
+    subject: '',
     courseId: '',
+    chapterId: '',
+    chapterName: '',
+    topic: '',
     topics: [],
     difficultyLevels: ['easy', 'medium', 'hard'],
     questionTypes: ['mcq-single'],
@@ -26,52 +32,60 @@ export default function AIQuestionGenerator() {
     sources: ['syllabus']
   })
 
-  // Course details for topic selection
+  // Course details for cascading dropdowns
   const [selectedCourse, setSelectedCourse] = useState(null)
+  const [chapters, setChapters] = useState([])
   const [availableTopics, setAvailableTopics] = useState([])
+  const [grades, setGrades] = useState([])
+  const [subjects, setSubjects] = useState([])
+  const [filteredCourses, setFilteredCourses] = useState([])
 
-  useEffect(() => {
-    fetchCourses()
-  }, [])
-
-  useEffect(() => {
-    if (formData.courseId) {
-      fetchCourseDetails(formData.courseId)
-    }
-  }, [formData.courseId])
-
-  const fetchCourses = async () => {
-    try {
-      setLoading(true)
-      const response = await courseService.getCourses()
-      setCourses(response.courses || [])
-    } catch (err) {
-      setError('Failed to load courses')
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  const fetchCourseDetails = async (courseId) => {
-    try {
-      const response = await courseService.getCourseById(courseId)
-      const course = response.course
-      setSelectedCourse(course)
-      
-      // Extract topics from course
-      const topics = new Set()
-      if (course.topics) course.topics.forEach(t => topics.add(t))
-      if (course.chapters) {
-        course.chapters.forEach(ch => {
-          topics.add(ch.name)
-          if (ch.topics) ch.topics.forEach(t => topics.add(t))
-        })
+  // Fetch grades
+  const { data: gradesData, isLoading: loadingGrades } = useQuery(
+    'grades',
+    () => courseService.getGrades(),
+    {
+      onSuccess: (data) => {
+        setGrades(data.grades || [])
       }
-      setAvailableTopics(Array.from(topics))
-    } catch (err) {
-      console.error('Failed to fetch course details:', err)
     }
-  }
+  )
+
+  // Fetch subjects by grade
+  const { data: subjectsData, isLoading: loadingSubjects } = useQuery(
+    ['subjects', formData.grade],
+    () => courseService.getSubjectsByGrade(formData.grade),
+    {
+      enabled: !!formData.grade,
+      onSuccess: (data) => {
+        setSubjects(data.subjects || [])
+      }
+    }
+  )
+
+  // Fetch courses by grade and subject
+  const { data: coursesData, isLoading: loadingCourses } = useQuery(
+    ['courses', formData.grade, formData.subject],
+    () => courseService.getCoursesByGradeAndSubject(formData.grade, formData.subject),
+    {
+      enabled: !!formData.grade && !!formData.subject,
+      onSuccess: (data) => {
+        setFilteredCourses(data.courses || [])
+      }
+    }
+  )
+
+  // Fetch course structure when courseId changes
+  const { data: courseStructure, isLoading: loadingStructure } = useQuery(
+    ['courseStructure', formData.courseId],
+    () => questionService.getCourseStructure(formData.courseId),
+    {
+      enabled: !!formData.courseId,
+      onSuccess: (data) => {
+        setChapters(data.chapters || [])
+      }
+    }
+  )
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target
@@ -88,6 +102,70 @@ export default function AIQuestionGenerator() {
         ...prev,
         [name]: parseInt(value) || 1
       }))
+    } else if (name === 'grade') {
+      // Reset subject, course, chapter and topics when grade changes
+      setSubjects([])
+      setFilteredCourses([])
+      setChapters([])
+      setAvailableTopics([])
+      setFormData(prev => ({
+        ...prev,
+        grade: value,
+        subject: '',
+        courseId: '',
+        chapterId: '',
+        chapterName: '',
+        topic: '',
+        topics: []
+      }))
+    } else if (name === 'subject') {
+      // Reset course, chapter and topics when subject changes
+      setFilteredCourses([])
+      setChapters([])
+      setAvailableTopics([])
+      setFormData(prev => ({
+        ...prev,
+        subject: value,
+        courseId: '',
+        chapterId: '',
+        chapterName: '',
+        topic: '',
+        topics: []
+      }))
+    } else if (name === 'courseId') {
+      // Reset chapter and topics when course changes
+      setChapters([])
+      setAvailableTopics([])
+      setFormData(prev => ({
+        ...prev,
+        courseId: value,
+        chapterId: '',
+        chapterName: '',
+        topic: '',
+        topics: []
+      }))
+    } else if (name === 'chapterId') {
+      // Update topics when chapter changes
+      const selectedChapter = chapters.find(c => c._id === value)
+      if (selectedChapter) {
+        setAvailableTopics(selectedChapter.topics || [])
+        setFormData(prev => ({
+          ...prev,
+          chapterId: value,
+          chapterName: selectedChapter.name,
+          topic: '',
+          topics: []
+        }))
+      } else {
+        setAvailableTopics([])
+        setFormData(prev => ({
+          ...prev,
+          chapterId: '',
+          chapterName: '',
+          topic: '',
+          topics: []
+        }))
+      }
     } else {
       setFormData(prev => ({
         ...prev,
@@ -158,10 +236,10 @@ export default function AIQuestionGenerator() {
     { value: 'external', label: 'External Knowledge' }
   ]
 
-  if (loading && courses.length === 0) return <LoadingSpinner />
+  if (loadingCourses && courses.length === 0) return <LoadingSpinner />
 
   return (
-    <div className="p-6 max-w-4xl mx-auto">
+    <div className="p-6 w-full">
       {/* Header */}
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-3">
@@ -191,31 +269,111 @@ export default function AIQuestionGenerator() {
       {/* Configuration Form */}
       <div className="bg-white rounded-xl shadow-lg p-6 space-y-6">
         
-        {/* Course Selection */}
-        <div>
-          <label className="block text-sm font-semibold text-gray-700 mb-2">
-            Select Course *
-          </label>
-          <select
-            name="courseId"
-            value={formData.courseId}
-            onChange={handleInputChange}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          >
-            <option value="">-- Select a course --</option>
-            {courses.map(course => (
-              <option key={course._id} value={course._id}>
-                {course.title} (Grade {course.grade} - {course.subject})
-              </option>
-            ))}
-          </select>
-        </div>
-
-        {/* Topics Selection */}
-        {availableTopics.length > 0 && (
+        {/* Grade, Subject, Course Selection */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {/* Grade Selection */}
           <div>
             <label className="block text-sm font-semibold text-gray-700 mb-2">
-              Select Topics (leave empty for all)
+              Grade *
+            </label>
+            <select
+              name="grade"
+              value={formData.grade}
+              onChange={handleInputChange}
+              disabled={loadingGrades}
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            >
+              <option value="">
+                {loadingGrades ? 'Loading grades...' : '-- Select grade --'}
+              </option>
+              {grades.map(grade => (
+                <option key={grade} value={grade}>
+                  Grade {grade}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Subject Selection */}
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-2">
+              Subject *
+            </label>
+            <select
+              name="subject"
+              value={formData.subject}
+              onChange={handleInputChange}
+              disabled={!formData.grade || loadingSubjects}
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            >
+              <option value="">
+                {!formData.grade ? 'Select grade first' : loadingSubjects ? 'Loading subjects...' : '-- Select subject --'}
+              </option>
+              {subjects.map(subject => (
+                <option key={subject} value={subject}>
+                  {subject}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Course Selection */}
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-2">
+              Course *
+            </label>
+            <select
+              name="courseId"
+              value={formData.courseId}
+              onChange={handleInputChange}
+              disabled={!formData.subject || loadingCourses}
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            >
+              <option value="">
+                {!formData.subject ? 'Select subject first' : loadingCourses ? 'Loading courses...' : '-- Select course --'}
+              </option>
+              {filteredCourses.map(course => (
+                <option key={course._id} value={course._id}>
+                  {course.title}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+
+        {/* Chapter Selection */}
+        {formData.courseId && (
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-2">
+              Select Chapter *
+            </label>
+            <select
+              name="chapterId"
+              value={formData.chapterId}
+              onChange={handleInputChange}
+              disabled={loadingStructure}
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            >
+              <option value="">
+                {loadingStructure ? 'Loading chapters...' : '-- Select a chapter --'}
+              </option>
+              {chapters.map(chapter => (
+                <option key={chapter._id} value={chapter._id}>
+                  {chapter.name}
+                </option>
+              ))}
+            </select>
+            {!loadingStructure && chapters.length === 0 && (
+              <p className="text-amber-600 text-xs mt-1">No chapters available for this course</p>
+            )}
+          </div>
+        )}
+
+        {/* Topics Selection */}
+        {formData.chapterId && availableTopics.length > 0 && (
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-2">
+              Select Topics (leave empty for all topics in chapter)
             </label>
             <select
               multiple
@@ -234,7 +392,7 @@ export default function AIQuestionGenerator() {
             </select>
             <div className="flex items-center justify-between mt-2">
               <p className="text-xs text-gray-500">
-                {formData.topics.length > 0 ? `${formData.topics.length} topic(s) selected` : 'No topics selected (will use all)'}
+                {formData.topics.length > 0 ? `${formData.topics.length} topic(s) selected` : 'No topics selected (will use all topics in chapter)'}
               </p>
               <div className="flex gap-2">
                 <button
@@ -256,28 +414,81 @@ export default function AIQuestionGenerator() {
           </div>
         )}
 
-        {/* Difficulty Levels */}
-        <div>
-          <label className="block text-sm font-semibold text-gray-700 mb-2">
-            Difficulty Levels *
-          </label>
-          <div className="flex flex-wrap gap-4">
-            {difficultyLevels.map(level => (
-              <label 
-                key={level.value}
-                className="flex items-center gap-2 cursor-pointer"
-              >
-                <input
-                  type="checkbox"
-                  name="difficultyLevels"
-                  value={level.value}
-                  checked={formData.difficultyLevels.includes(level.value)}
-                  onChange={handleInputChange}
-                  className="rounded text-blue-600 focus:ring-blue-500"
-                />
-                <span className={`font-medium ${level.color}`}>{level.label}</span>
-              </label>
-            ))}
+        {formData.chapterId && availableTopics.length === 0 && (
+          <div className="bg-amber-50 border border-amber-200 rounded-lg p-3">
+            <p className="text-amber-800 text-sm">No topics available for this chapter</p>
+          </div>
+        )}
+
+        {/* Difficulty Levels, Questions per Topic, and Content Sources - Same Row */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {/* Difficulty Levels */}
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-2">
+              Difficulty Levels *
+            </label>
+            <div className="flex flex-wrap gap-4">
+              {difficultyLevels.map(level => (
+                <label 
+                  key={level.value}
+                  className="flex items-center gap-2 cursor-pointer"
+                >
+                  <input
+                    type="checkbox"
+                    name="difficultyLevels"
+                    value={level.value}
+                    checked={formData.difficultyLevels.includes(level.value)}
+                    onChange={handleInputChange}
+                    className="rounded text-blue-600 focus:ring-blue-500"
+                  />
+                  <span className={`font-medium ${level.color}`}>{level.label}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+
+          {/* Questions per Topic */}
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-2">
+              Questions per Topic
+            </label>
+            <input
+              type="number"
+              name="questionsPerTopic"
+              value={formData.questionsPerTopic}
+              onChange={handleInputChange}
+              min="1"
+              max="20"
+              className="w-32 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            />
+            <p className="mt-1 text-xs text-gray-500">
+              Estimated total: ~{(formData.topics.length || availableTopics.length || 1) * formData.difficultyLevels.length * formData.questionTypes.length * formData.questionsPerTopic} questions
+            </p>
+          </div>
+
+          {/* Content Sources */}
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-2">
+              Content Sources
+            </label>
+            <div className="flex flex-wrap gap-4">
+              {sources.map(source => (
+                <label 
+                  key={source.value}
+                  className="flex items-center gap-2 cursor-pointer"
+                >
+                  <input
+                    type="checkbox"
+                    name="sources"
+                    value={source.value}
+                    checked={formData.sources.includes(source.value)}
+                    onChange={handleInputChange}
+                    className="rounded text-blue-600 focus:ring-blue-500"
+                  />
+                  <span className="text-sm text-gray-700">{source.label}</span>
+                </label>
+              ))}
+            </div>
           </div>
         </div>
 
@@ -305,50 +516,6 @@ export default function AIQuestionGenerator() {
                   className="rounded text-blue-600 focus:ring-blue-500"
                 />
                 <span className="text-sm text-gray-700">{type.label}</span>
-              </label>
-            ))}
-          </div>
-        </div>
-
-        {/* Questions per Topic */}
-        <div>
-          <label className="block text-sm font-semibold text-gray-700 mb-2">
-            Questions per Topic
-          </label>
-          <input
-            type="number"
-            name="questionsPerTopic"
-            value={formData.questionsPerTopic}
-            onChange={handleInputChange}
-            min="1"
-            max="20"
-            className="w-32 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          />
-          <p className="mt-1 text-xs text-gray-500">
-            Estimated total: ~{(formData.topics.length || availableTopics.length || 1) * formData.difficultyLevels.length * formData.questionTypes.length * formData.questionsPerTopic} questions
-          </p>
-        </div>
-
-        {/* Content Sources */}
-        <div>
-          <label className="block text-sm font-semibold text-gray-700 mb-2">
-            Content Sources
-          </label>
-          <div className="flex flex-wrap gap-4">
-            {sources.map(source => (
-              <label 
-                key={source.value}
-                className="flex items-center gap-2 cursor-pointer"
-              >
-                <input
-                  type="checkbox"
-                  name="sources"
-                  value={source.value}
-                  checked={formData.sources.includes(source.value)}
-                  onChange={handleInputChange}
-                  className="rounded text-blue-600 focus:ring-blue-500"
-                />
-                <span className="text-sm text-gray-700">{source.label}</span>
               </label>
             ))}
           </div>

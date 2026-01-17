@@ -26,6 +26,18 @@ router.get('/public', courseController.getPublicCourses);
 // Get all courses
 router.get('/', authenticate, courseController.getCourses);
 
+// Get grades
+router.get('/grades', authenticate, courseController.getGrades);
+
+// Get subjects
+router.get('/subjects', authenticate, courseController.getSubjects);
+
+// Get subjects by grade
+router.get('/grades/:grade/subjects', authenticate, courseController.getSubjectsByGrade);
+
+// Get courses by grade and subject
+router.get('/grades/:grade/subjects/:subject/courses', authenticate, courseController.getCoursesByGradeAndSubject);
+
 // Get course by ID - Make it public for course details page
 router.get('/:id', courseController.getCourseById);
 

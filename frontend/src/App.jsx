@@ -64,7 +64,6 @@ import RevenueAnalytics from './pages/admin/RevenueAnalytics'
 import PaymentManagement from './pages/admin/PaymentManagement'
 import SessionManagement from './pages/admin/SessionManagement'
 import AdminSubscriptionManagement from './pages/admin/SubscriptionManagement'
-import AdminAIQuestionsDashboard from './pages/admin/AIQuestionsDashboard'
 
 // Shared
 import ProfileSettings from './pages/shared/ProfileSettings'
@@ -198,7 +197,7 @@ function App() {
             <Route path="quizzes/:quizId/edit" element={<QuizCreate />} />
             <Route path="quizzes/:quizId/preview" element={<QuizPreview />} />
             <Route path="questions" element={<QuestionBank />} />
-            <Route path="ai-questions" element={<AdminAIQuestionsDashboard />} />
+            <Route path="ai-questions" element={<AIQuestionReview />} />
             <Route path="ai-questions/generate" element={<AIQuestionGenerator />} />
             <Route path="ai-questions/review" element={<AIQuestionReview />} />
             <Route path="quiz-analytics" element={<QuizAnalytics />} />

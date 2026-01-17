@@ -34,6 +34,26 @@ export const courseService = {
     return data
   },
 
+  getGrades: async () => {
+    const { data } = await api.get('/courses/grades')
+    return data
+  },
+
+  getSubjects: async () => {
+    const { data } = await api.get('/courses/subjects')
+    return data
+  },
+
+  getSubjectsByGrade: async (grade) => {
+    const { data } = await api.get(`/courses/grades/${grade}/subjects`)
+    return data
+  },
+
+  getCoursesByGradeAndSubject: async (grade, subject) => {
+    const { data } = await api.get(`/courses/grades/${grade}/subjects/${subject}/courses`)
+    return data
+  },
+
   getPublicCourses: async (params = {}) => {
     const { data } = await api.get('/courses/public', { params })
     console.log('Public courses data:', data);
@@ -425,6 +445,30 @@ export const questionService = {
   // Get question statistics
   getQuestionStats: async (courseId) => {
     const { data } = await api.get(`/questions/stats/${courseId}`)
+    return data
+  },
+
+  // Get course structure (chapters and topics)
+  getCourseStructure: async (courseId) => {
+    const { data } = await api.get(`/questions/course/${courseId}/structure`)
+    return data
+  },
+
+  // AI Generation APIs
+  generateQuestionsWithAI: async (generationParams) => {
+    const { data } = await api.post('/questions/generate', generationParams)
+    return data
+  },
+
+  // Get generation history
+  getGenerationHistory: async (params = {}) => {
+    const { data } = await api.get('/questions/generate/history', { params })
+    return data
+  },
+
+  // Get generation by ID
+  getGenerationById: async (id) => {
+    const { data } = await api.get(`/questions/generate/${id}`)
     return data
   },
 }

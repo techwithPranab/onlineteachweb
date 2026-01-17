@@ -19,6 +19,8 @@ export default function AIQuestionReview() {
   
   // Filters
   const [filters, setFilters] = useState({
+    grade: '',
+    subject: '',
     courseId: '',
     status: 'draft'
   })
@@ -36,20 +38,53 @@ export default function AIQuestionReview() {
   
   // Stats
   const [stats, setStats] = useState(null)
+  const [grades, setGrades] = useState([])
+  const [subjects, setSubjects] = useState([])
+  const [filteredCourses, setFilteredCourses] = useState([])
 
   useEffect(() => {
-    fetchCourses()
+    fetchGrades()
     fetchStats()
   }, [])
+
+  useEffect(() => {
+    if (filters.grade) {
+      fetchSubjects()
+    }
+  }, [filters.grade])
+
+  useEffect(() => {
+    if (filters.grade && filters.subject) {
+      fetchCoursesByGradeAndSubject()
+    }
+  }, [filters.grade, filters.subject])
 
   useEffect(() => {
     fetchDrafts()
   }, [filters])
 
-  const fetchCourses = async () => {
+  const fetchGrades = async () => {
     try {
-      const response = await courseService.getCourses()
-      setCourses(response.courses || [])
+      const response = await courseService.getGrades()
+      setGrades(response.grades || [])
+    } catch (err) {
+      console.error('Failed to load grades:', err)
+    }
+  }
+
+  const fetchSubjects = async () => {
+    try {
+      const response = await courseService.getSubjectsByGrade(filters.grade)
+      setSubjects(response.subjects || [])
+    } catch (err) {
+      console.error('Failed to load subjects:', err)
+    }
+  }
+
+  const fetchCoursesByGradeAndSubject = async () => {
+    try {
+      const response = await courseService.getCoursesByGradeAndSubject(filters.grade, filters.subject)
+      setFilteredCourses(response.courses || [])
     } catch (err) {
       console.error('Failed to load courses:', err)
     }
@@ -89,6 +124,7 @@ export default function AIQuestionReview() {
 
   const handleApprove = async (draftId, edits = null) => {
     try {
+      console.log('Approving draft:', draftId, 'with edits:', edits);
       await aiQuestionService.approveDraft(draftId, edits)
       setSuccess('Draft approved and added to question bank!')
       setViewDraft(null)
@@ -96,6 +132,7 @@ export default function AIQuestionReview() {
       fetchDrafts(pagination.page)
       fetchStats()
     } catch (err) {
+      console.error('Approve error:', err);
       setError(err.response?.data?.message || 'Failed to approve draft')
     }
   }
@@ -104,6 +141,7 @@ export default function AIQuestionReview() {
     if (!showRejectModal || !rejectReason.trim()) return
     
     try {
+      console.log('Rejecting draft:', showRejectModal, 'with reason:', rejectReason);
       await aiQuestionService.rejectDraft(showRejectModal, rejectReason)
       setSuccess('Draft rejected')
       setShowRejectModal(null)
@@ -111,6 +149,7 @@ export default function AIQuestionReview() {
       fetchDrafts(pagination.page)
       fetchStats()
     } catch (err) {
+      console.error('Reject error:', err);
       setError(err.response?.data?.message || 'Failed to reject draft')
     }
   }
@@ -119,12 +158,14 @@ export default function AIQuestionReview() {
     if (selectedDrafts.length === 0) return
     
     try {
+      console.log('Bulk approving drafts:', selectedDrafts);
       const result = await aiQuestionService.bulkApprove(selectedDrafts)
       setSuccess(`Approved ${result.approved.length} drafts!`)
       setSelectedDrafts([])
       fetchDrafts(pagination.page)
       fetchStats()
     } catch (err) {
+      console.error('Bulk approve error:', err);
       setError(err.response?.data?.message || 'Failed to bulk approve')
     }
   }
@@ -133,6 +174,7 @@ export default function AIQuestionReview() {
     if (selectedDrafts.length === 0 || !bulkRejectReason.trim()) return
     
     try {
+      console.log('Bulk rejecting drafts:', selectedDrafts, 'with reason:', bulkRejectReason);
       const result = await aiQuestionService.bulkReject(selectedDrafts, bulkRejectReason)
       setSuccess(`Rejected ${result.rejected.length} drafts`)
       setSelectedDrafts([])
@@ -141,6 +183,7 @@ export default function AIQuestionReview() {
       fetchDrafts(pagination.page)
       fetchStats()
     } catch (err) {
+      console.error('Bulk reject error:', err);
       setError(err.response?.data?.message || 'Failed to bulk reject')
     }
   }
@@ -201,19 +244,13 @@ export default function AIQuestionReview() {
   return (
     <div className="p-6">
       {/* Header */}
-      <div className="mb-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+      <div className="mb-6">
         <div>
           <h1 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
             📋 AI Question Review
           </h1>
           <p className="text-gray-600">Review and approve AI-generated questions</p>
         </div>
-        <button
-          onClick={() => navigate('/tutor/ai-questions/generate')}
-          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium"
-        >
-          + Generate New Questions
-        </button>
       </div>
 
       {error && <ErrorMessage message={error} onClose={() => setError(null)} />}
@@ -251,12 +288,36 @@ export default function AIQuestionReview() {
       <div className="bg-white p-4 rounded-lg shadow mb-6">
         <div className="flex flex-wrap gap-4">
           <select
+            value={filters.grade}
+            onChange={(e) => setFilters(prev => ({ ...prev, grade: e.target.value, subject: '', courseId: '' }))}
+            className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+          >
+            <option value="">All Grades</option>
+            {grades.map(grade => (
+              <option key={grade} value={grade}>Grade {grade}</option>
+            ))}
+          </select>
+          
+          <select
+            value={filters.subject}
+            onChange={(e) => setFilters(prev => ({ ...prev, subject: e.target.value, courseId: '' }))}
+            className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+            disabled={!filters.grade}
+          >
+            <option value="">All Subjects</option>
+            {subjects.map(subject => (
+              <option key={subject} value={subject}>{subject}</option>
+            ))}
+          </select>
+          
+          <select
             value={filters.courseId}
             onChange={(e) => setFilters(prev => ({ ...prev, courseId: e.target.value }))}
             className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+            disabled={!filters.subject}
           >
             <option value="">All Courses</option>
-            {courses.map(course => (
+            {filteredCourses.map(course => (
               <option key={course._id} value={course._id}>{course.title}</option>
             ))}
           </select>

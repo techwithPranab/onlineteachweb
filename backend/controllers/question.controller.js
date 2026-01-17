@@ -9,6 +9,7 @@ exports.createQuestion = async (req, res, next) => {
   try {
     const {
       courseId,
+      chapterName,
       topic,
       difficultyLevel,
       type,
@@ -27,6 +28,7 @@ exports.createQuestion = async (req, res, next) => {
     
     const question = await Question.create({
       courseId,
+      chapterName,
       topic,
       difficultyLevel,
       type,
@@ -111,6 +113,7 @@ exports.getQuestions = async (req, res, next) => {
     if (difficultyLevel) query.difficultyLevel = difficultyLevel;
     if (type) query.type = type;
     if (isActive !== undefined) query.isActive = isActive === 'true';
+    else query.isActive = true; // Default to active questions only
     
     if (search) {
       query.$or = [
@@ -119,9 +122,12 @@ exports.getQuestions = async (req, res, next) => {
       ];
     }
     
-    // Only show questions created by the user if they're a tutor
+    // Only show questions created by the user if they're a tutor, or AI-generated questions
     if (req.user.role === 'tutor') {
-      query.createdBy = req.user._id;
+      query.$or = [
+        { createdBy: req.user._id },
+        { createdBy: { $type: 'string' } } // AI-generated questions have string createdBy
+      ];
     }
     
     const skip = (parseInt(page) - 1) * parseInt(limit);
@@ -364,6 +370,33 @@ exports.getQuestionStats = async (req, res, next) => {
         byType: typeCount,
         avgMarks: Math.round(stats[0].avgMarks * 100) / 100
       }
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// @desc    Get course chapters and topics
+// @route   GET /api/questions/course/:courseId/structure
+// @access  Private (Tutor, Admin)
+exports.getCourseStructure = async (req, res, next) => {
+  try {
+    const Course = require('../models/Course.model');
+    const { courseId } = req.params;
+    
+    const course = await Course.findById(courseId).select('chapters title');
+    
+    if (!course) {
+      return res.status(404).json({
+        success: false,
+        message: 'Course not found'
+      });
+    }
+    
+    res.json({
+      success: true,
+      courseTitle: course.title,
+      chapters: course.chapters
     });
   } catch (error) {
     next(error);

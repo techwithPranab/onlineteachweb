@@ -11,6 +11,12 @@ const aiQuestionDraftSchema = new mongoose.Schema({
     required: true,
     index: true
   },
+  chapterName: {
+    type: String,
+    required: true,
+    trim: true,
+    index: true
+  },
   topic: {
     type: String,
     required: true,

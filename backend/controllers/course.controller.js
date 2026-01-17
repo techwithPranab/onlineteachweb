@@ -354,3 +354,66 @@ exports.getCourseStudents = async (req, res, next) => {
     next(error);
   }
 };
+
+// @desc    Get unique grades
+// @route   GET /api/courses/grades
+// @access  Private
+exports.getGrades = async (req, res, next) => {
+  try {
+    const grades = await Course.distinct('grade');
+    res.json({
+      success: true,
+      grades: grades.sort((a, b) => a - b)
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// @desc    Get unique subjects
+// @route   GET /api/courses/subjects
+// @access  Private
+exports.getSubjects = async (req, res, next) => {
+  try {
+    const subjects = await Course.distinct('subject');
+    res.json({
+      success: true,
+      subjects: subjects.sort()
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// @desc    Get subjects by grade
+// @route   GET /api/courses/grades/:grade/subjects
+// @access  Private
+exports.getSubjectsByGrade = async (req, res, next) => {
+  try {
+    const grade = parseInt(req.params.grade);
+    const subjects = await Course.distinct('subject', { grade });
+    res.json({
+      success: true,
+      subjects: subjects.sort()
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// @desc    Get courses by grade and subject
+// @route   GET /api/courses/grades/:grade/subjects/:subject/courses
+// @access  Private
+exports.getCoursesByGradeAndSubject = async (req, res, next) => {
+  try {
+    const grade = parseInt(req.params.grade);
+    const subject = req.params.subject;
+    const courses = await Course.find({ grade, subject }, 'title _id grade subject');
+    res.json({
+      success: true,
+      courses
+    });
+  } catch (error) {
+    next(error);
+  }
+};

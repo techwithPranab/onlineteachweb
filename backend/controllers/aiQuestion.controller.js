@@ -16,8 +16,7 @@ exports.generateQuestions = async (req, res, next) => {
       difficultyLevels,
       questionTypes,
       questionsPerTopic,
-      sources,
-      providerName
+      sources
     } = req.body;
 
     // Validate courseId
@@ -54,8 +53,7 @@ exports.generateQuestions = async (req, res, next) => {
       questionTypes: questionTypes || ['mcq-single'],
       questionsPerTopic: questionsPerTopic || 5,
       sources: sources || ['syllabus'],
-      userId: req.user._id,
-      providerName
+      userId: req.user._id
     });
 
     logger.info(`Question generation completed: ${result.summary.draftsCreated} drafts created for course ${courseId}`);

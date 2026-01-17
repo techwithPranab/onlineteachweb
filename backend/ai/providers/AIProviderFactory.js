@@ -37,13 +37,22 @@ class AIProviderFactory {
   }
 
   /**
-   * Get a specific provider by name
+   * Get a specific provider by name with optional config
    */
-  get(name) {
-    const provider = this.providers.get(name);
+  get(name, config = {}) {
+    // Case-insensitive provider lookup
+    const providerName = name.toLowerCase();
+    const provider = this.providers.get(providerName);
     if (!provider) {
       throw new Error(`AI provider not found: ${name}`);
     }
+    
+    // If config is provided, create a new instance with config
+    if (Object.keys(config).length > 0) {
+      const ProviderClass = provider.constructor;
+      return new ProviderClass(config);
+    }
+    
     return provider;
   }
 
@@ -53,7 +62,8 @@ class AIProviderFactory {
    */
   async getBestAvailable() {
     // Try default provider first
-    const defaultProvider = this.providers.get(this.defaultProvider);
+    const defaultProviderName = this.defaultProvider.toLowerCase();
+    const defaultProvider = this.providers.get(defaultProviderName);
     if (defaultProvider && await defaultProvider.isAvailable()) {
       return defaultProvider;
     }
@@ -62,7 +72,7 @@ class AIProviderFactory {
     
     // Try other providers
     for (const [name, provider] of this.providers) {
-      if (name !== this.defaultProvider && await provider.isAvailable()) {
+      if (name !== defaultProviderName && await provider.isAvailable()) {
         return provider;
       }
     }
@@ -99,10 +109,11 @@ class AIProviderFactory {
    * Set default provider
    */
   setDefault(name) {
-    if (!this.providers.has(name)) {
+    const providerName = name.toLowerCase();
+    if (!this.providers.has(providerName)) {
       throw new Error(`Provider not found: ${name}`);
     }
-    this.defaultProvider = name;
+    this.defaultProvider = providerName;
   }
 }
 
