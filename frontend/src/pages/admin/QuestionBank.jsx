@@ -90,7 +90,7 @@ export default function QuestionBank() {
       setLoading(true)
       const params = {
         page,
-        limit: 20,
+        limit: 10,
         ...filters
       }
       Object.keys(params).forEach(key => {
@@ -355,7 +355,7 @@ export default function QuestionBank() {
           {pagination.pages > 1 && (
             <div className="flex items-center justify-between pt-4">
               <div className="text-sm text-gray-700">
-                Showing {(pagination.page - 1) * 20 + 1} to {Math.min(pagination.page * 20, pagination.total)} of {pagination.total}
+                Showing {(pagination.page - 1) * (pagination.limit || 10) + 1} to {Math.min(pagination.page * (pagination.limit || 10), pagination.total)} of {pagination.total}
               </div>
               <div className="flex items-center gap-4">
                 <div className="text-sm text-gray-600">Page {pagination.page} of {pagination.pages}</div>
