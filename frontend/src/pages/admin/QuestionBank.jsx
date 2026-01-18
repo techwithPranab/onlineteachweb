@@ -18,7 +18,6 @@ export default function QuestionBank() {
     grade: '',
     subject: '',
     courseId: '',
-    topic: '',
     difficultyLevel: '',
     type: '',
     search: ''
@@ -27,7 +26,6 @@ export default function QuestionBank() {
   const [showCreateModal, setShowCreateModal] = useState(false)
   const [editQuestion, setEditQuestion] = useState(null)
   const [deleteQuestion, setDeleteQuestion] = useState(null)
-  const [topics, setTopics] = useState([])
   const [grades, setGrades] = useState([])
   const [subjects, setSubjects] = useState([])
   const [filteredCourses, setFilteredCourses] = useState([])
@@ -35,7 +33,8 @@ export default function QuestionBank() {
   useEffect(() => {
     fetchGrades()
     fetchCourses()
-    fetchQuestions()
+    // Reset to first page when filters change
+    fetchQuestions(1)
   }, [filters])
 
   useEffect(() => {
@@ -49,12 +48,6 @@ export default function QuestionBank() {
       fetchCoursesByGradeAndSubject()
     }
   }, [filters.grade, filters.subject])
-
-  useEffect(() => {
-    if (filters.courseId) {
-      fetchTopics()
-    }
-  }, [filters.courseId])
 
   const fetchGrades = async () => {
     try {
@@ -89,15 +82,6 @@ export default function QuestionBank() {
       setCourses(response.courses || [])
     } catch (err) {
       console.error('Failed to load courses:', err)
-    }
-  }
-
-  const fetchTopics = async () => {
-    try {
-      const response = await questionService.getTopicsForCourse(filters.courseId)
-      setTopics(response.topics || [])
-    } catch (err) {
-      console.error('Failed to load topics:', err)
     }
   }
 
@@ -198,12 +182,12 @@ export default function QuestionBank() {
 
       {/* Filters */}
       <div className="bg-white rounded-lg shadow-sm p-4 mb-6">
-        <div className="grid grid-cols-1 md:grid-cols-6 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-7 gap-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Grade</label>
             <select
               value={filters.grade}
-              onChange={(e) => setFilters({ ...filters, grade: e.target.value, subject: '', courseId: '', topic: '' })}
+              onChange={(e) => setFilters({ ...filters, grade: e.target.value, subject: '' })}
               className="w-full border border-gray-300 rounded-lg px-3 py-2"
             >
               <option value="">All Grades</option>
@@ -216,7 +200,7 @@ export default function QuestionBank() {
             <label className="block text-sm font-medium text-gray-700 mb-1">Subject</label>
             <select
               value={filters.subject}
-              onChange={(e) => setFilters({ ...filters, subject: e.target.value, courseId: '', topic: '' })}
+              onChange={(e) => setFilters({ ...filters, subject: e.target.value })}
               className="w-full border border-gray-300 rounded-lg px-3 py-2"
               disabled={!filters.grade}
             >
@@ -230,27 +214,13 @@ export default function QuestionBank() {
             <label className="block text-sm font-medium text-gray-700 mb-1">Course</label>
             <select
               value={filters.courseId}
-              onChange={(e) => setFilters({ ...filters, courseId: e.target.value, topic: '' })}
+              onChange={(e) => setFilters({ ...filters, courseId: e.target.value })}
               className="w-full border border-gray-300 rounded-lg px-3 py-2"
               disabled={!filters.subject}
             >
               <option value="">All Courses</option>
               {filteredCourses.map(course => (
                 <option key={course._id} value={course._id}>{course.title}</option>
-              ))}
-            </select>
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Topic</label>
-            <select
-              value={filters.topic}
-              onChange={(e) => setFilters({ ...filters, topic: e.target.value })}
-              className="w-full border border-gray-300 rounded-lg px-3 py-2"
-              disabled={!filters.courseId}
-            >
-              <option value="">All Topics</option>
-              {topics.map(t => (
-                <option key={t.topic} value={t.topic}>{t.topic}</option>
               ))}
             </select>
           </div>
@@ -284,7 +254,7 @@ export default function QuestionBank() {
               <option value="case-based">Case Based</option>
             </select>
           </div>
-          <div>
+          <div className="md:col-span-2">
             <label className="block text-sm font-medium text-gray-700 mb-1">Search</label>
             <input
               type="text"
@@ -296,7 +266,7 @@ export default function QuestionBank() {
           </div>
           <div className="flex items-end">
             <button
-              onClick={() => setFilters({ courseId: '', topic: '', difficultyLevel: '', type: '', search: '' })}
+              onClick={() => setFilters({ courseId: '', difficultyLevel: '', type: '', search: '' })}
               className="px-4 py-2 text-gray-600 hover:text-gray-900"
             >
               Clear
@@ -350,7 +320,6 @@ export default function QuestionBank() {
                   )}
                   
                   <div className="mt-3 flex items-center space-x-4 text-sm text-gray-500">
-                    <span>Topic: {question.topic}</span>
                     <span>Course: {question.courseId?.title}</span>
                     {question.usageCount > 0 && (
                       <span>Used: {question.usageCount} times</span>
@@ -385,24 +354,27 @@ export default function QuestionBank() {
           {/* Pagination */}
           {pagination.pages > 1 && (
             <div className="flex items-center justify-between pt-4">
-              <span className="text-sm text-gray-700">
+              <div className="text-sm text-gray-700">
                 Showing {(pagination.page - 1) * 20 + 1} to {Math.min(pagination.page * 20, pagination.total)} of {pagination.total}
-              </span>
-              <div className="flex space-x-2">
-                <button
-                  onClick={() => fetchQuestions(pagination.page - 1)}
-                  disabled={pagination.page === 1}
-                  className="px-3 py-1 border rounded-md disabled:opacity-50"
-                >
-                  Previous
-                </button>
-                <button
-                  onClick={() => fetchQuestions(pagination.page + 1)}
-                  disabled={pagination.page === pagination.pages}
-                  className="px-3 py-1 border rounded-md disabled:opacity-50"
-                >
-                  Next
-                </button>
+              </div>
+              <div className="flex items-center gap-4">
+                <div className="text-sm text-gray-600">Page {pagination.page} of {pagination.pages}</div>
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => fetchQuestions(Math.max(1, pagination.page - 1))}
+                    disabled={pagination.page === 1}
+                    className="px-3 py-1 border rounded-md disabled:opacity-50"
+                  >
+                    Previous
+                  </button>
+                  <button
+                    onClick={() => fetchQuestions(Math.min(pagination.pages, pagination.page + 1))}
+                    disabled={pagination.page === pagination.pages}
+                    className="px-3 py-1 border rounded-md disabled:opacity-50"
+                  >
+                    Next
+                  </button>
+                </div>
               </div>
             </div>
           )}

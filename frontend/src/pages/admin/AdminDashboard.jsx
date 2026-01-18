@@ -1,6 +1,6 @@
 import { useQuery } from 'react-query'
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, LineChart, Line, PieChart, Pie, Cell } from 'recharts'
-import { Users, BookOpen, DollarSign, TrendingUp, UserCheck, AlertCircle } from 'lucide-react'
+import { Users, BookOpen, DollarSign, TrendingUp, UserCheck, AlertCircle, HelpCircle, ClipboardList } from 'lucide-react'
 import { adminService, sessionService } from '@/services/apiServices'
 import LoadingSpinner from '@/components/common/LoadingSpinner'
 import ErrorMessage from '@/components/common/ErrorMessage'
@@ -49,6 +49,20 @@ export default function AdminDashboard() {
       color: 'blue',
     },
     {
+      label: 'Total Questions',
+      value: analytics.totalQuestions?.toLocaleString() || '0',
+      change: '',
+      icon: HelpCircle,
+      color: 'purple',
+    },
+    {
+      label: 'Quizzes Taken',
+      value: analytics.totalQuizzesTaken?.toLocaleString() || '0',
+      change: '',
+      icon: ClipboardList,
+      color: 'teal',
+    },
+    {
       label: 'Total Revenue',
       value: `$${analytics.totalRevenue?.toLocaleString() || '0'}`,
       change: '+23%',
@@ -85,7 +99,7 @@ export default function AdminDashboard() {
       </div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 mb-4">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-7 gap-3 mb-4">
         {stats.map((stat, index) => (
           <div key={index} className="card">
             <div className="p-3">

@@ -4,6 +4,8 @@ const Session = require('../models/Session.model');
 const Course = require('../models/Course.model');
 const Payment = require('../models/Payment.model');
 const User = require('../models/User.model');
+const Question = require('../models/Question.model');
+const QuizSession = require('../models/QuizSession.model');
 
 // @desc    Get student progress report
 // @route   GET /api/reports/student/:id
@@ -169,11 +171,14 @@ exports.getAdminAnalytics = async (req, res, next) => {
     const dateFilter = { $gte: startDate, $lte: now };
 
     // Get basic counts
-    const [totalUsers, activeCourses, pendingTutors, totalSessions] = await Promise.all([
+    const attemptedQuizStatuses = ['completed', 'submitted', 'auto-submitted', 'evaluating'];
+    const [totalUsers, activeCourses, pendingTutors, totalSessions, totalQuestions, totalQuizzesTaken] = await Promise.all([
       User.countDocuments(),
       Course.countDocuments({ status: 'published' }),
       User.countDocuments({ role: 'tutor', status: 'pending' }),
-      Session.countDocuments()
+      Session.countDocuments(),
+      Question.countDocuments(),
+      QuizSession.countDocuments({ status: { $in: attemptedQuizStatuses } })
     ]);
 
     // Get revenue data
@@ -348,6 +353,8 @@ exports.getAdminAnalytics = async (req, res, next) => {
         // Dashboard stats
         totalUsers,
         activeCourses,
+        totalQuestions,
+        totalQuizzesTaken,
         totalRevenue,
         pendingTutors,
         totalSessions,

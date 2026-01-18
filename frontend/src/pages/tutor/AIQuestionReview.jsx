@@ -60,7 +60,8 @@ export default function AIQuestionReview() {
   }, [filters.grade, filters.subject])
 
   useEffect(() => {
-    fetchDrafts()
+    // Reset to first page when filters change
+    fetchDrafts(1)
   }, [filters])
 
   const fetchGrades = async () => {
