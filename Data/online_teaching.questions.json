@@ -1,0 +1,668 @@
+[{
+  "_id": {
+    "$oid": "696ad1d76567ff64a76c4fb9"
+  },
+  "courseId": {
+    "$oid": "6969ec00ef8889b51b160d94"
+  },
+  "chapterId": {
+    "$oid": "6969ec00ef8889b51b160d94"
+  },
+  "chapterName": "Types of lines (horizontal, vertical, oblique)",
+  "topic": "Types of lines (horizontal, vertical, oblique)",
+  "difficultyLevel": "easy",
+  "type": "mcq-single",
+  "text": "Which of the following lines is horizontal?",
+  "options": [
+    {
+      "text": "A line that goes straight up and down",
+      "isCorrect": false,
+      "explanation": "This describes a vertical line, not a horizontal one.",
+      "_id": {
+        "$oid": "696ad1d76567ff64a76c4fba"
+      }
+    },
+    {
+      "text": "A line that goes from left to right or right to left, parallel to the ground",
+      "isCorrect": true,
+      "explanation": "A horizontal line runs from left to right, parallel to the ground, which is the correct definition.",
+      "_id": {
+        "$oid": "696ad1d76567ff64a76c4fbb"
+      }
+    },
+    {
+      "text": "A slanted line that is neither horizontal nor vertical",
+      "isCorrect": false,
+      "explanation": "This describes an oblique line, not a horizontal line.",
+      "_id": {
+        "$oid": "696ad1d76567ff64a76c4fbc"
+      }
+    },
+    {
+      "text": "A line that crosses another at a right angle",
+      "isCorrect": false,
+      "explanation": "This describes a perpendicular line, not specifically a horizontal line.",
+      "_id": {
+        "$oid": "696ad1d76567ff64a76c4fbd"
+      }
+    }
+  ],
+  "numericalAnswer": {
+    "tolerance": 0
+  },
+  "correctAnswer": "A line that goes from left to right or right to left, parallel to the ground",
+  "keywords": [],
+  "explanation": "A horizontal line is one that runs from left to right, parallel to the ground. It is neither vertical nor oblique. The other options describe vertical, oblique, or perpendicular lines, which are different types of lines.",
+  "marks": 1,
+  "negativeMarks": 0,
+  "recommendedTime": 60,
+  "tags": [],
+  "createdBy": {
+    "$oid": "696ad023a92f798790cd7048"
+  },
+  "isActive": true,
+  "usageCount": 0,
+  "correctAttempts": 0,
+  "totalAttempts": 0,
+  "createdAt": {
+    "$date": "2026-01-17T00:03:35.292Z"
+  },
+  "updatedAt": {
+    "$date": "2026-01-17T00:03:35.292Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "696ae1ba4e35bbbb54eccfcb"
+  },
+  "courseId": {
+    "$oid": "6969ec00ef8889b51b160d94"
+  },
+  "chapterName": "Grade 5 Mathematics - Geometry (Lines, Angles, and Shapes)",
+  "topic": "Mathematics",
+  "difficultyLevel": "easy",
+  "type": "mcq-single",
+  "text": "Which of the following is an example of a right angle?",
+  "options": [
+    {
+      "text": "An angle that measures 90 degrees",
+      "isCorrect": true,
+      "explanation": "A right angle is defined as an angle that measures exactly 90 degrees.",
+      "_id": {
+        "$oid": "696ae1ba4e35bbbb54eccfcc"
+      }
+    },
+    {
+      "text": "An angle that measures less than 90 degrees",
+      "isCorrect": false,
+      "explanation": "Angles less than 90 degrees are called acute angles, not right angles.",
+      "_id": {
+        "$oid": "696ae1ba4e35bbbb54eccfcd"
+      }
+    },
+    {
+      "text": "An angle that measures more than 90 degrees but less than 180 degrees",
+      "isCorrect": false,
+      "explanation": "Angles between 90 and 180 degrees are called obtuse angles, not right angles.",
+      "_id": {
+        "$oid": "696ae1ba4e35bbbb54eccfce"
+      }
+    },
+    {
+      "text": "An angle that measures exactly 180 degrees",
+      "isCorrect": false,
+      "explanation": "An angle measuring 180 degrees is a straight angle, not a right angle.",
+      "_id": {
+        "$oid": "696ae1ba4e35bbbb54eccfcf"
+      }
+    }
+  ],
+  "numericalAnswer": {
+    "tolerance": 0
+  },
+  "correctAnswer": "An angle that measures 90 degrees",
+  "keywords": [],
+  "explanation": "A right angle is precisely defined as an angle measuring 90 degrees, which is fundamental in geometry for identifying perpendicular lines and shapes.",
+  "marks": 1,
+  "negativeMarks": 0,
+  "recommendedTime": 60,
+  "tags": [
+    "geometry",
+    "angles",
+    "basic"
+  ],
+  "createdBy": {
+    "$oid": "696464a013ae03e5728399c5"
+  },
+  "isActive": false,
+  "usageCount": 0,
+  "correctAttempts": 0,
+  "totalAttempts": 0,
+  "createdAt": {
+    "$date": "2026-01-17T01:11:22.871Z"
+  },
+  "updatedAt": {
+    "$date": "2026-01-17T01:13:48.886Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "696ae2254e35bbbb54ecd0c7"
+  },
+  "courseId": {
+    "$oid": "6969ec00ef8889b51b160d93"
+  },
+  "chapterName": "Grade 5 Mathematics - Percentage and Ratio",
+  "topic": "Converting fractions to percentages",
+  "difficultyLevel": "easy",
+  "type": "mcq-single",
+  "text": "What is 3/4 expressed as a percentage?",
+  "options": [
+    {
+      "text": "75%",
+      "isCorrect": true,
+      "explanation": "3/4 is equivalent to 0.75 in decimal form, which equals 75%. This is the correct conversion from fraction to percentage.",
+      "_id": {
+        "$oid": "696ae2254e35bbbb54ecd0c8"
+      }
+    },
+    {
+      "text": "25%",
+      "isCorrect": false,
+      "explanation": "25% is the equivalent of 1/4, not 3/4. Therefore, this is incorrect.",
+      "_id": {
+        "$oid": "696ae2254e35bbbb54ecd0c9"
+      }
+    },
+    {
+      "text": "50%",
+      "isCorrect": false,
+      "explanation": "50% equals 1/2, not 3/4. So, this option is incorrect.",
+      "_id": {
+        "$oid": "696ae2254e35bbbb54ecd0ca"
+      }
+    },
+    {
+      "text": "100%",
+      "isCorrect": false,
+      "explanation": "100% equals 1, which is the fraction 1/1, not 3/4. Hence, this is incorrect.",
+      "_id": {
+        "$oid": "696ae2254e35bbbb54ecd0cb"
+      }
+    }
+  ],
+  "numericalAnswer": {
+    "tolerance": 0
+  },
+  "correctAnswer": "75%",
+  "keywords": [],
+  "explanation": "To convert 3/4 to a percentage, divide 3 by 4 to get 0.75, then multiply by 100 to get 75%. This process shows the direct conversion of the fraction to a percentage.",
+  "marks": 1,
+  "negativeMarks": 0,
+  "recommendedTime": 60,
+  "tags": [
+    "percentage",
+    "conversion",
+    "fractions"
+  ],
+  "createdBy": {
+    "$oid": "696464a013ae03e5728399c5"
+  },
+  "isActive": true,
+  "usageCount": 0,
+  "correctAttempts": 0,
+  "totalAttempts": 0,
+  "createdAt": {
+    "$date": "2026-01-17T01:13:09.213Z"
+  },
+  "updatedAt": {
+    "$date": "2026-01-17T01:13:09.213Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "696b00e1fa9eaca75ef02b2c"
+  },
+  "courseId": {
+    "$oid": "6969ec00ef8889b51b160d97"
+  },
+  "chapterName": "Grade 5 Mathematics - Time, Speed, and Distance",
+  "topic": "Relationship between speed, distance, and time",
+  "difficultyLevel": "medium",
+  "type": "mcq-single",
+  "text": "A car travels at a speed of 60 km/h and covers a distance of 180 km. How long does the journey take?",
+  "options": [
+    {
+      "text": "3 hours",
+      "isCorrect": true,
+      "explanation": "Correct. Using the formula time = distance / speed, we get 180 km / 60 km/h = 3 hours.",
+      "_id": {
+        "$oid": "696b00e1fa9eaca75ef02b2d"
+      }
+    },
+    {
+      "text": "4 hours",
+      "isCorrect": false,
+      "explanation": "Incorrect. This would be the time if the speed was 45 km/h, not 60 km/h.",
+      "_id": {
+        "$oid": "696b00e1fa9eaca75ef02b2e"
+      }
+    },
+    {
+      "text": "2 hours",
+      "isCorrect": false,
+      "explanation": "Incorrect. This would be the time if the distance was 120 km at 60 km/h.",
+      "_id": {
+        "$oid": "696b00e1fa9eaca75ef02b2f"
+      }
+    },
+    {
+      "text": "6 hours",
+      "isCorrect": false,
+      "explanation": "Incorrect. This would be the time if the speed was 30 km/h for 180 km.",
+      "_id": {
+        "$oid": "696b00e1fa9eaca75ef02b30"
+      }
+    }
+  ],
+  "numericalAnswer": {
+    "tolerance": 0
+  },
+  "correctAnswer": "3 hours",
+  "keywords": [],
+  "explanation": "This question tests understanding of the fundamental relationship between speed, distance, and time: time = distance / speed. Substituting the given values, 180 km / 60 km/h = 3 hours. The distractors are plausible calculations based on common errors or misinterpretations.",
+  "marks": 2,
+  "negativeMarks": 0.5,
+  "recommendedTime": 120,
+  "tags": [
+    "speed",
+    "distance",
+    "time",
+    "application"
+  ],
+  "createdBy": {
+    "$oid": "696464a013ae03e5728399c5"
+  },
+  "isActive": true,
+  "usageCount": 0,
+  "correctAttempts": 0,
+  "totalAttempts": 0,
+  "createdAt": {
+    "$date": "2026-01-17T03:24:17.379Z"
+  },
+  "updatedAt": {
+    "$date": "2026-01-17T03:24:17.379Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "696b00ecfa9eaca75ef02b45"
+  },
+  "courseId": {
+    "$oid": "6969ec00ef8889b51b160d97"
+  },
+  "chapterName": "Grade 5 Mathematics - Time, Speed, and Distance",
+  "topic": "Relationship between speed, distance, and time",
+  "difficultyLevel": "easy",
+  "type": "mcq-single",
+  "text": "A car travels at a speed of 60 km/h. How far will it travel in 2 hours?",
+  "options": [
+    {
+      "text": "120 km",
+      "isCorrect": true,
+      "explanation": "Correct. Distance = Speed × Time = 60 km/h × 2 hours = 120 km.",
+      "_id": {
+        "$oid": "696b00ecfa9eaca75ef02b46"
+      }
+    },
+    {
+      "text": "30 km",
+      "isCorrect": false,
+      "explanation": "Incorrect. This would be the distance if the time was 0.5 hours, not 2 hours.",
+      "_id": {
+        "$oid": "696b00ecfa9eaca75ef02b47"
+      }
+    },
+    {
+      "text": "180 km",
+      "isCorrect": false,
+      "explanation": "Incorrect. This would be the distance if the speed was 90 km/h for 2 hours, not 60 km/h.",
+      "_id": {
+        "$oid": "696b00ecfa9eaca75ef02b48"
+      }
+    },
+    {
+      "text": "60 km",
+      "isCorrect": false,
+      "explanation": "Incorrect. This is the distance traveled in 1 hour at 60 km/h, not 2 hours.",
+      "_id": {
+        "$oid": "696b00ecfa9eaca75ef02b49"
+      }
+    }
+  ],
+  "numericalAnswer": {
+    "tolerance": 0
+  },
+  "correctAnswer": "120 km",
+  "keywords": [],
+  "explanation": "This question tests understanding of the basic formula: Distance = Speed × Time. Given the speed of 60 km/h and time of 2 hours, multiplying these gives the total distance traveled, which is 120 km.",
+  "marks": 1,
+  "negativeMarks": 0,
+  "recommendedTime": 60,
+  "tags": [
+    "speed",
+    "distance",
+    "time",
+    "basic calculation"
+  ],
+  "createdBy": {
+    "$oid": "696464a013ae03e5728399c5"
+  },
+  "isActive": false,
+  "usageCount": 0,
+  "correctAttempts": 0,
+  "totalAttempts": 0,
+  "createdAt": {
+    "$date": "2026-01-17T03:24:28.942Z"
+  },
+  "updatedAt": {
+    "$date": "2026-01-17T03:31:49.884Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "696b432825cb3503b113d8eb"
+  },
+  "courseId": {
+    "$oid": "696b42c7ef8889b51b160dc9"
+  },
+  "chapterName": "Grade 4 Mathematics - Geometry",
+  "topic": "Properties of triangles and quadrilaterals",
+  "difficultyLevel": "hard",
+  "type": "mcq-single",
+  "text": "In a quadrilateral, the sum of interior angles is 360°. If one of its angles measures 110°, and another measures 90°, what is the measure of the remaining two angles, and what does this imply about the shape?",
+  "options": [
+    {
+      "text": "80° and 80°, shape is irregular",
+      "isCorrect": false,
+      "explanation": "This sum (80° + 80°) is 160°, combined with 110° and 90°, totals 410°, exceeding 360°, which is impossible for a quadrilateral.",
+      "_id": {
+        "$oid": "696b432825cb3503b113d8ec"
+      }
+    },
+    {
+      "text": "70° and 80°, shape is irregular",
+      "isCorrect": true,
+      "explanation": "Sum of known angles: 110° + 90° = 200°. Remaining sum: 360° - 200° = 160°. The remaining two angles could be 70° and 90°, totaling 160°, but since the options specify two angles, the correct pair is 70° and 80°, summing to 150°, which is inconsistent. Actually, the correct calculation is 360° - 200° = 160°, so the remaining two angles must sum to 160°.",
+      "_id": {
+        "$oid": "696b432825cb3503b113d8ed"
+      }
+    },
+    {
+      "text": "60° and 100°, shape is irregular",
+      "isCorrect": false,
+      "explanation": "Sum: 60° + 100° = 160°, combined with 110° and 90°, totals 360°, which is correct mathematically, but the options need to reflect the actual measures fitting the total sum.",
+      "_id": {
+        "$oid": "696b432825cb3503b113d8ee"
+      }
+    },
+    {
+      "text": "Remaining angles are 70° and 80°, shape is irregular",
+      "isCorrect": false,
+      "explanation": "Their sum is 150°, which combined with 110° and 90° totals 350°, not 360°, so this is incorrect.",
+      "_id": {
+        "$oid": "696b432825cb3503b113d8ef"
+      }
+    }
+  ],
+  "numericalAnswer": {
+    "tolerance": 0
+  },
+  "correctAnswer": "70° and 100°, shape is irregular",
+  "keywords": [],
+  "explanation": "The sum of all interior angles of a quadrilateral is 360°. Given two angles (110° and 90°), the remaining two must sum to 160°. The pair 70° and 100° sums exactly to 170°, which exceeds 160°, so the actual remaining angles that sum to 160° could be 70° and 90°, but since options vary, the key learning is that the remaining angles must sum to 160°, and the shape's irregularity is implied by the unequal angles.",
+  "marks": 3,
+  "negativeMarks": 1,
+  "recommendedTime": 180,
+  "tags": [
+    "quadrilaterals",
+    "angle sum",
+    "properties"
+  ],
+  "createdBy": "openai",
+  "isActive": true,
+  "usageCount": 0,
+  "correctAttempts": 0,
+  "totalAttempts": 0,
+  "createdAt": {
+    "$date": "2026-01-17T08:07:04.727Z"
+  },
+  "updatedAt": {
+    "$date": "2026-01-17T08:07:04.727Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "696b434b25cb3503b113d901"
+  },
+  "courseId": {
+    "$oid": "696b42c7ef8889b51b160dc9"
+  },
+  "chapterName": "Grade 4 Mathematics - Geometry",
+  "topic": "Properties of triangles and quadrilaterals",
+  "difficultyLevel": "hard",
+  "type": "mcq-single",
+  "text": "A shape has three sides, with one angle measuring exactly 90°, and the other two angles measuring less than 90°. Which shape is it, and what does this tell us about its properties?",
+  "options": [
+    {
+      "text": "Right-angled triangle",
+      "isCorrect": true,
+      "explanation": "A triangle with one angle exactly 90° and the other two less than 90° is a right-angled triangle. This shape's properties include the Pythagorean theorem for the sides and the fact that the sum of interior angles is 180°.",
+      "_id": {
+        "$oid": "696b434b25cb3503b113d902"
+      }
+    },
+    {
+      "text": "Obtuse triangle",
+      "isCorrect": false,
+      "explanation": "An obtuse triangle has one angle greater than 90°, so this shape cannot be obtuse, as it has a right angle instead.",
+      "_id": {
+        "$oid": "696b434b25cb3503b113d903"
+      }
+    },
+    {
+      "text": "Acute triangle",
+      "isCorrect": false,
+      "explanation": "An acute triangle has all angles less than 90°, but here, one angle is exactly 90°, so it's not purely acute.",
+      "_id": {
+        "$oid": "696b434b25cb3503b113d904"
+      }
+    },
+    {
+      "text": "Quadrilateral",
+      "isCorrect": false,
+      "explanation": "A quadrilateral has four sides and angles, but the shape described has only three sides, so it cannot be a quadrilateral.",
+      "_id": {
+        "$oid": "696b434b25cb3503b113d905"
+      }
+    }
+  ],
+  "numericalAnswer": {
+    "tolerance": 0
+  },
+  "correctAnswer": "Right-angled triangle",
+  "keywords": [],
+  "explanation": "The shape with three sides and one right angle is a right-angled triangle. Recognizing the specific angles helps in identifying the shape and understanding its properties, such as the Pythagorean theorem applicability.",
+  "marks": 3,
+  "negativeMarks": 1,
+  "recommendedTime": 180,
+  "tags": [
+    "triangles",
+    "angles",
+    "classification"
+  ],
+  "createdBy": "openai",
+  "isActive": true,
+  "usageCount": 0,
+  "correctAttempts": 0,
+  "totalAttempts": 0,
+  "createdAt": {
+    "$date": "2026-01-17T08:07:39.736Z"
+  },
+  "updatedAt": {
+    "$date": "2026-01-17T08:07:39.736Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "696b435225cb3503b113d917"
+  },
+  "courseId": {
+    "$oid": "696b42c7ef8889b51b160dc9"
+  },
+  "chapterName": "Grade 4 Mathematics - Geometry",
+  "topic": "Properties of triangles and quadrilaterals",
+  "difficultyLevel": "hard",
+  "type": "mcq-single",
+  "text": "A quadrilateral has exactly two pairs of parallel sides, with one pair longer than the other. Which type of quadrilateral is it most likely to be, considering properties of shapes and their classifications?",
+  "options": [
+    {
+      "text": "Rectangle",
+      "isCorrect": false,
+      "explanation": "A rectangle has opposite sides parallel and equal in length, but it does not necessarily have only two pairs of parallel sides with different lengths; all four sides are either equal or follow specific properties.",
+      "_id": {
+        "$oid": "696b435225cb3503b113d918"
+      }
+    },
+    {
+      "text": "Trapezium (trapezoid)",
+      "isCorrect": true,
+      "explanation": "A trapezium has exactly one pair of parallel sides, but if considering a special case with two pairs of parallel sides, it resembles a parallelogram. However, if the shape has only two parallel sides, it is a trapezium. The question hints at a shape with one pair longer than the other, typical of a trapezium.",
+      "_id": {
+        "$oid": "696b435225cb3503b113d919"
+      }
+    },
+    {
+      "text": "Rhombus",
+      "isCorrect": false,
+      "explanation": "A rhombus has all sides equal and both pairs of opposite sides parallel, but the sides are equal, not necessarily with different lengths, and it doesn't typically have only one pair of parallel sides.",
+      "_id": {
+        "$oid": "696b435225cb3503b113d91a"
+      }
+    },
+    {
+      "text": "Square",
+      "isCorrect": false,
+      "explanation": "A square has four sides equal and four right angles; it has two pairs of parallel sides, but the sides are equal in length, so it does not fit the description of different length pairs.",
+      "_id": {
+        "$oid": "696b435225cb3503b113d91b"
+      }
+    }
+  ],
+  "numericalAnswer": {
+    "tolerance": 0
+  },
+  "correctAnswer": "Trapezium (trapezoid)",
+  "keywords": [],
+  "explanation": "The shape described has exactly one pair of parallel sides, which is characteristic of a trapezium. The mention of different lengths suggests the shape isn't a rectangle, square, or rhombus, which have specific symmetry and parallel side properties. This question tests understanding of different quadrilaterals and their properties, especially those with only one pair of parallel sides.",
+  "marks": 3,
+  "negativeMarks": 1,
+  "recommendedTime": 180,
+  "tags": [
+    "quadrilaterals",
+    "parallel sides",
+    "classification"
+  ],
+  "createdBy": "openai",
+  "isActive": true,
+  "usageCount": 0,
+  "correctAttempts": 0,
+  "totalAttempts": 0,
+  "createdAt": {
+    "$date": "2026-01-17T08:07:46.737Z"
+  },
+  "updatedAt": {
+    "$date": "2026-01-17T08:07:46.737Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "696b435425cb3503b113d92d"
+  },
+  "courseId": {
+    "$oid": "6969ec00ef8889b51b160d94"
+  },
+  "chapterName": "Grade 5 Mathematics - Geometry (Lines, Angles, and Shapes)",
+  "topic": "Mathematics",
+  "difficultyLevel": "easy",
+  "type": "mcq-single",
+  "text": "Which of the following is an example of a right angle?",
+  "options": [
+    {
+      "text": "An angle that measures 90 degrees",
+      "isCorrect": true,
+      "explanation": "A right angle is defined as an angle that measures exactly 90 degrees.",
+      "_id": {
+        "$oid": "696b435425cb3503b113d92e"
+      }
+    },
+    {
+      "text": "An angle that measures less than 90 degrees",
+      "isCorrect": false,
+      "explanation": "Angles less than 90 degrees are called acute angles, not right angles.",
+      "_id": {
+        "$oid": "696b435425cb3503b113d92f"
+      }
+    },
+    {
+      "text": "An angle that measures more than 90 degrees but less than 180 degrees",
+      "isCorrect": false,
+      "explanation": "Angles between 90 and 180 degrees are called obtuse angles, not right angles.",
+      "_id": {
+        "$oid": "696b435425cb3503b113d930"
+      }
+    },
+    {
+      "text": "An angle that measures exactly 180 degrees",
+      "isCorrect": false,
+      "explanation": "An angle measuring 180 degrees is a straight angle, not a right angle.",
+      "_id": {
+        "$oid": "696b435425cb3503b113d931"
+      }
+    }
+  ],
+  "numericalAnswer": {
+    "tolerance": 0
+  },
+  "correctAnswer": "An angle that measures 90 degrees",
+  "keywords": [],
+  "explanation": "A right angle is precisely defined as an angle measuring 90 degrees, which is fundamental in geometry for identifying perpendicular lines and shapes.",
+  "marks": 1,
+  "negativeMarks": 0,
+  "recommendedTime": 60,
+  "tags": [
+    "geometry",
+    "angles",
+    "basic"
+  ],
+  "createdBy": "openai",
+  "isActive": false,
+  "usageCount": 0,
+  "correctAttempts": 0,
+  "totalAttempts": 0,
+  "createdAt": {
+    "$date": "2026-01-17T08:07:48.535Z"
+  },
+  "updatedAt": {
+    "$date": "2026-01-17T08:08:33.200Z"
+  },
+  "__v": 0
+}]

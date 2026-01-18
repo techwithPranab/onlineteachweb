@@ -4,7 +4,19 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
 
 // Create axios instance with auth header
 const createAuthConfig = () => {
-  const token = localStorage.getItem('token');
+  // Get token from Zustand auth store
+  const authStorage = localStorage.getItem('auth-storage');
+  let token = null;
+  
+  if (authStorage) {
+    try {
+      const parsed = JSON.parse(authStorage);
+      token = parsed.state?.token;
+    } catch (e) {
+      console.error('Failed to parse auth storage:', e);
+    }
+  }
+  
   return {
     headers: {
       Authorization: `Bearer ${token}`,

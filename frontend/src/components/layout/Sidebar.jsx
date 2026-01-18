@@ -40,7 +40,6 @@ const tutorLinks = [
   { to: '/tutor/schedule', icon: Calendar, label: 'Schedule' },
   { to: '/tutor/materials', icon: FileText, label: 'Materials' },
   { to: '/tutor/quizzes', icon: ClipboardList, label: 'Quizzes' },
-  { to: '/tutor/questions', icon: HelpCircle, label: 'Question Bank' },
   // AI Questions submenu
   {
     type: 'group',
@@ -50,7 +49,6 @@ const tutorLinks = [
       { to: '/tutor/ai-questions/review', icon: ClipboardCheck, label: 'Review Questions' },
     ]
   },
-  { to: '/tutor/questions/import-export', icon: ArrowUpDown, label: 'Import/Export' },
   { to: '/tutor/evaluate', icon: PenTool, label: 'Manual Evaluation' },
   { to: '/tutor/analytics', icon: TrendingUp, label: 'Quiz Analytics' },
   { to: '/tutor/evaluation', icon: ClipboardCheck, label: 'Student Evaluation' },
@@ -69,8 +67,10 @@ const adminLinks = [
       { to: '/admin/courses', icon: BookOpen, label: 'Course Management' },
       { to: '/admin/quizzes', icon: ClipboardList, label: 'Quiz Management' },
       { to: '/admin/questions', icon: HelpCircle, label: 'Question Bank' },
+      { to: '/admin/questions/import-export', icon: ArrowUpDown, label: 'Import/Export' },
       { to: '/admin/ai-questions/generate', icon: Sparkles, label: 'Generate Questions' },
       { to: '/admin/ai-questions/review', icon: ClipboardCheck, label: 'Review Questions' },
+      { to: '/admin/offline-prompts', icon: FileText, label: 'Offline Prompts' },
         
       // AI Questions submenu
      

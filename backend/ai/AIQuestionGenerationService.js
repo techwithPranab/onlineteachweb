@@ -128,7 +128,11 @@ class AIQuestionGenerationService {
         course,
         userId,
         provider,
-        jobId
+        jobId,
+        grade: course.grade,
+        subject: course.subject,
+        chapterName: course.title,
+        topic: targetTopics[0] // Primary topic
       });
       
       const duration = Date.now() - startTime;
@@ -189,7 +193,6 @@ class AIQuestionGenerationService {
     try {
       generationRecord = await QuestionGeneration.create({
         courseId: courseId,
-        chapterId: course._id, // Using course ID as chapter ID for now
         chapterName: course.title,
         topic,
         aiProvider: provider.getName(),
@@ -329,17 +332,37 @@ class AIQuestionGenerationService {
   /**
    * Save questions as drafts
    */
-  async _saveDrafts({ questions, courseId, course, userId, provider, jobId }) {
+  async _saveDrafts({ questions, courseId, course, userId, provider, jobId, grade, subject, chapterName, topic: generationTopic }) {
     const drafts = [];
     
     for (const question of questions) {
-      const draft = await AIQuestionDraft.create({
+      // Merge question data with required fields for questionPayload
+      const questionPayload = {
         courseId,
-        chapterName: course.title, // Store chapter name at draft level
-        topic: question.topic,
+        courseTitle: course.title,
+        chapterName: chapterName || question.chapterName,
+        grade,
+        subject,
+        topic: question.topic || generationTopic,
         difficultyLevel: question.difficultyLevel,
         type: question.type,
-        questionPayload: question, // Keep original question without chapter info
+        text: question.text,
+        correctAnswer: question.correctAnswer,
+        explanation: question.explanation,
+        marks: question.marks || 1,
+        negativeMarks: question.negativeMarks || 0,
+        recommendedTime: question.recommendedTime || 60,
+        tags: question.tags || [],
+        options: question.options,
+        numericalAnswer: question.numericalAnswer,
+        expectedAnswer: question.expectedAnswer,
+        keywords: question.keywords,
+        caseStudy: question.caseStudy,
+        _metadata: question._metadata
+      };
+
+      const draft = await AIQuestionDraft.create({
+        questionPayload,
         sourceType: 'ai_generated',
         modelUsed: `${provider.getName()}/${provider.getVersion()}`,
         confidenceScore: question._metadata?.confidenceScore || 0.8,
@@ -367,7 +390,7 @@ class AIQuestionGenerationService {
   async getDrafts({ courseId, status, page = 1, limit = 20 }) {
     const query = {};
     
-    if (courseId) query.courseId = courseId;
+    if (courseId) query['questionPayload.courseId'] = courseId;
     if (status) query.status = status;
     
     const skip = (page - 1) * limit;
@@ -377,7 +400,10 @@ class AIQuestionGenerationService {
         .sort({ createdAt: -1 })
         .skip(skip)
         .limit(limit)
-        .populate('courseId', 'title subject grade')
+        .populate({
+          path: 'questionPayload.courseId',
+          select: 'title subject grade'
+        })
         .lean(),
       AIQuestionDraft.countDocuments(query)
     ]);
@@ -412,9 +438,18 @@ class AIQuestionGenerationService {
     if (edits) {
       // Preserve required fields if not explicitly provided in edits
       const preservedFields = {};
-      if (edits.correctAnswer === undefined && questionData.correctAnswer) {
-        preservedFields.correctAnswer = questionData.correctAnswer;
-      }
+      
+      // List of required fields that should be preserved if not in edits
+      const requiredFields = [
+        'courseId', 'courseTitle', 'chapterName', 'grade', 'subject', 
+        'topic', 'difficultyLevel', 'type', 'correctAnswer', 'explanation', 'marks'
+      ];
+      
+      requiredFields.forEach(field => {
+        if (edits[field] === undefined && questionData[field] !== undefined) {
+          preservedFields[field] = questionData[field];
+        }
+      });
       
       questionData = { ...questionData, ...edits, ...preservedFields };
     }
@@ -430,7 +465,7 @@ class AIQuestionGenerationService {
     
     // Use draft-level chapterName if question payload doesn't have it
     if (!questionData.chapterName) {
-      questionData.chapterName = draft.chapterName; // Use chapterName from draft
+      questionData.chapterName = questionData.chapterName; // Already in questionPayload
     }
     
     // Validate after ensuring all required fields are present
@@ -445,7 +480,7 @@ class AIQuestionGenerationService {
     // Create actual question
     const question = await Question.create({
       ...questionData,
-      courseId: draft.courseId,
+      courseId: questionData.courseId, // Use courseId from questionPayload
       createdBy: draft.modelUsed.split('/')[0], // Extract provider name from modelUsed
       isActive: true
     });
@@ -542,7 +577,7 @@ class AIQuestionGenerationService {
    * Get generation statistics
    */
   async getStatistics(courseId = null) {
-    const matchStage = courseId ? { courseId } : {};
+    const matchStage = courseId ? { 'questionPayload.courseId': courseId } : {};
     
     const stats = await AIQuestionDraft.aggregate([
       { $match: matchStage },

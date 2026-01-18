@@ -10,10 +10,10 @@ const errorHandler = (err, req, res, next) => {
   
   // Mongoose validation error
   if (err.name === 'ValidationError') {
-    const errors = Object.values(err.errors).map(e => ({
+    const errors = err.errors ? Object.values(err.errors).map(e => ({
       field: e.path,
       message: e.message
-    }));
+    })) : [{ field: 'unknown', message: err.message }];
     
     return res.status(400).json({
       success: false,

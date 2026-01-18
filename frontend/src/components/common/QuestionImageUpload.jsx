@@ -53,8 +53,19 @@ export default function QuestionImageUpload({
       const formData = new FormData();
       formData.append('image', file);
 
-      // Upload to server
-      const token = localStorage.getItem('token');
+      // Upload to server - Get token from Zustand auth store
+      const authStorage = localStorage.getItem('auth-storage');
+      let token = null;
+      
+      if (authStorage) {
+        try {
+          const parsed = JSON.parse(authStorage);
+          token = parsed.state?.token;
+        } catch (e) {
+          console.error('Failed to parse auth storage:', e);
+        }
+      }
+      
       const response = await fetch('/api/uploads/question-image', {
         method: 'POST',
         headers: {

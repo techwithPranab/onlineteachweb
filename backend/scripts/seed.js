@@ -121,78 +121,6 @@ const seedDatabase = async () => {
     
     console.log('Created sample students');
     
-    // Create sample courses
-    const courses = await Course.create([
-      {
-        title: 'Advanced Mathematics - Grade 10',
-        description: 'Comprehensive mathematics course covering algebra, geometry, and trigonometry for grade 10 students.',
-        createdBy: admin._id,
-        grade: 10,
-        subject: 'Mathematics',
-        price: 99.99,
-        syllabus: [
-          'Algebra fundamentals',
-          'Linear equations',
-          'Quadratic equations',
-          'Geometry basics',
-          'Trigonometry introduction'
-        ],
-        status: 'published',
-        level: 'intermediate'
-      },
-      {
-        title: 'Physics Fundamentals',
-        description: 'Introduction to physics concepts including mechanics, thermodynamics, and electricity.',
-        createdBy: admin._id,
-        grade: 11,
-        subject: 'Physics',
-        price: 89.99,
-        syllabus: [
-          'Newton\'s laws',
-          'Energy and work',
-          'Thermodynamics',
-          'Electricity basics',
-          'Magnetism'
-        ],
-        status: 'published',
-        level: 'beginner'
-      },
-      {
-        title: 'English Literature - Classic Novels',
-        description: 'Explore classic literature with in-depth analysis and discussion.',
-        createdBy: admin._id,
-        grade: 12,
-        subject: 'English',
-        price: 79.99,
-        syllabus: [
-          'Victorian literature',
-          'Romantic poetry',
-          'Modern prose',
-          'Literary analysis',
-          'Essay writing'
-        ],
-        status: 'published',
-        level: 'advanced'
-      },
-      {
-        title: 'Introduction to Programming with Python',
-        description: 'Learn programming basics using Python. Perfect for beginners.',
-        createdBy: admin._id,
-        grade: 9,
-        subject: 'Computer Science',
-        price: 119.99,
-        syllabus: [
-          'Python basics',
-          'Data types and variables',
-          'Control structures',
-          'Functions and modules',
-          'Object-oriented programming'
-        ],
-        status: 'published',
-        level: 'beginner'
-      }
-    ]);
-    
     console.log('Created sample courses');
     
     // Create subscription plans
@@ -279,8 +207,7 @@ const seedDatabase = async () => {
     tutors.forEach(t => console.log(`  - ${t.email} / tutor123`));
     console.log('\nStudents:');
     students.forEach(s => console.log(`  - ${s.email} / student123`));
-    console.log('\nCourses:', courses.length);
-    console.log('Subscription Plans:', plans.length);
+    console.log('\nSubscription Plans:', plans.length);
     
     console.log('\nDatabase seeded successfully!');
     process.exit(0);

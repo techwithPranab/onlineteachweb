@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { useQuery } from 'react-query'
 import Modal from '../common/Modal'
-import { questionService } from '@/services/apiServices'
+import { questionService, courseService } from '@/services/apiServices'
 
 const QUESTION_TYPES = [
   { value: 'mcq-single', label: 'Multiple Choice (Single Answer)', hasOptions: true },
@@ -28,6 +28,8 @@ export default function QuestionFormModal({
   defaultCourseId = ''
 }) {
   const [formData, setFormData] = useState({
+    grade: '',
+    subject: '',
     courseId: defaultCourseId,
     chapterId: '',
     chapterName: '',
@@ -59,6 +61,7 @@ export default function QuestionFormModal({
   const [keywordInput, setKeywordInput] = useState('')
   const [chapters, setChapters] = useState([])
   const [topics, setTopics] = useState([])
+  const [selectedCourse, setSelectedCourse] = useState(null)
 
   // Fetch courses if not provided
   const { data: coursesData, isLoading: loadingCourses } = useQuery(
@@ -69,7 +72,55 @@ export default function QuestionFormModal({
     }
   )
 
-  const availableCourses = courses.length > 0 ? courses : (coursesData || [])
+  // Fetch grades separately
+  const { data: gradesData, isLoading: loadingGrades, error: gradesError } = useQuery(
+    'grades',
+    () => courseService.getGrades(),
+    {
+      enabled: isOpen
+    }
+  )
+
+  const availableCourses = courses.length > 0 ? courses : (coursesData?.courses || [])
+  
+  // Use grades from dedicated API, with fallback to computing from courses
+  const availableGrades = useMemo(() => {
+    // Try to use grades from API first
+    if (gradesData?.grades && gradesData.grades.length > 0) {
+      const grades = gradesData.grades.sort((a, b) => a - b).map(grade => ({
+        value: grade,
+        label: `Class ${grade}`
+      }));
+      return grades;
+    }
+    
+    // Fallback: compute from available courses
+    if (availableCourses.length > 0) {
+      const gradeSet = new Set(availableCourses.map(course => course.grade).filter(Boolean));
+      const grades = Array.from(gradeSet).sort((a, b) => a - b).map(grade => ({
+        value: grade,
+        label: `Class ${grade}`
+      }));
+      return grades;
+    }
+    
+    return []
+  }, [gradesData, gradesError, availableCourses])
+
+  const availableSubjects = useMemo(() => {
+    const subjectSet = new Set(availableCourses.map(course => course.subject).filter(Boolean))
+    return Array.from(subjectSet).sort().map(subject => ({
+      value: subject,
+      label: subject
+    }))
+  }, [availableCourses])
+  
+  // Filter courses based on selected grade and subject
+  const filteredCourses = availableCourses.filter(course => {
+    const gradeMatch = !formData.grade || course.grade === parseInt(formData.grade)
+    const subjectMatch = !formData.subject || course.subject === formData.subject
+    return gradeMatch && subjectMatch
+  })
 
   // Fetch course structure when courseId changes
   const { data: courseStructure, isLoading: loadingStructure } = useQuery(
@@ -79,46 +130,129 @@ export default function QuestionFormModal({
       enabled: !!formData.courseId,
       onSuccess: (data) => {
         setChapters(data.chapters || [])
+        
+        // If we're editing and have a chapterName, set the chapterId and topics
+        if (question && question.chapterName && data.chapters) {
+          const chapter = data.chapters.find(c => c.name === question.chapterName || c.title === question.chapterName)
+          if (chapter) {
+            setTopics(chapter.topics || [])
+            setFormData(prev => ({
+              ...prev,
+              chapterId: chapter._id
+            }))
+          }
+        }
       }
     }
   )
 
   useEffect(() => {
+    if (!isOpen) return;
+    
     if (question) {
+      // Find the course to get grade/subject if not available in question
+      // courseId might be an object (populated) or string
+      const courseId = typeof question.courseId === 'object' ? question.courseId?._id : question.courseId;
+      const course = availableCourses.find(c => c._id === courseId);
+      
+      // Set form data with courseId first so course structure can be loaded
       setFormData({
-        ...formData,
-        ...question,
-        options: question.options || formData.options,
+        grade: question.grade || course?.grade || '',
+        subject: question.subject || course?.subject || '',
+        courseId: courseId || '',
+        chapterId: '', // Will be set when course structure loads
+        chapterName: question.chapterName || '',
+        topic: question.topic || '',
+        difficultyLevel: question.difficultyLevel || 'medium',
+        type: question.type || 'mcq-single',
+        text: question.text || '',
+        caseStudy: question.caseStudy || '',
+        options: question.options || [
+          { text: '', isCorrect: false, explanation: '' },
+          { text: '', isCorrect: false, explanation: '' },
+          { text: '', isCorrect: false, explanation: '' },
+          { text: '', isCorrect: false, explanation: '' }
+        ],
+        numericalAnswer: question.numericalAnswer || { value: 0, tolerance: 0, unit: '' },
+        expectedAnswer: question.expectedAnswer || '',
+        correctAnswer: question.correctAnswer || '',
         keywords: question.keywords || [],
+        explanation: question.explanation || '',
+        hint: question.hint || '',
+        marks: question.marks || 1,
+        negativeMarks: question.negativeMarks || 0,
+        recommendedTime: question.recommendedTime || 60,
         tags: question.tags || []
       })
       
-      // Set chapter and topics if editing
-      if (question.chapterId && chapters.length > 0) {
-        const chapter = chapters.find(c => c._id === question.chapterId)
-        if (chapter) {
-          setTopics(chapter.topics || [])
-        }
+      // Set selected course and populate grade/subject
+      if (course) {
+        setSelectedCourse(course)
       }
     } else {
       // Reset form for new question
       setFormData({
-        ...formData,
-        courseId: defaultCourseId,
+        grade: '',
+        subject: '',
+        courseId: defaultCourseId || '',
         chapterId: '',
         chapterName: '',
         topic: '',
+        difficultyLevel: 'medium',
+        type: 'mcq-single',
         text: '',
+        caseStudy: '',
         options: [
           { text: '', isCorrect: false, explanation: '' },
           { text: '', isCorrect: false, explanation: '' },
           { text: '', isCorrect: false, explanation: '' },
           { text: '', isCorrect: false, explanation: '' }
-        ]
+        ],
+        numericalAnswer: { value: 0, tolerance: 0, unit: '' },
+        expectedAnswer: '',
+        correctAnswer: '',
+        keywords: [],
+        explanation: '',
+        hint: '',
+        marks: 1,
+        negativeMarks: 0,
+        recommendedTime: 60,
+        tags: []
       })
       setTopics([])
+      setChapters([])
+      
+      // Set selected course for new question
+      if (defaultCourseId && availableCourses.length > 0) {
+        const course = availableCourses.find(c => c._id === defaultCourseId)
+        if (course) {
+          setSelectedCourse(course)
+          setFormData(prev => ({
+            ...prev,
+            grade: course.grade || '',
+            subject: course.subject || ''
+          }))
+        }
+      } else {
+        setSelectedCourse(null)
+      }
     }
-  }, [question, defaultCourseId, isOpen, chapters])
+  }, [question, defaultCourseId, isOpen, availableCourses.length])
+
+  // Separate effect to handle course structure loading when editing
+  useEffect(() => {
+    if (question && question.courseId && availableCourses.length > 0) {
+      // Ensure courseId is set to trigger course structure loading
+      const courseId = typeof question.courseId === 'object' ? question.courseId?._id : question.courseId;
+      setFormData(prev => ({
+        ...prev,
+        courseId: courseId
+      }))
+    }
+  }, [question, availableCourses])
+
+  // Effect to handle chapter and topic population when editing - REMOVED
+  // Now handled in course structure query onSuccess callback
 
   const handleChange = (field, value) => {
     let updatedFormData = { ...formData, [field]: value }
@@ -149,13 +283,45 @@ export default function QuestionFormModal({
       }
     }
     
-    // Handle course change - reset chapter and topic
+    // Handle course change - reset chapter and topic, update selected course
     if (field === 'courseId') {
+      const course = availableCourses.find(c => c._id === value)
+      setSelectedCourse(course || null)
       setChapters([])
       setTopics([])
       updatedFormData = {
         ...updatedFormData,
         courseId: value,
+        chapterId: '',
+        chapterName: '',
+        topic: ''
+      }
+    }
+    
+    // Handle grade change - reset course, chapter, topic
+    if (field === 'grade') {
+      setSelectedCourse(null)
+      setChapters([])
+      setTopics([])
+      updatedFormData = {
+        ...updatedFormData,
+        grade: value,
+        courseId: '',
+        chapterId: '',
+        chapterName: '',
+        topic: ''
+      }
+    }
+    
+    // Handle subject change - reset course, chapter, topic
+    if (field === 'subject') {
+      setSelectedCourse(null)
+      setChapters([])
+      setTopics([])
+      updatedFormData = {
+        ...updatedFormData,
+        subject: value,
+        courseId: '',
         chapterId: '',
         chapterName: '',
         topic: ''
@@ -234,6 +400,8 @@ export default function QuestionFormModal({
   const validate = () => {
     const newErrors = {}
     
+    if (!formData.grade) newErrors.grade = 'Grade is required'
+    if (!formData.subject) newErrors.subject = 'Subject is required'
     if (!formData.courseId) newErrors.courseId = 'Course is required'
     if (!formData.chapterId) newErrors.chapterId = 'Chapter is required'
     if (!formData.topic?.trim()) newErrors.topic = 'Topic is required'
@@ -298,6 +466,24 @@ export default function QuestionFormModal({
 
   const typeConfig = QUESTION_TYPES.find(t => t.value === formData.type)
 
+  // Compute correct answer for display
+  const getCorrectAnswerDisplay = () => {
+    if (formData.type === 'mcq-single' || formData.type === 'mcq-multiple' || formData.type === 'true-false') {
+      const correctOptions = formData.options.filter(o => o.isCorrect && o.text?.trim())
+      if (correctOptions.length === 0) return 'Not set'
+      return correctOptions.map(o => o.text).join(', ')
+    } else if (formData.type === 'numerical') {
+      if (!formData.numericalAnswer.value && formData.numericalAnswer.value !== 0) return 'Not set'
+      return `${formData.numericalAnswer.value}${formData.numericalAnswer.unit ? ' ' + formData.numericalAnswer.unit : ''}`
+    } else if (formData.type === 'short-answer' || formData.type === 'long-answer' || formData.type === 'case-based') {
+      if (!formData.expectedAnswer?.trim()) return 'Not set'
+      return formData.expectedAnswer.length > 100 
+        ? formData.expectedAnswer.substring(0, 100) + '...' 
+        : formData.expectedAnswer
+    }
+    return 'Not set'
+  }
+
   return (
     <Modal
       isOpen={isOpen}
@@ -306,6 +492,77 @@ export default function QuestionFormModal({
       size="xl"
     >
       <div className="space-y-6 max-h-[70vh] overflow-y-auto p-1">
+        {/* Grade and Subject Selection */}
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Grade *</label>
+            <select
+              value={formData.grade}
+              onChange={(e) => handleChange('grade', e.target.value)}
+              disabled={loadingGrades}
+              className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 ${errors.grade ? 'border-red-500' : 'border-gray-300'} ${loadingGrades ? 'bg-gray-100' : ''}`}
+            >
+              <option value="">
+                {loadingGrades ? 'Loading grades...' : 'Select Grade'}
+              </option>
+              {availableGrades.map(grade => (
+                <option key={grade.value} value={grade.value}>{grade.label}</option>
+              ))}
+            </select>
+            {errors.grade && <p className="text-red-500 text-xs mt-1">{errors.grade}</p>}
+          </div>
+          
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Subject *</label>
+            <select
+              value={formData.subject}
+              onChange={(e) => handleChange('subject', e.target.value)}
+              disabled={loadingCourses}
+              className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 ${errors.subject ? 'border-red-500' : 'border-gray-300'} ${loadingCourses ? 'bg-gray-100' : ''}`}
+            >
+              <option value="">
+                {loadingCourses ? 'Loading subjects...' : 'Select Subject'}
+              </option>
+              {availableSubjects.map(subject => (
+                <option key={subject.value} value={subject.value}>{subject.label}</option>
+              ))}
+            </select>
+            {errors.subject && <p className="text-red-500 text-xs mt-1">{errors.subject}</p>}
+          </div>
+        </div>
+
+        {/* Course Information Display */}
+        {selectedCourse && (
+          <div className="bg-gradient-to-r from-indigo-50 to-purple-50 border border-indigo-200 rounded-lg p-4 mb-4">
+            <h3 className="text-sm font-semibold text-indigo-900 mb-3 flex items-center gap-2">
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              Course Information
+            </h3>
+            <div className="grid grid-cols-3 gap-4">
+              <div>
+                <p className="text-xs text-gray-600 mb-1">Grade</p>
+                <p className="text-sm font-semibold text-gray-900 bg-white px-3 py-1.5 rounded border border-gray-200">
+                  Class {selectedCourse.grade}
+                </p>
+              </div>
+              <div>
+                <p className="text-xs text-gray-600 mb-1">Subject</p>
+                <p className="text-sm font-semibold text-gray-900 bg-white px-3 py-1.5 rounded border border-gray-200">
+                  {selectedCourse.subject}
+                </p>
+              </div>
+              <div>
+                <p className="text-xs text-gray-600 mb-1">Course</p>
+                <p className="text-sm font-semibold text-gray-900 bg-white px-3 py-1.5 rounded border border-gray-200 truncate" title={selectedCourse.title}>
+                  {selectedCourse.title}
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Basic Info */}
         <div className="grid grid-cols-2 gap-4">
           <div>
@@ -313,17 +570,21 @@ export default function QuestionFormModal({
             <select
               value={formData.courseId}
               onChange={(e) => handleChange('courseId', e.target.value)}
-              disabled={loadingCourses}
-              className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 ${errors.courseId ? 'border-red-500' : 'border-gray-300'}`}
+              disabled={loadingCourses || (!formData.grade || !formData.subject)}
+              className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 ${errors.courseId ? 'border-red-500' : 'border-gray-300'} ${(!formData.grade || !formData.subject) ? 'bg-gray-100' : ''}`}
             >
               <option value="">
-                {loadingCourses ? 'Loading courses...' : 'Select Course'}
+                {loadingCourses ? 'Loading courses...' : (!formData.grade || !formData.subject) ? 'Select grade and subject first' : 'Select Course'}
               </option>
-              {availableCourses.map(course => (
+              {filteredCourses.map(course => (
                 <option key={course._id} value={course._id}>{course.title}</option>
               ))}
             </select>
             {errors.courseId && <p className="text-red-500 text-xs mt-1">{errors.courseId}</p>}
+            {formData.grade && formData.subject && filteredCourses.length === 0 && (
+              <p className="text-amber-600 text-xs mt-1">No courses available for selected grade and subject</p>
+            )}
+            {(!formData.grade || !formData.subject) && <p className="text-gray-500 text-xs mt-1">Please select grade and subject first</p>}
           </div>
           
           <div>
@@ -600,6 +861,30 @@ export default function QuestionFormModal({
             placeholder="Explain the correct answer and concept..."
             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
           />
+        </div>
+
+        {/* Correct Answer Display */}
+        <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+          <div className="flex items-start gap-3">
+            <div className="flex-shrink-0 mt-0.5">
+              <svg className="w-5 h-5 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+              </svg>
+            </div>
+            <div className="flex-1">
+              <label className="block text-sm font-semibold text-green-900 mb-1">Correct Answer</label>
+              <p className="text-sm text-green-800 bg-white px-3 py-2 rounded border border-green-200 min-h-[40px]">
+                {getCorrectAnswerDisplay()}
+              </p>
+              <p className="text-xs text-green-700 mt-1 italic">
+                {formData.type === 'mcq-single' && 'Select the correct option above'}
+                {formData.type === 'mcq-multiple' && 'Select all correct options above'}
+                {formData.type === 'true-false' && 'Select True or False above'}
+                {formData.type === 'numerical' && 'Enter the numerical answer value above'}
+                {(formData.type === 'short-answer' || formData.type === 'long-answer' || formData.type === 'case-based') && 'Enter the expected answer above'}
+              </p>
+            </div>
+          </div>
         </div>
 
         {/* Hint */}

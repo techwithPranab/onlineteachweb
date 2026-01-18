@@ -24,14 +24,14 @@ export default function NotificationBell() {
   const { data, isLoading } = useQuery(
     'notifications',
     () => notificationService.getNotifications({ limit: 10 }),
-    { refetchInterval: 30000 } // Refetch every 30 seconds
+    { refetchInterval: 3600000 } // Refetch every 60 minutes (hourly)
   );
 
   // Fetch unread count
   const { data: unreadData } = useQuery(
     'unreadNotificationCount',
     () => notificationService.getUnreadCount(),
-    { refetchInterval: 30000 }
+    { refetchInterval: 3600000 } // Refetch every 60 minutes (hourly)
   );
 
   const unreadCount = unreadData?.unreadCount || 0;

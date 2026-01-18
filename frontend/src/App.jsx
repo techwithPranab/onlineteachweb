@@ -45,12 +45,10 @@ import StudentEvaluation from './pages/tutor/StudentEvaluation'
 import QuizManagement from './pages/tutor/QuizManagement'
 import QuizCreate from './pages/tutor/QuizCreate'
 import QuizPreview from './pages/tutor/QuizPreview'
-import QuestionBank from './pages/tutor/QuestionBank'
 import ManualEvaluation from './pages/tutor/ManualEvaluation'
 import QuizAnalytics from './pages/tutor/QuizAnalytics'
 import AIQuestionGenerator from './pages/tutor/AIQuestionGenerator'
 import AIQuestionReview from './pages/tutor/AIQuestionReview'
-import QuestionImportExport from './pages/tutor/QuestionImportExport'
 
 // Admin Pages
 import AdminDashboard from './pages/admin/AdminDashboard'
@@ -64,6 +62,9 @@ import RevenueAnalytics from './pages/admin/RevenueAnalytics'
 import PaymentManagement from './pages/admin/PaymentManagement'
 import SessionManagement from './pages/admin/SessionManagement'
 import AdminSubscriptionManagement from './pages/admin/SubscriptionManagement'
+import GenerateOfflinePrompts from './pages/admin/GenerateOfflinePrompts'
+import AdminQuestionBank from './pages/admin/QuestionBank'
+import AdminQuestionImportExport from './pages/admin/QuestionImportExport'
 
 // Shared
 import ProfileSettings from './pages/shared/ProfileSettings'
@@ -158,11 +159,9 @@ function App() {
             <Route path="quizzes/new" element={<QuizCreate />} />
             <Route path="quizzes/:quizId/edit" element={<QuizCreate />} />
             <Route path="quizzes/:quizId/preview" element={<QuizPreview />} />
-            <Route path="questions" element={<QuestionBank />} />
             <Route path="ai-questions" element={<AIQuestionReview />} />
             <Route path="ai-questions/generate" element={<AIQuestionGenerator />} />
             <Route path="ai-questions/review" element={<AIQuestionReview />} />
-            <Route path="questions/import-export" element={<QuestionImportExport />} />
             <Route path="evaluate" element={<ManualEvaluation />} />
             <Route path="evaluate/:sessionId" element={<ManualEvaluation />} />
             <Route path="analytics" element={<QuizAnalytics />} />
@@ -189,6 +188,7 @@ function App() {
             <Route path="sessions" element={<SessionManagement />} />
             <Route path="subscriptions" element={<AdminSubscriptionManagement />} />
             <Route path="analytics" element={<RevenueAnalytics />} />
+            <Route path="offline-prompts" element={<GenerateOfflinePrompts />} />
             <Route path="profile" element={<ProfileSettings />} />
             <Route path="notifications" element={<NotificationsPage />} />
             {/* Quiz Routes - Admin can also manage */}
@@ -196,7 +196,8 @@ function App() {
             <Route path="quizzes/new" element={<QuizCreate />} />
             <Route path="quizzes/:quizId/edit" element={<QuizCreate />} />
             <Route path="quizzes/:quizId/preview" element={<QuizPreview />} />
-            <Route path="questions" element={<QuestionBank />} />
+            <Route path="questions" element={<AdminQuestionBank />} />
+            <Route path="questions/import-export" element={<AdminQuestionImportExport />} />
             <Route path="ai-questions" element={<AIQuestionReview />} />
             <Route path="ai-questions/generate" element={<AIQuestionGenerator />} />
             <Route path="ai-questions/review" element={<AIQuestionReview />} />

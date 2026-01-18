@@ -23,6 +23,15 @@ const questionSchema = new mongoose.Schema({
     required: true,
     index: true
   },
+  grade: {
+    type: Number,
+    index: true
+  },
+  subject: {
+    type: String,
+    trim: true,
+    index: true
+  },
   chapterName: {
     type: String,
     required: true,
@@ -142,6 +151,8 @@ const questionSchema = new mongoose.Schema({
 questionSchema.index({ courseId: 1, difficultyLevel: 1, topic: 1 });
 questionSchema.index({ courseId: 1, isActive: 1 });
 questionSchema.index({ courseId: 1, type: 1 });
+questionSchema.index({ grade: 1, subject: 1 });
+questionSchema.index({ grade: 1, subject: 1, difficultyLevel: 1 });
 
 // Virtual for success rate
 questionSchema.virtual('successRate').get(function() {

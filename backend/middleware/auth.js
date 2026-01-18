@@ -6,6 +6,7 @@ const authenticate = async (req, res, next) => {
   try {
     // Get token from header
     const authHeader = req.headers.authorization;
+    logger.info(`Auth header present: ${!!authHeader}, startsWithBearer: ${authHeader && authHeader.startsWith('Bearer ')}`);
     
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
       return res.status(401).json({

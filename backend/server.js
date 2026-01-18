@@ -25,6 +25,7 @@ const quizRoutes = require('./routes/quiz.routes');
 const quizEvaluationRoutes = require('./routes/quizEvaluation.routes');
 const aiQuestionRoutes = require('./routes/aiQuestion.routes');
 const questionExportRoutes = require('./routes/questionExport.routes');
+const offlinePromptRoutes = require('./routes/offlinePrompt.routes');
 const testRoutes = require('./routes/test.routes');
 
 const app = express();
@@ -38,10 +39,15 @@ const io = socketIO(server, {
 
 // Middleware
 app.use(helmet());
-app.use(cors({
+const corsOptions = {
   origin: process.env.FRONTEND_URL || 'http://localhost:3001',
-  credentials: true
-}));
+  credentials: true,
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+  exposedHeaders: ['Authorization']
+};
+app.use(cors(corsOptions));
+// Enable preflight for all routes
+app.options('*', cors(corsOptions));
 app.use(morgan('combined', { stream: logger.stream }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -82,6 +88,7 @@ app.use('/api/quizzes', quizRoutes);
 app.use('/api/quiz-evaluations', quizEvaluationRoutes);
 app.use('/api/ai', aiQuestionRoutes);
 app.use('/api/questions', questionExportRoutes); // Import/Export endpoints (merged with question routes)
+app.use('/api/offline-prompts', offlinePromptRoutes);
 app.use('/api/notifications', require('./routes/notification.routes'));
 app.use('/api/test', testRoutes); // Test endpoints (no auth required)
 
@@ -93,16 +100,16 @@ app.get('/health', (req, res) => {
 // Error handling
 app.use(errorHandler);
 
-// Start quiz scheduler for auto-publish/archive
-const quizScheduler = require('./services/quizScheduler.service');
-quizScheduler.start();
+// Quiz scheduler disabled - manual management only
+// const quizScheduler = require('./services/quizScheduler.service');
+// quizScheduler.start();
 
 // Start server
 const PORT = process.env.PORT || 5000;
 server.listen(PORT, () => {
   logger.info(`Server running on port ${PORT}`);
   logger.info(`Environment: ${process.env.NODE_ENV}`);
-  logger.info('Quiz scheduler started');
+  // logger.info('Quiz scheduler started');
 });
 
 module.exports = { app, io };

@@ -6,6 +6,7 @@ import ErrorMessage from '../../components/common/ErrorMessage'
 import EmptyState from '../../components/common/EmptyState'
 import Modal from '../../components/common/Modal'
 import ConfirmDialog from '../../components/common/ConfirmDialog'
+import QuestionFormModal from '../../components/questions/QuestionFormModal'
 
 export default function QuestionBank() {
   const navigate = useNavigate()
@@ -33,6 +34,7 @@ export default function QuestionBank() {
 
   useEffect(() => {
     fetchGrades()
+    fetchCourses()
     fetchQuestions()
   }, [filters])
 
@@ -76,6 +78,15 @@ export default function QuestionBank() {
     try {
       const response = await courseService.getCoursesByGradeAndSubject(filters.grade, filters.subject)
       setFilteredCourses(response.courses || [])
+    } catch (err) {
+      console.error('Failed to load courses:', err)
+    }
+  }
+
+  const fetchCourses = async () => {
+    try {
+      const response = await courseService.getCourses()
+      setCourses(response.courses || [])
     } catch (err) {
       console.error('Failed to load courses:', err)
     }
@@ -401,6 +412,7 @@ export default function QuestionBank() {
       {/* Create/Edit Question Modal */}
       {(showCreateModal || editQuestion) && (
         <QuestionFormModal
+          isOpen={true}
           question={editQuestion}
           courses={courses}
           onClose={() => {
@@ -429,354 +441,4 @@ export default function QuestionBank() {
   )
 }
 
-// Question Form Modal Component
-function QuestionFormModal({ question, courses, onClose, onSave }) {
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState(null)
-  const [topics, setTopics] = useState([])
-  
-  const [formData, setFormData] = useState({
-    courseId: question?.courseId?._id || question?.courseId || '',
-    topic: question?.topic || '',
-    difficultyLevel: question?.difficultyLevel || 'medium',
-    type: question?.type || 'mcq-single',
-    text: question?.text || '',
-    caseStudy: question?.caseStudy || '',
-    options: question?.options || [
-      { text: '', isCorrect: false },
-      { text: '', isCorrect: false },
-      { text: '', isCorrect: false },
-      { text: '', isCorrect: false }
-    ],
-    numericalAnswer: question?.numericalAnswer || { value: '', tolerance: 0 },
-    expectedAnswer: question?.expectedAnswer || '',
-    keywords: question?.keywords || [],
-    explanation: question?.explanation || '',
-    marks: question?.marks || 1,
-    negativeMarks: question?.negativeMarks || 0,
-    recommendedTime: question?.recommendedTime || 60,
-    tags: question?.tags || []
-  })
 
-  useEffect(() => {
-    if (formData.courseId) {
-      fetchTopics()
-    }
-  }, [formData.courseId])
-
-  const fetchTopics = async () => {
-    try {
-      const response = await questionService.getTopicsForCourse(formData.courseId)
-      setTopics(response.topics?.map(t => t.topic) || [])
-    } catch (err) {
-      console.error(err)
-    }
-  }
-
-  const handleChange = (field, value) => {
-    setFormData(prev => ({ ...prev, [field]: value }))
-  }
-
-  const handleOptionChange = (index, field, value) => {
-    const newOptions = [...formData.options]
-    newOptions[index] = { ...newOptions[index], [field]: value }
-    
-    // For single MCQ, ensure only one correct answer
-    if (field === 'isCorrect' && value && formData.type === 'mcq-single') {
-      newOptions.forEach((opt, i) => {
-        if (i !== index) opt.isCorrect = false
-      })
-    }
-    
-    setFormData(prev => ({ ...prev, options: newOptions }))
-  }
-
-  const addOption = () => {
-    setFormData(prev => ({
-      ...prev,
-      options: [...prev.options, { text: '', isCorrect: false }]
-    }))
-  }
-
-  const removeOption = (index) => {
-    if (formData.options.length > 2) {
-      setFormData(prev => ({
-        ...prev,
-        options: prev.options.filter((_, i) => i !== index)
-      }))
-    }
-  }
-
-  const handleSubmit = async (e) => {
-    e.preventDefault()
-    try {
-      setLoading(true)
-      setError(null)
-      
-      const submitData = { ...formData }
-      
-      // Clean up based on type
-      if (!['mcq-single', 'mcq-multiple'].includes(submitData.type)) {
-        delete submitData.options
-      }
-      if (submitData.type !== 'numerical') {
-        delete submitData.numericalAnswer
-      }
-      if (!['short-answer', 'long-answer', 'case-based'].includes(submitData.type)) {
-        delete submitData.expectedAnswer
-        delete submitData.keywords
-      }
-      
-      if (question) {
-        await questionService.updateQuestion(question._id, submitData)
-      } else {
-        await questionService.createQuestion(submitData)
-      }
-      
-      onSave()
-    } catch (err) {
-      setError(err.response?.data?.message || 'Failed to save question')
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  const needsOptions = ['mcq-single', 'mcq-multiple'].includes(formData.type)
-  const needsNumerical = formData.type === 'numerical'
-  const needsExpectedAnswer = ['short-answer', 'long-answer', 'case-based'].includes(formData.type)
-
-  return (
-    <Modal
-      isOpen={true}
-      onClose={onClose}
-      title={question ? 'Edit Question' : 'Create Question'}
-      size="xl"
-    >
-      <form onSubmit={handleSubmit} className="space-y-6">
-        {error && <ErrorMessage message={error} />}
-
-        <div className="grid grid-cols-2 gap-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Course *</label>
-            <select
-              value={formData.courseId}
-              onChange={(e) => handleChange('courseId', e.target.value)}
-              required
-              className="w-full border border-gray-300 rounded-lg px-3 py-2"
-            >
-              <option value="">Select Course</option>
-              {courses.map(course => (
-                <option key={course._id} value={course._id}>{course.title}</option>
-              ))}
-            </select>
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Topic *</label>
-            <input
-              type="text"
-              value={formData.topic}
-              onChange={(e) => handleChange('topic', e.target.value)}
-              required
-              list="topics"
-              placeholder="Enter or select topic"
-              className="w-full border border-gray-300 rounded-lg px-3 py-2"
-            />
-            <datalist id="topics">
-              {topics.map(t => <option key={t} value={t} />)}
-            </datalist>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-3 gap-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Type *</label>
-            <select
-              value={formData.type}
-              onChange={(e) => handleChange('type', e.target.value)}
-              className="w-full border border-gray-300 rounded-lg px-3 py-2"
-            >
-              <option value="mcq-single">MCQ (Single Answer)</option>
-              <option value="mcq-multiple">MCQ (Multiple Answers)</option>
-              <option value="true-false">True/False</option>
-              <option value="numerical">Numerical</option>
-              <option value="short-answer">Short Answer</option>
-              <option value="long-answer">Long Answer</option>
-              <option value="case-based">Case Based</option>
-            </select>
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Difficulty *</label>
-            <select
-              value={formData.difficultyLevel}
-              onChange={(e) => handleChange('difficultyLevel', e.target.value)}
-              className="w-full border border-gray-300 rounded-lg px-3 py-2"
-            >
-              <option value="easy">Easy</option>
-              <option value="medium">Medium</option>
-              <option value="hard">Hard</option>
-            </select>
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Marks *</label>
-            <input
-              type="number"
-              min={0.5}
-              step={0.5}
-              value={formData.marks}
-              onChange={(e) => handleChange('marks', parseFloat(e.target.value))}
-              className="w-full border border-gray-300 rounded-lg px-3 py-2"
-            />
-          </div>
-        </div>
-
-        {formData.type === 'case-based' && (
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Case Study</label>
-            <textarea
-              value={formData.caseStudy}
-              onChange={(e) => handleChange('caseStudy', e.target.value)}
-              rows={4}
-              placeholder="Enter the case study or passage"
-              className="w-full border border-gray-300 rounded-lg px-3 py-2"
-            />
-          </div>
-        )}
-
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Question Text *</label>
-          <textarea
-            value={formData.text}
-            onChange={(e) => handleChange('text', e.target.value)}
-            required
-            rows={3}
-            placeholder="Enter your question"
-            className="w-full border border-gray-300 rounded-lg px-3 py-2"
-          />
-        </div>
-
-        {/* MCQ Options */}
-        {needsOptions && (
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Options *</label>
-            <div className="space-y-2">
-              {formData.options.map((option, index) => (
-                <div key={index} className="flex items-center space-x-2">
-                  <input
-                    type={formData.type === 'mcq-single' ? 'radio' : 'checkbox'}
-                    name="correctAnswer"
-                    checked={option.isCorrect}
-                    onChange={(e) => handleOptionChange(index, 'isCorrect', e.target.checked)}
-                    className="h-4 w-4 text-indigo-600"
-                  />
-                  <input
-                    type="text"
-                    value={option.text}
-                    onChange={(e) => handleOptionChange(index, 'text', e.target.value)}
-                    placeholder={`Option ${String.fromCharCode(65 + index)}`}
-                    className="flex-1 border border-gray-300 rounded-lg px-3 py-2"
-                  />
-                  {formData.options.length > 2 && (
-                    <button
-                      type="button"
-                      onClick={() => removeOption(index)}
-                      className="p-2 text-red-500 hover:text-red-700"
-                    >
-                      ×
-                    </button>
-                  )}
-                </div>
-              ))}
-            </div>
-            <button
-              type="button"
-              onClick={addOption}
-              className="mt-2 text-sm text-indigo-600 hover:text-indigo-800"
-            >
-              + Add Option
-            </button>
-          </div>
-        )}
-
-        {/* Numerical Answer */}
-        {needsNumerical && (
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Correct Answer *</label>
-              <input
-                type="number"
-                step="any"
-                value={formData.numericalAnswer.value}
-                onChange={(e) => handleChange('numericalAnswer', { ...formData.numericalAnswer, value: e.target.value })}
-                className="w-full border border-gray-300 rounded-lg px-3 py-2"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Tolerance</label>
-              <input
-                type="number"
-                step="any"
-                min={0}
-                value={formData.numericalAnswer.tolerance}
-                onChange={(e) => handleChange('numericalAnswer', { ...formData.numericalAnswer, tolerance: parseFloat(e.target.value) })}
-                className="w-full border border-gray-300 rounded-lg px-3 py-2"
-              />
-            </div>
-          </div>
-        )}
-
-        {/* Expected Answer & Keywords for text-based */}
-        {needsExpectedAnswer && (
-          <>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Expected Answer (for grading reference)</label>
-              <textarea
-                value={formData.expectedAnswer}
-                onChange={(e) => handleChange('expectedAnswer', e.target.value)}
-                rows={3}
-                className="w-full border border-gray-300 rounded-lg px-3 py-2"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Keywords (comma-separated)</label>
-              <input
-                type="text"
-                value={formData.keywords.join(', ')}
-                onChange={(e) => handleChange('keywords', e.target.value.split(',').map(k => k.trim()).filter(k => k))}
-                placeholder="keyword1, keyword2, keyword3"
-                className="w-full border border-gray-300 rounded-lg px-3 py-2"
-              />
-            </div>
-          </>
-        )}
-
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Explanation</label>
-          <textarea
-            value={formData.explanation}
-            onChange={(e) => handleChange('explanation', e.target.value)}
-            rows={2}
-            placeholder="Explanation shown after quiz submission"
-            className="w-full border border-gray-300 rounded-lg px-3 py-2"
-          />
-        </div>
-
-        <div className="flex justify-end space-x-3 pt-4 border-t">
-          <button
-            type="button"
-            onClick={onClose}
-            className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
-          >
-            Cancel
-          </button>
-          <button
-            type="submit"
-            disabled={loading}
-            className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 disabled:opacity-50"
-          >
-            {loading ? 'Saving...' : (question ? 'Update' : 'Create')}
-          </button>
-        </div>
-      </form>
-    </Modal>
-  )
-}

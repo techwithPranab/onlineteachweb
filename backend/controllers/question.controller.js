@@ -9,6 +9,8 @@ exports.createQuestion = async (req, res, next) => {
   try {
     const {
       courseId,
+      grade,
+      subject,
       chapterName,
       topic,
       difficultyLevel,
@@ -28,6 +30,8 @@ exports.createQuestion = async (req, res, next) => {
     
     const question = await Question.create({
       courseId,
+      grade,
+      subject,
       chapterName,
       topic,
       difficultyLevel,
@@ -134,7 +138,7 @@ exports.getQuestions = async (req, res, next) => {
     
     const [questions, total] = await Promise.all([
       Question.find(query)
-        .populate('courseId', 'title')
+        .populate('courseId', 'title grade subject')
         .populate('createdBy', 'name')
         .sort({ createdAt: -1 })
         .skip(skip)

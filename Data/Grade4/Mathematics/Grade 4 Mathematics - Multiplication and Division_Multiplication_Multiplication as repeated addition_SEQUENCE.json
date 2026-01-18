@@ -1,0 +1,322 @@
+[
+  {
+    "_id": {"$oid": "64b2f1a2d3e4567890ab12cd"},
+    "questionPayload": {
+      "courseId": {"$oid": "696b42c7ef8889b51b160dc4"},
+      "courseTitle": "Grade 4 Mathematics - Multiplication and Division",
+      "chapterId": {"$oid": "696d6b179ab06c8cbca46e0c"},
+      "chapterName": "Multiplication",
+      "grade": "4",
+      "subject": "Mathematics",
+      "text": "A craftsman makes 13 identical panels. Each panel has 4 strips and each strip requires 9 screws. By treating multiplication as repeated addition, which of the following expressions is both correct and the most efficient for calculating the total number of screws?",
+      "topic": "Multiplication as repeated addition",
+      "difficultyLevel": "hard",
+      "type": "mcq-single",
+      "correctAnswer": "10×36 + 3×36 = 360 + 108 = 468",
+      "explanation": "Each panel has 4 strips × 9 screws = 36 screws. For 13 panels total is 13 × 36. Decomposing 13 into 10 + 3 gives 10×36 + 3×36 = 360 + 108 = 468 which is correct and reduces the number of calculation steps. The other representations are either correct but less efficient (many repeated addends) or incorrect due to misapplied operations.",
+      "marks": 1,
+      "negativeMarks": 0,
+      "recommendedTime": 60,
+      "tags": [],
+      "options": [
+        {
+          "text": "9 added 52 times (9+9+... repeated 52 times) = 468",
+          "isCorrect": false,
+          "explanation": "This expression is equivalent to the total because there are 13×4 = 52 strips and each has 9 screws, so adding 9 fifty-two times gives 468. It is correct in value but inefficient and prone to manual error because it requires 52 additions."
+        },
+        {
+          "text": "36 added 13 times (36+36+... 13 terms) = 468",
+          "isCorrect": false,
+          "explanation": "This correctly represents 13×36 and yields 468, since each panel contributes 36 screws. It is more efficient than 52 additions but still requires 13 addends; decomposing 13 into 10 + 3 is more efficient."
+        },
+        {
+          "text": "10×36 + 3×36 = 360 + 108 = 468",
+          "isCorrect": true,
+          "explanation": "Correct and most efficient among the choices: compute 36×10 quickly (360) and add 36×3 (108). Two multiplications and one addition give the total 468 with minimal steps."
+        },
+        {
+          "text": "13×9 + 13×4 = 117 + 52 = 169",
+          "isCorrect": false,
+          "explanation": "Incorrect: this expression misinterprets the grouping. The correct grouping is 13×(4×9) = 13×36 = 468. Writing 13×9 + 13×4 is equivalent to 13×(9+4) = 13×13 = 169, which does not represent 13 panels × (4 strips × 9 screws)."
+        }
+      ],
+      "_metadata": {
+        "provider": "openai",
+        "model": "gpt-4.1-nano",
+        "version": "1.0.0",
+        "generatedAt": "2026-01-18T00:00:00.000Z",
+        "temperature": 0.3,
+        "promptVersion": "1.0.0"
+      }
+    },
+    "sourceType": "ai_generated",
+    "sourceMaterials": [],
+    "modelUsed": "openai/1.0.0",
+    "promptVersion": "1.0.0",
+    "confidenceScore": 0.8,
+    "validationFlags": [],
+    "status": "draft",
+    "jobId": "qgen_2026-01-18T00:00:00.000Z_x8f3k1",
+    "createdBy": {"$oid": "696464a013ae03e5728399c5"},
+    "editHistory": [],
+    "createdAt": {"$date": "2026-01-18T00:00:00.000Z"},
+    "updatedAt": {"$date": "2026-01-18T00:00:00.000Z"},
+    "__v": 0
+  },
+  {
+    "_id": {"$oid": "507f1f77bcf86cd799439011"},
+    "questionPayload": {
+      "courseId": {"$oid": "696b42c7ef8889b51b160dc4"},
+      "courseTitle": "Grade 4 Mathematics - Multiplication and Division",
+      "chapterId": {"$oid": "696d6b179ab06c8cbca46e0c"},
+      "chapterName": "Multiplication",
+      "grade": "4",
+      "subject": "Mathematics",
+      "text": "A bakery packs 13 boxes with 24 cookies in each box. Which of the following decompositions using repeated addition or the distributive property contains an arithmetic mistake?",
+      "topic": "Multiplication as repeated addition",
+      "difficultyLevel": "hard",
+      "type": "mcq-single",
+      "correctAnswer": "13×20 + 13×4 = 260 + 56 = 316",
+      "explanation": "The correct total is 13×24 = 312. Decompositions may be used correctly, but one option contains a numerical error: 13×4 = 52 not 56. That incorrect arithmetic makes that option the right choice for this question. Other decompositions shown evaluate correctly to 312.",
+      "marks": 1,
+      "negativeMarks": 0,
+      "recommendedTime": 60,
+      "tags": [],
+      "options": [
+        {
+          "text": "10×24 + 3×24 = 240 + 72 = 312",
+          "isCorrect": false,
+          "explanation": "Correct decomposition: split 13 as 10 + 3. Both multiplications and the final sum are correct, producing 312."
+        },
+        {
+          "text": "13×20 + 13×4 = 260 + 56 = 316",
+          "isCorrect": true,
+          "explanation": "This option contains an arithmetic mistake: while the decomposition 13×20 + 13×4 is valid, 13×4 = 52 (not 56). The incorrect partial product makes this choice the one with an arithmetic error."
+        },
+        {
+          "text": "24 added 13 times = 24×13 = 312",
+          "isCorrect": false,
+          "explanation": "A direct repeated addition representation; 24 added 13 times equals 312, which is correct. It validates the decomposition methods that also produce 312."
+        },
+        {
+          "text": "13×24 = (13×12)×2 = 156×2 = 312",
+          "isCorrect": false,
+          "explanation": "Correct: using 24 = 12×2 and then multiplying by 13 gives 156×2 = 312, which is another correct way to reach the total."
+        }
+      ],
+      "_metadata": {
+        "provider": "openai",
+        "model": "gpt-4.1-nano",
+        "version": "1.0.0",
+        "generatedAt": "2026-01-18T00:00:00.000Z",
+        "temperature": 0.3,
+        "promptVersion": "1.0.0"
+      }
+    },
+    "sourceType": "ai_generated",
+    "sourceMaterials": [],
+    "modelUsed": "openai/1.0.0",
+    "promptVersion": "1.0.0",
+    "confidenceScore": 0.8,
+    "validationFlags": [],
+    "status": "draft",
+    "jobId": "qgen_2026-01-18T00:00:00.000Z_y3k7b2",
+    "createdBy": {"$oid": "696464a013ae03e5728399c5"},
+    "editHistory": [],
+    "createdAt": {"$date": "2026-01-18T00:00:00.000Z"},
+    "updatedAt": {"$date": "2026-01-18T00:00:00.000Z"},
+    "__v": 0
+  },
+  {
+    "_id": {"$oid": "5f1e4d2a7c3b8a9e6f1d4b2c"},
+    "questionPayload": {
+      "courseId": {"$oid": "696b42c7ef8889b51b160dc4"},
+      "courseTitle": "Grade 4 Mathematics - Multiplication and Division",
+      "chapterId": {"$oid": "696d6b179ab06c8cbca46e0c"},
+      "chapterName": "Multiplication",
+      "grade": "4",
+      "subject": "Mathematics",
+      "text": "Company A packages 9 boxes with 12 pencils each. Company B packages 4 boxes with 27 pencils each. Which of the following repeated addition expressions gives the correct combined total number of pencils?",
+      "topic": "Multiplication as repeated addition",
+      "difficultyLevel": "hard",
+      "type": "mcq-single",
+      "correctAnswer": "9×12 + 4×27 = 108 + 108 = 216",
+      "explanation": "Compute each company separately using repeated addition or multiplication: Company A: 9×12 = 108; Company B: 4×27 = 108. Add the totals: 108 + 108 = 216. Other options either miscalculate a product or mix terms incorrectly.",
+      "marks": 1,
+      "negativeMarks": 0,
+      "recommendedTime": 60,
+      "tags": [],
+      "options": [
+        {
+          "text": "9×12 + 4×27 = 108 + 108 = 216",
+          "isCorrect": true,
+          "explanation": "Correct: calculate each group's total using multiplication (a short form of repeated addition) and add them to get 216."
+        },
+        {
+          "text": "12×9 + 27×4 = 120 + 108 = 228",
+          "isCorrect": false,
+          "explanation": "Incorrect arithmetic: 12×9 = 108 (not 120). If computed correctly, the sum would be 108 + 108 = 216. The error is a miscalculation of the first product."
+        },
+        {
+          "text": "9×(12+4) + 27 = 9×16 + 27 = 144 + 27 = 171",
+          "isCorrect": false,
+          "explanation": "Incorrect setup: this mixes the two companies' counts incorrectly and adds an extra 27 rather than grouping Company B properly. The structure does not represent the combined total."
+        },
+        {
+          "text": "13×(12+27) = 13×39 = 507",
+          "isCorrect": false,
+          "explanation": "Incorrect: this wrongly combines the number of boxes (9+4 =13) with the sum of pencils per box (12+27) which does not represent the actual packing arrangement. It overcounts drastically."
+        }
+      ],
+      "_metadata": {
+        "provider": "openai",
+        "model": "gpt-4.1-nano",
+        "version": "1.0.0",
+        "generatedAt": "2026-01-18T00:00:00.000Z",
+        "temperature": 0.3,
+        "promptVersion": "1.0.0"
+      }
+    },
+    "sourceType": "ai_generated",
+    "sourceMaterials": [],
+    "modelUsed": "openai/1.0.0",
+    "promptVersion": "1.0.0",
+    "confidenceScore": 0.8,
+    "validationFlags": [],
+    "status": "draft",
+    "jobId": "qgen_2026-01-18T00:00:00.000Z_m4n9p3",
+    "createdBy": {"$oid": "696464a013ae03e5728399c5"},
+    "editHistory": [],
+    "createdAt": {"$date": "2026-01-18T00:00:00.000Z"},
+    "updatedAt": {"$date": "2026-01-18T00:00:00.000Z"},
+    "__v": 0
+  },
+  {
+    "_id": {"$oid": "60e1a3f62d4b7c8a9e0f1d2b"},
+    "questionPayload": {
+      "courseId": {"$oid": "696b42c7ef8889b51b160dc4"},
+      "courseTitle": "Grade 4 Mathematics - Multiplication and Division",
+      "chapterId": {"$oid": "696d6b179ab06c8cbca46e0c"},
+      "chapterName": "Multiplication",
+      "grade": "4",
+      "subject": "Mathematics",
+      "text": "The repeated addition expression 15 + 15 + ... + 15 (n times) equals 585. How many times was 15 added?",
+      "topic": "Multiplication as repeated addition",
+      "difficultyLevel": "hard",
+      "type": "mcq-single",
+      "correctAnswer": "39",
+      "explanation": "Let n be the number of times 15 is added: 15×n = 585. Divide: n = 585 ÷ 15. Recognize 15×40 = 600, so 15×39 = 600 − 15 = 585; therefore n = 39. Other choices are close but give incorrect totals when multiplied by 15.",
+      "marks": 1,
+      "negativeMarks": 0,
+      "recommendedTime": 60,
+      "tags": [],
+      "options": [
+        {
+          "text": "39",
+          "isCorrect": true,
+          "explanation": "Correct: 15×39 = (15×40) − 15 = 600 − 15 = 585, so 15 is added 39 times."
+        },
+        {
+          "text": "38",
+          "isCorrect": false,
+          "explanation": "Incorrect: 15×38 = 570, which is 15 less than 585, so this undercounts by one group of 15."
+        },
+        {
+          "text": "40",
+          "isCorrect": false,
+          "explanation": "Incorrect: 15×40 = 600, which is 15 more than 585, so this overcounts by one group of 15."
+        },
+        {
+          "text": "45",
+          "isCorrect": false,
+          "explanation": "Incorrect: 15×45 = 675, far larger than 585. This is not the correct number of repetitions."
+        }
+      ],
+      "_metadata": {
+        "provider": "openai",
+        "model": "gpt-4.1-nano",
+        "version": "1.0.0",
+        "generatedAt": "2026-01-18T00:00:00.000Z",
+        "temperature": 0.3,
+        "promptVersion": "1.0.0"
+      }
+    },
+    "sourceType": "ai_generated",
+    "sourceMaterials": [],
+    "modelUsed": "openai/1.0.0",
+    "promptVersion": "1.0.0",
+    "confidenceScore": 0.8,
+    "validationFlags": [],
+    "status": "draft",
+    "jobId": "qgen_2026-01-18T00:00:00.000Z_r7v2s4",
+    "createdBy": {"$oid": "696464a013ae03e5728399c5"},
+    "editHistory": [],
+    "createdAt": {"$date": "2026-01-18T00:00:00.000Z"},
+    "updatedAt": {"$date": "2026-01-18T00:00:00.000Z"},
+    "__v": 0
+  },
+  {
+    "_id": {"$oid": "61f2b3c4d5e6f7890a1b2c3d"},
+    "questionPayload": {
+      "courseId": {"$oid": "696b42c7ef8889b51b160dc4"},
+      "courseTitle": "Grade 4 Mathematics - Multiplication and Division",
+      "chapterId": {"$oid": "696d6b179ab06c8cbca46e0c"},
+      "chapterName": "Multiplication",
+      "grade": "4",
+      "subject": "Mathematics",
+      "text": "Which of the following representations is NOT equal to 7×18?",
+      "topic": "Multiplication as repeated addition",
+      "difficultyLevel": "hard",
+      "type": "mcq-single",
+      "correctAnswer": "7×18 = 7×(10+8) = 70 + 48 = 118",
+      "explanation": "7×18 = 126. Options that decompose or expand properly evaluate to 126. The last option incorrectly computes 7×8 as 48 (it should be 56), giving 118; therefore that representation is NOT equal to 7×18. This question checks careful evaluation of decomposition and arithmetic within repeated addition thinking.",
+      "marks": 1,
+      "negativeMarks": 0,
+      "recommendedTime": 60,
+      "tags": [],
+      "options": [
+        {
+          "text": "18+18+18+18+18+18+18 = 126",
+          "isCorrect": false,
+          "explanation": "Correct: adding 18 seven times equals 126, which is exactly 7×18. This is the direct repeated addition representation."
+        },
+        {
+          "text": "(7×20) - (7×2) = 140 - 14 = 126",
+          "isCorrect": false,
+          "explanation": "Correct: using decomposition 20 − 2 and distributing 7 gives the correct result 126. This is a valid equivalent representation."
+        },
+        {
+          "text": "(10×18) - (3×18) = 180 - 54 = 126",
+          "isCorrect": false,
+          "explanation": "Correct: writing 7 as 10 − 3 and applying multiplication yields 126. This is mathematically equivalent to 7×18."
+        },
+        {
+          "text": "7×18 = 7×(10+8) = 70 + 48 = 118",
+          "isCorrect": true,
+          "explanation": "Not equal: this option contains an arithmetic mistake—7×8 = 56, not 48. The correct decomposition would be 70 + 56 = 126. Because of the incorrect partial product, the expression shown is NOT equal to 7×18."
+        }
+      ],
+      "_metadata": {
+        "provider": "openai",
+        "model": "gpt-4.1-nano",
+        "version": "1.0.0",
+        "generatedAt": "2026-01-18T00:00:00.000Z",
+        "temperature": 0.3,
+        "promptVersion": "1.0.0"
+      }
+    },
+    "sourceType": "ai_generated",
+    "sourceMaterials": [],
+    "modelUsed": "openai/1.0.0",
+    "promptVersion": "1.0.0",
+    "confidenceScore": 0.8,
+    "validationFlags": [],
+    "status": "draft",
+    "jobId": "qgen_2026-01-18T00:00:00.000Z_t1q6u5",
+    "createdBy": {"$oid": "696464a013ae03e5728399c5"},
+    "editHistory": [],
+    "createdAt": {"$date": "2026-01-18T00:00:00.000Z"},
+    "updatedAt": {"$date": "2026-01-18T00:00:00.000Z"},
+    "__v": 0
+  }
+]

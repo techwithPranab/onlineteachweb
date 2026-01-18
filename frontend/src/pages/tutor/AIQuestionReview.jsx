@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import aiQuestionService from '../../services/aiQuestionService'
-import { courseService } from '../../services/apiServices'
+import { courseService, questionService } from '../../services/apiServices'
 import LoadingSpinner from '../../components/common/LoadingSpinner'
 import ErrorMessage from '../../components/common/ErrorMessage'
 import EmptyState from '../../components/common/EmptyState'
@@ -394,10 +394,8 @@ export default function AIQuestionReview() {
                   />
                 </th>
                 <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Question</th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Topic</th>
                 <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Type</th>
                 <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Difficulty</th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Confidence</th>
                 <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
                 <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase">Actions</th>
               </tr>
@@ -413,31 +411,28 @@ export default function AIQuestionReview() {
                       className="rounded text-blue-600"
                     />
                   </td>
-                  <td className="px-4 py-4">
+                  <td className="px-4 py-4 max-w-xs">
                     <div 
                       className="text-sm text-gray-900 max-w-md truncate cursor-pointer hover:text-blue-600"
                       onClick={() => setViewDraft(draft)}
                     >
                       {draft.questionPayload?.text || 'No text'}
                     </div>
-                    <div className="text-xs text-gray-500 mt-1">
-                      {draft.courseId?.title || 'Unknown Course'}
+                    <div className="text-xs text-gray-500 mt-1 space-y-1">
+                      <div><strong>Course:</strong> {draft.questionPayload?.courseTitle || draft.questionPayload?.courseId?.title || draft.courseId?.title || 'Unknown Course'}</div>
+                      <div><strong>Grade:</strong> {draft.questionPayload?.grade ? `Class ${draft.questionPayload.grade}` : 'N/A'}</div>
+                      <div><strong>Subject:</strong> {draft.questionPayload?.subject || 'N/A'}</div>
+                      <div><strong>Topic:</strong> {draft.questionPayload?.topic || 'N/A'}</div>
                     </div>
                   </td>
-                  <td className="px-4 py-4 text-sm text-gray-600">{draft.topic}</td>
                   <td className="px-4 py-4">
-                    <span className={`px-2 py-1 text-xs font-medium rounded-full ${getTypeBadge(draft.type)}`}>
-                      {draft.type}
+                    <span className={`px-2 py-1 text-xs font-medium rounded-full ${getTypeBadge(draft.questionPayload?.type)}`}>
+                      {draft.questionPayload?.type || 'N/A'}
                     </span>
                   </td>
                   <td className="px-4 py-4">
-                    <span className={`px-2 py-1 text-xs font-medium rounded-full ${getDifficultyBadge(draft.difficultyLevel)}`}>
-                      {draft.difficultyLevel}
-                    </span>
-                  </td>
-                  <td className="px-4 py-4">
-                    <span className={`font-medium ${getConfidenceColor(draft.confidenceScore)}`}>
-                      {(draft.confidenceScore * 100).toFixed(0)}%
+                    <span className={`px-2 py-1 text-xs font-medium rounded-full ${getDifficultyBadge(draft.questionPayload?.difficultyLevel)}`}>
+                      {draft.questionPayload?.difficultyLevel || 'N/A'}
                     </span>
                   </td>
                   <td className="px-4 py-4">
@@ -814,10 +809,48 @@ function QuestionPreview({ draft, onApprove, onEdit, onReject }) {
 // Question Editor Component
 function QuestionEditor({ draft, onSave, onCancel }) {
   const [formData, setFormData] = useState({ ...draft.questionPayload })
+  const [chapters, setChapters] = useState([])
+  const [topics, setTopics] = useState([])
+
+  // Fetch course structure to populate chapters and topics
+  useEffect(() => {
+    const fetchCourseStructure = async () => {
+      if (formData.courseId) {
+        try {
+          const response = await questionService.getCourseStructure(formData.courseId)
+          setChapters(response.chapters || [])
+          
+          // If we have a chapterName, find the corresponding chapter and set topics
+          if (formData.chapterName && response.chapters) {
+            const chapter = response.chapters.find(c => c.name === formData.chapterName || c.title === formData.chapterName)
+            if (chapter) {
+              setTopics(chapter.topics || [])
+            }
+          }
+        } catch (error) {
+          console.error('Failed to load course structure:', error)
+        }
+      }
+    }
+
+    fetchCourseStructure()
+  }, [formData.courseId])
 
   const handleChange = (e) => {
     const { name, value } = e.target
     setFormData(prev => ({ ...prev, [name]: value }))
+  }
+
+  const handleChapterChange = (chapterId) => {
+    const selectedChapter = chapters.find(c => c._id === chapterId)
+    if (selectedChapter) {
+      setTopics(selectedChapter.topics || [])
+      setFormData(prev => ({
+        ...prev,
+        chapterName: selectedChapter.name || selectedChapter.title,
+        topic: '' // Reset topic when chapter changes
+      }))
+    }
   }
 
   const handleOptionChange = (idx, field, value) => {
@@ -835,6 +868,41 @@ function QuestionEditor({ draft, onSave, onCancel }) {
 
   return (
     <div className="space-y-6">
+      {/* Chapter and Topic Selection */}
+      <div className="grid grid-cols-2 gap-4">
+        <div>
+          <label className="block font-medium text-gray-700 mb-2">Chapter</label>
+          <select
+            value={chapters.find(c => c.name === formData.chapterName || c.title === formData.chapterName)?._id || ''}
+            onChange={(e) => handleChapterChange(e.target.value)}
+            className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+          >
+            <option value="">Select Chapter</option>
+            {chapters.map(chapter => (
+              <option key={chapter._id} value={chapter._id}>
+                {chapter.name || chapter.title}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div>
+          <label className="block font-medium text-gray-700 mb-2">Topic</label>
+          <select
+            name="topic"
+            value={formData.topic || ''}
+            onChange={handleChange}
+            className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+          >
+            <option value="">Select Topic</option>
+            {topics.map(topic => (
+              <option key={topic} value={topic}>
+                {topic}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
+
       {/* Question Text */}
       <div>
         <label className="block font-medium text-gray-700 mb-2">Question Text</label>
