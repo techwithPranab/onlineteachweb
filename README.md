@@ -1,6 +1,6 @@
-# 📚 Online Teaching Platform - Complete Implementation
+# 📚 MeritAI - AI-Powered Personalized Learning Platform
 
-A comprehensive online teaching platform with live video conferencing, real-time collaboration, and complete admin management.
+A comprehensive AI-driven learning platform that identifies knowledge gaps, provides personalized assessments, and connects students with expert mentors for targeted skill development.
 
 ## 🎯 Project Status: Phase 2 Complete ✅
 

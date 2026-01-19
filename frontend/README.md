@@ -1,6 +1,6 @@
-# Online Teaching Platform - Frontend
+# MeritAI - Frontend
 
-Modern, responsive React frontend for an online teaching platform with role-based dashboards and real-time features.
+Modern, responsive React frontend for MeritAI platform with AI-powered gap analysis, role-based dashboards, and real-time learning features.
 
 ## Features
 

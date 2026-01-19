@@ -1,6 +1,6 @@
 # AI Question Generation Framework
 
-A comprehensive, pluggable AI-driven question generation system for the Online Teaching Platform.
+A comprehensive, pluggable AI-driven question generation system for the MeritAI Platform.
 
 ## 🎯 Overview
 
@@ -287,4 +287,4 @@ A: The system detects and filters duplicates automatically
 
 ## 📄 License
 
-MIT License - Part of Online Teaching Platform
+MIT License - Part of MeritAI Platform

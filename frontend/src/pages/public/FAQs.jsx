@@ -19,8 +19,8 @@ export default function FAQs() {
     // General
     {
       category: 'general',
-      question: 'What is Online Teaching Platform?',
-      answer: 'Online Teaching Platform is a comprehensive e-learning solution that connects students with qualified tutors for live, interactive classes. We offer courses across various subjects and grade levels, providing flexible and personalized learning experiences.'
+      question: 'What is MeritAI?',
+      answer: 'MeritAI is an AI-powered personalized learning platform that identifies your knowledge gaps through intelligent assessments, provides targeted learning resources, and connects you with expert mentors for comprehensive skill development.'
     },
     {
       category: 'general',

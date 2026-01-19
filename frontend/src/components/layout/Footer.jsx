@@ -6,9 +6,9 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div>
-            <h3 className="text-lg font-semibold mb-4">EduPlatform</h3>
+            <h3 className="text-lg font-semibold mb-4">MeritAI</h3>
             <p className="text-gray-400">
-              Empowering students and tutors to connect and learn together.
+              AI-powered personalized learning that identifies gaps and accelerates growth.
             </p>
           </div>
           
@@ -16,7 +16,7 @@ export default function Footer() {
             <h4 className="font-semibold mb-4">Platform</h4>
             <ul className="space-y-2 text-gray-400">
               <li><Link to="/for-students" className="hover:text-white transition">For Students</Link></li>
-              <li><Link to="/for-tutors" className="hover:text-white transition">For Tutors</Link></li>
+              {/* Tutor access is intentionally hidden from the public footer. */}
               <li><Link to="/pricing" className="hover:text-white transition">Pricing</Link></li>
             </ul>
           </div>
@@ -40,7 +40,7 @@ export default function Footer() {
         </div>
 
         <div className="mt-8 pt-8 border-t border-gray-700 text-center text-gray-400">
-          <p>&copy; {new Date().getFullYear()} EduPlatform. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} MeritAI. All rights reserved.</p>
         </div>
       </div>
     </footer>

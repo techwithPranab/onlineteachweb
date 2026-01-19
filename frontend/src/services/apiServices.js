@@ -300,6 +300,24 @@ export const adminService = {
     return data
   },
 
+  // Contact messages management
+  getContactMessages: async (params = {}) => {
+    const { data } = await api.get('/contact/messages', { params })
+    return data
+  },
+  getContactMessage: async (id) => {
+    const { data } = await api.get(`/contact/messages/${id}`)
+    return data
+  },
+  updateContactMessageStatus: async (id, update) => {
+    const { data } = await api.put(`/contact/messages/${id}/status`, update)
+    return data
+  },
+  deleteContactMessage: async (id) => {
+    const { data } = await api.delete(`/contact/messages/${id}`)
+    return data
+  },
+
   updateUserStatus: async (userId, status, reason) => {
     const { data } = await api.put(`/admin/users/${userId}/status`, {
       status,
@@ -642,4 +660,20 @@ export const quizEvaluationService = {
     const { data } = await api.post(`/quiz-evaluations/${evaluationId}/publish`)
     return data
   },
+}
+
+// Public contact service
+export const contactService = {
+  submitMessage: async (messageData) => {
+    const { data } = await api.post('/contact/messages', messageData)
+    return data
+  },
+  getContactInfo: async () => {
+    const { data } = await api.get('/contact/info')
+    return data
+  },
+  updateContactInfo: async (info) => {
+    const { data } = await api.put('/contact/info', info)
+    return data
+  }
 }

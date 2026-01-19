@@ -23,7 +23,7 @@ export default function PrivacyPolicy() {
               content={
                 <>
                   <p>
-                    Welcome to Online Teaching Platform ("we," "our," or "us"). We are committed to protecting your privacy and ensuring the security of your personal information. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our online teaching platform and services.
+                    Welcome to MeritAI ("we," "our," or "us"). We are committed to protecting your privacy and ensuring the security of your personal information. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our AI-powered learning platform and services.
                   </p>
                   <p className="mt-4">
                     By accessing or using our platform, you agree to the terms of this Privacy Policy. If you do not agree with our practices, please do not use our services.
@@ -270,7 +270,7 @@ export default function PrivacyPolicy() {
                     If you have questions or concerns about this Privacy Policy, please contact us:
                   </p>
                   <div className="mt-4 bg-gray-50 p-4 rounded-lg">
-                    <p><strong>Email:</strong> <a href="mailto:privacy@onlineteaching.com" className="text-blue-600 hover:underline">privacy@onlineteaching.com</a></p>
+                    <p><strong>Email:</strong> <a href="mailto:privacy@meritai.com" className="text-blue-600 hover:underline">privacy@meritai.com</a></p>
                     <p className="mt-2"><strong>Address:</strong> 123 Education Street, New York, NY 10001, USA</p>
                     <p className="mt-2"><strong>Phone:</strong> +1 (555) 123-4567</p>
                   </div>

@@ -20,7 +20,7 @@ export default function WhiteboardDemoPage() {
   return (
     <>
       <Head>
-        <title>Interactive Whiteboard with Math Templates - Online Teaching Platform</title>
+        <title>Interactive Whiteboard with Math Templates - MeritAI</title>
         <meta name="description" content="Interactive whiteboard with comprehensive mathematical templates for online teaching and tutoring sessions." />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />

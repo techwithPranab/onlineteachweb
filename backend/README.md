@@ -1,6 +1,6 @@
-# Online Teaching Platform - Backend
+# MeritAI - Backend
 
-A comprehensive backend API for an online teaching platform with role-based authentication, live classes, and subscription management.
+A comprehensive backend API for MeritAI platform with AI-powered assessments, role-based authentication, live classes, and personalized learning paths.
 
 ## Features
 

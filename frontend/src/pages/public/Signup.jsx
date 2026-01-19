@@ -1,11 +1,21 @@
-import { useState } from 'react'
-import { useNavigate, Link } from 'react-router-dom'
+import { useState, useEffect } from 'react'
+import { useNavigate, Link, useLocation } from 'react-router-dom'
 import { useAuthStore } from '../../store/authStore'
 import { User, Mail, Lock, GraduationCap } from 'lucide-react'
 
 export default function Signup() {
   const navigate = useNavigate()
   const { register } = useAuthStore()
+  const location = useLocation()
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search)
+    if (params.get('role') === 'tutor') {
+      // Redirect tutor signups to the tutor information page
+      navigate('/for-tutors')
+    }
+  }, [location.search, navigate])
+
   const [step, setStep] = useState(1)
   const [formData, setFormData] = useState({
     name: '',
@@ -89,31 +99,12 @@ export default function Signup() {
               <label className="block text-sm font-medium text-gray-700 mb-3">
                 I want to join as
               </label>
-              <div className="grid grid-cols-2 gap-4">
-                <button
-                  type="button"
-                  onClick={() => setFormData({ ...formData, role: 'student' })}
-                  className={`p-4 border-2 rounded-lg text-center transition ${
-                    formData.role === 'student'
-                      ? 'border-primary-600 bg-primary-50'
-                      : 'border-gray-200 hover:border-gray-300'
-                  }`}
-                >
+              <div className="grid grid-cols-1 gap-4">
+                <div className="p-4 border-2 rounded-lg text-center bg-primary-50 border-primary-600">
                   <GraduationCap className="h-8 w-8 mx-auto mb-2" />
                   <div className="font-medium">Student</div>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setFormData({ ...formData, role: 'tutor' })}
-                  className={`p-4 border-2 rounded-lg text-center transition ${
-                    formData.role === 'tutor'
-                      ? 'border-primary-600 bg-primary-50'
-                      : 'border-gray-200 hover:border-gray-300'
-                  }`}
-                >
-                  <User className="h-8 w-8 mx-auto mb-2" />
-                  <div className="font-medium">Tutor</div>
-                </button>
+                </div>
+                <div className="text-sm text-gray-500 mt-2">If you're interested in becoming a tutor, please visit our <Link to="/for-tutors" className="text-primary-600 underline">Tutor Information</Link> page to learn about the application process.</div>
               </div>
             </div>
 

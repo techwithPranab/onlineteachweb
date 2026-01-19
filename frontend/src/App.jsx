@@ -65,6 +65,7 @@ import AdminSubscriptionManagement from './pages/admin/SubscriptionManagement'
 import GenerateOfflinePrompts from './pages/admin/GenerateOfflinePrompts'
 import AdminQuestionBank from './pages/admin/QuestionBank'
 import AdminQuestionImportExport from './pages/admin/QuestionImportExport'
+import ContactMessages from './pages/admin/ContactMessages'
 
 // Shared
 import ProfileSettings from './pages/shared/ProfileSettings'
@@ -198,6 +199,7 @@ function App() {
             <Route path="quizzes/:quizId/preview" element={<QuizPreview />} />
             <Route path="questions" element={<AdminQuestionBank />} />
             <Route path="questions/import-export" element={<AdminQuestionImportExport />} />
+            <Route path="contact-messages" element={<ContactMessages />} />
             <Route path="ai-questions" element={<AIQuestionReview />} />
             <Route path="ai-questions/generate" element={<AIQuestionGenerator />} />
             <Route path="ai-questions/review" element={<AIQuestionReview />} />

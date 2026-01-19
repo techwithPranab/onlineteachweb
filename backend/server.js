@@ -27,6 +27,7 @@ const aiQuestionRoutes = require('./routes/aiQuestion.routes');
 const questionExportRoutes = require('./routes/questionExport.routes');
 const offlinePromptRoutes = require('./routes/offlinePrompt.routes');
 const testRoutes = require('./routes/test.routes');
+const contactRoutes = require('./routes/contact.routes');
 
 const app = express();
 const server = http.createServer(app);
@@ -91,6 +92,8 @@ app.use('/api/questions', questionExportRoutes); // Import/Export endpoints (mer
 app.use('/api/offline-prompts', offlinePromptRoutes);
 app.use('/api/notifications', require('./routes/notification.routes'));
 app.use('/api/test', testRoutes); // Test endpoints (no auth required)
+// Contact endpoints (public + admin)
+app.use('/api/contact', contactRoutes);
 
 // Health check
 app.get('/health', (req, res) => {

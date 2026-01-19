@@ -1,5 +1,6 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Mail, Phone, MapPin, Clock, Send, CheckCircle } from 'lucide-react'
+import { contactService } from '@/services/apiServices'
 
 export default function ContactUs() {
   const [formData, setFormData] = useState({
@@ -11,6 +12,22 @@ export default function ContactUs() {
   })
   const [submitted, setSubmitted] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [contactInfo, setContactInfo] = useState(null)
+  const [error, setError] = useState('')
+
+  useEffect(() => {
+    // Fetch contact information from backend model
+    let mounted = true
+    ;(async () => {
+      try {
+        const res = await contactService.getContactInfo()
+        if (mounted) setContactInfo(res.data || res)
+      } catch (err) {
+        console.error('Failed to load contact info', err)
+      }
+    })()
+    return () => { mounted = false }
+  }, [])
 
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -20,34 +37,44 @@ export default function ContactUs() {
   const handleSubmit = async (e) => {
     e.preventDefault()
     setLoading(true)
-    
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1500))
-    
-    setLoading(false)
-    setSubmitted(true)
-    
-    // Reset form after 3 seconds
-    setTimeout(() => {
-      setSubmitted(false)
-      setFormData({
-        name: '',
-        email: '',
-        subject: '',
-        category: 'general',
-        message: ''
-      })
-    }, 3000)
+    setError('')
+
+    try {
+      // Submit to backend
+      const res = await contactService.submitMessage(formData)
+      if (res && res.success) {
+        setSubmitted(true)
+
+        // Reset form after 3 seconds
+        setTimeout(() => {
+          setSubmitted(false)
+          setFormData({
+            name: '',
+            email: '',
+            subject: '',
+            category: 'general',
+            message: ''
+          })
+        }, 3000)
+      } else {
+        setError(res.message || 'Failed to submit message')
+      }
+    } catch (err) {
+      console.error(err)
+      setError(err.response?.data?.message || err.message || 'Failed to submit message')
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-blue-600 to-blue-800 text-white py-16">
+      <section className="bg-gradient-to-br from-primary-600 to-primary-800 text-white py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <h1 className="text-5xl font-bold mb-4">Get in Touch</h1>
-            <p className="text-xl text-blue-100">
+            <p className="text-xl text-primary-100">
               We'd love to hear from you. Send us a message and we'll respond as soon as possible.
             </p>
           </div>
@@ -62,53 +89,53 @@ export default function ContactUs() {
             <div className="lg:col-span-1 space-y-6">
               <div className="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
                 <h2 className="text-2xl font-bold text-gray-900 mb-6">Contact Information</h2>
-                
+
                 <div className="space-y-4">
                   <ContactInfoItem
-                    icon={<Mail className="h-6 w-6 text-blue-600" />}
+                    icon={<Mail className="h-6 w-6 text-primary-600" />}
                     title="Email"
-                    value="support@onlineteaching.com"
-                    subtitle="We'll respond within 24 hours"
+                    value={contactInfo?.email || 'support@meritai.com'}
+                    subtitle={contactInfo ? `Response time: ${contactInfo.responseTimes?.email || '24 hours'}` : 'We typically respond in 24 hours'}
                   />
-                  
+
                   <ContactInfoItem
-                    icon={<Phone className="h-6 w-6 text-green-600" />}
+                    icon={<Phone className="h-6 w-6 text-primary-600" />}
                     title="Phone"
-                    value="+1 (555) 123-4567"
-                    subtitle="Mon-Fri, 9am-6pm EST"
+                    value={contactInfo?.phone || '+1 (555) 123-4567'}
+                    subtitle={contactInfo?.businessHours || 'Mon-Fri, 9am-6pm EST'}
                   />
-                  
+
                   <ContactInfoItem
-                    icon={<MapPin className="h-6 w-6 text-red-600" />}
+                    icon={<MapPin className="h-6 w-6 text-primary-600" />}
                     title="Address"
-                    value="123 Education Street"
-                    subtitle="New York, NY 10001, USA"
+                    value={contactInfo?.address || '123 Education Street, New York, NY 10001, USA'}
+                    subtitle=""
                   />
-                  
+
                   <ContactInfoItem
-                    icon={<Clock className="h-6 w-6 text-purple-600" />}
+                    icon={<Clock className="h-6 w-6 text-primary-600" />}
                     title="Business Hours"
-                    value="Monday - Friday"
-                    subtitle="9:00 AM - 6:00 PM EST"
+                    value={contactInfo?.businessHours || 'Monday - Friday'}
+                    subtitle={contactInfo ? contactInfo.businessHours : '9:00 AM - 6:00 PM EST'}
                   />
                 </div>
               </div>
 
               {/* Quick Response Times */}
-              <div className="bg-blue-50 rounded-lg p-6">
+              <div className="bg-primary-50 rounded-lg p-6">
                 <h3 className="font-bold text-gray-900 mb-3">Response Times</h3>
                 <div className="space-y-2 text-sm text-gray-700">
                   <div className="flex justify-between">
                     <span>Email Support:</span>
-                    <span className="font-semibold">24 hours</span>
+                    <span className="font-semibold">{contactInfo?.responseTimes?.email || '24 hours'}</span>
                   </div>
                   <div className="flex justify-between">
                     <span>Phone Support:</span>
-                    <span className="font-semibold">Immediate</span>
+                    <span className="font-semibold">{contactInfo?.responseTimes?.phone || 'Immediate'}</span>
                   </div>
                   <div className="flex justify-between">
                     <span>Live Chat:</span>
-                    <span className="font-semibold">5 minutes</span>
+                    <span className="font-semibold">{contactInfo?.responseTimes?.chat || '5 minutes'}</span>
                   </div>
                 </div>
               </div>
@@ -118,7 +145,7 @@ export default function ContactUs() {
             <div className="lg:col-span-2">
               <div className="bg-white rounded-lg shadow-sm p-8 border border-gray-200">
                 <h2 className="text-2xl font-bold text-gray-900 mb-6">Send us a Message</h2>
-                
+
                 {submitted ? (
                   <div className="text-center py-12">
                     <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -131,6 +158,11 @@ export default function ContactUs() {
                   </div>
                 ) : (
                   <form onSubmit={handleSubmit} className="space-y-6">
+                    {error && (
+                      <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg">
+                        <p className="text-sm text-red-600">{error}</p>
+                      </div>
+                    )}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div>
                         <label className="block text-sm font-semibold text-gray-700 mb-2">
@@ -217,7 +249,7 @@ export default function ContactUs() {
                     <button
                       type="submit"
                       disabled={loading}
-                      className="w-full bg-blue-600 text-white px-6 py-4 rounded-lg font-semibold hover:bg-blue-700 transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                      className="w-full bg-primary-600 text-white px-6 py-4 rounded-lg font-semibold hover:bg-primary-700 transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                     >
                       {loading ? (
                         <>
@@ -260,7 +292,7 @@ export default function ContactUs() {
               description="Browse our comprehensive knowledge base"
               availability="Always available"
               buttonText="Visit Help Center"
-              buttonColor="bg-blue-600 hover:bg-blue-700"
+              buttonColor="bg-primary-600 hover:bg-primary-700"
               link="/help-center"
             />
             <AlternativeContact

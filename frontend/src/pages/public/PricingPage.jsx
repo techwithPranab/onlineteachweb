@@ -1,103 +1,155 @@
+import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import { Check } from 'lucide-react'
 
-const plans = [
-  {
-    name: 'Basic',
-    price: 9.99,
-    interval: 'month',
-    features: [
-      'Access to 3 courses',
-      'Join 5 live sessions per month',
-      'Download materials',
-      'Email support',
-    ],
-  },
-  {
-    name: 'Standard',
-    price: 29.99,
-    interval: 'month',
-    popular: true,
-    features: [
-      'Access to 10 courses',
-      'Unlimited live sessions',
-      'Download materials',
-      'Priority support',
-      'Progress tracking',
-    ],
-  },
-  {
-    name: 'Premium',
-    price: 49.99,
-    interval: 'month',
-    features: [
-      'Unlimited courses',
-      'Unlimited live sessions',
-      'Download materials',
-      '24/7 support',
-      'Progress tracking',
-      'One-on-one tutoring',
-      'Exam preparation',
-    ],
-  },
+// Editable feature lists for each plan
+const FEATURES_FREE = [
+  '5 Quizzes per Subject / month',
+  'Progress Report',
+  'Online Study Material',
 ]
 
+const FEATURES_STANDARD = [
+  'Unlimited Quizzes',
+  '1:1 Session with Expert Tutor on Identified Gap',
+  'Expert Study Material',
+  'Progress Tracking & Analytics',
+  'Personalized Mentorship',
+  'Priority Support',
+]
+
+// PricingPage - displays two plans: Free and Standard
 export default function PricingPage() {
+  const [billing, setBilling] = useState('monthly') // 'monthly' | 'annually'
+
+  // Determine display price for standard plan based on billing cycle
+  const standardPrice = billing === 'monthly' ? 100 : 1000
+  const standardLabel = billing === 'monthly' ? '/month' : '/year'
+
   return (
-    <div className="py-20 bg-gray-50">
+    <div className="py-20 bg-gray-50 min-h-screen">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">
-            Simple, Transparent Pricing
-          </h1>
-          <p className="text-xl text-gray-600">
-            Choose the plan that works best for you
+        {/* Page header */}
+        <div className="text-center mb-10">
+          <h1 className="text-4xl font-bold text-gray-900 mb-4">Pricing Plans</h1>
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            Choose the plan that fits your learning needs. Get started for free or unlock unlimited practice
+            and expert mentorship with Standard.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {plans.map((plan) => (
-            <div
-              key={plan.name}
-              className={`card relative ${
-                plan.popular ? 'border-2 border-primary-600' : ''
-              }`}
+        {/* Billing toggle */}
+        <div className="flex items-center justify-center mb-8">
+          <div className="inline-flex bg-gray-200 rounded-full p-1">
+            <button
+              onClick={() => setBilling('monthly')}
+              className={`px-4 py-2 rounded-full ${billing === 'monthly' ? 'bg-white shadow font-semibold' : 'text-gray-600'}`}
+              aria-pressed={billing === 'monthly'}
+              aria-label="Monthly billing"
             >
-              {plan.popular && (
-                <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                  <span className="bg-primary-600 text-white px-4 py-1 rounded-full text-sm font-medium">
-                    Most Popular
-                  </span>
-                </div>
-              )}
+              Monthly
+            </button>
+            <button
+              onClick={() => setBilling('annually')}
+              className={`px-4 py-2 rounded-full ${billing === 'annually' ? 'bg-white shadow font-semibold' : 'text-gray-600'}`}
+              aria-pressed={billing === 'annually'}
+              aria-label="Annual billing"
+            >
+              Annually
+            </button>
+          </div>
+        </div>
 
-              <div className="text-center mb-6">
-                <h3 className="text-2xl font-bold text-gray-900 mb-2">{plan.name}</h3>
-                <div className="flex items-baseline justify-center">
-                  <span className="text-5xl font-bold text-gray-900">${plan.price}</span>
-                  <span className="text-gray-600 ml-2">/{plan.interval}</span>
-                </div>
-              </div>
+        {/* Plans grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {/* Free Plan Card */}
+          <div className="bg-white rounded-xl shadow-md p-8 border border-gray-200">
+            {/* Header */}
+            <h3 className="text-xl font-semibold text-gray-900 mb-2 text-center">Free</h3>
+            <p className="text-gray-600 text-center mb-6">
+              Start with free assessments and materials to discover your learning gaps.
+            </p>
 
-              <ul className="space-y-4 mb-8">
-                {plan.features.map((feature) => (
-                  <li key={feature} className="flex items-start">
-                    <Check className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
-                    <span className="ml-3 text-gray-700">{feature}</span>
-                  </li>
-                ))}
-              </ul>
-
-              <button
-                className={`w-full py-3 rounded-lg font-semibold transition ${
-                  plan.popular
-                    ? 'bg-primary-600 text-white hover:bg-primary-700'
-                    : 'bg-gray-100 text-gray-900 hover:bg-gray-200'
-                }`}
-              >
-                Get Started
-              </button>
+            {/* Price */}
+            <div className="text-center mb-6">
+              <span className="text-4xl font-bold text-gray-900">Free</span>
+              <div className="text-sm text-gray-500 mt-1">Forever • No credit card required</div>
             </div>
-          ))}
+
+            {/* Features */}
+            <ul className="space-y-3 mb-6">
+              {FEATURES_FREE.map((feature) => (
+                <li key={feature} className="flex items-start">
+                  <Check className="h-5 w-5 text-green-500 mt-1 flex-shrink-0" aria-hidden />
+                  <span className="ml-3 text-gray-700">{feature}</span>
+                </li>
+              ))}
+            </ul>
+
+            {/* CTA */}
+            <Link
+              to="/signup?plan=free"
+              className="w-full inline-flex items-center justify-center bg-primary-600 text-white py-3 rounded-lg font-semibold hover:bg-primary-700 transition"
+              aria-label="Start Free Plan"
+            >
+              Start Free
+            </Link>
+          </div>
+
+          {/* Standard Plan Card */}
+          <div className="relative bg-gradient-to-br from-white to-primary-50 rounded-xl p-8 border border-primary-200 shadow-lg transform hover:-translate-y-1 transition">
+            <div className="absolute -top-4 right-4">
+              <span className="text-xs bg-primary-600 text-white px-3 py-1 rounded-full">Most Popular</span>
+            </div>
+
+            {/* Header */}
+            <div className="text-center mb-4">
+              <h3 className="text-2xl font-bold text-gray-900 mb-1">Standard</h3>
+              <p className="text-sm text-gray-600">For learners who want comprehensive practice and expert mentorship</p>
+            </div>
+
+            {/* Price */}
+            <div className="text-center mb-6">
+              <div className="flex items-baseline justify-center">
+                <span className="text-4xl font-extrabold text-gray-900">₹{standardPrice}</span>
+                <span className="ml-2 text-gray-600">{standardLabel}</span>
+              </div>
+              <div className="text-sm text-gray-500 mt-1">
+                {billing === 'annually' ? 'Billed annually • Save on yearly plan' : 'Billed monthly • Cancel anytime'}
+              </div>
+            </div>
+
+            {/* Features */}
+            <ul className="space-y-3 mb-6">
+              {FEATURES_STANDARD.map((feature) => (
+                <li key={feature} className="flex items-start">
+                  <Check className="h-5 w-5 text-green-500 mt-1 flex-shrink-0" aria-hidden />
+                  <span className="ml-3 text-gray-700">{feature}</span>
+                </li>
+              ))}
+            </ul>
+
+            {/* CTA */}
+            <Link
+              to={`/signup?plan=standard&billing=${billing}`}
+              className="w-full inline-flex items-center justify-center bg-primary-600 text-white py-3 rounded-lg font-semibold hover:bg-primary-700 transition"
+              aria-label="Start Standard Plan"
+            >
+              Start Standard
+            </Link>
+
+            {/* Small billing note */}
+            <div className="mt-4 text-xs text-gray-500 text-center">
+              Secure payments • Cancel anytime • Priority mentorship & support
+            </div>
+          </div>
+        </div>
+
+        {/* Billing details & notes */}
+        <div className="mt-8 text-sm text-gray-600 text-center max-w-2xl mx-auto">
+          <p>
+            <strong>Billing Details:</strong> Annual billing charges ₹1000 for Standard and is billed once per year. Monthly billing is ₹100 per month and renews automatically. You may upgrade, downgrade, or cancel at any time from your account settings.
+          </p>
         </div>
       </div>
     </div>

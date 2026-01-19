@@ -23,6 +23,7 @@ import {
   ArrowUpDown,
   ChevronDown,
   ChevronRight,
+  Mail,
 } from 'lucide-react'
 
 const studentLinks = [
@@ -83,6 +84,7 @@ const adminLinks = [
     label: 'User Management',
     items: [
       { to: '/admin/users', icon: Users, label: 'Users' },
+      { to: '/admin/contact-messages', icon: Mail, label: 'Contact Messages' },
       { to: '/admin/tutors/approval', icon: GraduationCap, label: 'Tutor Approval' },
     ]
   },
@@ -153,7 +155,7 @@ export default function Sidebar() {
       <div className="p-6">
         <div className="flex items-center space-x-2">
           <BookOpen className="h-8 w-8 text-primary-600" />
-          <span className="text-xl font-bold text-gray-900">EduPlatform</span>
+          <span className="text-xl font-bold text-gray-900">MeritAI</span>
         </div>
       </div>
 
