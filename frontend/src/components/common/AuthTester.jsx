@@ -19,7 +19,7 @@ export default function AuthTester() {
   const testCredentials = [
     {
       role: 'admin',
-      email: 'admin@teachingplatform.com',
+      email: 'admin@meritai.in',
       password: 'admin123'
     },
     {

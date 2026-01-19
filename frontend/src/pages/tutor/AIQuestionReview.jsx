@@ -371,7 +371,7 @@ export default function AIQuestionReview() {
       ) : drafts.length === 0 ? (
         <EmptyState 
           title="No drafts found" 
-          message="Generate some questions to get started"
+          description="Generate some questions to get started"
           action={
             <button
               onClick={() => navigate('/tutor/ai-questions/generate')}

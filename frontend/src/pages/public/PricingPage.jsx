@@ -1,30 +1,67 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Check } from 'lucide-react'
+import { useQuery } from 'react-query'
+import { subscriptionService } from '@/services/apiServices'
 
-// Editable feature lists for each plan
-const FEATURES_FREE = [
-  '5 Quizzes per Subject / month',
-  'Progress Report',
-  'Online Study Material',
-]
-
-const FEATURES_STANDARD = [
-  'Unlimited Quizzes',
-  '1:1 Session with Expert Tutor on Identified Gap',
-  'Expert Study Material',
-  'Progress Tracking & Analytics',
-  'Personalized Mentorship',
-  'Priority Support',
-]
-
-// PricingPage - displays two plans: Free and Standard
+// PricingPage - displays two plans: Free and Standard (data-driven)
 export default function PricingPage() {
   const [billing, setBilling] = useState('monthly') // 'monthly' | 'annually'
 
+  const { data: plansData, isLoading, error } = useQuery('publicPlans', subscriptionService.getPublicPlans)
+
+  const plans = plansData?.data || []
+  const freePlan = plans.find(p => /free/i.test(p.name))
+  const standardMonthly = plans.find(p => /standard/i.test(p.name) && p.interval === 'month')
+  const standardAnnual = plans.find(p => /standard/i.test(p.name) && p.interval === 'year')
+
   // Determine display price for standard plan based on billing cycle
-  const standardPrice = billing === 'monthly' ? 100 : 1000
+  const standardPrice = billing === 'monthly'
+    ? (standardMonthly?.price ?? (standardAnnual ? Math.round((standardAnnual.price / 12) * 100) / 100 : 0))
+    : (standardAnnual?.price ?? (standardMonthly ? standardMonthly.price * 12 : 0))
   const standardLabel = billing === 'monthly' ? '/month' : '/year'
+
+  // Features
+  const FEATURES_FREE = freePlan?.features || [
+    '5 Quizzes per Subject / month',
+    'Progress Report',
+    'Online Study Material',
+  ]
+
+  const FEATURES_STANDARD = (standardMonthly?.features || standardAnnual?.features) || [
+    'Unlimited Quizzes',
+    '1:1 Session with Expert Tutor on Identified Gap',
+    'Expert Study Material',
+    'Progress Tracking & Analytics',
+    'Personalized Mentorship',
+    'Priority Support',
+  ]
+
+  if (isLoading) {
+    return (
+      <div className="py-20 bg-gray-50 min-h-screen">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-10">
+            <h1 className="text-4xl font-bold text-gray-900 mb-4">Pricing Plans</h1>
+            <p className="text-lg text-gray-600">Loading plans...</p>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div className="py-20 bg-gray-50 min-h-screen">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-10">
+            <h1 className="text-4xl font-bold text-gray-900 mb-4">Pricing Plans</h1>
+            <p className="text-lg text-gray-600">Failed to load plans</p>
+          </div>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="py-20 bg-gray-50 min-h-screen">
@@ -65,14 +102,14 @@ export default function PricingPage() {
           {/* Free Plan Card */}
           <div className="bg-white rounded-xl shadow-md p-8 border border-gray-200">
             {/* Header */}
-            <h3 className="text-xl font-semibold text-gray-900 mb-2 text-center">Free</h3>
+            <h3 className="text-xl font-semibold text-gray-900 mb-2 text-center">{freePlan?.name || 'Free'}</h3>
             <p className="text-gray-600 text-center mb-6">
               Start with free assessments and materials to discover your learning gaps.
             </p>
 
             {/* Price */}
             <div className="text-center mb-6">
-              <span className="text-4xl font-bold text-gray-900">Free</span>
+              <span className="text-4xl font-bold text-gray-900">{freePlan?.price === 0 ? 'Free' : `₹${freePlan?.price}`}</span>
               <div className="text-sm text-gray-500 mt-1">Forever • No credit card required</div>
             </div>
 
@@ -140,16 +177,15 @@ export default function PricingPage() {
 
             {/* Small billing note */}
             <div className="mt-4 text-xs text-gray-500 text-center">
-              Secure payments • Cancel anytime • Priority mentorship & support
+              <p>
+                <strong>Billing Details:</strong> {billing === 'annually' ? (
+                  standardAnnual ? `Standard is billed ₹${standardAnnual.price} once per year.` : 'Standard annual price not available.'
+                ) : (
+                  standardMonthly ? `Standard is billed ₹${standardMonthly.price} per month.` : 'Standard monthly price not available.'
+                )} You may upgrade, downgrade, or cancel at any time from your account settings.
+              </p>
             </div>
           </div>
-        </div>
-
-        {/* Billing details & notes */}
-        <div className="mt-8 text-sm text-gray-600 text-center max-w-2xl mx-auto">
-          <p>
-            <strong>Billing Details:</strong> Annual billing charges ₹1000 for Standard and is billed once per year. Monthly billing is ₹100 per month and renews automatically. You may upgrade, downgrade, or cancel at any time from your account settings.
-          </p>
         </div>
       </div>
     </div>

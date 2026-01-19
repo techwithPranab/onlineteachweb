@@ -4,7 +4,6 @@ const bcrypt = require('bcryptjs');
 
 // Models
 const User = require('../models/User.model');
-const Course = require('../models/Course.model');
 const { SubscriptionPlan } = require('../models/Subscription.model');
 
 const seedDatabase = async () => {
@@ -19,7 +18,6 @@ const seedDatabase = async () => {
     
     // Clear existing data
     await User.deleteMany({});
-    await Course.deleteMany({});
     await SubscriptionPlan.deleteMany({});
     
     console.log('Cleared existing data');
@@ -27,8 +25,8 @@ const seedDatabase = async () => {
     // Create admin user
     const admin = await User.create({
       name: 'Admin User',
-      email: 'admin@teachingplatform.com',
-      password: 'admin123',
+      email: 'admin@meritai.in',
+      password: 'Kolkata@84',
       role: 'admin',
       status: 'active',
       emailVerified: true
@@ -39,49 +37,18 @@ const seedDatabase = async () => {
     // Create sample tutors
     const tutors = await User.create([
       {
-        name: 'John Smith',
-        email: 'john.smith@example.com',
-        password: 'tutor123',
+        name: 'Pranab Kumar',
+        email: 'pranabpiitk2024@gmail.com',
+        password: 'Kolkata@84',
         role: 'tutor',
         status: 'active',
         subjects: ['Mathematics', 'Physics'],
-        bio: 'Experienced mathematics and physics teacher with 10+ years of experience.',
+        bio: 'Experienced mathematics and physics teacher.',
         qualifications: [
-          { degree: 'MSc in Mathematics', institution: 'MIT', year: 2010 },
-          { degree: 'BSc in Physics', institution: 'Harvard', year: 2008 }
+          { degree: 'MSc in Mathematics', institution: 'IIT', year: 2016 }
         ],
-        experience: 10,
+        experience: 6,
         rating: 4.8,
-        emailVerified: true
-      },
-      {
-        name: 'Sarah Johnson',
-        email: 'sarah.johnson@example.com',
-        password: 'tutor123',
-        role: 'tutor',
-        status: 'active',
-        subjects: ['English', 'Literature'],
-        bio: 'Passionate English literature teacher helping students excel.',
-        qualifications: [
-          { degree: 'MA in English Literature', institution: 'Oxford', year: 2012 }
-        ],
-        experience: 8,
-        rating: 4.9,
-        emailVerified: true
-      },
-      {
-        name: 'Michael Chen',
-        email: 'michael.chen@example.com',
-        password: 'tutor123',
-        role: 'tutor',
-        status: 'active',
-        subjects: ['Computer Science', 'Programming'],
-        bio: 'Software engineer turned educator, teaching programming and CS concepts.',
-        qualifications: [
-          { degree: 'BS in Computer Science', institution: 'Stanford', year: 2015 }
-        ],
-        experience: 5,
-        rating: 4.7,
         emailVerified: true
       }
     ]);
@@ -91,29 +58,11 @@ const seedDatabase = async () => {
     // Create sample students
     const students = await User.create([
       {
-        name: 'Emily Davis',
-        email: 'emily.davis@example.com',
-        password: 'student123',
+        name: 'Pranab Student',
+        email: 'pranabpiitk@gmail.com',
+        password: 'Kolkata@84',
         role: 'student',
-        grade: 10,
-        status: 'active',
-        emailVerified: true
-      },
-      {
-        name: 'David Wilson',
-        email: 'david.wilson@example.com',
-        password: 'student123',
-        role: 'student',
-        grade: 11,
-        status: 'active',
-        emailVerified: true
-      },
-      {
-        name: 'Lisa Anderson',
-        email: 'lisa.anderson@example.com',
-        password: 'student123',
-        role: 'student',
-        grade: 12,
+        grade: 4,
         status: 'active',
         emailVerified: true
       }
@@ -121,80 +70,57 @@ const seedDatabase = async () => {
     
     console.log('Created sample students');
     
-    console.log('Created sample courses');
+    console.log('Created sample students');
     
-    // Create subscription plans
+    // Create subscription plans (Free + Standard Monthly + Standard Annual)
     const plans = await SubscriptionPlan.create([
       {
-        name: 'Basic',
-        description: 'Perfect for trying out our platform',
-        price: 9.99,
+        name: 'Free',
+        description: 'Free plan - 5 quizzes per subject per month, progress reports, and access to online study material',
+        price: 0,
         interval: 'month',
         features: [
-          'Access to 3 courses',
-          'Join 5 live sessions per month',
-          'Download materials',
-          'Email support'
+          '5 Quizzes per Subject / month',
+          'Progress Report',
+          'Online Study Material'
         ],
-        maxCourses: 3,
-        maxLiveSessions: 5,
+        maxCourses: 0,
+        maxLiveSessions: 0,
         priority: 1,
         isActive: true
       },
       {
-        name: 'Standard',
-        description: 'Most popular plan for regular students',
-        price: 29.99,
+        name: 'Standard (Monthly)',
+        description: 'Standard monthly subscription - unlimited quizzes, tutor session on identified gaps and mentorship',
+        price: 100,
         interval: 'month',
         features: [
-          'Access to 10 courses',
-          'Unlimited live sessions',
-          'Download materials',
-          'Priority support',
-          'Progress tracking'
+          'Unlimited Quizzes',
+          'Session with expert tutor on identified gap',
+          'Expert Study Material',
+          'Progress Tracking & Analytics',
+          'Personalized Mentorship'
         ],
-        maxCourses: 10,
+        maxCourses: -1,
         maxLiveSessions: -1,
         priority: 2,
         isActive: true
       },
       {
-        name: 'Premium',
-        description: 'Complete access for serious learners',
-        price: 49.99,
-        interval: 'month',
+        name: 'Standard (Annual)',
+        description: 'Standard annual subscription (best value)',
+        price: 1000,
+        interval: 'year',
         features: [
-          'Unlimited courses',
-          'Unlimited live sessions',
-          'Download materials',
-          '24/7 support',
-          'Progress tracking',
-          'One-on-one tutoring',
-          'Exam preparation'
+          'Unlimited Quizzes',
+          'Session with expert tutor on identified gap',
+          'Expert Study Material',
+          'Progress Tracking & Analytics',
+          'Personalized Mentorship'
         ],
         maxCourses: -1,
         maxLiveSessions: -1,
         priority: 3,
-        isActive: true
-      },
-      {
-        name: 'Annual Premium',
-        description: 'Best value - Premium features for a full year',
-        price: 499.99,
-        interval: 'year',
-        features: [
-          'Unlimited courses',
-          'Unlimited live sessions',
-          'Download materials',
-          '24/7 support',
-          'Progress tracking',
-          'One-on-one tutoring',
-          'Exam preparation',
-          '2 months free'
-        ],
-        maxCourses: -1,
-        maxLiveSessions: -1,
-        priority: 4,
         isActive: true
       }
     ]);
@@ -202,11 +128,11 @@ const seedDatabase = async () => {
     console.log('Created subscription plans');
     
     console.log('\n=== Seed Data Summary ===');
-    console.log('Admin:', admin.email, '/ admin123');
+    console.log('Admin:', admin.email, '/ Kolkata@84');
     console.log('\nTutors:');
-    tutors.forEach(t => console.log(`  - ${t.email} / tutor123`));
+    tutors.forEach(t => console.log(`  - ${t.email} / Kolkata@84`));
     console.log('\nStudents:');
-    students.forEach(s => console.log(`  - ${s.email} / student123`));
+    students.forEach(s => console.log(`  - ${s.email} / Kolkata@84`));
     console.log('\nSubscription Plans:', plans.length);
     
     console.log('\nDatabase seeded successfully!');

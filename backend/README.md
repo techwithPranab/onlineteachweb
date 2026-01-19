@@ -137,6 +137,10 @@ See `.env.example` for all required environment variables:
 - `POST /api/subscriptions/checkout` - Create subscription
 - `GET /api/subscriptions/status` - Get subscription status
 - `POST /api/subscriptions/cancel` - Cancel subscription
+- `GET /api/subscriptions/plans` - Get public active subscription plans
+- `POST /api/subscriptions/downgrade-to-free` - Downgrade or switch to the Free plan (student auth required)
+
+> Note: If Stripe is not configured (no STRIPE_SECRET_KEY) or a plan lacks a `stripePriceId`, the checkout endpoint will create a local subscription record without processing a payment (useful for local/dev testing).
 
 ### Live Classes
 - `POST /api/live/token` - Generate room token
@@ -198,7 +202,7 @@ See `.env.example` for all required environment variables:
 After running `npm run seed`:
 
 **Admin:**
-- Email: admin@teachingplatform.com
+- Email: admin@meritai.in
 - Password: admin123
 
 **Tutors:**

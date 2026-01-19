@@ -79,69 +79,69 @@ export default function ProgressReports() {
   const attendanceData = report.progress || []
 
   return (
-    <div className="max-w-7xl mx-auto">
-      <div className="flex items-center justify-between mb-6">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6 sm:mb-8">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">Progress & Reports</h1>
-          <p className="text-gray-600">Track your learning journey and achievements</p>
+          <h1 className="text-xl sm:text-2xl font-bold text-gray-900 mb-1 sm:mb-2">Progress & Reports</h1>
+          <p className="text-sm sm:text-base text-gray-600">Track your learning journey and achievements</p>
         </div>
-        <div className="flex gap-3">
+        <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
           <select
             value={selectedPeriod}
             onChange={(e) => setSelectedPeriod(e.target.value)}
-            className="input-field"
+            className="input-field w-full sm:w-auto"
           >
             <option value="week">This Week</option>
             <option value="month">This Month</option>
             <option value="quarter">This Quarter</option>
             <option value="year">This Year</option>
           </select>
-          <button className="btn-primary flex items-center gap-2">
+          <button className="btn-primary flex items-center justify-center gap-2 w-full sm:w-auto min-h-[44px] sm:min-h-0">
             <Download className="w-4 h-4" />
-            Export Report
+            <span>Export Report</span>
           </button>
         </div>
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-6 sm:mb-8">
         {stats.map((stat, index) => (
           <div key={index} className="card">
-            <div className="p-4">
-              <div className="flex items-center justify-between mb-3">
-                <div className={`w-10 h-10 bg-${stat.color}-100 rounded-lg flex items-center justify-center`}>
-                  <stat.icon className={`w-5 h-5 text-${stat.color}-600`} />
+            <div className="p-4 sm:p-5">
+              <div className="flex items-center justify-between mb-3 sm:mb-4">
+                <div className={`w-12 h-12 sm:w-10 sm:h-10 bg-${stat.color}-100 rounded-lg flex items-center justify-center`}>
+                  <stat.icon className={`w-6 h-6 sm:w-5 sm:h-5 text-${stat.color}-600`} />
                 </div>
                 {stat.change && (
                   <span className="text-sm font-medium text-green-600">{stat.change}</span>
                 )}
               </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-1">{stat.value}</h3>
+              <h3 className="text-2xl sm:text-xl font-bold text-gray-900 mb-1">{stat.value}</h3>
               <p className="text-sm text-gray-600">{stat.label}</p>
             </div>
           </div>
         ))}
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 mb-6 sm:mb-8">
         {/* Attendance Trend */}
         <div className="card">
-          <div className="p-4">
-            <h3 className="text-lg font-semibold text-gray-900 mb-3">Attendance Trend</h3>
+          <div className="p-4 sm:p-5 md:p-6">
+            <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-3 sm:mb-4">Attendance Trend</h3>
             {attendanceData.length > 0 ? (
-              <ResponsiveContainer width="100%" height={250}>
+              <ResponsiveContainer width="100%" height={250} className="min-h-[200px]">
                 <LineChart data={attendanceData}>
                   <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="month" />
-                  <YAxis />
+                  <XAxis dataKey="month" tick={{ fontSize: 12 }} />
+                  <YAxis tick={{ fontSize: 12 }} />
                   <Tooltip />
-                  <Legend />
+                  <Legend wrapperStyle={{ fontSize: '12px' }} />
                   <Line type="monotone" dataKey="attendance" stroke="#6366f1" strokeWidth={2} />
                 </LineChart>
               </ResponsiveContainer>
             ) : (
               <div className="flex items-center justify-center h-56 text-gray-500">
-                <p>No attendance data available</p>
+                <p className="text-sm sm:text-base">No attendance data available</p>
               </div>
             )}
           </div>
@@ -149,22 +149,22 @@ export default function ProgressReports() {
 
         {/* Performance by Subject */}
         <div className="card">
-          <div className="p-4">
-            <h3 className="text-lg font-semibold text-gray-900 mb-3">Performance by Subject</h3>
+          <div className="p-4 sm:p-5 md:p-6">
+            <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-3 sm:mb-4">Performance by Subject</h3>
             {performanceData.length > 0 ? (
-              <ResponsiveContainer width="100%" height={250}>
+              <ResponsiveContainer width="100%" height={250} className="min-h-[200px]">
                 <BarChart data={performanceData}>
                   <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="subject" />
-                  <YAxis />
+                  <XAxis dataKey="subject" tick={{ fontSize: 12 }} />
+                  <YAxis tick={{ fontSize: 12 }} />
                   <Tooltip />
-                  <Legend />
+                  <Legend wrapperStyle={{ fontSize: '12px' }} />
                   <Bar dataKey="score" fill="#6366f1" />
                 </BarChart>
               </ResponsiveContainer>
             ) : (
               <div className="flex items-center justify-center h-56 text-gray-500">
-                <p>No performance data available</p>
+                <p className="text-sm sm:text-base">No performance data available</p>
               </div>
             )}
           </div>
@@ -173,60 +173,62 @@ export default function ProgressReports() {
 
       {/* Recent Evaluations */}
       <div className="card">
-        <div className="p-4">
-          <h3 className="text-lg font-semibold text-gray-900 mb-3">Recent Evaluations</h3>
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead>
-                <tr className="border-b border-gray-200">
-                  <th className="text-left py-2 px-3 text-sm font-medium text-gray-600">Date</th>
-                  <th className="text-left py-2 px-3 text-sm font-medium text-gray-600">Course</th>
-                  <th className="text-left py-2 px-3 text-sm font-medium text-gray-600">Type</th>
-                  <th className="text-left py-2 px-3 text-sm font-medium text-gray-600">Grade</th>
-                  <th className="text-left py-2 px-3 text-sm font-medium text-gray-600">Feedback</th>
-                </tr>
-              </thead>
-              <tbody>
-                {evaluations.length > 0 ? (
-                  evaluations.slice(0, 5).map((evaluation, index) => (
-                    <tr key={index} className="border-b border-gray-100 hover:bg-gray-50">
-                      <td className="py-2 px-3 text-sm text-gray-900">
-                        {new Date(evaluation.createdAt).toLocaleDateString()}
-                      </td>
-                      <td className="py-2 px-3 text-sm text-gray-900">
-                        {evaluation.course?.title || 'N/A'}
-                      </td>
-                      <td className="py-2 px-3 text-sm text-gray-600">
-                        {evaluation.type || 'Assessment'}
-                      </td>
-                      <td className="py-2 px-3">
-                        <span className="px-2 py-1 bg-primary-100 text-primary-700 rounded text-sm font-medium">
-                          {evaluation.grade || 'A'}
-                        </span>
-                      </td>
-                      <td className="py-2 px-3 text-sm text-gray-600">
-                        {evaluation.feedback || 'Excellent work!'}
+        <div className="p-4 sm:p-5 md:p-6">
+          <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-3 sm:mb-4">Recent Evaluations</h3>
+          <div className="overflow-x-auto -mx-4 sm:mx-0">
+            <div className="inline-block min-w-full align-middle px-4 sm:px-0">
+              <table className="min-w-full divide-y divide-gray-200">
+                <thead>
+                  <tr className="border-b border-gray-200">
+                    <th className="text-left py-2 px-2 sm:px-3 text-xs sm:text-sm font-medium text-gray-600 whitespace-nowrap">Date</th>
+                    <th className="text-left py-2 px-2 sm:px-3 text-xs sm:text-sm font-medium text-gray-600 whitespace-nowrap">Course</th>
+                    <th className="text-left py-2 px-2 sm:px-3 text-xs sm:text-sm font-medium text-gray-600 whitespace-nowrap">Type</th>
+                    <th className="text-left py-2 px-2 sm:px-3 text-xs sm:text-sm font-medium text-gray-600 whitespace-nowrap">Grade</th>
+                    <th className="text-left py-2 px-2 sm:px-3 text-xs sm:text-sm font-medium text-gray-600 whitespace-nowrap">Feedback</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-100">
+                  {evaluations.length > 0 ? (
+                    evaluations.slice(0, 5).map((evaluation, index) => (
+                      <tr key={index} className="hover:bg-gray-50">
+                        <td className="py-2 px-2 sm:px-3 text-xs sm:text-sm text-gray-900 whitespace-nowrap">
+                          {new Date(evaluation.createdAt).toLocaleDateString()}
+                        </td>
+                        <td className="py-2 px-2 sm:px-3 text-xs sm:text-sm text-gray-900">
+                          <span className="line-clamp-1">{evaluation.course?.title || 'N/A'}</span>
+                        </td>
+                        <td className="py-2 px-2 sm:px-3 text-xs sm:text-sm text-gray-600 whitespace-nowrap">
+                          {evaluation.type || 'Assessment'}
+                        </td>
+                        <td className="py-2 px-2 sm:px-3 whitespace-nowrap">
+                          <span className="px-2 py-1 bg-primary-100 text-primary-700 rounded text-xs sm:text-sm font-medium">
+                            {evaluation.grade || 'A'}
+                          </span>
+                        </td>
+                        <td className="py-2 px-2 sm:px-3 text-xs sm:text-sm text-gray-600">
+                          <span className="line-clamp-1">{evaluation.feedback || 'Excellent work!'}</span>
+                        </td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td colSpan="5" className="py-6 sm:py-8 text-center text-gray-500 text-sm">
+                        No evaluations yet
                       </td>
                     </tr>
-                  ))
-                ) : (
-                  <tr>
-                    <td colSpan="5" className="py-6 text-center text-gray-500">
-                      No evaluations yet
-                    </td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
+                  )}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>
 
       {/* Achievements */}
-      <div className="card mt-4">
-        <div className="p-4">
-          <h3 className="text-lg font-semibold text-gray-900 mb-3">Achievements & Badges</h3>
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3">
+      <div className="card mt-4 sm:mt-6">
+        <div className="p-4 sm:p-5 md:p-6">
+          <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-3 sm:mb-4">Achievements & Badges</h3>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 sm:gap-4">
             {[
               { name: 'Perfect Attendance', icon: '🎯', earned: true },
               { name: 'Top Performer', icon: '⭐', earned: true },
@@ -237,14 +239,14 @@ export default function ProgressReports() {
             ].map((badge, index) => (
               <div
                 key={index}
-                className={`text-center p-3 rounded-lg border ${
+                className={`text-center p-3 sm:p-4 rounded-lg border ${
                   badge.earned
                     ? 'bg-primary-50 border-primary-200'
                     : 'bg-gray-50 border-gray-200 opacity-50'
                 }`}
               >
-                <div className="text-3xl mb-1">{badge.icon}</div>
-                <p className="text-xs font-medium text-gray-700">{badge.name}</p>
+                <div className="text-2xl sm:text-3xl mb-1 sm:mb-2">{badge.icon}</div>
+                <p className="text-xs font-medium text-gray-700 break-words">{badge.name}</p>
               </div>
             ))}
           </div>

@@ -263,6 +263,16 @@ export const subscriptionService = {
     const { data } = await api.get('/admin/subscriptions/stats')
     return data
   },
+
+  getPublicPlans: async () => {
+    const { data } = await api.get('/subscriptions/plans')
+    return data
+  },
+
+  downgradeToFree: async () => {
+    const { data } = await api.post('/subscriptions/downgrade-to-free')
+    return data
+  },
 }
 
 export const paymentService = {

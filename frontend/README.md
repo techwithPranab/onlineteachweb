@@ -297,4 +297,4 @@ MIT
 
 ## Support
 
-For support, email support@eduplatform.com or join our Slack channel.
+For support, email support@meritai.in or join our Slack channel.

@@ -61,62 +61,62 @@ export default function CourseDetail() {
   ]
 
   return (
-    <div className="max-w-7xl mx-auto">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
       {/* Back Button */}
       <button
         onClick={() => navigate('/student/courses')}
-        className="flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-6"
+        className="flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-4 sm:mb-6 min-h-[44px] px-2 py-1"
       >
-        <ArrowLeft className="w-5 h-5" />
+        <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5" />
         Back to Courses
       </button>
 
       {/* Course Header */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8 mb-6">
-        <div className="flex flex-col lg:flex-row gap-6">
-          <div className="flex-1">
-            <div className="flex items-start justify-between mb-4">
-              <div>
-                <h1 className="text-2xl font-bold text-gray-900 mb-2">{course.title}</h1>
-                <p className="text-gray-600">
+      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 sm:p-6 lg:p-8 mb-4 sm:mb-6">
+        <div className="flex flex-col xl:flex-row gap-4 sm:gap-6">
+          <div className="flex-1 min-w-0">
+            <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between mb-4 gap-2">
+              <div className="min-w-0 flex-1">
+                <h1 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2 break-words">{course.title}</h1>
+                <p className="text-gray-600 text-sm sm:text-base">
                   Grade {course.grade} • {course.subject}
                 </p>
               </div>
               {isEnrolled && (
-                <span className="flex items-center gap-2 px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm">
-                  <CheckCircle className="w-4 h-4" />
+                <span className="flex items-center gap-2 px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs sm:text-sm w-fit flex-shrink-0">
+                  <CheckCircle className="w-3 h-3 sm:w-4 sm:h-4" />
                   Enrolled
                 </span>
               )}
             </div>
 
-            <p className="text-gray-700 mb-6">{course.description}</p>
+            <p className="text-gray-700 mb-4 sm:mb-6 text-sm sm:text-base leading-relaxed">{course.description}</p>
 
             {/* Stats */}
-            <div className="flex flex-wrap gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 lg:gap-6">
               <div className="flex items-center gap-2 text-gray-600">
-                <Star className="w-5 h-5 text-yellow-400 fill-current" />
-                <span className="font-medium">{course.averageRating?.toFixed(1) || 'N/A'}</span>
-                <span className="text-sm">({course.reviews?.length || 0} reviews)</span>
+                <Star className="w-4 h-4 sm:w-5 sm:h-5 text-yellow-400 fill-current flex-shrink-0" />
+                <span className="font-medium text-sm sm:text-base">{course.averageRating?.toFixed(1) || 'N/A'}</span>
+                <span className="text-xs sm:text-sm">({course.reviews?.length || 0} reviews)</span>
               </div>
               <div className="flex items-center gap-2 text-gray-600">
-                <Clock className="w-5 h-5" />
-                <span>{course.duration || '12'} weeks duration</span>
+                <Clock className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" />
+                <span className="text-sm sm:text-base">{course.duration || '12'} weeks duration</span>
               </div>
               <div className="flex items-center gap-2 text-gray-600">
-                <BookOpen className="w-5 h-5" />
-                <span className="capitalize">{course.level || 'Intermediate'} level</span>
+                <BookOpen className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" />
+                <span className="capitalize text-sm sm:text-base">{course.level || 'Intermediate'} level</span>
               </div>
             </div>
           </div>
 
           {/* Enrollment Card */}
           {!isEnrolled && (
-            <div className="lg:w-80 bg-gray-50 rounded-lg p-6 border border-gray-200">
-              <button onClick={handleEnroll} className="btn-primary w-full mb-3">
+            <div className="xl:w-80 w-full sm:w-auto bg-gray-50 rounded-lg p-4 sm:p-6 border border-gray-200 flex-shrink-0">
+              <button onClick={handleEnroll} className="btn-primary w-full mb-3 min-h-[44px] text-sm sm:text-base">
                 Enroll Now
               </button>
-              <p className="text-sm text-gray-600 text-center">
+              <p className="text-xs sm:text-sm text-gray-600 text-center">
                 Start learning today!
               </p>
             </div>
@@ -125,49 +125,50 @@ export default function CourseDetail() {
       </div>
 
       {/* Tabs */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200">
+      <div className="bg-white rounded-lg shadow-sm border border-gray-200 mb-6">
         <div className="border-b border-gray-200">
-          <nav className="flex gap-4 px-6 overflow-x-auto">
+          <nav className="flex overflow-x-auto scrollbar-hide px-2 sm:px-4 lg:px-6">
             {tabs.map((tab) => (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`flex items-center gap-2 px-4 py-3 border-b-2 transition-colors whitespace-nowrap ${
+                className={`flex items-center gap-1 sm:gap-2 px-2 sm:px-3 lg:px-4 py-3 border-b-2 transition-colors whitespace-nowrap min-h-[44px] text-sm sm:text-base flex-shrink-0 ${
                   activeTab === tab.id
                     ? 'border-primary-600 text-primary-600'
                     : 'border-transparent text-gray-600 hover:text-gray-900'
                 }`}
               >
-                <tab.icon className="w-4 h-4" />
-                {tab.label}
+                <tab.icon className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" />
+                <span className="hidden xs:inline sm:inline">{tab.label}</span>
+                <span className="xs:hidden sm:hidden">{tab.label.slice(0, 4)}{tab.label.length > 4 ? '...' : ''}</span>
               </button>
             ))}
           </nav>
         </div>
 
-        <div className="p-6">
+        <div className="p-4 sm:p-6 lg:p-8">
           {activeTab === 'overview' && (
-            <div className="space-y-6">
+            <div className="space-y-6 sm:space-y-8">
               <div>
-                <h3 className="text-lg font-semibold mb-3">What you'll learn</h3>
-                <ul className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                  <li className="flex items-start gap-2">
-                    <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
-                    <span className="text-gray-700">Master core concepts and fundamentals</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
-                    <span className="text-gray-700">Apply knowledge through practical exercises</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
-                    <span className="text-gray-700">Prepare for exams and assessments</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
-                    <span className="text-gray-700">Develop critical thinking skills</span>
-                  </li>
-                </ul>
+                <h3 className="text-base sm:text-lg lg:text-xl font-semibold mb-3 sm:mb-4 text-gray-900">What you'll learn</h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                  <div className="flex items-start gap-3">
+                    <CheckCircle className="w-5 h-5 sm:w-6 sm:h-6 text-green-500 flex-shrink-0 mt-0.5" />
+                    <span className="text-gray-700 text-sm sm:text-base leading-relaxed">Master core concepts and fundamentals</span>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <CheckCircle className="w-5 h-5 sm:w-6 sm:h-6 text-green-500 flex-shrink-0 mt-0.5" />
+                    <span className="text-gray-700 text-sm sm:text-base leading-relaxed">Apply knowledge through practical exercises</span>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <CheckCircle className="w-5 h-5 sm:w-6 sm:h-6 text-green-500 flex-shrink-0 mt-0.5" />
+                    <span className="text-gray-700 text-sm sm:text-base leading-relaxed">Prepare for exams and assessments</span>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <CheckCircle className="w-5 h-5 sm:w-6 sm:h-6 text-green-500 flex-shrink-0 mt-0.5" />
+                    <span className="text-gray-700 text-sm sm:text-base leading-relaxed">Develop critical thinking skills</span>
+                  </div>
+                </div>
               </div>
             </div>
           )}
@@ -185,21 +186,21 @@ export default function CourseDetail() {
 
           {activeTab === 'schedule' && (
             <div>
-              <h3 className="text-lg font-semibold mb-4">Upcoming Sessions</h3>
+              <h3 className="text-base sm:text-lg font-semibold mb-4">Upcoming Sessions</h3>
               {sessionsData?.sessions?.length > 0 ? (
                 <div className="space-y-3">
                   {sessionsData.sessions.map((session) => (
-                    <div key={session._id} className="flex items-center gap-4 p-4 border border-gray-200 rounded-lg">
-                      <div className="w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center">
-                        <Calendar className="w-6 h-6 text-primary-600" />
+                    <div key={session._id} className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 p-3 sm:p-4 border border-gray-200 rounded-lg">
+                      <div className="w-10 h-10 sm:w-12 sm:h-12 bg-primary-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <Calendar className="w-5 h-5 sm:w-6 sm:h-6 text-primary-600" />
                       </div>
-                      <div className="flex-1">
-                        <h4 className="font-medium text-gray-900">{session.title}</h4>
-                        <p className="text-sm text-gray-600">
+                      <div className="flex-1 min-w-0">
+                        <h4 className="font-medium text-gray-900 text-sm sm:text-base">{session.title}</h4>
+                        <p className="text-xs sm:text-sm text-gray-600">
                           {new Date(session.scheduledAt).toLocaleString()}
                         </p>
                       </div>
-                      <span className={`px-3 py-1 rounded-full text-sm ${
+                      <span className={`px-2 py-1 sm:px-3 rounded-full text-xs sm:text-sm w-fit ${
                         session.status === 'scheduled' ? 'bg-blue-100 text-blue-700' :
                         session.status === 'ongoing' ? 'bg-green-100 text-green-700' :
                         'bg-gray-100 text-gray-700'
@@ -210,69 +211,69 @@ export default function CourseDetail() {
                   ))}
                 </div>
               ) : (
-                <p className="text-gray-600">No scheduled sessions yet.</p>
+                <p className="text-gray-600 text-sm sm:text-base">No scheduled sessions yet.</p>
               )}
             </div>
           )}
 
           {activeTab === 'materials' && (
             <div>
-              <h3 className="text-lg font-semibold mb-4">Course Materials</h3>
+              <h3 className="text-base sm:text-lg font-semibold mb-4">Course Materials</h3>
               {materialsData?.data?.length > 0 ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                   {materialsData.data.map((material) => (
-                    <div key={material._id} className="flex items-center gap-4 p-4 border border-gray-200 rounded-lg">
-                      <div className="w-10 h-10 bg-primary-100 rounded-lg flex items-center justify-center">
-                        {material.type === 'video' ? <Video className="w-5 h-5 text-primary-600" /> : <FileText className="w-5 h-5 text-primary-600" />}
+                    <div key={material._id} className="flex items-center gap-3 sm:gap-4 p-3 sm:p-4 border border-gray-200 rounded-lg">
+                      <div className="w-8 h-8 sm:w-10 sm:h-10 bg-primary-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                        {material.type === 'video' ? <Video className="w-4 h-4 sm:w-5 sm:h-5 text-primary-600" /> : <FileText className="w-4 h-4 sm:w-5 sm:h-5 text-primary-600" />}
                       </div>
-                      <div className="flex-1">
-                        <h4 className="font-medium text-gray-900">{material.title}</h4>
-                        <p className="text-sm text-gray-600 capitalize">{material.type}</p>
+                      <div className="flex-1 min-w-0">
+                        <h4 className="font-medium text-gray-900 text-sm sm:text-base truncate">{material.title}</h4>
+                        <p className="text-xs sm:text-sm text-gray-600 capitalize">{material.type}</p>
                       </div>
                       {material.isFree || isEnrolled ? (
-                        <button className="text-primary-600 hover:text-primary-700 text-sm font-medium">
+                        <button className="text-primary-600 hover:text-primary-700 text-xs sm:text-sm font-medium min-h-[44px] px-2 py-1">
                           View
                         </button>
                       ) : (
-                        <span className="text-gray-400 text-sm">Locked</span>
+                        <span className="text-gray-400 text-xs sm:text-sm">Locked</span>
                       )}
                     </div>
                   ))}
                 </div>
               ) : (
-                <p className="text-gray-600">No materials available yet.</p>
+                <p className="text-gray-600 text-sm sm:text-base">No materials available yet.</p>
               )}
             </div>
           )}
 
           {activeTab === 'reviews' && (
             <div>
-              <h3 className="text-lg font-semibold mb-4">Student Reviews</h3>
+              <h3 className="text-base sm:text-lg font-semibold mb-4">Student Reviews</h3>
               {course.reviews?.length > 0 ? (
-                <div className="space-y-4">
+                <div className="space-y-3 sm:space-y-4">
                   {course.reviews.map((review, index) => (
-                    <div key={index} className="border-b border-gray-200 pb-4 last:border-0">
+                    <div key={index} className="border-b border-gray-200 pb-3 sm:pb-4 last:border-0">
                       <div className="flex items-center gap-2 mb-2">
                         <div className="flex">
                           {[...Array(5)].map((_, i) => (
                             <Star
                               key={i}
-                              className={`w-4 h-4 ${
+                              className={`w-3 h-3 sm:w-4 sm:h-4 ${
                                 i < review.rating ? 'text-yellow-400 fill-current' : 'text-gray-300'
                               }`}
                             />
                           ))}
                         </div>
-                        <span className="text-sm text-gray-600">
+                        <span className="text-xs sm:text-sm text-gray-600">
                           {review.student?.name || 'Anonymous'}
                         </span>
                       </div>
-                      <p className="text-gray-700">{review.comment}</p>
+                      <p className="text-gray-700 text-sm sm:text-base">{review.comment}</p>
                     </div>
                   ))}
                 </div>
               ) : (
-                <p className="text-gray-600">No reviews yet. Be the first to review!</p>
+                <p className="text-gray-600 text-sm sm:text-base">No reviews yet. Be the first to review!</p>
               )}
             </div>
           )}
@@ -285,20 +286,20 @@ export default function CourseDetail() {
         onClose={() => setShowEnrollModal(false)}
         title="Enroll in Course"
       >
-        <div className="space-y-4">
-          <p className="text-gray-700">
+        <div className="space-y-4 sm:space-y-6">
+          <p className="text-gray-700 text-sm sm:text-base">
             You are about to enroll in <strong>{course.title}</strong>
           </p>
-          <div className="bg-gray-50 p-4 rounded-lg">
-            <div className="flex justify-between mb-2">
+          <div className="bg-gray-50 p-3 sm:p-4 rounded-lg">
+            <div className="flex justify-between mb-2 text-sm sm:text-base">
               <span className="text-gray-600">Course Price:</span>
               <span className="font-semibold">${course.price || 0}</span>
             </div>
           </div>
-          <div className="flex gap-3">
+          <div className="flex flex-col sm:flex-row gap-3">
             <button
               onClick={() => setShowEnrollModal(false)}
-              className="flex-1 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
+              className="flex-1 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 min-h-[44px]"
             >
               Cancel
             </button>
@@ -307,7 +308,7 @@ export default function CourseDetail() {
                 setShowEnrollModal(false)
                 navigate('/student/subscription')
               }}
-              className="flex-1 btn-primary"
+              className="flex-1 btn-primary min-h-[44px]"
             >
               Proceed to Payment
             </button>

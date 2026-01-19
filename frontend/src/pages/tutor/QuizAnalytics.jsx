@@ -89,7 +89,7 @@ function OverallAnalytics() {
       {/* Header */}
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Quiz Analytics</h1>
+          <h1 className="text-xl sm:text-2xl font-bold text-gray-900">Quiz Analytics</h1>
           <p className="mt-2 text-gray-600">Performance insights and trends</p>
         </div>
         <button
@@ -332,7 +332,7 @@ function SingleQuizAnalytics({ quizId }) {
       {/* Header */}
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">{quiz.title}</h1>
+          <h1 className="text-xl sm:text-2xl font-bold text-gray-900">{quiz.title}</h1>
           <p className="mt-2 text-gray-600">{quiz.courseId?.title} • Detailed Analytics</p>
         </div>
         <button
@@ -567,7 +567,7 @@ function StatCard({ title, value, icon, color = 'indigo' }) {
       <div className="flex items-center justify-between">
         <div>
           <p className="text-sm font-medium text-gray-600">{title}</p>
-          <p className="mt-2 text-3xl font-bold text-gray-900">{value}</p>
+          <p className="mt-2 text-xl sm:text-2xl font-bold text-gray-900">{value}</p>
         </div>
         {icon && <div className="opacity-75">{icon}</div>}
       </div>

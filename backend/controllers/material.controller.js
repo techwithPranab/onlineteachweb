@@ -161,19 +161,8 @@ exports.getRecentMaterialsForStudent = async (req, res, next) => {
   try {
     const { limit = 6 } = req.query;
     
-    // Find user's enrolled courses
-    const user = await User.findById(req.user._id).select('enrolledCourses');
-    
-    if (!user || !user.enrolledCourses || user.enrolledCourses.length === 0) {
-      return res.json({
-        success: true,
-        data: []
-      });
-    }
-    
-    // Get materials from enrolled courses
+    // Get materials from all available courses (no enrollment check needed)
     const materials = await Material.find({
-      course: { $in: user.enrolledCourses },
       isActive: true
     })
       .populate('course', 'title grade')

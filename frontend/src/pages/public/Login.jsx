@@ -37,10 +37,10 @@ export default function Login() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full">
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-md w-full mx-2 sm:mx-auto">
         <div className="text-center mb-8">
-          <h2 className="text-3xl font-bold text-gray-900">Welcome back</h2>
+          <h2 className="text-xl sm:text-2xl font-bold text-gray-900">Welcome back</h2>
           <p className="mt-2 text-gray-600">Sign in to your account</p>
         </div>
 
@@ -62,6 +62,8 @@ export default function Login() {
                 <input
                   type="email"
                   required
+                  aria-label="Email address"
+                  autoComplete="email"
                   className="input-field pl-10"
                   placeholder="you@example.com"
                   value={formData.email}
@@ -79,6 +81,8 @@ export default function Login() {
                 <input
                   type="password"
                   required
+                  aria-label="Password"
+                  autoComplete="current-password"
                   className="input-field pl-10"
                   placeholder="••••••••"
                   value={formData.password}
@@ -87,9 +91,9 @@ export default function Login() {
               </div>
             </div>
 
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
               <label className="flex items-center">
-                <input type="checkbox" className="rounded border-gray-300 text-primary-600" />
+                <input type="checkbox" className="h-5 w-5 sm:h-4 sm:w-4 rounded border-gray-300 text-primary-600" />
                 <span className="ml-2 text-sm text-gray-600">Remember me</span>
               </label>
               <a href="#" className="text-sm text-primary-600 hover:text-primary-700">

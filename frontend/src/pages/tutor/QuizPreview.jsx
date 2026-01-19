@@ -92,7 +92,7 @@ export default function QuizPreview() {
         <div className="flex items-center justify-between">
           <div>
             <div className="flex items-center gap-3">
-              <h1 className="text-3xl font-bold text-gray-900">{quiz.title}</h1>
+              <h1 className="text-xl sm:text-2xl font-bold text-gray-900">{quiz.title}</h1>
               <span className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium">
                 Preview Mode
               </span>

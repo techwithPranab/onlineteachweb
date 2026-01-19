@@ -338,14 +338,7 @@ exports.getAvailableQuizzes = async (req, res, next) => {
     const { courseId } = req.params;
     const studentId = req.user._id;
     
-    // Check if student is enrolled in the course
-    const user = await User.findById(studentId);
-    if (!user.enrolledCourses.includes(courseId)) {
-      return res.status(403).json({
-        success: false,
-        message: 'You are not enrolled in this course'
-      });
-    }
+    // All courses are now available to all students - no enrollment check needed
     
     const quizzes = await Quiz.getAvailableQuizzes(courseId, studentId);
     
@@ -385,14 +378,7 @@ exports.startQuiz = async (req, res, next) => {
       });
     }
     
-    // Check enrollment
-    const user = await User.findById(studentId);
-    if (!user.enrolledCourses.includes(quiz.courseId.toString())) {
-      return res.status(403).json({
-        success: false,
-        message: 'You are not enrolled in this course'
-      });
-    }
+    // All courses are now available to all students - no enrollment check needed
     
     // Check for existing active session
     const activeSession = await QuizSession.getActiveSession(quizId, studentId);

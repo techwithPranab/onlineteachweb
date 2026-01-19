@@ -17,18 +17,15 @@ export default function QuizListing() {
   const { user } = useAuthStore()
 
   useEffect(() => {
-    fetchEnrolledCourses()
+    fetchAllCourses()
   }, [])
 
-  const fetchEnrolledCourses = async () => {
+  const fetchAllCourses = async () => {
     try {
       setLoading(true)
-      // Get user's enrolled courses
+      // Get all available courses
       const response = await courseService.getCourses()
-      const enrolledCourses = response.courses?.filter(course => 
-        user?.enrolledCourses?.includes(course._id)
-      ) || response.courses || []
-      setCourses(enrolledCourses)
+      setCourses(response.courses || [])
     } catch (err) {
       setError('Failed to load courses')
       console.error(err)
@@ -56,7 +53,7 @@ export default function QuizListing() {
   }
 
   const handleStartQuiz = (quiz) => {
-    navigate(`/student/quiz/${quiz._id}/start`, { state: { quiz } })
+    navigate(`/student/quiz/${quiz._id}/setup`, { state: { quiz } })
   }
 
   const getDifficultyColor = (level) => {
@@ -80,12 +77,12 @@ export default function QuizListing() {
 
       {/* Course Selection */}
       <div className="mb-8">
-        <h2 className="text-lg font-semibold text-gray-900 mb-4">Your Courses</h2>
+        <h2 className="text-lg font-semibold text-gray-900 mb-4">Available Courses</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {courses.length === 0 ? (
             <EmptyState
-              title="No courses enrolled"
-              message="Please enroll in a course to access quizzes"
+              title="No courses available"
+              description="No courses are currently available for quizzes"
             />
           ) : (
             courses.map((course) => (
@@ -120,7 +117,7 @@ export default function QuizListing() {
           ) : quizzes.length === 0 ? (
             <EmptyState
               title="No quizzes available"
-              message="There are no quizzes available for this course yet"
+              description="There are no quizzes available for this course yet"
             />
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

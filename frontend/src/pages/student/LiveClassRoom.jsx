@@ -224,24 +224,24 @@ export default function LiveClassRoom() {
   return (
     <div className="fixed inset-0 bg-gray-900 flex flex-col">
       {/* Header */}
-      <div className="bg-gray-800 px-6 py-4 flex items-center justify-between">
+      <div className="bg-gray-800 px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between">
         <div>
-          <h1 className="text-white font-semibold">Live Class Session</h1>
-          <p className="text-gray-400 text-sm">{participants.length} participants</p>
+          <h1 className="text-white font-semibold text-sm sm:text-base">Live Class Session</h1>
+          <p className="text-gray-400 text-xs sm:text-sm">{participants.length} participants</p>
         </div>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2 sm:gap-4">
           <button
             onClick={toggleFullScreen}
-            className="p-2 hover:bg-gray-700 rounded-lg text-white"
+            className="p-2 hover:bg-gray-700 rounded-lg text-white min-h-[44px] min-w-[44px] flex items-center justify-center"
           >
-            {isFullScreen ? <Minimize className="w-5 h-5" /> : <Maximize className="w-5 h-5" />}
+            {isFullScreen ? <Minimize className="w-4 h-4 sm:w-5 sm:h-5" /> : <Maximize className="w-4 h-4 sm:w-5 sm:h-5" />}
           </button>
           <button
             onClick={() => setShowParticipants(!showParticipants)}
-            className="flex items-center gap-2 px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg text-white"
+            className="flex items-center gap-1 sm:gap-2 px-3 py-2 sm:px-4 bg-gray-700 hover:bg-gray-600 rounded-lg text-white min-h-[44px]"
           >
-            <Users className="w-4 h-4" />
-            <span>{participants.length}</span>
+            <Users className="w-3 h-3 sm:w-4 sm:h-4" />
+            <span className="text-sm">{participants.length}</span>
           </button>
         </div>
       </div>
@@ -264,7 +264,7 @@ export default function LiveClassRoom() {
           </div>
 
           {/* Local Video (Picture-in-Picture) */}
-          <div className="absolute bottom-20 right-6 w-64 h-48 bg-gray-800 rounded-lg overflow-hidden shadow-lg border-2 border-gray-700">
+          <div className="absolute bottom-16 sm:bottom-20 right-3 sm:right-6 w-32 h-24 sm:w-64 sm:h-48 bg-gray-800 rounded-lg overflow-hidden shadow-lg border-2 border-gray-700">
             <video
               ref={localVideoRef}
               autoPlay
@@ -272,16 +272,16 @@ export default function LiveClassRoom() {
               playsInline
               className="w-full h-full object-cover mirror"
             />
-            <div className="absolute bottom-2 left-2 bg-black bg-opacity-50 px-2 py-1 rounded text-white text-sm">
+            <div className="absolute bottom-1 sm:bottom-2 left-1 sm:left-2 bg-black bg-opacity-50 px-1 sm:px-2 py-0.5 sm:py-1 rounded text-white text-xs">
               You {!isVideoOn && '(Video Off)'}
             </div>
           </div>
 
           {/* Hand Raised Indicator */}
           {isHandRaised && (
-            <div className="absolute top-4 right-4 bg-yellow-500 text-white px-4 py-2 rounded-lg flex items-center gap-2 animate-pulse">
-              <Hand className="w-5 h-5" />
-              Hand Raised
+            <div className="absolute top-3 sm:top-4 right-3 sm:right-4 bg-yellow-500 text-white px-2 sm:px-4 py-1 sm:py-2 rounded-lg flex items-center gap-1 sm:gap-2 animate-pulse">
+              <Hand className="w-4 h-4 sm:w-5 sm:h-5" />
+              <span className="text-xs sm:text-sm">Hand Raised</span>
             </div>
           )}
         </div>
@@ -302,30 +302,30 @@ export default function LiveClassRoom() {
 
         {/* Chat Sidebar */}
         {showChat && (
-          <div className="w-80 bg-gray-800 flex flex-col border-l border-gray-700">
-            <div className="px-4 py-3 border-b border-gray-700">
-              <h3 className="text-white font-semibold">Chat</h3>
+          <div className="w-full sm:w-80 bg-gray-800 flex flex-col border-l border-gray-700">
+            <div className="px-3 sm:px-4 py-2 sm:py-3 border-b border-gray-700">
+              <h3 className="text-white font-semibold text-sm sm:text-base">Chat</h3>
             </div>
 
             {/* Messages */}
-            <div className="flex-1 overflow-y-auto p-4 space-y-3">
+            <div className="flex-1 overflow-y-auto p-3 sm:p-4 space-y-2 sm:space-y-3">
               {chatMessages.map((msg, index) => (
                 <div key={index}>
                   {msg.type === 'system' ? (
-                    <div className="text-center text-gray-400 text-sm py-2">
+                    <div className="text-center text-gray-400 text-xs sm:text-sm py-2">
                       {msg.text}
                     </div>
                   ) : (
-                    <div className="bg-gray-700 rounded-lg p-3">
+                    <div className="bg-gray-700 rounded-lg p-2 sm:p-3">
                       <div className="flex items-center justify-between mb-1">
-                        <span className="text-primary-400 text-sm font-medium">
+                        <span className="text-primary-400 text-xs sm:text-sm font-medium">
                           {msg.userName}
                         </span>
                         <span className="text-gray-500 text-xs">
                           {new Date(msg.timestamp).toLocaleTimeString()}
                         </span>
                       </div>
-                      <p className="text-gray-200 text-sm">{msg.text}</p>
+                      <p className="text-gray-200 text-xs sm:text-sm">{msg.text}</p>
                     </div>
                   )}
                 </div>
@@ -333,18 +333,18 @@ export default function LiveClassRoom() {
             </div>
 
             {/* Message Input */}
-            <form onSubmit={sendMessage} className="p-4 border-t border-gray-700">
+            <form onSubmit={sendMessage} className="p-3 sm:p-4 border-t border-gray-700">
               <div className="flex gap-2">
                 <input
                   type="text"
                   value={newMessage}
                   onChange={(e) => setNewMessage(e.target.value)}
                   placeholder="Type a message..."
-                  className="flex-1 bg-gray-700 text-white rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary-500"
+                  className="flex-1 bg-gray-700 text-white rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm min-h-[44px]"
                 />
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg"
+                  className="px-3 sm:px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg min-h-[44px] text-sm"
                 >
                   Send
                 </button>
@@ -355,95 +355,95 @@ export default function LiveClassRoom() {
       </div>
 
       {/* Controls Bar */}
-      <div className="bg-gray-800 px-6 py-4 flex items-center justify-between border-t border-gray-700">
-        <div className="flex items-center gap-3">
+      <div className="bg-gray-800 px-4 sm:px-6 py-3 sm:py-4 flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-0 border-t border-gray-700">
+        <div className="flex items-center gap-2 sm:gap-3 flex-wrap justify-center">
           <button
             onClick={() => setActiveView(activeView === 'video' ? 'whiteboard' : 'video')}
-            className={`p-3 rounded-lg ${
+            className={`p-2 sm:p-3 rounded-lg min-h-[44px] min-w-[44px] flex items-center justify-center ${
               activeView === 'whiteboard' ? 'bg-primary-600' : 'bg-gray-700 hover:bg-gray-600'
             }`}
             title="Toggle Whiteboard"
           >
-            <PenTool className="w-5 h-5 text-white" />
+            <PenTool className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
           </button>
 
           <button
             onClick={() => setActiveView('split')}
-            className={`p-3 rounded-lg ${
+            className={`p-2 sm:p-3 rounded-lg min-h-[44px] min-w-[44px] flex items-center justify-center ${
               activeView === 'split' ? 'bg-primary-600' : 'bg-gray-700 hover:bg-gray-600'
             }`}
             title="Split View"
           >
-            <BookOpen className="w-5 h-5 text-white" />
+            <BookOpen className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
           </button>
 
           <button
             onClick={toggleAudio}
-            className={`p-3 rounded-lg ${
+            className={`p-2 sm:p-3 rounded-lg min-h-[44px] min-w-[44px] flex items-center justify-center ${
               isAudioOn ? 'bg-gray-700 hover:bg-gray-600' : 'bg-red-600 hover:bg-red-700'
             }`}
           >
             {isAudioOn ? (
-              <Mic className="w-5 h-5 text-white" />
+              <Mic className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
             ) : (
-              <MicOff className="w-5 h-5 text-white" />
+              <MicOff className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
             )}
           </button>
 
           <button
             onClick={toggleVideo}
-            className={`p-3 rounded-lg ${
+            className={`p-2 sm:p-3 rounded-lg min-h-[44px] min-w-[44px] flex items-center justify-center ${
               isVideoOn ? 'bg-gray-700 hover:bg-gray-600' : 'bg-red-600 hover:bg-red-700'
             }`}
           >
             {isVideoOn ? (
-              <Video className="w-5 h-5 text-white" />
+              <Video className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
             ) : (
-              <VideoOff className="w-5 h-5 text-white" />
+              <VideoOff className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
             )}
           </button>
 
           <button
             onClick={toggleScreenShare}
-            className={`p-3 rounded-lg ${
+            className={`p-2 sm:p-3 rounded-lg min-h-[44px] min-w-[44px] flex items-center justify-center ${
               isScreenSharing ? 'bg-primary-600' : 'bg-gray-700 hover:bg-gray-600'
             }`}
           >
             {isScreenSharing ? (
-              <MonitorOff className="w-5 h-5 text-white" />
+              <MonitorOff className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
             ) : (
-              <Monitor className="w-5 h-5 text-white" />
+              <Monitor className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
             )}
           </button>
 
           <button
             onClick={toggleHandRaise}
-            className={`p-3 rounded-lg ${
+            className={`p-2 sm:p-3 rounded-lg min-h-[44px] min-w-[44px] flex items-center justify-center ${
               isHandRaised ? 'bg-yellow-600' : 'bg-gray-700 hover:bg-gray-600'
             }`}
           >
-            <Hand className="w-5 h-5 text-white" />
+            <Hand className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
           </button>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3">
           <button
             onClick={() => setShowChat(!showChat)}
-            className="p-3 rounded-lg bg-gray-700 hover:bg-gray-600"
+            className="p-2 sm:p-3 rounded-lg bg-gray-700 hover:bg-gray-600 min-h-[44px] min-w-[44px] flex items-center justify-center"
           >
-            <MessageSquare className="w-5 h-5 text-white" />
+            <MessageSquare className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
           </button>
 
-          <button className="p-3 rounded-lg bg-gray-700 hover:bg-gray-600">
-            <Settings className="w-5 h-5 text-white" />
+          <button className="p-2 sm:p-3 rounded-lg bg-gray-700 hover:bg-gray-600 min-h-[44px] min-w-[44px] flex items-center justify-center">
+            <Settings className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
           </button>
 
           <button
             onClick={leaveClass}
-            className="px-6 py-3 bg-red-600 hover:bg-red-700 rounded-lg text-white flex items-center gap-2"
+            className="px-4 sm:px-6 py-2 sm:py-3 bg-red-600 hover:bg-red-700 rounded-lg text-white flex items-center gap-1 sm:gap-2 min-h-[44px]"
           >
-            <PhoneOff className="w-5 h-5" />
-            Leave
+            <PhoneOff className="w-4 h-4 sm:w-5 sm:h-5" />
+            <span className="text-sm">Leave</span>
           </button>
         </div>
       </div>

@@ -3,6 +3,7 @@ import { useParams, useNavigate, useLocation } from 'react-router-dom'
 import { quizService } from '../../services/apiServices'
 import LoadingSpinner from '../../components/common/LoadingSpinner'
 import ConfirmDialog from '../../components/common/ConfirmDialog'
+import { QuizTimer, QuizProgressBar, QuestionCard } from '../../components/quiz'
 
 export default function QuizAttempt() {
   const { quizId } = useParams()
@@ -65,26 +66,55 @@ export default function QuizAttempt() {
   const startOrResumeQuiz = async () => {
     try {
       setLoading(true)
-      const response = await quizService.startQuiz(quizId)
-      setSession(response.session)
-      setRemainingTime(response.session.remainingTime)
       
-      // Restore answers if resuming
-      if (response.session.answers && response.session.answers.length > 0) {
-        const restoredAnswers = {}
-        const restoredMarked = {}
-        response.session.answers.forEach(ans => {
-          restoredAnswers[ans.questionId] = ans.answer
-          if (ans.isMarkedForReview) {
-            restoredMarked[ans.questionId] = true
-          }
-        })
-        setAnswers(restoredAnswers)
-        setMarkedForReview(restoredMarked)
-      }
-      
-      if (response.session.currentQuestionIndex) {
-        setCurrentQuestionIndex(response.session.currentQuestionIndex)
+      // Check if we have an existing session from navigation state (from QuizSetup)
+      const locationState = location.state
+      if (locationState?.sessionId) {
+        // Get existing session
+        const response = await quizService.getSessionById(locationState.sessionId)
+        setSession(response.session)
+        setRemainingTime(response.session.remainingTime)
+        
+        // Restore answers if resuming
+        if (response.session.answers && response.session.answers.length > 0) {
+          const restoredAnswers = {}
+          const restoredMarked = {}
+          response.session.answers.forEach(ans => {
+            restoredAnswers[ans.questionId] = ans.answer
+            if (ans.isMarkedForReview) {
+              restoredMarked[ans.questionId] = true
+            }
+          })
+          setAnswers(restoredAnswers)
+          setMarkedForReview(restoredMarked)
+        }
+        
+        if (response.session.currentQuestionIndex) {
+          setCurrentQuestionIndex(response.session.currentQuestionIndex)
+        }
+      } else {
+        // Start new quiz session
+        const response = await quizService.startQuiz(quizId)
+        setSession(response.session)
+        setRemainingTime(response.session.remainingTime)
+        
+        // Restore answers if resuming
+        if (response.session.answers && response.session.answers.length > 0) {
+          const restoredAnswers = {}
+          const restoredMarked = {}
+          response.session.answers.forEach(ans => {
+            restoredAnswers[ans.questionId] = ans.answer
+            if (ans.isMarkedForReview) {
+              restoredMarked[ans.questionId] = true
+            }
+          })
+          setAnswers(restoredAnswers)
+          setMarkedForReview(restoredMarked)
+        }
+        
+        if (response.session.currentQuestionIndex) {
+          setCurrentQuestionIndex(response.session.currentQuestionIndex)
+        }
       }
     } catch (err) {
       setError(err.response?.data?.message || 'Failed to start quiz')
@@ -247,141 +277,33 @@ export default function QuizAttempt() {
     const question = session.questions[currentQuestionIndex]
     const answer = answers[question.questionId]
     
+    // For QuestionCard component, we need to handle answer differently based on type
+    const handleQuestionAnswer = (newAnswer) => {
+      if (question.type === 'mcq-single') {
+        handleMCQAnswer(question.questionId, newAnswer, false)
+      } else if (question.type === 'mcq-multiple') {
+        // Toggle the option in the array
+        const current = answer || []
+        const updated = current.includes(newAnswer)
+          ? current.filter(id => id !== newAnswer)
+          : [...current, newAnswer]
+        handleAnswerChange(question.questionId, updated)
+      } else {
+        handleAnswerChange(question.questionId, newAnswer)
+      }
+    }
+    
     return (
-      <div className="space-y-6">
-        {/* Question Header */}
-        <div className="flex items-center justify-between">
-          <span className="text-sm font-medium text-gray-500">
-            Question {currentQuestionIndex + 1} of {session.questions.length}
-          </span>
-          <div className="flex items-center space-x-4">
-            <span className={`px-2 py-1 text-xs font-medium rounded-full ${
-              question.difficultyLevel === 'easy' ? 'bg-green-100 text-green-800' :
-              question.difficultyLevel === 'medium' ? 'bg-yellow-100 text-yellow-800' :
-              'bg-red-100 text-red-800'
-            }`}>
-              {question.difficultyLevel}
-            </span>
-            <span className="text-sm text-gray-500">
-              {question.marks} mark{question.marks > 1 ? 's' : ''}
-            </span>
-          </div>
-        </div>
-
-        {/* Case Study if present */}
-        {question.caseStudy && (
-          <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
-            <h4 className="font-medium text-gray-900 mb-2">Case Study</h4>
-            <p className="text-gray-700 whitespace-pre-wrap">{question.caseStudy}</p>
-          </div>
-        )}
-
-        {/* Question Text */}
-        <div className="text-lg font-medium text-gray-900">
-          {question.text}
-        </div>
-
-        {/* Answer Input based on type */}
-        {question.type === 'mcq-single' && (
-          <div className="space-y-3">
-            {question.options?.map((option, idx) => (
-              <label
-                key={option._id}
-                className={`flex items-center p-4 border rounded-lg cursor-pointer transition-all ${
-                  answer === option._id
-                    ? 'border-indigo-500 bg-indigo-50'
-                    : 'border-gray-200 hover:border-indigo-300'
-                }`}
-              >
-                <input
-                  type="radio"
-                  name={`question-${question.questionId}`}
-                  value={option._id}
-                  checked={answer === option._id}
-                  onChange={() => handleMCQAnswer(question.questionId, option._id, false)}
-                  className="h-4 w-4 text-indigo-600"
-                />
-                <span className="ml-3 text-gray-900">{option.text}</span>
-              </label>
-            ))}
-          </div>
-        )}
-
-        {question.type === 'mcq-multiple' && (
-          <div className="space-y-3">
-            <p className="text-sm text-gray-500 italic">Select all that apply</p>
-            {question.options?.map((option) => (
-              <label
-                key={option._id}
-                className={`flex items-center p-4 border rounded-lg cursor-pointer transition-all ${
-                  (answer || []).includes(option._id)
-                    ? 'border-indigo-500 bg-indigo-50'
-                    : 'border-gray-200 hover:border-indigo-300'
-                }`}
-              >
-                <input
-                  type="checkbox"
-                  value={option._id}
-                  checked={(answer || []).includes(option._id)}
-                  onChange={() => handleMCQAnswer(question.questionId, option._id, true)}
-                  className="h-4 w-4 text-indigo-600 rounded"
-                />
-                <span className="ml-3 text-gray-900">{option.text}</span>
-              </label>
-            ))}
-          </div>
-        )}
-
-        {question.type === 'true-false' && (
-          <div className="space-y-3">
-            {['True', 'False'].map((option) => (
-              <label
-                key={option}
-                className={`flex items-center p-4 border rounded-lg cursor-pointer transition-all ${
-                  answer === option
-                    ? 'border-indigo-500 bg-indigo-50'
-                    : 'border-gray-200 hover:border-indigo-300'
-                }`}
-              >
-                <input
-                  type="radio"
-                  name={`question-${question.questionId}`}
-                  value={option}
-                  checked={answer === option}
-                  onChange={() => handleAnswerChange(question.questionId, option)}
-                  className="h-4 w-4 text-indigo-600"
-                />
-                <span className="ml-3 text-gray-900">{option}</span>
-              </label>
-            ))}
-          </div>
-        )}
-
-        {question.type === 'numerical' && (
-          <div>
-            <input
-              type="number"
-              step="any"
-              value={answer || ''}
-              onChange={(e) => handleAnswerChange(question.questionId, e.target.value)}
-              placeholder="Enter your answer"
-              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-            />
-          </div>
-        )}
-
-        {(question.type === 'short-answer' || question.type === 'long-answer' || question.type === 'case-based') && (
-          <div>
-            <textarea
-              value={answer || ''}
-              onChange={(e) => handleAnswerChange(question.questionId, e.target.value)}
-              placeholder="Enter your answer"
-              rows={question.type === 'short-answer' ? 3 : 8}
-              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent resize-none"
-            />
-          </div>
-        )}
-      </div>
+      <QuestionCard
+        question={question}
+        questionNumber={currentQuestionIndex + 1}
+        selectedAnswer={answer}
+        onAnswerChange={handleQuestionAnswer}
+        isMarkedForReview={markedForReview[question.questionId]}
+        onToggleReview={handleToggleReview}
+        showCorrectAnswer={false}
+        disabled={false}
+      />
     )
   }
 
@@ -410,14 +332,14 @@ export default function QuizAttempt() {
     <div className="min-h-screen bg-gray-50">
       {/* Header with Timer */}
       <div className="bg-white shadow-sm border-b sticky top-0 z-10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-4">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
             <div>
-              <h1 className="text-lg font-semibold text-gray-900">Quiz in Progress</h1>
+              <h1 className="text-lg sm:text-xl font-semibold text-gray-900">Quiz in Progress</h1>
               <p className="text-sm text-gray-500">{session.questions?.length} Questions</p>
             </div>
-            
-            <div className="flex items-center space-x-6">
+
+            <div className="flex items-center justify-between sm:justify-end space-x-3 sm:space-x-6">
               {/* Auto-save Status */}
               <div className="flex items-center text-sm">
                 {autoSaveStatus === 'saving' && (
@@ -430,18 +352,21 @@ export default function QuizAttempt() {
                   <span className="text-red-600">⚠ Save failed</span>
                 )}
               </div>
-              
-              {/* Timer */}
-              <div className={`text-2xl font-bold ${remainingTime < 300 ? 'text-red-600' : 'text-gray-900'}`}>
-                {formatTime(remainingTime)}
-              </div>
-              
+
+              {/* Quiz Timer Component */}
+              <QuizTimer
+                duration={remainingTime}
+                onTimeUp={handleAutoSubmit}
+                isPaused={false}
+                onTick={(remaining) => setRemainingTime(remaining)}
+              />
+
               {/* Question Navigator Toggle */}
               <button
                 onClick={() => setShowNavigator(!showNavigator)}
-                className="p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg"
+                className="p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg min-h-[44px] min-w-[44px] flex items-center justify-center"
               >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 10h16M4 14h16M4 18h16" />
                 </svg>
               </button>
@@ -450,52 +375,53 @@ export default function QuizAttempt() {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        <div className="flex gap-6">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
+        {/* Progress Bar */}
+        <div className="mb-4 sm:mb-6">
+          <QuizProgressBar
+            current={currentQuestionIndex}
+            total={session.questions.length}
+            answers={answers}
+            markedForReview={markedForReview}
+            onNavigate={navigateToQuestion}
+            compact={false}
+          />
+        </div>
+
+        <div className="flex flex-col lg:flex-row gap-4 sm:gap-6">
           {/* Main Question Area */}
           <div className="flex-1">
-            <div className="bg-white rounded-lg shadow-sm p-6">
+            <div className="bg-white rounded-lg shadow-sm p-4 sm:p-6">
               {renderQuestion()}
 
               {/* Navigation and Actions */}
-              <div className="mt-8 pt-6 border-t flex items-center justify-between">
-                <div className="flex items-center space-x-4">
-                  <button
-                    onClick={handlePrevious}
-                    disabled={currentQuestionIndex === 0}
-                    className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    Previous
-                  </button>
-                  <button
-                    onClick={handleNext}
-                    disabled={currentQuestionIndex === session.questions.length - 1}
-                    className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    Next
-                  </button>
-                </div>
+              <div className="mt-6 sm:mt-8 pt-4 sm:pt-6 border-t">
+                <div className="flex flex-col sm:flex-row gap-4">
+                  <div className="flex items-center space-x-3 sm:space-x-4 flex-1">
+                    <button
+                      onClick={handlePrevious}
+                      disabled={currentQuestionIndex === 0}
+                      className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed min-h-[44px] flex-1 sm:flex-none"
+                    >
+                      ← Previous
+                    </button>
+                    <button
+                      onClick={handleNext}
+                      disabled={currentQuestionIndex === session.questions.length - 1}
+                      className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed min-h-[44px] flex-1 sm:flex-none"
+                    >
+                      Next →
+                    </button>
+                  </div>
 
-                <div className="flex items-center space-x-4">
-                  <button
-                    onClick={handleToggleReview}
-                    className={`px-4 py-2 border rounded-lg transition-colors ${
-                      markedForReview[session.questions[currentQuestionIndex].questionId]
-                        ? 'border-purple-500 bg-purple-50 text-purple-700'
-                        : 'border-gray-300 hover:bg-gray-50'
-                    }`}
-                  >
-                    {markedForReview[session.questions[currentQuestionIndex].questionId] 
-                      ? '✓ Marked for Review' 
-                      : 'Mark for Review'}
-                  </button>
-                  
-                  <button
-                    onClick={() => setShowSubmitConfirm(true)}
-                    className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 font-medium"
-                  >
-                    Submit Quiz
-                  </button>
+                  <div className="flex items-center justify-end">
+                    <button
+                      onClick={() => setShowSubmitConfirm(true)}
+                      className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 font-medium min-h-[44px] w-full sm:w-auto"
+                    >
+                      Submit Quiz
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -503,36 +429,36 @@ export default function QuizAttempt() {
 
           {/* Question Navigator Sidebar */}
           {showNavigator && (
-            <div className="w-80 bg-white rounded-lg shadow-sm p-4 h-fit sticky top-24">
-              <h3 className="font-semibold text-gray-900 mb-4">Question Navigator</h3>
-              
+            <div className="w-full lg:w-80 bg-white rounded-lg shadow-sm p-4 sm:p-6 h-fit lg:sticky lg:top-24">
+              <h3 className="font-semibold text-gray-900 mb-4 text-sm sm:text-base">Question Navigator</h3>
+
               {/* Legend */}
-              <div className="grid grid-cols-2 gap-2 mb-4 text-xs">
+              <div className="grid grid-cols-2 gap-2 mb-4 sm:mb-6 text-xs">
                 <div className="flex items-center">
-                  <span className="w-4 h-4 rounded bg-green-500 mr-2"></span>
-                  <span>Answered</span>
+                  <span className="w-3 h-3 sm:w-4 sm:h-4 rounded bg-green-500 mr-2 flex-shrink-0"></span>
+                  <span className="text-xs sm:text-sm">Answered</span>
                 </div>
                 <div className="flex items-center">
-                  <span className="w-4 h-4 rounded bg-gray-200 mr-2"></span>
-                  <span>Not Visited</span>
+                  <span className="w-3 h-3 sm:w-4 sm:h-4 rounded bg-gray-200 mr-2 flex-shrink-0"></span>
+                  <span className="text-xs sm:text-sm">Not Visited</span>
                 </div>
                 <div className="flex items-center">
-                  <span className="w-4 h-4 rounded bg-purple-500 mr-2"></span>
-                  <span>Marked</span>
+                  <span className="w-3 h-3 sm:w-4 sm:h-4 rounded bg-purple-500 mr-2 flex-shrink-0"></span>
+                  <span className="text-xs sm:text-sm">Marked</span>
                 </div>
                 <div className="flex items-center">
-                  <span className="w-4 h-4 rounded bg-indigo-600 mr-2"></span>
-                  <span>Current</span>
+                  <span className="w-3 h-3 sm:w-4 sm:h-4 rounded bg-indigo-600 mr-2 flex-shrink-0"></span>
+                  <span className="text-xs sm:text-sm">Current</span>
                 </div>
               </div>
-              
+
               {/* Question Grid */}
-              <div className="grid grid-cols-5 gap-2">
+              <div className="grid grid-cols-5 sm:grid-cols-6 lg:grid-cols-5 gap-2 mb-4">
                 {session.questions.map((_, index) => (
                   <button
                     key={index}
                     onClick={() => navigateToQuestion(index)}
-                    className={`w-10 h-10 rounded-lg font-medium text-sm ${getStatusColor(getQuestionStatus(index))}`}
+                    className={`w-8 h-8 sm:w-10 sm:h-10 rounded-lg font-medium text-xs sm:text-sm ${getStatusColor(getQuestionStatus(index))} min-h-[32px] sm:min-h-[40px] flex items-center justify-center`}
                   >
                     {index + 1}
                   </button>
@@ -540,20 +466,20 @@ export default function QuizAttempt() {
               </div>
 
               {/* Summary */}
-              <div className="mt-4 pt-4 border-t text-sm text-gray-600">
+              <div className="pt-4 border-t text-xs sm:text-sm text-gray-600 space-y-2">
                 <div className="flex justify-between">
                   <span>Answered:</span>
                   <span className="font-medium text-green-600">
                     {Object.keys(answers).filter(k => answers[k] !== undefined && answers[k] !== null).length}
                   </span>
                 </div>
-                <div className="flex justify-between mt-1">
+                <div className="flex justify-between">
                   <span>Marked for Review:</span>
                   <span className="font-medium text-purple-600">
                     {Object.keys(markedForReview).filter(k => markedForReview[k]).length}
                   </span>
                 </div>
-                <div className="flex justify-between mt-1">
+                <div className="flex justify-between">
                   <span>Not Answered:</span>
                   <span className="font-medium text-gray-600">
                     {session.questions.length - Object.keys(answers).filter(k => answers[k] !== undefined && answers[k] !== null).length}

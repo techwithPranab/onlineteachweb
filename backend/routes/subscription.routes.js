@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { body } = require('express-validator');
 const subscriptionController = require('../controllers/subscription.controller');
+const paymentController = require('../controllers/payment.controller');
 const { authenticate, authorize } = require('../middleware/auth');
 const validate = require('../middleware/validate');
 
@@ -26,5 +27,11 @@ router.post('/cancel',
   authorize('student'),
   subscriptionController.cancelSubscription
 );
+
+// Downgrade to free plan (no payment)
+router.post('/downgrade-to-free', authenticate, authorize('student'), subscriptionController.downgradeToFree);
+
+// Public: get active plans
+router.get('/plans', paymentController.getPublicSubscriptionPlans);
 
 module.exports = router;

@@ -530,7 +530,7 @@ export default function ScheduleManagement() {
     <div className="max-w-7xl mx-auto">
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">Schedule Management</h1>
+        <h1 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">Schedule Management</h1>
         <p className="text-gray-600">Manage your teaching sessions and availability</p>
       </div>
 

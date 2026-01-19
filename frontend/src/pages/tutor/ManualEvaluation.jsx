@@ -54,7 +54,7 @@ function PendingEvaluations() {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Manual Evaluation</h1>
+          <h1 className="text-xl sm:text-2xl font-bold text-gray-900">Manual Evaluation</h1>
           <p className="mt-2 text-gray-600">Review and grade subjective answers</p>
         </div>
         <button
@@ -86,7 +86,7 @@ function PendingEvaluations() {
       {filteredSessions.length === 0 ? (
         <EmptyState
           title="No pending evaluations"
-          message="All quiz submissions have been evaluated"
+          description="All quiz submissions have been evaluated"
         />
       ) : (
         <div className="bg-white rounded-lg shadow overflow-hidden">
@@ -266,7 +266,7 @@ function EvaluationForm({ sessionId }) {
       {/* Header */}
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Manual Evaluation</h1>
+          <h1 className="text-xl sm:text-2xl font-bold text-gray-900">Manual Evaluation</h1>
           <p className="mt-2 text-gray-600">
             {session.quizId?.title} • {session.studentId?.name}
           </p>
@@ -306,7 +306,7 @@ function EvaluationForm({ sessionId }) {
       {subjectiveQuestions.length === 0 ? (
         <EmptyState
           title="No subjective questions"
-          message="All questions in this quiz were auto-graded"
+          description="All questions in this quiz were auto-graded"
         />
       ) : (
         <>

@@ -1,9 +1,11 @@
 import { Link } from 'react-router-dom'
 import { useAuthStore } from '../../store/authStore'
-import { BookOpen } from 'lucide-react'
+import { BookOpen, Menu, X } from 'lucide-react'
+import { useState } from 'react'
 
 export default function Navbar() {
   const { isAuthenticated, user } = useAuthStore()
+  const [mobileOpen, setMobileOpen] = useState(false)
 
   return (
     <nav className="bg-white shadow-md">
@@ -17,42 +19,72 @@ export default function Navbar() {
           </div>
 
           <div className="flex items-center space-x-8">
-            <Link to="/courses" className="text-gray-700 hover:text-primary-600 transition font-medium">
-              Courses
-            </Link>
-            <Link to="/pricing" className="text-gray-700 hover:text-primary-600 transition font-medium">
-              Pricing
-            </Link>
-            <Link to="/" className="text-gray-700 hover:text-primary-600 transition font-medium">
-              About
-            </Link>
-
-            {isAuthenticated ? (
-              <Link
-                to={`/${user.role}`}
-                className="btn-primary inline-flex items-center space-x-2"
-              >
-                <span>Dashboard</span>
+            {/* Desktop Links */}
+            <div className="hidden md:flex items-center space-x-8">
+              <Link to="/courses" className="text-gray-700 hover:text-primary-600 transition font-medium">
+                Courses
               </Link>
-            ) : (
-              <div className="flex items-center space-x-6">
+              <Link to="/pricing" className="text-gray-700 hover:text-primary-600 transition font-medium">
+                Pricing
+              </Link>
+
+              {isAuthenticated ? (
                 <Link
-                  to="/login"
-                  className="text-gray-700 hover:text-primary-600 font-medium transition"
+                  to={`/${user.role}`}
+                  className="btn-primary inline-flex items-center space-x-2"
                 >
-                  Login
+                  <span>Dashboard</span>
                 </Link>
-                <Link 
-                  to="/signup" 
-                  className="text-gray-700 hover:text-primary-600 font-medium transition"
-                >
-                  Sign Up
-                </Link>
-              </div>
-            )}
+              ) : (
+                <div className="flex items-center space-x-6">
+                  <Link
+                    to="/login"
+                    className="text-gray-700 hover:text-primary-600 font-medium transition"
+                  >
+                    Login
+                  </Link>
+                  <Link 
+                    to="/signup" 
+                    className="text-gray-700 hover:text-primary-600 font-medium transition"
+                  >
+                    Sign Up
+                  </Link>
+                </div>
+              )}
+            </div>
+
+            {/* Mobile menu button */}
+            <div className="flex items-center md:hidden">
+              <button
+                onClick={() => setMobileOpen((s) => !s)}
+                aria-expanded={mobileOpen}
+                aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
+                className="p-2 rounded-md text-gray-700 hover:bg-gray-100"
+              >
+                {mobileOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+              </button>
+            </div>
           </div>
         </div>
       </div>
+
+      {/* Mobile Nav */}
+      {mobileOpen && (
+        <div className="md:hidden bg-white border-t border-gray-200">
+          <div className="px-4 py-3 space-y-3">
+            <Link to="/courses" className="block text-gray-700 font-medium" onClick={() => setMobileOpen(false)}>Courses</Link>
+            <Link to="/pricing" className="block text-gray-700 font-medium" onClick={() => setMobileOpen(false)}>Pricing</Link>
+            {isAuthenticated ? (
+              <Link to={`/${user.role}`} className="block btn-primary text-center" onClick={() => setMobileOpen(false)}>Dashboard</Link>
+            ) : (
+              <>
+                <Link to="/login" className="block text-gray-700" onClick={() => setMobileOpen(false)}>Login</Link>
+                <Link to="/signup" className="block text-gray-700" onClick={() => setMobileOpen(false)}>Sign Up</Link>
+              </>
+            )}
+          </div>
+        </div>
+      )}
     </nav>
   )
 }

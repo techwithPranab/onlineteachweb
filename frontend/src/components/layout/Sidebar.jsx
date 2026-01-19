@@ -24,6 +24,8 @@ import {
   ChevronDown,
   ChevronRight,
   Mail,
+  Bell,
+  History,
 } from 'lucide-react'
 
 const studentLinks = [
@@ -31,8 +33,11 @@ const studentLinks = [
   { to: '/student/courses', icon: BookOpen, label: 'Courses' },
   { to: '/student/sessions', icon: Video, label: 'Sessions' },
   { to: '/student/quizzes', icon: ClipboardList, label: 'Quizzes' },
+  { to: '/student/quiz-setup', icon: PenTool, label: 'Quiz Setup' },
+  { to: '/student/quiz-history', icon: History, label: 'Quiz History' },
   { to: '/student/progress', icon: BarChart3, label: 'Progress' },
   { to: '/student/subscription', icon: CreditCard, label: 'Subscription' },
+  { to: '/student/notifications', icon: Bell, label: 'Notifications' },
   { to: '/student/profile', icon: Settings, label: 'Settings' },
 ]
 
@@ -120,7 +125,7 @@ const adminLinks = [
   },
 ]
 
-export default function Sidebar() {
+export default function Sidebar({ sidebarOpen, setSidebarOpen }) {
   const { user, logout } = useAuthStore()
 
   const links = user?.role === 'student' 
@@ -150,8 +155,8 @@ export default function Sidebar() {
     }))
   }
 
-  return (
-    <aside className="w-64 bg-white border-r border-gray-200 min-h-screen">
+  const sidebarInner = (
+    <div className="flex flex-col h-full">
       <div className="p-6">
         <div className="flex items-center space-x-2">
           <BookOpen className="h-8 w-8 text-primary-600" />
@@ -159,12 +164,12 @@ export default function Sidebar() {
         </div>
       </div>
 
-      <nav className="px-4 space-y-1">
+      <nav className="px-4 space-y-1 flex-1 overflow-auto">
         {links.map((link, index) => {
           if (link.type === 'group') {
             const isExpanded = expandedGroups[index]
             const ChevronIcon = isExpanded ? ChevronDown : ChevronRight
-            
+
             return (
               <div key={`group-${index}`}>
                 <button
@@ -174,7 +179,7 @@ export default function Sidebar() {
                   <span>{link.label}</span>
                   <ChevronIcon className="h-4 w-4" />
                 </button>
-                
+
                 {isExpanded && (
                   <div className="ml-2 space-y-1">
                     {link.items.map((item) => {
@@ -191,6 +196,7 @@ export default function Sidebar() {
                                 : 'text-gray-700 hover:bg-gray-50'
                             }`
                           }
+                          onClick={() => setSidebarOpen?.(false)}
                         >
                           <Icon className="h-4 w-4" />
                           <span className="text-sm font-medium">{item.label}</span>
@@ -216,6 +222,7 @@ export default function Sidebar() {
                     : 'text-gray-700 hover:bg-gray-50'
                 }`
               }
+              onClick={() => setSidebarOpen?.(false)}
             >
               <Icon className="h-5 w-5" />
               <span className="font-medium">{link.label}</span>
@@ -224,7 +231,7 @@ export default function Sidebar() {
         })}
       </nav>
 
-      <div className="absolute bottom-0 w-64 p-4 border-t border-gray-200">
+      <div className="p-4 border-t">
         <button
           onClick={logout}
           className="w-full text-left px-4 py-3 text-red-600 hover:bg-red-50 rounded-lg transition"
@@ -232,6 +239,36 @@ export default function Sidebar() {
           Logout
         </button>
       </div>
-    </aside>
+    </div>
+  )
+
+  return (
+    <>
+      {/* Desktop sidebar */}
+      <aside className="hidden md:block w-64 bg-white border-r border-gray-200 min-h-screen">
+        {sidebarInner}
+      </aside>
+
+      {/* Mobile drawer */}
+      {sidebarOpen && (
+        <div className="md:hidden fixed inset-0 z-50 flex">
+          <div className="absolute inset-0 bg-black/40" onClick={() => setSidebarOpen(false)} />
+          <div className="relative w-64 bg-white border-r border-gray-200 h-full shadow-lg">
+            <div className="p-4 flex items-center justify-between">
+              <div className="flex items-center space-x-2">
+                <BookOpen className="h-8 w-8 text-primary-600" />
+                <span className="text-lg font-bold text-gray-900">MeritAI</span>
+              </div>
+              <button onClick={() => setSidebarOpen(false)} className="p-2 rounded-md hover:bg-gray-100">
+                <ChevronRight className="h-5 w-5" />
+              </button>
+            </div>
+            <div className="h-[calc(100vh-72px)] overflow-auto">
+              {sidebarInner}
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   )
 }

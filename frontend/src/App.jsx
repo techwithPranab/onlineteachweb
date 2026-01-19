@@ -33,8 +33,10 @@ import SubscriptionManagement from './pages/student/SubscriptionManagement'
 import SessionDetail from './pages/student/SessionDetail'
 import UpcomingSessions from './pages/student/UpcomingSessions'
 import QuizListing from './pages/student/QuizListing'
+import QuizSetup from './pages/student/QuizSetup'
 import QuizAttempt from './pages/student/QuizAttempt'
 import QuizResults from './pages/student/QuizResults'
+import QuizHistory from './pages/student/QuizHistory'
 
 // Tutor Pages
 import TutorDashboard from './pages/tutor/TutorDashboard'
@@ -134,8 +136,11 @@ function App() {
             <Route path="notifications" element={<NotificationsPage />} />
             {/* Quiz Routes */}
             <Route path="quizzes" element={<QuizListing />} />
+            <Route path="quiz-setup" element={<QuizSetup />} />
+            <Route path="quiz/:quizId/setup" element={<QuizSetup />} />
             <Route path="quiz/:quizId/attempt" element={<QuizAttempt />} />
             <Route path="quiz/:sessionId/results" element={<QuizResults />} />
+            <Route path="quiz-history" element={<QuizHistory />} />
           </Route>
 
           {/* Tutor Routes */}

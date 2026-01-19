@@ -148,7 +148,7 @@ npm run dev
 
 | Role | Email | Password |
 |------|-------|----------|
-| Admin | admin@teachingplatform.com | admin123 |
+| Admin | admin@meritai.in | admin123 |
 | Tutor | john.smith@example.com | tutor123 |
 | Student | emily.davis@example.com | student123 |
 
@@ -369,7 +369,7 @@ Use Postman/Insomnia or curl:
 # Example: Login
 curl -X POST http://localhost:5000/api/auth/login \
   -H "Content-Type: application/json" \
-  -d '{"email":"admin@teachingplatform.com","password":"admin123"}'
+  -d '{"email":"admin@meritai.in","password":"admin123"}'
 ```
 
 ## 🚧 Phase 3 Roadmap

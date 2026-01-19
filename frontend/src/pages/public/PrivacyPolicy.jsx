@@ -162,7 +162,7 @@ export default function PrivacyPolicy() {
                     <li><strong>Object:</strong> Object to certain processing activities</li>
                   </ul>
                   <p className="mt-4">
-                    To exercise these rights, contact us at <a href="mailto:privacy@onlineteaching.com" className="text-blue-600 hover:underline">privacy@onlineteaching.com</a>
+                    To exercise these rights, contact us at <a href="mailto:privacy@meritai.in" className="text-blue-600 hover:underline">privacy@meritai.in</a>
                   </p>
                 </>
               }
@@ -270,7 +270,7 @@ export default function PrivacyPolicy() {
                     If you have questions or concerns about this Privacy Policy, please contact us:
                   </p>
                   <div className="mt-4 bg-gray-50 p-4 rounded-lg">
-                    <p><strong>Email:</strong> <a href="mailto:privacy@meritai.com" className="text-blue-600 hover:underline">privacy@meritai.com</a></p>
+                    <p><strong>Email:</strong> <a href="mailto:privacy@meritai.in" className="text-blue-600 hover:underline">privacy@meritai.in</a></p>
                     <p className="mt-2"><strong>Address:</strong> 123 Education Street, New York, NY 10001, USA</p>
                     <p className="mt-2"><strong>Phone:</strong> +1 (555) 123-4567</p>
                   </div>

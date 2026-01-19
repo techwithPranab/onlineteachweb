@@ -466,4 +466,20 @@ exports.getSubscriptionStats = async (req, res, next) => {
   }
 };
 
+// ========================================
+// PUBLIC CONTROLLERS
+// ========================================
+
+// @desc    Get public subscription plans (active)
+// @route   GET /api/subscriptions/plans
+// @access  Public
+exports.getPublicSubscriptionPlans = async (req, res, next) => {
+  try {
+    const plans = await SubscriptionPlan.find({ isActive: true }).sort({ priority: 1 })
+    res.json({ success: true, data: plans })
+  } catch (error) {
+    next(error)
+  }
+}
+
 module.exports = exports;

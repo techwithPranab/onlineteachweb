@@ -201,7 +201,7 @@ export default function UploadMaterials() {
     <div className="max-w-7xl mx-auto">
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">Upload Materials</h1>
+        <h1 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">Upload Materials</h1>
         <p className="text-gray-600">Share course materials with your students</p>
       </div>
 

@@ -322,7 +322,7 @@ export default function StudentEvaluation() {
     return (
       <div className="max-w-7xl mx-auto">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Student Evaluation</h1>
+          <h1 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">Student Evaluation</h1>
           <p className="text-gray-600">Grade and provide feedback to your students</p>
         </div>
 
@@ -359,7 +359,7 @@ export default function StudentEvaluation() {
     <div className="max-w-7xl mx-auto">
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">Student Evaluation</h1>
+        <h1 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">Student Evaluation</h1>
         <p className="text-gray-600">
           Evaluating: <span className="font-medium">{courses.find(c => c._id === selectedCourse)?.title}</span>
         </p>

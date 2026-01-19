@@ -162,7 +162,7 @@ export default function TermsOfService() {
 
                   <h4 className="font-semibold text-gray-900 mb-2 mt-4">6.4 DMCA Policy</h4>
                   <p>
-                    We respect intellectual property rights. If you believe your content has been infringed, contact us at <a href="mailto:dmca@meritai.com" className="text-blue-600 hover:underline">dmca@meritai.com</a> with required details.
+                    We respect intellectual property rights. If you believe your content has been infringed, contact us at <a href="mailto:dmca@meritai.in" className="text-blue-600 hover:underline">dmca@meritai.in</a> with required details.
                   </p>
                 </>
               }
@@ -265,7 +265,7 @@ export default function TermsOfService() {
                 <>
                   <h4 className="font-semibold text-gray-900 mb-2">11.1 Informal Resolution</h4>
                   <p>
-                    Before filing a claim, you agree to contact us at <a href="mailto:legal@meritai.com" className="text-blue-600 hover:underline">legal@meritai.com</a> to resolve the dispute informally.
+                    Before filing a claim, you agree to contact us at <a href="mailto:legal@meritai.in" className="text-blue-600 hover:underline">legal@meritai.in</a> to resolve the dispute informally.
                   </p>
 
                   <h4 className="font-semibold text-gray-900 mb-2 mt-4">11.2 Arbitration</h4>
@@ -321,7 +321,7 @@ export default function TermsOfService() {
                     For questions about these Terms, please contact us:
                   </p>
                   <div className="mt-4 bg-gray-50 p-4 rounded-lg">
-                    <p><strong>Email:</strong> <a href="mailto:legal@meritai.com" className="text-blue-600 hover:underline">legal@meritai.com</a></p>
+                    <p><strong>Email:</strong> <a href="mailto:legal@meritai.in" className="text-blue-600 hover:underline">legal@meritai.in</a></p>
                     <p className="mt-2"><strong>Address:</strong> 123 Education Street, New York, NY 10001, USA</p>
                     <p className="mt-2"><strong>Phone:</strong> +1 (555) 123-4567</p>
                   </div>

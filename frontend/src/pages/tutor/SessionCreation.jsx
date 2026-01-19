@@ -102,7 +102,7 @@ export default function TutorSessionCreation() {
   return (
     <div className="max-w-4xl mx-auto p-6">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900">Create Session</h1>
+        <h1 className="text-xl sm:text-2xl font-bold text-gray-900">Create Session</h1>
         <p className="text-gray-600 mt-2">Schedule a live session for an existing course</p>
       </div>
 

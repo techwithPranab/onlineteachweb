@@ -200,7 +200,7 @@ export default function QuizCreate() {
           value={formData.title}
           onChange={(e) => handleChange('title', e.target.value)}
           placeholder="e.g., Chapter 1: Linear Equations Quiz"
-          className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-indigo-500"
+          className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-indigo-500 min-h-[44px] sm:min-h-0"
         />
       </div>
 
@@ -211,7 +211,7 @@ export default function QuizCreate() {
           onChange={(e) => handleChange('description', e.target.value)}
           placeholder="Brief description of the quiz"
           rows={3}
-          className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-indigo-500"
+          className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-indigo-500 min-h-[88px] sm:min-h-0"
         />
       </div>
 
@@ -220,7 +220,7 @@ export default function QuizCreate() {
         <select
           value={formData.courseId}
           onChange={(e) => handleChange('courseId', e.target.value)}
-          className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-indigo-500"
+          className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-indigo-500 min-h-[44px] sm:min-h-0"
         >
           <option value="">Select a course</option>
           {courses.map(course => (
@@ -233,7 +233,7 @@ export default function QuizCreate() {
 
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-1">Difficulty Level *</label>
-        <div className="flex space-x-4">
+        <div className="flex flex-col sm:flex-row sm:space-x-4 space-y-2 sm:space-y-0">
           {['easy', 'medium', 'hard'].map(level => (
             <label key={level} className="flex items-center">
               <input
@@ -260,7 +260,7 @@ export default function QuizCreate() {
       {questionStats && (
         <div className="bg-blue-50 p-4 rounded-lg">
           <h3 className="font-medium text-blue-800 mb-2">Available Questions</h3>
-          <div className="grid grid-cols-4 gap-4 text-sm">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 text-sm">
             <div>
               <span className="text-blue-600">Total: </span>
               <span className="font-bold">{questionStats.totalQuestions}</span>
@@ -291,7 +291,7 @@ export default function QuizCreate() {
           max={questionStats?.totalQuestions || 100}
           value={formData.questionConfig.totalQuestions}
           onChange={(e) => handleConfigChange('totalQuestions', parseInt(e.target.value))}
-          className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-indigo-500"
+          className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-indigo-500 min-h-[44px] sm:min-h-0"
         />
       </div>
 
@@ -303,8 +303,8 @@ export default function QuizCreate() {
           </label>
           <div className="space-y-3">
             {topics.map(topic => (
-              <div key={topic.topic} className="flex items-center space-x-4">
-                <span className="w-48 text-sm text-gray-600">{topic.topic}</span>
+              <div key={topic.topic} className="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-4">
+                <span className="w-full sm:w-48 text-sm text-gray-600">{topic.topic}</span>
                 <span className="text-xs text-gray-400">({topic.questionCount} questions)</span>
                 <input
                   type="number"
@@ -313,7 +313,7 @@ export default function QuizCreate() {
                   value={formData.questionConfig.topicWeightage[topic.topic] || ''}
                   onChange={(e) => handleTopicWeightageChange(topic.topic, e.target.value)}
                   placeholder="0"
-                  className="w-20 border border-gray-300 rounded-lg px-3 py-1 text-center"
+                  className="w-20 min-w-[60px] border border-gray-300 rounded-lg px-3 py-1 text-center min-h-[44px] sm:min-h-0"
                 />
                 <span className="text-sm text-gray-400">%</span>
               </div>
@@ -331,7 +331,7 @@ export default function QuizCreate() {
     <div className="space-y-6">
       <h2 className="text-xl font-semibold text-gray-900">Quiz Settings</h2>
 
-      <div className="grid grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">Duration (minutes) *</label>
           <input
@@ -340,7 +340,7 @@ export default function QuizCreate() {
             max={300}
             value={formData.duration}
             onChange={(e) => handleChange('duration', parseInt(e.target.value))}
-            className="w-full border border-gray-300 rounded-lg px-4 py-2"
+            className="w-full border border-gray-300 rounded-lg px-4 py-2 min-h-[44px] sm:min-h-0"
           />
         </div>
 
@@ -351,7 +351,7 @@ export default function QuizCreate() {
             min={1}
             value={formData.totalMarks}
             onChange={(e) => handleChange('totalMarks', parseInt(e.target.value))}
-            className="w-full border border-gray-300 rounded-lg px-4 py-2"
+            className="w-full border border-gray-300 rounded-lg px-4 py-2 min-h-[44px] sm:min-h-0"
           />
         </div>
 
@@ -363,7 +363,7 @@ export default function QuizCreate() {
             max={100}
             value={formData.passingPercentage}
             onChange={(e) => handleChange('passingPercentage', parseInt(e.target.value))}
-            className="w-full border border-gray-300 rounded-lg px-4 py-2"
+            className="w-full border border-gray-300 rounded-lg px-4 py-2 min-h-[44px] sm:min-h-0"
           />
         </div>
 
@@ -375,7 +375,7 @@ export default function QuizCreate() {
             max={10}
             value={formData.attemptsAllowed}
             onChange={(e) => handleChange('attemptsAllowed', parseInt(e.target.value))}
-            className="w-full border border-gray-300 rounded-lg px-4 py-2"
+            className="w-full border border-gray-300 rounded-lg px-4 py-2 min-h-[44px] sm:min-h-0"
           />
         </div>
       </div>
@@ -394,14 +394,14 @@ export default function QuizCreate() {
           { key: 'allowResume', label: 'Allow Resume', desc: 'Allow resuming quiz if browser is closed' },
           { key: 'preventTabSwitch', label: 'Prevent Tab Switch', desc: 'Track when student switches tabs' }
         ].map(setting => (
-          <label key={setting.key} className="flex items-start">
+          <label key={setting.key} className="flex flex-col sm:flex-row sm:items-start sm:space-x-3">
             <input
               type="checkbox"
               checked={formData.settings[setting.key]}
               onChange={(e) => handleSettingsChange(setting.key, e.target.checked)}
-              className="h-4 w-4 text-indigo-600 mt-1"
+              className="h-5 w-5 sm:h-4 sm:w-4 text-indigo-600 mt-1"
             />
-            <div className="ml-3">
+            <div className="ml-0 sm:ml-3 mt-2 sm:mt-0">
               <span className="font-medium text-gray-900">{setting.label}</span>
               <p className="text-sm text-gray-500">{setting.desc}</p>
             </div>
@@ -418,14 +418,14 @@ export default function QuizCreate() {
 
       <div className="space-y-3">
         {formData.instructions.map((instruction, index) => (
-          <div key={index} className="flex items-center space-x-2">
+          <div key={index} className="flex flex-col sm:flex-row sm:items-center sm:space-x-2 space-y-2 sm:space-y-0">
             <span className="text-gray-500">{index + 1}.</span>
             <input
               type="text"
               value={instruction}
               onChange={(e) => handleInstructionChange(index, e.target.value)}
               placeholder="Enter instruction"
-              className="flex-1 border border-gray-300 rounded-lg px-4 py-2"
+              className="flex-1 border border-gray-300 rounded-lg px-4 py-2 min-h-[44px] sm:min-h-0"
             />
             {formData.instructions.length > 1 && (
               <button
@@ -441,7 +441,7 @@ export default function QuizCreate() {
         ))}
         <button
           onClick={handleAddInstruction}
-          className="flex items-center text-indigo-600 hover:text-indigo-800"
+          className="mt-2 inline-flex items-center text-indigo-600 hover:text-indigo-800 px-3 py-2"
         >
           <svg className="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
@@ -453,7 +453,7 @@ export default function QuizCreate() {
       {/* Review Summary */}
       <div className="mt-8 p-4 bg-gray-50 rounded-lg">
         <h3 className="font-medium text-gray-900 mb-4">Quiz Summary</h3>
-        <div className="grid grid-cols-2 gap-4 text-sm">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
           <div><span className="text-gray-500">Title:</span> {formData.title}</div>
           <div><span className="text-gray-500">Course:</span> {courses.find(c => c._id === formData.courseId)?.title}</div>
           <div><span className="text-gray-500">Difficulty:</span> {formData.difficultyLevel}</div>
@@ -471,7 +471,7 @@ export default function QuizCreate() {
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <button
         onClick={() => navigate('/tutor/quizzes')}
-        className="flex items-center text-gray-600 hover:text-gray-900 mb-6"
+        className="flex items-center text-gray-600 hover:text-gray-900 mb-6 min-h-[44px]"
       >
         <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -479,15 +479,15 @@ export default function QuizCreate() {
         Back to Quizzes
       </button>
 
-      <h1 className="text-3xl font-bold text-gray-900 mb-8">Create Quiz</h1>
+      <h1 className="text-xl sm:text-2xl font-bold text-gray-900 mb-8">Create Quiz</h1>
 
       {error && <ErrorMessage message={error} />}
 
       {/* Progress Steps */}
       <div className="mb-8">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between space-x-3 overflow-x-auto">
           {['Basic Info', 'Questions', 'Settings', 'Review'].map((label, index) => (
-            <div key={label} className="flex items-center">
+            <div key={label} className="flex items-center min-w-[110px]">
               <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
                 step > index + 1 ? 'bg-green-500 text-white' :
                 step === index + 1 ? 'bg-indigo-600 text-white' :
@@ -499,7 +499,7 @@ export default function QuizCreate() {
                 {label}
               </span>
               {index < 3 && (
-                <div className={`w-24 h-0.5 mx-4 ${step > index + 1 ? 'bg-green-500' : 'bg-gray-200'}`} />
+                <div className={`w-16 sm:w-24 h-0.5 mx-3 sm:mx-4 ${step > index + 1 ? 'bg-green-500' : 'bg-gray-200'}`} />
               )}
             </div>
           ))}
@@ -507,7 +507,7 @@ export default function QuizCreate() {
       </div>
 
       {/* Step Content */}
-      <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
+      <div className="bg-white rounded-lg shadow-sm p-4 sm:p-6 mb-6">
         {step === 1 && renderStep1()}
         {step === 2 && renderStep2()}
         {step === 3 && renderStep3()}
@@ -515,11 +515,11 @@ export default function QuizCreate() {
       </div>
 
       {/* Navigation */}
-      <div className="flex justify-between">
+      <div className="flex flex-col sm:flex-row sm:justify-between gap-3 items-stretch">
         <button
           onClick={() => setStep(Math.max(1, step - 1))}
           disabled={step === 1}
-          className="px-6 py-2 border border-gray-300 rounded-lg disabled:opacity-50"
+          className="px-6 py-2 border border-gray-300 rounded-lg disabled:opacity-50 w-full sm:w-auto text-center"
         >
           Previous
         </button>
@@ -528,7 +528,7 @@ export default function QuizCreate() {
           <button
             onClick={() => setStep(step + 1)}
             disabled={!validateStep(step)}
-            className="px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 disabled:opacity-50"
+            className="px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 disabled:opacity-50 w-full sm:w-auto text-center"
           >
             Next
           </button>
@@ -536,7 +536,7 @@ export default function QuizCreate() {
           <button
             onClick={handleSubmit}
             disabled={loading}
-            className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50"
+            className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50 w-full sm:w-auto text-center"
           >
             {loading ? 'Creating...' : 'Create Quiz'}
           </button>

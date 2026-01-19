@@ -111,7 +111,7 @@ export default function QuizManagement() {
       {/* Header */}
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Quiz Management</h1>
+          <h1 className="text-xl sm:text-2xl font-bold text-gray-900">Quiz Management</h1>
           <p className="mt-2 text-gray-600">Create and manage quizzes for your courses</p>
         </div>
         <div className="flex space-x-3">
@@ -189,7 +189,7 @@ export default function QuizManagement() {
       ) : quizzes.length === 0 ? (
         <EmptyState
           title="No quizzes found"
-          message="Create your first quiz to get started"
+          description="Create your first quiz to get started"
           action={
             <button
               onClick={() => navigate('/tutor/quizzes/create')}

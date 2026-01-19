@@ -94,7 +94,7 @@ export default function ContactUs() {
                   <ContactInfoItem
                     icon={<Mail className="h-6 w-6 text-primary-600" />}
                     title="Email"
-                    value={contactInfo?.email || 'support@meritai.com'}
+                    value={contactInfo?.email || 'support@meritai.in'}
                     subtitle={contactInfo ? `Response time: ${contactInfo.responseTimes?.email || '24 hours'}` : 'We typically respond in 24 hours'}
                   />
 

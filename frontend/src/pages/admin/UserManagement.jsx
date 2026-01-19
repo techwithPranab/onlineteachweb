@@ -161,24 +161,24 @@ export default function UserManagement() {
   if (error) return <ErrorMessage message={error.message || 'Failed to load users'} />
 
   return (
-    <div className="max-w-7xl mx-auto">
-      <div className="mb-4">
-        <h1 className="text-2xl font-bold text-gray-900 mb-1">User Management</h1>
-        <p className="text-sm text-gray-600">Manage all platform users and their access</p>
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
+      <div className="mb-6 sm:mb-8">
+        <h1 className="text-xl sm:text-2xl font-bold text-gray-900 mb-1 sm:mb-2">User Management</h1>
+        <p className="text-sm sm:text-base text-gray-600">Manage all platform users and their access</p>
       </div>
 
       {/* Filters */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 mb-4">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 sm:p-5 md:p-6 mb-6 sm:mb-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4">
           {/* Search */}
-          <div className="relative">
+          <div className="relative sm:col-span-2 md:col-span-1">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
             <input
               type="text"
               placeholder="Search users..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="input-field pl-10 w-full"
+              className="input-field pl-10 w-full min-h-[44px] sm:min-h-0"
             />
           </div>
 
@@ -186,7 +186,7 @@ export default function UserManagement() {
           <select
             value={roleFilter}
             onChange={(e) => setRoleFilter(e.target.value)}
-            className="input-field"
+            className="input-field w-full min-h-[44px] sm:min-h-0"
           >
             <option value="">All Roles</option>
             <option value="student">Students</option>
@@ -198,7 +198,7 @@ export default function UserManagement() {
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="input-field"
+            className="input-field w-full min-h-[44px] sm:min-h-0"
           >
             <option value="">All Statuses</option>
             <option value="active">Active</option>
@@ -209,33 +209,33 @@ export default function UserManagement() {
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mb-3">
+      <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 mb-6 sm:mb-8">
         <div className="card">
-          <div className="p-2">
-            <p className="text-xs text-gray-600 mb-1">Total Users</p>
-            <p className="text-lg font-bold text-gray-900">{users.length}</p>
+          <div className="p-3 sm:p-4">
+            <p className="text-xs sm:text-sm text-gray-600 mb-1">Total Users</p>
+            <p className="text-xl sm:text-2xl font-bold text-gray-900">{users.length}</p>
           </div>
         </div>
         <div className="card">
-          <div className="p-2">
-            <p className="text-xs text-gray-600 mb-1">Students</p>
-            <p className="text-lg font-bold text-primary-600">
+          <div className="p-3 sm:p-4">
+            <p className="text-xs sm:text-sm text-gray-600 mb-1">Students</p>
+            <p className="text-xl sm:text-2xl font-bold text-primary-600">
               {users.filter((u) => u.role === 'student').length}
             </p>
           </div>
         </div>
         <div className="card">
-          <div className="p-2">
-            <p className="text-xs text-gray-600 mb-1">Tutors</p>
-            <p className="text-lg font-bold text-primary-600">
+          <div className="p-3 sm:p-4">
+            <p className="text-xs sm:text-sm text-gray-600 mb-1">Tutors</p>
+            <p className="text-xl sm:text-2xl font-bold text-primary-600">
               {users.filter((u) => u.role === 'tutor').length}
             </p>
           </div>
         </div>
         <div className="card">
-          <div className="p-2">
-            <p className="text-xs text-gray-600 mb-1">Active</p>
-            <p className="text-lg font-bold text-green-600">
+          <div className="p-3 sm:p-4">
+            <p className="text-xs sm:text-sm text-gray-600 mb-1">Active</p>
+            <p className="text-xl sm:text-2xl font-bold text-green-600">
               {users.filter((u) => u.status === 'active').length}
             </p>
           </div>
@@ -244,125 +244,129 @@ export default function UserManagement() {
 
       {/* Users Table */}
       <div className="card">
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead>
-              <tr className="border-b border-gray-200">
-                <th className="text-left py-2 px-4 text-xs font-medium text-gray-600">User</th>
-                <th className="text-left py-2 px-4 text-xs font-medium text-gray-600">Email</th>
-                <th className="text-left py-2 px-4 text-xs font-medium text-gray-600">Role</th>
-                <th className="text-left py-2 px-4 text-xs font-medium text-gray-600">Status</th>
-                <th className="text-left py-2 px-4 text-xs font-medium text-gray-600">Joined</th>
-                <th className="text-left py-2 px-4 text-xs font-medium text-gray-600">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {users.length > 0 ? (
-                users.map((user) => (
-                  <tr key={user._id} className="border-b border-gray-100 hover:bg-gray-50">
-                    <td className="py-2 px-4">
-                      <div className="flex items-center gap-2">
-                        <div className="w-8 h-8 bg-primary-100 rounded-full flex items-center justify-center">
-                          <span className="text-primary-600 font-medium text-sm">
-                            {user.name?.charAt(0)}
-                          </span>
+        <div className="overflow-x-auto -mx-4 sm:mx-0">
+          <div className="inline-block min-w-full align-middle px-4 sm:px-0">
+            <table className="min-w-full divide-y divide-gray-200">
+              <thead>
+                <tr className="border-b border-gray-200">
+                  <th className="text-left py-3 px-2 sm:px-4 text-xs sm:text-sm font-medium text-gray-600 whitespace-nowrap">User</th>
+                  <th className="text-left py-3 px-2 sm:px-4 text-xs sm:text-sm font-medium text-gray-600 whitespace-nowrap">Email</th>
+                  <th className="text-left py-3 px-2 sm:px-4 text-xs sm:text-sm font-medium text-gray-600 whitespace-nowrap">Role</th>
+                  <th className="text-left py-3 px-2 sm:px-4 text-xs sm:text-sm font-medium text-gray-600 whitespace-nowrap">Status</th>
+                  <th className="text-left py-3 px-2 sm:px-4 text-xs sm:text-sm font-medium text-gray-600 whitespace-nowrap">Joined</th>
+                  <th className="text-left py-3 px-2 sm:px-4 text-xs sm:text-sm font-medium text-gray-600 whitespace-nowrap">Actions</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-100">
+                {users.length > 0 ? (
+                  users.map((user) => (
+                    <tr key={user._id} className="hover:bg-gray-50">
+                      <td className="py-3 px-2 sm:px-4">
+                        <div className="flex items-center gap-2">
+                          <div className="w-8 h-8 sm:w-10 sm:h-10 bg-primary-100 rounded-full flex items-center justify-center flex-shrink-0">
+                            <span className="text-primary-600 font-medium text-sm">
+                              {user.name?.charAt(0)}
+                            </span>
+                          </div>
+                          <div className="min-w-0">
+                            <p className="font-medium text-gray-900 text-xs sm:text-sm truncate">{user.name}</p>
+                            <p className="text-xs text-gray-500 truncate">ID: {user._id.slice(-6)}</p>
+                          </div>
                         </div>
-                        <div>
-                          <p className="font-medium text-gray-900 text-sm">{user.name}</p>
-                          <p className="text-xs text-gray-500">ID: {user._id.slice(-6)}</p>
+                      </td>
+                      <td className="py-3 px-2 sm:px-4 text-xs sm:text-sm text-gray-900">
+                        <span className="truncate block max-w-[150px] sm:max-w-none">{user.email}</span>
+                      </td>
+                      <td className="py-3 px-2 sm:px-4 whitespace-nowrap">
+                        <span className="px-2 py-1 bg-primary-100 text-primary-700 rounded-full text-xs font-medium capitalize">
+                          {user.role}
+                        </span>
+                      </td>
+                      <td className="py-3 px-2 sm:px-4 whitespace-nowrap">
+                        <span
+                          className={`px-2 py-1 rounded-full text-xs font-medium capitalize ${
+                            user.status === 'active'
+                              ? 'bg-green-100 text-green-700'
+                              : user.status === 'suspended'
+                              ? 'bg-red-100 text-red-700'
+                              : 'bg-yellow-100 text-yellow-700'
+                          }`}
+                        >
+                          {user.status}
+                        </span>
+                      </td>
+                      <td className="py-3 px-2 sm:px-4 text-xs sm:text-sm text-gray-600 whitespace-nowrap">
+                        {new Date(user.createdAt).toLocaleDateString()}
+                      </td>
+                      <td className="py-3 px-2 sm:px-4 whitespace-nowrap">
+                        <div className="flex items-center gap-1 sm:gap-2">
+                          {/* Status Change Buttons */}
+                          {user.status === 'active' ? (
+                            <button
+                              onClick={() => handleStatusChange(user, 'suspended')}
+                              className="p-2 sm:p-1.5 text-red-600 hover:bg-red-50 rounded-lg transition-colors min-h-[44px] sm:min-h-0 min-w-[44px] sm:min-w-0"
+                              title="Suspend User"
+                            >
+                              <UserX className="w-5 h-5 sm:w-4 sm:h-4" />
+                            </button>
+                          ) : (
+                            <button
+                              onClick={() => handleStatusChange(user, 'active')}
+                              className="p-2 sm:p-1.5 text-green-600 hover:bg-green-50 rounded-lg transition-colors min-h-[44px] sm:min-h-0 min-w-[44px] sm:min-w-0"
+                              title="Activate User"
+                            >
+                              <UserCheck className="w-5 h-5 sm:w-4 sm:h-4" />
+                            </button>
+                          )}
+
+                          {/* Edit Button */}
+                          <button
+                            onClick={() => handleEditUser(user)}
+                            className="p-2 sm:p-1.5 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors min-h-[44px] sm:min-h-0 min-w-[44px] sm:min-w-0"
+                            title="Edit User"
+                          >
+                            <Edit className="w-5 h-5 sm:w-4 sm:h-4" />
+                          </button>
+
+                          {/* Delete Button */}
+                          <button
+                            onClick={() => handleDeleteUser(user)}
+                            className="p-2 sm:p-1.5 text-red-600 hover:bg-red-50 rounded-lg transition-colors min-h-[44px] sm:min-h-0 min-w-[44px] sm:min-w-0"
+                            title="Delete User"
+                          >
+                            <Trash2 className="w-5 h-5 sm:w-4 sm:h-4" />
+                          </button>
                         </div>
-                      </div>
-                    </td>
-                    <td className="py-2 px-4 text-xs text-gray-900">{user.email}</td>
-                    <td className="py-2 px-4">
-                      <span className="px-2 py-0.5 bg-primary-100 text-primary-700 rounded-full text-xs font-medium capitalize">
-                        {user.role}
-                      </span>
-                    </td>
-                    <td className="py-2 px-4">
-                      <span
-                        className={`px-2 py-0.5 rounded-full text-xs font-medium capitalize ${
-                          user.status === 'active'
-                            ? 'bg-green-100 text-green-700'
-                            : user.status === 'suspended'
-                            ? 'bg-red-100 text-red-700'
-                            : 'bg-yellow-100 text-yellow-700'
-                        }`}
-                      >
-                        {user.status}
-                      </span>
-                    </td>
-                    <td className="py-2 px-4 text-xs text-gray-600">
-                      {new Date(user.createdAt).toLocaleDateString()}
-                    </td>
-                    <td className="py-2 px-4">
-                      <div className="flex items-center gap-1">
-                        {/* Status Change Buttons */}
-                        {user.status === 'active' ? (
-                          <button
-                            onClick={() => handleStatusChange(user, 'suspended')}
-                            className="p-1.5 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-                            title="Suspend User"
-                          >
-                            <UserX className="w-4 h-4" />
-                          </button>
-                        ) : (
-                          <button
-                            onClick={() => handleStatusChange(user, 'active')}
-                            className="p-1.5 text-green-600 hover:bg-green-50 rounded-lg transition-colors"
-                            title="Activate User"
-                          >
-                            <UserCheck className="w-4 h-4" />
-                          </button>
-                        )}
-
-                        {/* Edit Button */}
-                        <button
-                          onClick={() => handleEditUser(user)}
-                          className="p-1.5 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
-                          title="Edit User"
-                        >
-                          <Edit className="w-4 h-4" />
-                        </button>
-
-                        {/* Delete Button */}
-                        <button
-                          onClick={() => handleDeleteUser(user)}
-                          className="p-1.5 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-                          title="Delete User"
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan="6" className="py-12">
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="6" className="py-12">
                     <EmptyState
                       icon={Filter}
                       title="No users found"
                       description="Try adjusting your search or filters"
                     />
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
         </div>
 
         {/* Pagination */}
         {users.length > 0 && (
-          <div className="px-6 py-4 border-t border-gray-200 flex items-center justify-between">
-            <p className="text-sm text-gray-600">
+          <div className="px-4 sm:px-6 py-4 border-t border-gray-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+            <p className="text-xs sm:text-sm text-gray-600">
               Showing {users.length} user{users.length !== 1 ? 's' : ''}
             </p>
-            <div className="flex gap-2">
-              <button className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 text-sm">
+            <div className="flex gap-2 w-full sm:w-auto">
+              <button className="flex-1 sm:flex-none px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 text-sm min-h-[44px] sm:min-h-0">
                 Previous
               </button>
-              <button className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 text-sm">
+              <button className="flex-1 sm:flex-none px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 text-sm min-h-[44px] sm:min-h-0">
                 Next
               </button>
             </div>
@@ -392,9 +396,9 @@ export default function UserManagement() {
         title="Edit User"
         size="lg"
       >
-        <div className="space-y-6">
+        <div className="space-y-4 sm:space-y-6">
           {/* Basic Information */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Name *
@@ -403,7 +407,7 @@ export default function UserManagement() {
                 type="text"
                 value={editFormData.name}
                 onChange={(e) => setEditFormData({...editFormData, name: e.target.value})}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent min-h-[44px] sm:min-h-0"
                 required
               />
             </div>
@@ -415,14 +419,14 @@ export default function UserManagement() {
                 type="email"
                 value={editFormData.email}
                 onChange={(e) => setEditFormData({...editFormData, email: e.target.value})}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent min-h-[44px] sm:min-h-0"
                 required
               />
             </div>
           </div>
 
           {/* Role and Status */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Role *
@@ -430,7 +434,7 @@ export default function UserManagement() {
               <select
                 value={editFormData.role}
                 onChange={(e) => setEditFormData({...editFormData, role: e.target.value})}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent min-h-[44px] sm:min-h-0"
               >
                 <option value="student">Student</option>
                 <option value="tutor">Tutor</option>
@@ -444,7 +448,7 @@ export default function UserManagement() {
               <select
                 value={editFormData.status}
                 onChange={(e) => setEditFormData({...editFormData, status: e.target.value})}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent min-h-[44px] sm:min-h-0"
               >
                 <option value="active">Active</option>
                 <option value="inactive">Inactive</option>
@@ -455,7 +459,7 @@ export default function UserManagement() {
           </div>
 
           {/* Contact Information */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Phone
@@ -464,7 +468,7 @@ export default function UserManagement() {
                 type="tel"
                 value={editFormData.phone}
                 onChange={(e) => setEditFormData({...editFormData, phone: e.target.value})}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent min-h-[44px] sm:min-h-0"
               />
             </div>
             {editFormData.role === 'student' && (
@@ -475,7 +479,7 @@ export default function UserManagement() {
                 <select
                   value={editFormData.grade}
                   onChange={(e) => setEditFormData({...editFormData, grade: e.target.value})}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent min-h-[44px] sm:min-h-0"
                 >
                   <option value="">Select Grade</option>
                   {Array.from({length: 12}, (_, i) => i + 1).map(grade => (
@@ -503,7 +507,7 @@ export default function UserManagement() {
           {/* Tutor-specific fields */}
           {editFormData.role === 'tutor' && (
             <>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     Experience (years)
@@ -513,7 +517,7 @@ export default function UserManagement() {
                     min="0"
                     value={editFormData.experience}
                     onChange={(e) => setEditFormData({...editFormData, experience: e.target.value})}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent min-h-[44px] sm:min-h-0"
                   />
                 </div>
                 <div>
@@ -527,7 +531,7 @@ export default function UserManagement() {
                       ...editFormData, 
                       subjects: e.target.value.split(',').map(s => s.trim()).filter(s => s)
                     })}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent min-h-[44px] sm:min-h-0"
                     placeholder="Math, Physics, Chemistry"
                   />
                 </div>
@@ -581,17 +585,17 @@ export default function UserManagement() {
           </div>
         </div>
 
-        <div className="flex justify-end gap-3 mt-6 pt-6 border-t border-gray-200">
+        <div className="flex flex-col sm:flex-row justify-end gap-3 mt-6 pt-6 border-t border-gray-200">
           <button
             onClick={handleCloseEditModal}
-            className="px-4 py-2 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
+            className="px-4 py-2 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors w-full sm:w-auto min-h-[44px] sm:min-h-0"
           >
             Cancel
           </button>
           <button
             onClick={handleSubmitEdit}
             disabled={updateUserMutation.isLoading}
-            className="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            className="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors w-full sm:w-auto min-h-[44px] sm:min-h-0"
           >
             {updateUserMutation.isLoading ? 'Saving...' : 'Save Changes'}
           </button>
