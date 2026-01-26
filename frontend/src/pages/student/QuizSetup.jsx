@@ -250,19 +250,24 @@ export default function QuizSetup() {
     <div className="min-h-screen bg-gray-50">
       <div className="w-full px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
         
-        {/* Header */}
-        <div className="mb-6 sm:mb-8">
-          <h1 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">
-            {quiz ? quiz.title : 'Quiz Setup'}
+        {/* Header with MeriTai styling */}
+        <div className="mb-6 sm:mb-8 text-center">
+          <h1 className="text-3xl sm:text-4xl font-black mb-2">
+            <span className="meritai-title-gradient">
+              {quiz ? quiz.title : '✨ Quiz Setup ✨'}
+            </span>
           </h1>
-          <p className="text-sm sm:text-base text-gray-600">
-            Configure your assessment settings before you begin
+          <p className="text-base sm:text-lg text-gray-600 font-medium">
+            Configure your awesome quiz settings before you begin! 🚀
           </p>
         </div>
 
         {error && (
-          <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
-            <p className="text-sm text-red-800">{error}</p>
+          <div className="mb-6 p-4 bg-gradient-to-r from-red-50 to-pink-50 border-2 border-red-300 rounded-2xl shadow-lg">
+            <p className="text-sm font-semibold text-red-800 flex items-center">
+              <span className="text-2xl mr-2">⚠️</span>
+              {error}
+            </p>
           </div>
         )}
 

@@ -6,6 +6,7 @@ import { sessionService } from '@/services/apiServices'
 import { useAuthStore } from '@/store/authStore'
 import LoadingSpinner from '@/components/common/LoadingSpinner'
 import ErrorMessage from '@/components/common/ErrorMessage'
+import MeritaiCard from '@/components/ui/MeritaiCard'
 
 export default function UpcomingSessions() {
   const navigate = useNavigate()
@@ -37,25 +38,28 @@ export default function UpcomingSessions() {
   if (error) return <ErrorMessage message={error.message || 'Failed to load sessions'} />
 
   return (
-    <div className="max-w-7xl mx-auto">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
       {/* Header */}
-      <div className="mb-6">
-        <h1 className="text-2xl font-bold text-gray-900 mb-2">Upcoming Sessions</h1>
-        <p className="text-gray-600">Browse and enroll in upcoming live sessions for Grade {user?.grade}</p>
-      </div>
+      <MeritaiCard className="mb-6 relative overflow-hidden">
+        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-purple-600 to-indigo-600"></div>
+        <div className="p-6">
+          <h2 className="text-xl font-bold">Upcoming Sessions</h2>
+          <p className="text-sm text-gray-500">Stay on track — your next live sessions.</p>
+        </div>
+      </MeritaiCard>
 
       {/* Filters */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 mb-6">
-        <div className="flex flex-col md:flex-row gap-4">
+      <MeritaiCard className="mb-6 relative overflow-hidden">
+        <div className="p-4 grid grid-cols-1 md:grid-cols-3 gap-4">
           {/* Search */}
           <div className="flex-1 md:flex-[2] relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
             <input
               type="text"
-              placeholder="Search sessions..."
+              placeholder="🔍 Search sessions..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="input-field pl-10 w-full"
+              className="meritai-card p-3 pl-10 w-full border-2 border-gray-200 rounded-xl focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all"
             />
           </div>
 
@@ -63,21 +67,22 @@ export default function UpcomingSessions() {
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="input-field md:w-48"
+            className="meritai-card p-3 border-2 border-gray-200 rounded-xl focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all md:w-48"
           >
-            <option value="scheduled">Scheduled</option>
-            <option value="ongoing">Live Now</option>
-            <option value="">All Sessions</option>
+            <option value="scheduled">📅 Scheduled</option>
+            <option value="ongoing">🔴 Live Now</option>
+            <option value="">📚 All Sessions</option>
           </select>
         </div>
-      </div>
+      </MeritaiCard>
 
       {/* Sessions List */}
       {filteredSessions.length === 0 ? (
-        <div className="text-center py-12 bg-white rounded-xl shadow-sm border border-gray-100">
-          <Calendar className="w-16 h-16 mx-auto mb-4 text-gray-400" />
-          <h3 className="text-xl font-semibold text-gray-900 mb-2">No sessions found</h3>
-          <p className="text-gray-600">Check back later for upcoming sessions</p>
+        <div className="genz-card text-center py-12 relative overflow-hidden">
+          <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-gray-400 to-gray-500"></div>
+          <Calendar className="w-20 h-20 mx-auto mb-4 text-gray-400 animate-bounce-slow" />
+          <h3 className="text-2xl font-bold text-gray-900 mb-2">😔 No sessions found</h3>
+          <p className="text-gray-600 text-lg">Check back later for upcoming sessions! 📚</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -114,65 +119,79 @@ function SessionCard({ session, onClick }) {
   const isFull = attendeesCount >= session.maxStudents
 
   return (
-    <div
+    <MeritaiCard
       onClick={onClick}
-      className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-lg hover:border-primary-300 transition-all cursor-pointer"
+      className="hover:scale-105 transition-all cursor-pointer relative overflow-hidden group"
     >
+      <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-purple-600 to-indigo-600"></div>
+
       {/* Status Badge */}
       <div className="flex items-center justify-between mb-4">
         {session.status === 'ongoing' ? (
-          <span className="px-2 py-1 bg-green-100 text-green-700 text-xs font-semibold rounded-full animate-pulse">
-            LIVE NOW
+          <span className="px-3 py-1 bg-gradient-to-r from-green-400 to-emerald-500 text-white text-xs font-bold rounded-full animate-pulse shadow-lg">
+            🔴 LIVE NOW
           </span>
         ) : (
-          <span className="px-2 py-1 bg-blue-100 text-blue-700 text-xs font-semibold rounded-full">
-            SCHEDULED
+          <span className="px-3 py-1 bg-gradient-to-r from-blue-400 to-cyan-500 text-white text-xs font-bold rounded-full shadow-lg">
+            📅 SCHEDULED
           </span>
         )}
         {isFull && (
-          <span className="px-2 py-1 bg-red-100 text-red-700 text-xs font-semibold rounded-full">
-            FULL
+          <span className="px-3 py-1 bg-gradient-to-r from-red-400 to-pink-500 text-white text-xs font-bold rounded-full shadow-lg">
+            ❌ FULL
           </span>
         )}
       </div>
 
       {/* Session Title */}
-      <h3 className="text-lg font-bold text-gray-900 mb-2 line-clamp-2">{session.title}</h3>
-      
+      <h3 className="text-xl font-bold text-gray-900 mb-3 line-clamp-2 group-hover:text-purple-600 transition-colors">
+        {session.title} 📚
+      </h3>
+
       {/* Course Info */}
-      <div className="flex items-center gap-2 mb-4">
-        <BookOpen className="w-4 h-4 text-gray-400" />
-        <p className="text-sm text-gray-600 line-clamp-1">{session.course?.title}</p>
+      <div className="genz-card p-3 mb-4 hover:scale-105 transition-all">
+        <div className="flex items-center gap-2">
+          <BookOpen className="w-5 h-5 text-purple-500" />
+          <p className="text-sm text-gray-700 font-medium line-clamp-1">{session.course?.title}</p>
+        </div>
       </div>
 
       {/* Session Details */}
-      <div className="space-y-2 mb-4">
-        <div className="flex items-center gap-2 text-sm text-gray-600">
-          <Calendar className="w-4 h-4 text-gray-400" />
-          <span>{dateText}</span>
+      <div className="space-y-3 mb-4">
+        <div className="flex items-center gap-3 text-sm text-gray-600">
+          <div className="w-8 h-8 bg-gradient-to-br from-indigo-400 to-indigo-500 rounded-lg flex items-center justify-center shadow-md">
+            <Calendar className="w-4 h-4 text-white" />
+          </div>
+          <span className="font-medium">{dateText}</span>
         </div>
-        <div className="flex items-center gap-2 text-sm text-gray-600">
-          <Clock className="w-4 h-4 text-gray-400" />
-          <span>{session.duration} minutes</span>
+        <div className="flex items-center gap-3 text-sm text-gray-600">
+          <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-indigo-500 rounded-lg flex items-center justify-center shadow-md">
+            <Clock className="w-4 h-4 text-white" />
+          </div>
+          <span className="font-medium">{session.duration} minutes ⏰</span>
         </div>
-        <div className="flex items-center gap-2 text-sm text-gray-600">
-          <Users className="w-4 h-4 text-gray-400" />
-          <span>{attendeesCount}/{session.maxStudents} enrolled</span>
+        <div className="flex items-center gap-3 text-sm text-gray-600">
+          <div className="w-8 h-8 bg-gradient-to-br from-green-400 to-emerald-500 rounded-lg flex items-center justify-center shadow-md">
+            <Users className="w-4 h-4 text-white" />
+          </div>
+          <span className="font-medium">{attendeesCount}/{session.maxStudents} enrolled 👥</span>
         </div>
       </div>
 
       {/* Tutor */}
-      <div className="flex items-center gap-2 pt-4 border-t border-gray-100">
-        <div className="w-8 h-8 bg-primary-100 rounded-full flex items-center justify-center">
-          <span className="text-sm font-semibold text-primary-600">
-            {session.tutor?.name?.charAt(0) || 'T'}
-          </span>
-        </div>
-        <div>
-          <p className="text-xs text-gray-500">Instructor</p>
-          <p className="text-sm font-medium text-gray-900">{session.tutor?.name}</p>
+      <div className="genz-card p-3 pt-4 border-t border-gray-200">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 bg-gradient-to-br from-orange-400 to-yellow-500 rounded-full flex items-center justify-center shadow-lg">
+            <span className="text-sm font-bold text-white">
+              {session.tutor?.name?.charAt(0) || 'T'}
+            </span>
+          </div>
+          <div>
+            <p className="text-xs text-gray-500 font-medium">👨‍🏫 Instructor</p>
+            <p className="text-sm font-bold text-gray-900">{session.tutor?.name}</p>
+          </div>
         </div>
       </div>
-    </div>
+    </MeritaiCard>
   )
 }

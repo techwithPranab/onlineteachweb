@@ -171,7 +171,9 @@ export default function QuizResults() {
 
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
-            <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900">{quiz?.title}</h1>
+            <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900">
+              <span className="meritai-title-gradient">{quiz?.title}</span>
+            </h1>
             <p className="mt-1 text-gray-600 text-sm sm:text-base">Quiz Results</p>
           </div>
 
@@ -184,20 +186,20 @@ export default function QuizResults() {
       </div>
 
       {/* Result Summary Card */}
-      <div className={`rounded-xl p-4 sm:p-6 mb-6 sm:mb-8 ${session.passed ? 'bg-green-50 border border-green-200' : 'bg-red-50 border border-red-200'}`}>
+      <div className={`genz-card rounded-xl p-4 sm:p-6 mb-6 sm:mb-8 ${session.passed ? 'bg-gradient-to-br from-green-50 to-emerald-50 border-2 border-green-300' : 'bg-gradient-to-br from-red-50 to-pink-50 border-2 border-red-300'}`}>
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
           <div className="flex flex-col sm:flex-row sm:items-center space-y-4 sm:space-y-0 sm:space-x-4 lg:space-x-6">
-            <div className={`w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 rounded-full flex items-center justify-center flex-shrink-0 ${session.passed ? 'bg-green-500' : 'bg-red-500'}`}>
+            <div className={`w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 rounded-full flex items-center justify-center flex-shrink-0 shadow-xl ${session.passed ? 'bg-gradient-to-br from-green-400 to-emerald-500 animate-bounce-slow' : 'bg-gradient-to-br from-red-400 to-pink-500'}`}>
               <span className="text-xl sm:text-2xl lg:text-3xl font-bold text-white">
                 {Math.round(session.percentage)}%
               </span>
             </div>
             <div>
               <h2 className={`text-lg sm:text-xl lg:text-2xl font-bold ${session.passed ? 'text-green-800' : 'text-red-800'}`}>
-                {session.passed ? '🎉 Congratulations! You Passed!' : '😔 Keep Trying!'}
+                {session.passed ? '🎉 Woohoo! You Crushed It!' : '� Almost There! Keep Going!'}
               </h2>
               <p className={`mt-1 text-sm sm:text-base ${session.passed ? 'text-green-600' : 'text-red-600'}`}>
-                Passing percentage: {quiz?.passingPercentage}%
+                Passing percentage: {quiz?.passingPercentage}% {session.passed ? '✨' : '🎯'}
               </p>
             </div>
           </div>

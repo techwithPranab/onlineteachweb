@@ -82,36 +82,45 @@ export default function StudentDashboard() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 space-y-6 sm:space-y-8">
-      <div>
-        <h1 className="text-xl sm:text-2xl font-bold text-gray-900">Dashboard</h1>
-        <p className="text-sm sm:text-base text-gray-600 mt-1">Track your learning progress</p>
+      {/* Welcome Header with MeriTai Style */}
+      <div className="bg-gradient-to-r from-purple-600 to-indigo-600 p-6 sm:p-8 rounded-2xl text-center text-white shadow-lg">
+        <h1 className="text-2xl sm:text-3xl font-bold text-white mb-2">
+          Welcome back, {user?.name?.split(' ')[0] || 'Student'}! 👋
+        </h1>
+        <p className="text-base sm:text-lg text-white/90 font-medium">
+          Let's make today count! Ready to learn?
+        </p>
       </div>
 
-      {/* Stats Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+      {/* Stats Cards with MeriTai styling */}
+      <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
         <StatCard
-          icon={<BookOpen className="h-8 w-8 text-blue-600" />}
-          label="Available Courses"
+          icon={<BookOpen className="h-6 w-6 sm:h-8 sm:w-8" />}
+          label="Courses"
           value={availableCoursesCount}
-          bgColor="bg-blue-50"
+          emoji="📚"
+          gradient="from-purple-500 to-purple-600"
         />
         <StatCard
-          icon={<Calendar className="h-8 w-8 text-green-600" />}
-          label="Upcoming Classes"
+          icon={<Calendar className="h-6 w-6 sm:h-8 sm:w-8" />}
+          label="Classes"
           value={upcomingClassesCount}
-          bgColor="bg-green-50"
+          emoji="📅"
+          gradient="from-indigo-500 to-indigo-600"
         />
         <StatCard
-          icon={<TrendingUp className="h-8 w-8 text-purple-600" />}
-          label="Attendance Rate"
+          icon={<TrendingUp className="h-6 w-6 sm:h-8 sm:w-8" />}
+          label="Attendance"
           value={`${attendanceRate}%`}
-          bgColor="bg-purple-50"
+          emoji="📈"
+          gradient="from-orange-500 to-orange-600"
         />
         <StatCard
-          icon={<Video className="h-8 w-8 text-orange-600" />}
-          label="Hours Learned"
+          icon={<Video className="h-6 w-6 sm:h-8 sm:w-8" />}
+          label="Hours"
           value={hoursLearned}
-          bgColor="bg-orange-50"
+          emoji="⏱️"
+          gradient="from-red-500 to-red-600"
         />
       </div>
 
@@ -180,15 +189,18 @@ export default function StudentDashboard() {
   )
 }
 
-function StatCard({ icon, label, value, bgColor }) {
+function StatCard({ icon, label, value, emoji, gradient }) {
   return (
-    <div className="card">
-      <div className="flex items-center justify-between p-4 sm:p-5">
-        <div>
-          <p className="text-gray-600 text-sm">{label}</p>
-          <p className="text-xl sm:text-2xl font-bold text-gray-900 mt-1">{value}</p>
+    <div className={`genz-card hover:scale-105 transition-transform duration-300 overflow-hidden`}>
+      <div className={`bg-gradient-to-br ${gradient} p-4 sm:p-5 text-white`}>
+        <div className="flex items-center justify-between mb-2">
+          <div className="p-2 bg-white/20 backdrop-blur-sm rounded-lg">
+            {icon}
+          </div>
+          <span className="text-3xl genz-emoji-bounce">{emoji}</span>
         </div>
-        <div className={`${bgColor} p-3 rounded-lg flex-shrink-0`}>{icon}</div>
+        <p className="text-white/90 text-xs sm:text-sm font-medium">{label}</p>
+        <p className="text-2xl sm:text-3xl font-black mt-1">{value}</p>
       </div>
     </div>
   )

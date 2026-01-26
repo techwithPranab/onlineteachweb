@@ -7,6 +7,7 @@ import { useAuthStore } from '@/store/authStore'
 import LoadingSpinner from '@/components/common/LoadingSpinner'
 import ErrorMessage from '@/components/common/ErrorMessage'
 import EmptyState from '@/components/common/EmptyState'
+import MeritaiButton from '@/components/ui/MeritaiButton'
 
 export default function CourseListing() {
   const navigate = useNavigate()
@@ -49,35 +50,39 @@ export default function CourseListing() {
   const hasActiveFilters = searchQuery || selectedGrade || selectedSubject
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div className="mb-6 sm:mb-8">
-        <h1 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">Browse Courses</h1>
-        <p className="text-gray-600 text-sm sm:text-base">Find the perfect course to enhance your learning journey</p>
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      {/* Gen-Z Header */}
+      <div className="mb-8 text-center">
+        <h1 className="text-3xl sm:text-4xl font-black mb-3">
+          <span className="genz-gradient-text-rainbow">
+            📚 Explore Courses
+          </span>
+        </h1>
+        <p className="text-lg text-gray-600 font-medium">
+          Find awesome courses to level up your skills! 🚀
+        </p>
       </div>
 
-      {/* Search and Filters */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 sm:p-6 mb-6 sm:mb-8">
+      {/* Search and Filters with Gen-Z styling */}
+      <div className="genz-card-glass p-4 sm:p-6 mb-6 sm:mb-8 border-2 border-purple-200">
         <div className="flex flex-col sm:flex-row gap-4">
           {/* Search */}
           <div className="flex-1 relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-purple-400" />
             <input
               type="text"
-              placeholder="Search courses..."
+              placeholder="Search for amazing courses... 🔍"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="input-field pl-10 w-full min-h-[44px] text-sm sm:text-base"
+              className="genz-input pl-10 w-full min-h-[44px] text-sm sm:text-base"
             />
           </div>
 
           {/* Filter Toggle Button */}
-          <button
-            onClick={() => setShowFilters(!showFilters)}
-            className="btn-primary flex items-center justify-center gap-2 whitespace-nowrap min-h-[44px] px-4"
-          >
+          <MeritaiButton onClick={() => setShowFilters(!showFilters)} className="flex items-center justify-center gap-2 whitespace-nowrap min-h-[44px] px-6">
             <Filter className="w-4 h-4" />
-            Filters
-          </button>
+            Filters ✨
+          </MeritaiButton>
         </div>
 
         {/* Expandable Filters */}
@@ -154,18 +159,26 @@ export default function CourseListing() {
             <div
               key={course._id}
               onClick={() => navigate(`/student/courses/${course._id}`)}
-              className="card hover:shadow-lg transition-shadow cursor-pointer"
+              className="genz-card hover:scale-105 transition-all duration-300 cursor-pointer overflow-hidden"
             >
+              {/* Gradient Top Bar */}
+              <div className="h-2 bg-gradient-to-r from-purple-500 to-indigo-500"></div>
+              
               {/* Course Header */}
               <div className="p-4 sm:p-6">
                 <div className="flex items-start justify-between mb-3 gap-2">
                   <div className="flex-1 min-w-0">
-                    <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-1 line-clamp-2">
+                    <h3 className="text-base sm:text-lg font-bold text-gray-900 mb-1 line-clamp-2">
                       {course.title}
                     </h3>
-                    <p className="text-xs sm:text-sm text-gray-500">
-                      Grade {course.grade} • {course.subject}
-                    </p>
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <span className="genz-badge genz-badge-purple text-xs">
+                        Grade {course.grade}
+                      </span>
+                      <span className="genz-badge genz-badge-blue text-xs">
+                        {course.subject}
+                      </span>
+                    </div>
                   </div>
                 </div>
 
@@ -173,32 +186,34 @@ export default function CourseListing() {
                   {course.description}
                 </p>
 
-                {/* Course Stats */}
-                <div className="flex items-center gap-3 sm:gap-4 text-xs sm:text-sm text-gray-600 mb-4">
-                  <div className="flex items-center gap-1">
-                    <Star className="w-3 h-3 sm:w-4 sm:h-4 text-yellow-400 fill-current" />
-                    <span>{course.averageRating?.toFixed(1) || 'N/A'}</span>
+                {/* Course Stats with Gen-Z styling */}
+                <div className="flex items-center gap-3 sm:gap-4 text-xs sm:text-sm mb-4">
+                  <div className="flex items-center gap-1 text-yellow-600">
+                    <Star className="w-3 h-3 sm:w-4 sm:h-4 fill-current" />
+                    <span className="font-semibold">{course.averageRating?.toFixed(1) || 'N/A'}</span>
                   </div>
-                  <div className="flex items-center gap-1">
-                    <BookOpen className="w-3 h-3 sm:w-4 sm:h-4 text-blue-500" />
-                    <span>{course.questionCount || 0} questions</span>
+                  <div className="flex items-center gap-1 text-blue-600">
+                    <BookOpen className="w-3 h-3 sm:w-4 sm:h-4" />
+                    <span className="font-semibold">{course.questionCount || 0}</span>
                   </div>
-                  <div className="text-gray-500">
-                    {course.level && <span className="capitalize">{course.level}</span>}
-                  </div>
+                  {course.level && (
+                    <span className="genz-badge genz-badge-green text-xs capitalize">
+                      {course.level}
+                    </span>
+                  )}
                 </div>
 
-                {/* Action Button */}
+                {/* Action Button with Gen-Z styling */}
                 <div className="pt-3 sm:pt-4 border-t border-gray-200">
-                  <button
+                  <MeritaiButton
                     onClick={(e) => {
                       e.stopPropagation()
                       navigate(`/student/courses/${course._id}`)
                     }}
-                    className="btn-primary text-xs sm:text-sm w-full min-h-[36px] sm:min-h-[40px]"
+                    className="text-xs sm:text-sm w-full min-h-[36px] sm:min-h-[40px]"
                   >
-                    View Details
-                  </button>
+                    View Details 🚀
+                  </MeritaiButton>
                 </div>
               </div>
             </div>

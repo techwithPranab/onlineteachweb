@@ -7,6 +7,7 @@ import FilterBar from '@/components/quiz/FilterBar'
 import StatusBadge from '@/components/quiz/StatusBadge'
 import LoadingSpinner from '@/components/common/LoadingSpinner'
 import ErrorMessage from '@/components/common/ErrorMessage'
+import MeritaiButton from '@/components/ui/MeritaiButton'
 import { 
   Calendar, 
   Clock, 
@@ -359,13 +360,13 @@ export default function QuizHistory() {
       header: 'Actions',
       width: '15%',
       render: (entry, _, onAction) => (
-        <button
+        <MeritaiButton
           onClick={() => onAction('view', entry)}
-          className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg text-sm font-medium bg-indigo-100 text-indigo-800 hover:bg-indigo-200 transition-colors"
+          className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg text-sm font-medium transition-all hover:scale-105"
         >
           <Eye className="w-4 h-4" />
-          View Details
-        </button>
+          View Details 👀
+        </MeritaiButton>
       )
     }
   ]
@@ -385,12 +386,12 @@ export default function QuizHistory() {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
       {/* Header */}
-      <div className="mb-6">
-        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
-          Quiz History
+      <div className="mb-6 text-center">
+        <h1 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent mb-3 animate-shimmer">
+          📊 Quiz History
         </h1>
-        <p className="text-gray-600">
-          Track your performance and progress over time
+        <p className="text-gray-600 text-lg">
+          Track your performance and level up! 🚀
         </p>
       </div>
 
@@ -450,10 +451,10 @@ export default function QuizHistory() {
         onRowAction={handleRowAction}
         loading={loading}
         emptyState={{
-          title: 'No Quiz History',
-          description: 'Complete quizzes to see your history here',
+          title: '📭 No Quiz History Yet',
+          description: 'Complete quizzes to track your progress and see your awesome stats! 🚀',
           action: {
-            label: 'Create Quiz',
+            label: 'Start Your First Quiz ✨',
             onClick: () => navigate('/student/quiz-setup')
           }
         }}
@@ -468,23 +469,33 @@ export default function QuizHistory() {
  * Statistic Card Component
  */
 function StatCard({ icon, label, value, color = 'blue' }) {
-  const colorClasses = {
-    blue: 'bg-blue-100 text-blue-600',
-    green: 'bg-green-100 text-green-600',
-    purple: 'bg-purple-100 text-purple-600',
-    yellow: 'bg-yellow-100 text-yellow-600',
-    indigo: 'bg-indigo-100 text-indigo-600',
-    gray: 'bg-gray-100 text-gray-600',
-    red: 'bg-red-100 text-red-600'
+  const gradientClasses = {
+    blue: 'bg-gradient-to-br from-blue-400 to-cyan-500',
+    green: 'bg-gradient-to-br from-green-400 to-emerald-500',
+    purple: 'bg-gradient-to-br from-purple-500 to-indigo-500',
+    yellow: 'bg-gradient-to-br from-yellow-400 to-orange-500',
+    indigo: 'bg-gradient-to-br from-indigo-400 to-purple-500',
+    gray: 'bg-gradient-to-br from-gray-400 to-slate-500',
+    red: 'bg-gradient-to-br from-red-400 to-pink-500'
+  }
+
+  const emojiMap = {
+    blue: '📊',
+    green: '✅',
+    purple: '🎯',
+    yellow: '⭐',
+    indigo: '🏆',
+    gray: '⏱️',
+    red: '❌'
   }
 
   return (
-    <div className="bg-white rounded-lg border border-gray-200 p-4">
-      <div className={`inline-flex items-center justify-center w-10 h-10 rounded-lg mb-2 ${colorClasses[color]}`}>
-        {icon}
+    <div className="genz-card group hover:scale-105 transition-all duration-300">
+      <div className={`inline-flex items-center justify-center w-12 h-12 rounded-xl mb-3 ${gradientClasses[color]} text-white shadow-lg group-hover:shadow-xl transition-shadow`}>
+        <span className="text-xl animate-bounce-slow">{emojiMap[color]}</span>
       </div>
-      <div className="text-2xl font-bold text-gray-900 mb-1">{value}</div>
-      <div className="text-sm text-gray-600">{label}</div>
+      <div className="text-3xl font-bold text-gray-900 mb-1">{value}</div>
+      <div className="text-sm text-gray-600 font-medium">{label}</div>
     </div>
   )
 }

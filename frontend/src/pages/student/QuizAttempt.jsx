@@ -6,6 +6,7 @@ import { useAuthStore } from '@/store/authStore'
 import LoadingSpinner from '../../components/common/LoadingSpinner'
 import ConfirmDialog from '../../components/common/ConfirmDialog'
 import { QuizTimer, QuizProgressBar, QuestionCard } from '../../components/quiz'
+import MeritaiCard from '../../components/ui/MeritaiCard'
 
 export default function QuizAttempt() {
   const { quizId } = useParams()
@@ -390,25 +391,27 @@ export default function QuizAttempt() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header with Timer */}
-      <div className="bg-white shadow-sm border-b sticky top-0 z-10">
+      <MeritaiCard className="border-b sticky top-0 z-10 shadow-md">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-4">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
             <div>
-              <h1 className="text-lg sm:text-xl font-semibold text-gray-900">Quiz in Progress</h1>
-              <p className="text-sm text-gray-500">{session.questions?.length} Questions</p>
+              <h1 className="text-lg sm:text-xl font-bold bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent animate-shimmer">
+                🎯 Quiz in Progress
+              </h1>
+              <p className="text-sm text-gray-600 font-medium">{session.questions?.length} Questions • Good luck! 🚀</p>
             </div>
 
             <div className="flex items-center justify-between sm:justify-end space-x-3 sm:space-x-6">
               {/* Auto-save Status */}
-              <div className="flex items-center text-sm">
+              <div className="flex items-center text-sm font-medium">
                 {autoSaveStatus === 'saving' && (
-                  <span className="text-yellow-600">Saving...</span>
+                  <span className="text-yellow-600 animate-pulse">💾 Saving...</span>
                 )}
                 {autoSaveStatus === 'saved' && (
-                  <span className="text-green-600">✓ Saved</span>
+                  <span className="text-green-600">✅ Saved</span>
                 )}
                 {autoSaveStatus === 'error' && (
-                  <span className="text-red-600">⚠ Save failed</span>
+                  <span className="text-red-600">⚠️ Save failed</span>
                 )}
               </div>
 
@@ -423,7 +426,7 @@ export default function QuizAttempt() {
               {/* Question Navigator Toggle */}
               <button
                 onClick={() => setShowNavigator(!showNavigator)}
-                className="p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg min-h-[44px] min-w-[44px] flex items-center justify-center"
+                className="genz-btn-secondary p-2 rounded-lg min-h-[44px] min-w-[44px] flex items-center justify-center hover:scale-105 transition-all"
               >
                 <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 10h16M4 14h16M4 18h16" />
@@ -432,7 +435,7 @@ export default function QuizAttempt() {
             </div>
           </div>
         </div>
-      </div>
+      </MeritaiCard>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
         {/* Progress Bar */}

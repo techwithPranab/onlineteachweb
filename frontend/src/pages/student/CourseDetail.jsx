@@ -56,21 +56,24 @@ export default function CourseDetail() {
       {/* Back Button */}
       <button
         onClick={() => navigate('/student/courses')}
-        className="flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-4 sm:mb-6 min-h-[44px] px-2 py-1"
+        className="genz-btn-secondary inline-flex items-center gap-2 mb-4 sm:mb-6 min-h-[44px] px-4 py-2 rounded-lg transition-all hover:scale-105"
       >
         <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5" />
-        Back to Courses
+        Back to Courses 📚
       </button>
 
       {/* Course Header */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 sm:p-6 lg:p-8 mb-4 sm:mb-6">
-        <div className="flex flex-col xl:flex-row gap-4 sm:gap-6">
+      <div className="genz-card mb-4 sm:mb-6 relative overflow-hidden">
+        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-purple-500 to-indigo-500"></div>
+        <div className="flex flex-col xl:flex-row gap-4 sm:gap-6 p-4 sm:p-6 lg:p-8">
           <div className="flex-1 min-w-0">
             <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between mb-4 gap-2">
               <div className="min-w-0 flex-1">
-                <h1 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2 break-words">{course.title}</h1>
+                <h1 className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent mb-2 break-words animate-shimmer">
+                  {course.title} ✨
+                </h1>
                 <p className="text-gray-600 text-sm sm:text-base">
-                  Grade {course.grade} • {course.subject}
+                  Grade {course.grade} • {course.subject} • {course.level || 'Intermediate'} Level 🎯
                 </p>
               </div>
             </div>
@@ -80,21 +83,21 @@ export default function CourseDetail() {
             {/* Stats */}
             <div className="grid grid-cols-1 sm:grid-cols-4 gap-3 sm:gap-4 lg:gap-6">
               <div className="flex items-center gap-2 text-gray-600">
-                <Star className="w-4 h-4 sm:w-5 sm:h-5 text-yellow-400 fill-current flex-shrink-0" />
-                <span className="font-medium text-sm sm:text-base">{course.averageRating?.toFixed(1) || 'N/A'}</span>
+                <Star className="w-4 h-4 sm:w-5 sm:h-5 text-yellow-400 fill-current flex-shrink-0 animate-pulse" />
+                <span className="font-bold text-sm sm:text-base text-purple-600">{course.averageRating?.toFixed(1) || 'N/A'}</span>
                 <span className="text-xs sm:text-sm">({course.reviews?.length || 0} reviews)</span>
               </div>
               <div className="flex items-center gap-2 text-gray-600">
-                <Clock className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" />
-                <span className="text-sm sm:text-base">{course.duration || '12'} weeks duration</span>
+                <Clock className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0 text-blue-500" />
+                <span className="text-sm sm:text-base font-medium">{course.duration || '12'} weeks duration ⏰</span>
               </div>
               <div className="flex items-center gap-2 text-gray-600">
-                <BookOpen className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" />
-                <span className="text-sm sm:text-base">{course.questionCount || 0} questions available</span>
+                <BookOpen className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0 text-green-500" />
+                <span className="text-sm sm:text-base font-medium">{course.questionCount || 0} questions available 📝</span>
               </div>
               <div className="flex items-center gap-2 text-gray-600">
-                <FileText className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" />
-                <span className="capitalize text-sm sm:text-base">{course.level || 'Intermediate'} level</span>
+                <FileText className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0 text-pink-500" />
+                <span className="capitalize text-sm sm:text-base font-medium">{course.level || 'Intermediate'} level 🚀</span>
               </div>
             </div>
           </div>
@@ -103,20 +106,20 @@ export default function CourseDetail() {
       </div>
 
       {/* Tabs */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 mb-6">
+      <div className="genz-card mb-6">
         <div className="border-b border-gray-200">
           <nav className="flex overflow-x-auto scrollbar-hide px-2 sm:px-4 lg:px-6">
             {tabs.map((tab) => (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`flex items-center gap-1 sm:gap-2 px-2 sm:px-3 lg:px-4 py-3 border-b-2 transition-colors whitespace-nowrap min-h-[44px] text-sm sm:text-base flex-shrink-0 ${
+                className={`flex items-center gap-1 sm:gap-2 px-2 sm:px-3 lg:px-4 py-3 border-b-2 transition-all whitespace-nowrap min-h-[44px] text-sm sm:text-base flex-shrink-0 hover:scale-105 ${
                   activeTab === tab.id
-                    ? 'border-primary-600 text-primary-600'
-                    : 'border-transparent text-gray-600 hover:text-gray-900'
+                    ? 'border-purple-500 text-purple-600 bg-gradient-to-r from-purple-50 to-indigo-50'
+                    : 'border-transparent text-gray-600 hover:text-purple-600 hover:bg-purple-50'
                 }`}
               >
-                <tab.icon className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" />
+                <tab.icon className={`w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0 ${activeTab === tab.id ? 'animate-bounce-slow' : ''}`} />
                 <span className="hidden xs:inline sm:inline">{tab.label}</span>
                 <span className="xs:hidden sm:hidden">{tab.label.slice(0, 4)}{tab.label.length > 4 ? '...' : ''}</span>
               </button>
@@ -128,23 +131,33 @@ export default function CourseDetail() {
           {activeTab === 'overview' && (
             <div className="space-y-6 sm:space-y-8">
               <div>
-                <h3 className="text-base sm:text-lg lg:text-xl font-semibold mb-3 sm:mb-4 text-gray-900">What you'll learn</h3>
+                <h3 className="text-base sm:text-lg lg:text-xl font-semibold mb-3 sm:mb-4 text-gray-900 flex items-center gap-2">
+                  🎯 What you'll learn
+                </h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-                  <div className="flex items-start gap-3">
-                    <CheckCircle className="w-5 h-5 sm:w-6 sm:h-6 text-green-500 flex-shrink-0 mt-0.5" />
-                    <span className="text-gray-700 text-sm sm:text-base leading-relaxed">Master core concepts and fundamentals</span>
+                  <div className="genz-card p-4 hover:scale-105 transition-all">
+                    <div className="flex items-start gap-3">
+                      <CheckCircle className="w-5 h-5 sm:w-6 sm:h-6 text-green-500 flex-shrink-0 mt-0.5 animate-pulse" />
+                      <span className="text-gray-700 text-sm sm:text-base leading-relaxed">Master core concepts and fundamentals 💡</span>
+                    </div>
                   </div>
-                  <div className="flex items-start gap-3">
-                    <CheckCircle className="w-5 h-5 sm:w-6 sm:h-6 text-green-500 flex-shrink-0 mt-0.5" />
-                    <span className="text-gray-700 text-sm sm:text-base leading-relaxed">Apply knowledge through practical exercises</span>
+                  <div className="genz-card p-4 hover:scale-105 transition-all">
+                    <div className="flex items-start gap-3">
+                      <CheckCircle className="w-5 h-5 sm:w-6 sm:h-6 text-green-500 flex-shrink-0 mt-0.5 animate-pulse" />
+                      <span className="text-gray-700 text-sm sm:text-base leading-relaxed">Apply knowledge through practical exercises 🛠️</span>
+                    </div>
                   </div>
-                  <div className="flex items-start gap-3">
-                    <CheckCircle className="w-5 h-5 sm:w-6 sm:h-6 text-green-500 flex-shrink-0 mt-0.5" />
-                    <span className="text-gray-700 text-sm sm:text-base leading-relaxed">Prepare for exams and assessments</span>
+                  <div className="genz-card p-4 hover:scale-105 transition-all">
+                    <div className="flex items-start gap-3">
+                      <CheckCircle className="w-5 h-5 sm:w-6 sm:h-6 text-green-500 flex-shrink-0 mt-0.5 animate-pulse" />
+                      <span className="text-gray-700 text-sm sm:text-base leading-relaxed">Prepare for exams and assessments 📝</span>
+                    </div>
                   </div>
-                  <div className="flex items-start gap-3">
-                    <CheckCircle className="w-5 h-5 sm:w-6 sm:h-6 text-green-500 flex-shrink-0 mt-0.5" />
-                    <span className="text-gray-700 text-sm sm:text-base leading-relaxed">Develop critical thinking skills</span>
+                  <div className="genz-card p-4 hover:scale-105 transition-all">
+                    <div className="flex items-start gap-3">
+                      <CheckCircle className="w-5 h-5 sm:w-6 sm:h-6 text-green-500 flex-shrink-0 mt-0.5 animate-pulse" />
+                      <span className="text-gray-700 text-sm sm:text-base leading-relaxed">Develop critical thinking skills 🧠</span>
+                    </div>
                   </div>
                 </div>
               </div>

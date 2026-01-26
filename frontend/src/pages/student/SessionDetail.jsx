@@ -8,6 +8,8 @@ import { sessionService, materialService } from '@/services/apiServices'
 import { useAuthStore } from '@/store/authStore'
 import LoadingSpinner from '@/components/common/LoadingSpinner'
 import ErrorMessage from '@/components/common/ErrorMessage'
+import MeritaiCard from '@/components/ui/MeritaiCard'
+import MeritaiButton from '@/components/ui/MeritaiButton'
 
 export default function SessionDetail() {
   const { id } = useParams()
@@ -82,90 +84,99 @@ export default function SessionDetail() {
   }
 
   return (
-    <div className="max-w-5xl mx-auto">
+    <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
       {/* Back Button */}
       <button
         onClick={() => navigate(-1)}
-        className="flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-4 transition"
+        className="genz-btn-secondary inline-flex items-center gap-2 mb-6 hover:scale-105 transition-all"
       >
         <ArrowLeft className="w-5 h-5" />
-        <span>Back</span>
+        Back to Sessions ↩️
       </button>
 
       {/* Header */}
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-6">
-        <div className="flex items-start justify-between mb-4">
+      <div className="genz-card mb-6 relative overflow-hidden">
+        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-purple-600 to-indigo-600"></div>
+        <div className="flex items-start justify-between mb-4 p-6">
           <div className="flex-1">
             <div className="flex items-center gap-3 mb-2">
-              <h1 className="text-2xl font-bold text-gray-900">{session.title}</h1>
+              <h1 className="text-3xl font-bold bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent animate-shimmer">
+                {session.title} 📅
+              </h1>
               {getStatusBadge()}
             </div>
-            <p className="text-gray-600">{session.description}</p>
+            <p className="text-gray-600 text-lg">{session.description}</p>
           </div>
         </div>
 
         {/* Session Meta Info */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-6">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-              <Calendar className="w-5 h-5 text-blue-600" />
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 px-6 pb-6">
+          <MeritaiCard className="p-4 hover:scale-105 transition-all">
+            <div className="flex items-center gap-3">
+              <div className="w-12 h-12 bg-gradient-to-br from-indigo-400 to-indigo-500 rounded-xl flex items-center justify-center shadow-md">
+                <Calendar className="w-6 h-6 text-white" />
+              </div>
+              <div>
+                <p className="text-sm text-gray-500 font-medium">📅 Date</p>
+                <p className="font-bold text-gray-900">{formatDate(scheduledDate)}</p>
+              </div>
             </div>
-            <div>
-              <p className="text-sm text-gray-500">Date</p>
-              <p className="font-semibold text-gray-900">{formatDate(scheduledDate)}</p>
-            </div>
-          </div>
+          </MeritaiCard>
 
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
-              <Clock className="w-5 h-5 text-purple-600" />
+          <MeritaiCard className="p-4 hover:scale-105 transition-all">
+            <div className="flex items-center gap-3">
+              <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-indigo-500 rounded-xl flex items-center justify-center shadow-md">
+                <Clock className="w-6 h-6 text-white" />
+              </div>
+              <div>
+                <p className="text-sm text-gray-500 font-medium">⏰ Time</p>
+                <p className="font-bold text-gray-900">{formatTime(scheduledDate)}</p>
+              </div>
             </div>
-            <div>
-              <p className="text-sm text-gray-500">Time</p>
-              <p className="font-semibold text-gray-900">{formatTime(scheduledDate)}</p>
-            </div>
-          </div>
+          </MeritaiCard>
 
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
-              <Video className="w-5 h-5 text-green-600" />
+          <MeritaiCard className="p-4 hover:scale-105 transition-all">
+            <div className="flex items-center gap-3">
+              <div className="w-12 h-12 bg-gradient-to-br from-green-400 to-emerald-500 rounded-xl flex items-center justify-center shadow-md">
+                <Video className="w-6 h-6 text-white" />
+              </div>
+              <div>
+                <p className="text-sm text-gray-500 font-medium">🎥 Duration</p>
+                <p className="font-bold text-gray-900">{session.duration} min</p>
+              </div>
             </div>
-            <div>
-              <p className="text-sm text-gray-500">Duration</p>
-              <p className="font-semibold text-gray-900">{session.duration} min</p>
-            </div>
-          </div>
+          </MeritaiCard>
 
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-orange-100 rounded-lg flex items-center justify-center">
-              <Users className="w-5 h-5 text-orange-600" />
+          <MeritaiCard className="p-4 hover:scale-105 transition-all">
+            <div className="flex items-center gap-3">
+              <div className="w-12 h-12 bg-gradient-to-br from-orange-400 to-yellow-500 rounded-xl flex items-center justify-center shadow-md">
+                <Users className="w-6 h-6 text-white" />
+              </div>
+              <div>
+                <p className="text-sm text-gray-500 font-medium">👥 Enrolled</p>
+                <p className="font-bold text-gray-900">{attendees.length}/{session.maxStudents}</p>
+              </div>
             </div>
-            <div>
-              <p className="text-sm text-gray-500">Enrolled</p>
-              <p className="font-semibold text-gray-900">{attendees.length}/{session.maxStudents}</p>
-            </div>
-          </div>
+          </MeritaiCard>
         </div>
 
         {/* Enrollment Action */}
         {!isPast && session.status === 'scheduled' && (
-          <div className="mt-6 pt-6 border-t border-gray-200">
+          <div className="mt-6 pt-6 border-t border-gray-200 px-6 pb-6">
             {isEnrolled ? (
-              <div className="flex items-center gap-2 text-green-600">
-                <CheckCircle className="w-5 h-5" />
-                <span className="font-semibold">You are enrolled in this session</span>
+              <div className="flex items-center gap-2 text-green-600 bg-green-50 p-4 rounded-lg">
+                <CheckCircle className="w-6 h-6 animate-bounce-slow" />
+                <span className="font-bold text-lg">✅ You are enrolled in this session!</span>
               </div>
             ) : (
-              <button
+              <MeritaiButton
                 onClick={() => enrollMutation.mutate()}
                 disabled={isFull || enrollMutation.isLoading}
-                className={`btn-primary flex items-center gap-2 ${
-                  isFull ? 'opacity-50 cursor-not-allowed' : ''
-                }`}
+                className={`${isFull ? 'opacity-50 cursor-not-allowed' : ''} flex items-center gap-2 text-lg`}
               >
-                <UserPlus className="w-4 h-4" />
-                {isFull ? 'Session Full' : 'Enroll in Session'}
-              </button>
+                <UserPlus className="w-5 h-5" />
+                {isFull ? '❌ Session Full' : '🚀 Enroll in Session'}
+              </MeritaiButton>
             )}
           </div>
         )}
@@ -174,76 +185,94 @@ export default function SessionDetail() {
       {/* Main Content */}
       <div className="space-y-6">
           {/* Course Info */}
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-            <h2 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
-              <BookOpen className="w-5 h-5 text-primary-600" />
-              Course Information
-            </h2>
-            <div className="space-y-3">
-              <div>
-                <p className="text-sm text-gray-500">Course Title</p>
-                <p className="font-semibold text-gray-900">{session.course?.title}</p>
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <p className="text-sm text-gray-500">Grade</p>
-                  <p className="font-semibold text-gray-900">Grade {session.course?.grade}</p>
+          <div className="genz-card relative overflow-hidden">
+            <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-500"></div>
+            <div className="p-6">
+              <h2 className="text-xl font-bold bg-gradient-to-r from-cyan-600 to-blue-600 bg-clip-text text-transparent mb-4 flex items-center gap-2">
+                <BookOpen className="w-6 h-6 text-cyan-500" />
+                📚 Course Information
+              </h2>
+              <div className="space-y-4">
+                <div className="genz-card p-4 hover:scale-105 transition-all">
+                  <p className="text-sm text-gray-500 font-medium mb-1">📖 Course Title</p>
+                  <p className="font-bold text-gray-900 text-lg">{session.course?.title}</p>
                 </div>
-                <div>
-                  <p className="text-sm text-gray-500">Subject</p>
-                  <p className="font-semibold text-gray-900">{session.course?.subject}</p>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="genz-card p-4 hover:scale-105 transition-all">
+                    <p className="text-sm text-gray-500 font-medium mb-1">🎓 Grade</p>
+                    <p className="font-bold text-gray-900 text-lg">Grade {session.course?.grade}</p>
+                  </div>
+                  <div className="genz-card p-4 hover:scale-105 transition-all">
+                    <p className="text-sm text-gray-500 font-medium mb-1">📚 Subject</p>
+                    <p className="font-bold text-gray-900 text-lg">{session.course?.subject}</p>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
 
           {/* Tutor Info */}
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-            <h2 className="text-lg font-bold text-gray-900 mb-4">Instructor</h2>
-            <div className="flex items-center gap-4">
-              <div className="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center">
-                {session.tutor?.avatar ? (
-                  <img src={session.tutor.avatar} alt={session.tutor.name} className="w-16 h-16 rounded-full" />
-                ) : (
-                  <span className="text-2xl font-bold text-primary-600">
-                    {session.tutor?.name?.charAt(0) || 'T'}
-                  </span>
-                )}
-              </div>
-              <div>
-                <h3 className="font-bold text-gray-900">{session.tutor?.name}</h3>
-                {session.tutor?.bio && (
-                  <p className="text-sm text-gray-600 mt-1">{session.tutor.bio}</p>
-                )}
+          <div className="genz-card relative overflow-hidden">
+            <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500"></div>
+            <div className="p-6">
+              <h2 className="text-xl font-bold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent mb-4 flex items-center gap-2">
+                👨‍🏫 Instructor
+              </h2>
+              <div className="flex items-center gap-4">
+                <div className="w-20 h-20 bg-gradient-to-br from-pink-400 to-purple-500 rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-all">
+                  {session.tutor?.avatar ? (
+                    <img src={session.tutor.avatar} alt={session.tutor.name} className="w-20 h-20 rounded-full border-4 border-white shadow-lg" />
+                  ) : (
+                    <span className="text-3xl font-bold text-white">
+                      {session.tutor?.name?.charAt(0) || 'T'}
+                    </span>
+                  )}
+                </div>
+                <div className="flex-1">
+                  <h3 className="font-bold text-gray-900 text-xl mb-2">{session.tutor?.name}</h3>
+                  {session.tutor?.bio && (
+                    <p className="text-gray-600 bg-gray-50 p-3 rounded-lg border-l-4 border-pink-500">{session.tutor.bio}</p>
+                  )}
+                </div>
               </div>
             </div>
           </div>
 
           {/* Materials */}
           {materials.length > 0 && (
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-              <h2 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
-                <FileText className="w-5 h-5 text-primary-600" />
-                Course Materials
-              </h2>
-              <div className="space-y-3">
-                {materials.map((material) => (
-                  <a
-                    key={material._id}
-                    href={material.fileUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center justify-between p-3 border border-gray-200 rounded-lg hover:border-primary-600 hover:bg-primary-50 transition"
-                  >
-                    <div className="flex items-center gap-3">
-                      <FileText className="w-5 h-5 text-gray-400" />
-                      <div>
-                        <p className="font-medium text-gray-900">{material.title}</p>
-                        <p className="text-xs text-gray-500 uppercase">{material.type}</p>
+            <div className="genz-card relative overflow-hidden">
+              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-green-500 via-emerald-500 to-teal-500"></div>
+              <div className="p-6">
+                <h2 className="text-xl font-bold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent mb-4 flex items-center gap-2">
+                  <FileText className="w-6 h-6 text-green-500" />
+                  📄 Course Materials
+                </h2>
+                <div className="space-y-3">
+                  {materials.map((material) => (
+                    <a
+                      key={material._id}
+                      href={material.fileUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="genz-card p-4 hover:scale-105 transition-all flex items-center justify-between group"
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className="w-12 h-12 bg-gradient-to-br from-green-400 to-emerald-500 rounded-xl flex items-center justify-center shadow-lg group-hover:animate-bounce">
+                          <FileText className="w-6 h-6 text-white" />
+                        </div>
+                        <div>
+                          <p className="font-bold text-gray-900 text-lg">{material.title}</p>
+                          <p className="text-sm text-gray-500 uppercase font-medium bg-gray-100 px-2 py-1 rounded-full inline-block">
+                            {material.type} 📎
+                          </p>
+                        </div>
                       </div>
-                    </div>
-                  </a>
-                ))}
+                      <div className="text-purple-500 group-hover:text-pink-500 transition-colors">
+                        <ExternalLink className="w-5 h-5" />
+                      </div>
+                    </a>
+                  ))}
+                </div>
               </div>
             </div>
           )}

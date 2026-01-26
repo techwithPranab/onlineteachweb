@@ -222,7 +222,7 @@ export default function QuizHistory() {
         
         {/* Header */}
         <div className="mb-6 sm:mb-8">
-          <h1 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">Quiz History</h1>
+          <h1 className="text-xl sm:text-2xl font-bold mb-2"><span className="meritai-title-gradient">Quiz History</span></h1>
           <p className="text-sm sm:text-base text-gray-600">
             Track your progress and review past attempts
           </p>

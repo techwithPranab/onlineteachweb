@@ -8,6 +8,7 @@ import LoadingSpinner from '@/components/common/LoadingSpinner'
 import ErrorMessage from '@/components/common/ErrorMessage'
 import { algorithmQuizService } from '@/services/apiServices'
 import { Play, RotateCcw, Clock, Target, BookOpen, Trash2, AlertCircle } from 'lucide-react'
+import MeritaiCard from '@/components/ui/MeritaiCard'
 
 /**
  * Active Quiz Management Page
@@ -357,29 +358,31 @@ export default function ActiveQuizzes() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
-      {/* Header */}
-      <div className="mb-6">
-        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
-          Active Quizzes
+      {/* Header with MeriTai styling */}
+      <div className="mb-8 text-center">
+        <h1 className="text-3xl sm:text-4xl font-black mb-3">
+          <span className="meritai-title-gradient">
+            🎯 Active Quizzes
+          </span>
         </h1>
-        <p className="text-gray-600">
-          Manage your created quizzes. Start when you're ready!
+        <p className="text-lg text-gray-600 font-medium">
+          Let's ace those quizzes! 🚀 Start when you're ready!
         </p>
       </div>
 
       {/* Info Alert */}
       {quizzes.some(q => q.status === 'IN_PROGRESS') && (
-        <div className="mb-6 bg-yellow-50 border border-yellow-200 rounded-lg p-4 flex items-start gap-3">
-          <AlertCircle className="w-5 h-5 text-yellow-600 flex-shrink-0 mt-0.5" />
+        <MeritaiCard className="mb-6 bg-orange-50 border-2 border-orange-200 rounded-2xl p-5 flex items-start gap-3 shadow-md">
+          <AlertCircle className="w-6 h-6 flex-shrink-0 mt-0.5 animate-pulse text-orange-500" />
           <div>
-            <h3 className="text-sm font-medium text-yellow-800 mb-1">
-              Quiz in Progress
+            <h3 className="text-base font-bold mb-1 flex items-center">
+              ⚡ Quiz in Progress
             </h3>
-            <p className="text-sm text-yellow-700">
-              You have a quiz in progress. Only one quiz can be active at a time.
+            <p className="text-sm opacity-90">
+              You have a quiz in progress. Finish it to unlock more quizzes! 💪
             </p>
           </div>
-        </div>
+        </MeritaiCard>
       )}
 
       {/* Filters */}
