@@ -23,6 +23,7 @@ const adminRoutes = require('./routes/admin.routes');
 const questionRoutes = require('./routes/question.routes');
 const quizRoutes = require('./routes/quiz.routes');
 const quizEvaluationRoutes = require('./routes/quizEvaluation.routes');
+const algorithmQuizRoutes = require('./routes/algorithmQuiz.routes');
 const aiQuestionRoutes = require('./routes/aiQuestion.routes');
 const questionExportRoutes = require('./routes/questionExport.routes');
 const offlinePromptRoutes = require('./routes/offlinePrompt.routes');
@@ -87,6 +88,7 @@ app.use('/api/admin', adminRoutes);
 app.use('/api/questions', questionRoutes);
 app.use('/api/quizzes', quizRoutes);
 app.use('/api/quiz-evaluations', quizEvaluationRoutes);
+app.use('/api/algorithm-quiz', algorithmQuizRoutes);
 app.use('/api/ai', aiQuestionRoutes);
 app.use('/api/questions', questionExportRoutes); // Import/Export endpoints (merged with question routes)
 app.use('/api/offline-prompts', offlinePromptRoutes);

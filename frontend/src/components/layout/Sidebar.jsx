@@ -34,6 +34,7 @@ const studentLinks = [
   { to: '/student/sessions', icon: Video, label: 'Sessions' },
   { to: '/student/quizzes', icon: ClipboardList, label: 'Quizzes' },
   { to: '/student/quiz-setup', icon: PenTool, label: 'Quiz Setup' },
+  { to: '/student/active-quizzes', icon: ArrowUpDown, label: 'Active Quizzes' },
   { to: '/student/quiz-history', icon: History, label: 'Quiz History' },
   { to: '/student/progress', icon: BarChart3, label: 'Progress' },
   { to: '/student/subscription', icon: CreditCard, label: 'Subscription' },

@@ -598,6 +598,54 @@ export const quizService = {
   },
 }
 
+// Algorithm-based Quiz Service
+export const algorithmQuizService = {
+  // Create quiz with algorithm-based question selection
+  createAlgorithmQuiz: async (quizConfig) => {
+    const { data } = await api.post('/algorithm-quiz/create', quizConfig)
+    return data
+  },
+
+  // Get active quizzes
+  getActiveQuizzes: async () => {
+    const { data } = await api.get('/algorithm-quiz/active')
+    return data
+  },
+
+  // Update quiz status
+  updateQuizStatus: async (quizId, status) => {
+    const { data } = await api.put(`/algorithm-quiz/${quizId}/status`, { status })
+    return data
+  },
+
+  // Delete quiz
+  deleteQuiz: async (quizId) => {
+    const { data } = await api.delete(`/algorithm-quiz/${quizId}`)
+    return data
+  },
+
+  // Analyze quiz results
+  analyzeQuizResults: async (quizId, answers, timeTaken) => {
+    const { data } = await api.post(`/algorithm-quiz/${quizId}/analyze`, {
+      answers,
+      timeTaken
+    })
+    return data
+  },
+
+  // Get quiz history
+  getQuizHistory: async (params = {}) => {
+    const { data } = await api.get('/algorithm-quiz/history', { params })
+    return data
+  },
+
+  // Get student performance
+  getStudentPerformance: async () => {
+    const { data } = await api.get('/algorithm-quiz/performance')
+    return data
+  },
+}
+
 export const quizEvaluationService = {
   // Get pending evaluations
   getPendingEvaluations: async (params = {}) => {

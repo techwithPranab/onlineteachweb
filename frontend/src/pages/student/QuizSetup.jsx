@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { quizService, courseService } from '@/services/apiServices'
+import { quizService, courseService, algorithmQuizService } from '@/services/apiServices'
 import { useAuthStore } from '@/store/authStore'
 import LoadingSpinner from '@/components/common/LoadingSpinner'
 import ErrorMessage from '@/components/common/ErrorMessage'
-import { BookOpen, Clock, Target, AlertCircle, CheckCircle, ArrowRight } from 'lucide-react'
+import { selectQuestionsAlgorithm } from '@/utils/quizAlgorithm'
+import { BookOpen, Clock, Target, AlertCircle, CheckCircle, ArrowRight, Layers } from 'lucide-react'
 
 /**
  * Quiz Setup Page
@@ -27,18 +28,21 @@ export default function QuizSetup() {
   // State management
   const [quiz, setQuiz] = useState(null)
   const [courses, setCourses] = useState([])
+  const [subjects, setSubjects] = useState([])
+  const [filteredCourses, setFilteredCourses] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [showCourseSelection, setShowCourseSelection] = useState(false)
   
   // Quiz configuration state
   const [config, setConfig] = useState({
+    subject: '',
     courseId: '',
     difficulty: 'medium',
     questionCount: 10,
     duration: 30, // minutes
     timePerQuestion: null, // optional alternative to total duration
-    strategyName: 'default'
+    strategyName: 'algorithm' // Use our custom algorithm
   })
   
   const [acceptedRules, setAcceptedRules] = useState(false)
@@ -75,7 +79,12 @@ export default function QuizSetup() {
       
       // Load all available courses
       const courseResponse = await courseService.getCourses()
-      setCourses(courseResponse.courses || [])
+      const allCourses = courseResponse.courses || []
+      setCourses(allCourses)
+      
+      // Extract unique subjects
+      const uniqueSubjects = [...new Set(allCourses.map(c => c.subject))].filter(Boolean)
+      setSubjects(uniqueSubjects)
       
     } catch (err) {
       setError(err.message || 'Failed to load quiz configuration')
@@ -84,6 +93,23 @@ export default function QuizSetup() {
       setLoading(false)
     }
   }
+
+  // Filter courses when subject changes
+  useEffect(() => {
+    if (config.subject) {
+      const filtered = courses.filter(c => c.subject === config.subject)
+      setFilteredCourses(filtered)
+      // Reset course selection if current course doesn't match new subject
+      if (config.courseId) {
+        const currentCourse = courses.find(c => c._id === config.courseId)
+        if (currentCourse?.subject !== config.subject) {
+          setConfig(prev => ({ ...prev, courseId: '' }))
+        }
+      }
+    } else {
+      setFilteredCourses([])
+    }
+  }, [config.subject, courses])
 
   /**
    * Handle configuration changes
@@ -121,37 +147,78 @@ export default function QuizSetup() {
     }
     
     if (!config.courseId && !quizId) {
-      setError('Please select a course')
+      setError('Please select both subject and course')
       return
     }
     
     try {
       setLoading(true)
       
-      // Start quiz session with configuration
-      const response = await quizService.startQuiz(
-        quizId || config.courseId, 
-        config.strategyName
-      )
+      // Get course and subject information
+      const selectedCourse = courses.find(c => c._id === config.courseId)
+      const subjectName = config.subject || selectedCourse?.subject || 'General'
+      const courseName = selectedCourse?.title || 'Quiz'
+      
+      // Use algorithm to select questions
+      const pastPerformance = localStorage.getItem(`performance_${user?.id || 'demo'}`)
+        ? JSON.parse(localStorage.getItem(`performance_${user?.id || 'demo'}`))
+        : null
+      
+      const selectedQuestions = selectQuestionsAlgorithm(pastPerformance, {
+        courseId: config.courseId,
+        difficulty: config.difficulty,
+        questionCount: config.questionCount
+      })
+      
+      // Generate quiz ID and session ID
+      const quizId = `quiz_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
+      const sessionId = `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
+      
+      // Create active quiz object
+      const activeQuiz = {
+        id: quizId,
+        sessionId,
+        userId: user?.id || 'demo',
+        subject: subjectName,
+        courseName,
+        courseId: config.courseId,
+        difficulty: config.difficulty,
+        questionCount: config.questionCount,
+        duration: config.duration,
+        status: 'ACTIVE',
+        questions: selectedQuestions,
+        createdAt: new Date().toISOString(),
+        lastUpdated: new Date().toISOString()
+      }
+      
+      // Save to localStorage (active quizzes)
+      const storageKey = `active_quizzes_${user?.id || 'demo'}`
+      const existingQuizzes = localStorage.getItem(storageKey)
+        ? JSON.parse(localStorage.getItem(storageKey))
+        : []
+      
+      existingQuizzes.push(activeQuiz)
+      localStorage.setItem(storageKey, JSON.stringify(existingQuizzes))
       
       // Store configuration in session storage for quiz page
       sessionStorage.setItem('quizConfig', JSON.stringify({
         ...config,
-        sessionId: response.session._id,
+        sessionId,
+        quizId,
         startTime: Date.now()
       }))
       
-      // Navigate to active quiz
-      navigate(`/student/quiz/${quizId || response.quiz._id}/attempt`, {
+      // Navigate to active quiz list
+      navigate('/student/active-quizzes', {
         state: {
-          sessionId: response.session._id,
-          config
+          message: 'Quiz created successfully! Click Start to begin.',
+          newQuizId: quizId
         }
       })
       
     } catch (err) {
-      setError(err.message || 'Failed to start quiz')
-      console.error('Quiz start error:', err)
+      setError(err.message || 'Failed to create quiz')
+      console.error('Quiz creation error:', err)
       setLoading(false)
     }
   }
@@ -206,36 +273,77 @@ export default function QuizSetup() {
         )}
 
         {showCourseSelection ? (
-          /* Course Selection Step */
+          /* Subject & Course Selection Step */
           <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 sm:p-8">
             <div className="text-center mb-6">
               <div className="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <BookOpen className="w-8 h-8 text-indigo-600" />
+                <Layers className="w-8 h-8 text-indigo-600" />
               </div>
-              <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">Select a Course</h2>
-              <p className="text-gray-600">Choose the subject you want to take a quiz on</p>
+              <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">Create Your Quiz</h2>
+              <p className="text-gray-600">Select subject and course to generate personalized quiz</p>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {courses.map(course => (
-                <div
-                  key={course._id}
-                  onClick={() => {
-                    setConfig(prev => ({ ...prev, courseId: course._id }))
-                    setShowCourseSelection(false)
-                  }}
-                  className="p-4 border border-gray-200 rounded-lg cursor-pointer hover:border-indigo-300 hover:bg-indigo-50 transition-all"
-                >
-                  <h3 className="font-semibold text-gray-900 mb-1">{course.title}</h3>
-                  <p className="text-sm text-gray-500">Grade {course.grade} • {course.subject}</p>
-                  {course.description && (
-                    <p className="text-xs text-gray-400 mt-2 line-clamp-2">{course.description}</p>
-                  )}
+            {/* Subject Selection */}
+            <div className="mb-6">
+              <label className="block text-sm font-medium text-gray-700 mb-3">
+                Step 1: Select Subject
+              </label>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                {subjects.map(subject => (
+                  <button
+                    key={subject}
+                    onClick={() => setConfig(prev => ({ ...prev, subject }))}
+                    className={`p-4 border-2 rounded-lg transition-all ${
+                      config.subject === subject
+                        ? 'border-indigo-600 bg-indigo-50 text-indigo-700'
+                        : 'border-gray-200 hover:border-gray-300 text-gray-700'
+                    }`}
+                  >
+                    <BookOpen className="w-6 h-6 mx-auto mb-2" />
+                    <p className="font-medium text-sm">{subject}</p>
+                  </button>
+                ))}
+              </div>
+            </div>
+            
+            {/* Course Selection */}
+            {config.subject && (
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-3">
+                  Step 2: Select Course
+                </label>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {filteredCourses.map(course => (
+                    <div
+                      key={course._id}
+                      onClick={() => {
+                        setConfig(prev => ({ ...prev, courseId: course._id }))
+                        setShowCourseSelection(false)
+                      }}
+                      className={`p-4 border-2 rounded-lg cursor-pointer transition-all ${
+                        config.courseId === course._id
+                          ? 'border-indigo-600 bg-indigo-50'
+                          : 'border-gray-200 hover:border-indigo-300 hover:bg-indigo-50'
+                      }`}
+                    >
+                      <h3 className="font-semibold text-gray-900 mb-1">{course.title}</h3>
+                      <p className="text-sm text-gray-500">Grade {course.grade} • {course.subject}</p>
+                      {course.description && (
+                        <p className="text-xs text-gray-400 mt-2 line-clamp-2">{course.description}</p>
+                      )}
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
+                
+                {filteredCourses.length === 0 && (
+                  <div className="text-center py-8 bg-gray-50 rounded-lg">
+                    <p className="text-gray-500">No courses available for {config.subject}.</p>
+                  </div>
+                )}
+              </div>
+            )}
             
-            {courses.length === 0 && (
+            {!config.subject && courses.length === 0 && (
               <div className="text-center py-8">
                 <p className="text-gray-500">No courses available at the moment.</p>
               </div>
@@ -246,8 +354,8 @@ export default function QuizSetup() {
             {/* Main Configuration */}
             <div className="lg:col-span-2 space-y-6">
               
-              {/* Course Selection */}
-              {!quizId && config.courseId && (
+              {/* Selected Subject & Course */}
+              {!quizId && config.subject && config.courseId && (
                 <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 sm:p-6">
                   <div className="flex items-center gap-3 mb-4">
                     <div className="w-10 h-10 bg-indigo-100 rounded-lg flex items-center justify-center">
@@ -256,7 +364,7 @@ export default function QuizSetup() {
                     <div>
                       <h2 className="text-base sm:text-lg font-semibold text-gray-900">Selected Course</h2>
                       <p className="text-xs sm:text-sm text-gray-500">
-                        {courses.find(c => c._id === config.courseId)?.title || 'Course selected'}
+                        {config.subject} - {courses.find(c => c._id === config.courseId)?.title}
                       </p>
                     </div>
                   </div>
@@ -450,7 +558,7 @@ export default function QuizSetup() {
                   disabled={!acceptedRules || (!config.courseId && !quizId) || loading}
                   className="w-full btn-primary flex items-center justify-center gap-2 min-h-[44px] disabled:opacity-50 disabled:cursor-not-allowed text-sm sm:text-base"
                 >
-                  Start Quiz
+                  {loading ? 'Creating Quiz...' : 'Create Quiz'}
                   <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
                 </button>
                 

@@ -37,6 +37,7 @@ import QuizSetup from './pages/student/QuizSetup'
 import QuizAttempt from './pages/student/QuizAttempt'
 import QuizResults from './pages/student/QuizResults'
 import QuizHistory from './pages/student/QuizHistory'
+import ActiveQuizzes from './pages/student/ActiveQuizzes'
 
 // Tutor Pages
 import TutorDashboard from './pages/tutor/TutorDashboard'
@@ -137,6 +138,7 @@ function App() {
             {/* Quiz Routes */}
             <Route path="quizzes" element={<QuizListing />} />
             <Route path="quiz-setup" element={<QuizSetup />} />
+            <Route path="active-quizzes" element={<ActiveQuizzes />} />
             <Route path="quiz/:quizId/setup" element={<QuizSetup />} />
             <Route path="quiz/:quizId/attempt" element={<QuizAttempt />} />
             <Route path="quiz/:sessionId/results" element={<QuizResults />} />

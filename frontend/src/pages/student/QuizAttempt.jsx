@@ -1,6 +1,8 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { useParams, useNavigate, useLocation } from 'react-router-dom'
 import { quizService } from '../../services/apiServices'
+import { analyzeQuizResults, updateStudentPerformance } from '@/utils/quizAlgorithm'
+import { useAuthStore } from '@/store/authStore'
 import LoadingSpinner from '../../components/common/LoadingSpinner'
 import ConfirmDialog from '../../components/common/ConfirmDialog'
 import { QuizTimer, QuizProgressBar, QuestionCard } from '../../components/quiz'
@@ -9,6 +11,7 @@ export default function QuizAttempt() {
   const { quizId } = useParams()
   const navigate = useNavigate()
   const location = useLocation()
+  const { user } = useAuthStore()
   
   const [session, setSession] = useState(null)
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
@@ -21,10 +24,12 @@ export default function QuizAttempt() {
   const [showSubmitConfirm, setShowSubmitConfirm] = useState(false)
   const [showNavigator, setShowNavigator] = useState(false)
   const [autoSaveStatus, setAutoSaveStatus] = useState('saved')
+  const [quizData, setQuizData] = useState(null)
   
   const timerRef = useRef(null)
   const autoSaveRef = useRef(null)
   const questionStartTime = useRef(Date.now())
+  const quizStartTime = useRef(Date.now())
 
   // Start quiz on mount
   useEffect(() => {
@@ -67,10 +72,23 @@ export default function QuizAttempt() {
     try {
       setLoading(true)
       
-      // Check if we have an existing session from navigation state (from QuizSetup)
+      // Check if we have an existing session from navigation state (from QuizSetup or ActiveQuizzes)
       const locationState = location.state
-      if (locationState?.sessionId) {
-        // Get existing session
+      if (locationState?.quiz) {
+        // Load from localStorage (for algorithm-generated quizzes)
+        const quiz = locationState.quiz
+        setQuizData(quiz)
+        setSession({
+          _id: quiz.sessionId,
+          quizId: quiz.id,
+          questions: quiz.questions,
+          duration: quiz.duration,
+          remainingTime: quiz.duration * 60
+        })
+        setRemainingTime(quiz.duration * 60)
+        quizStartTime.current = Date.now()
+      } else if (locationState?.sessionId) {
+        // Get existing session from API
         const response = await quizService.getSessionById(locationState.sessionId)
         setSession(response.session)
         setRemainingTime(response.session.remainingTime)
@@ -93,10 +111,11 @@ export default function QuizAttempt() {
           setCurrentQuestionIndex(response.session.currentQuestionIndex)
         }
       } else {
-        // Start new quiz session
+        // Start new quiz session via API
         const response = await quizService.startQuiz(quizId)
         setSession(response.session)
         setRemainingTime(response.session.remainingTime)
+        quizStartTime.current = Date.now()
         
         // Restore answers if resuming
         if (response.session.answers && response.session.answers.length > 0) {
@@ -215,6 +234,9 @@ export default function QuizAttempt() {
     try {
       setSubmitting(true)
       
+      // Calculate time taken
+      const timeTaken = Math.floor((Date.now() - quizStartTime.current) / 1000)
+      
       // Prepare all answers for final submission
       const answersArray = Object.entries(answers).map(([questionId, answer]) => ({
         questionId,
@@ -222,18 +244,90 @@ export default function QuizAttempt() {
         timeSpent: 0 // Time already tracked
       }))
       
-      const response = await quizService.submitQuiz(quizId, session._id, answersArray)
-      
-      // Navigate to results
-      navigate(`/student/quiz/${quizId}/results`, {
-        state: { result: response.result, isAutoSubmit }
-      })
+      // For algorithm-generated quizzes
+      if (quizData) {
+        // Calculate results locally
+        const results = {
+          answers: answersArray,
+          timeTaken,
+          totalTime: quizData.duration * 60
+        }
+        
+        // Use algorithm to analyze results
+        const analysis = analyzeQuizResults(results, quizData, quizData.questions)
+        
+        // Update student performance
+        await updateStudentPerformance(user?.id || 'demo', analysis)
+        
+        // Move quiz from active to history
+        moveQuizToHistory(quizData, analysis, isAutoSubmit)
+        
+        // Navigate to results with analysis
+        navigate(`/student/quiz/${quizData.id}/results`, {
+          state: { 
+            result: analysis, 
+            isAutoSubmit,
+            quiz: quizData
+          }
+        })
+      } else {
+        // For API-based quizzes
+        const response = await quizService.submitQuiz(quizId, session._id, answersArray)
+        
+        // Navigate to results
+        navigate(`/student/quiz/${quizId}/results`, {
+          state: { result: response.result, isAutoSubmit }
+        })
+      }
     } catch (err) {
       setError(err.response?.data?.message || 'Failed to submit quiz')
       console.error(err)
     } finally {
       setSubmitting(false)
       setShowSubmitConfirm(false)
+    }
+  }
+
+  const moveQuizToHistory = (quiz, analysis, isAutoSubmit) => {
+    try {
+      const userId = user?.id || 'demo'
+      
+      // Remove from active quizzes
+      const activeKey = `active_quizzes_${userId}`
+      const activeQuizzes = JSON.parse(localStorage.getItem(activeKey) || '[]')
+      const updatedActive = activeQuizzes.filter(q => q.id !== quiz.id)
+      localStorage.setItem(activeKey, JSON.stringify(updatedActive))
+      
+      // Add to quiz history
+      const historyKey = `quiz_history_${userId}`
+      const history = JSON.parse(localStorage.getItem(historyKey) || '[]')
+      
+      const historyEntry = {
+        id: quiz.id,
+        quizId: quiz.id,
+        subject: quiz.subject,
+        courseName: quiz.courseName,
+        courseId: quiz.courseId,
+        difficulty: quiz.difficulty,
+        questionCount: quiz.questionCount,
+        duration: quiz.duration,
+        status: 'COMPLETED',
+        score: analysis.score,
+        totalScore: analysis.totalScore,
+        accuracy: analysis.accuracy,
+        timeTaken: analysis.timeTaken,
+        timeUtilization: analysis.timeUtilization,
+        completedAt: new Date().toISOString(),
+        isAutoSubmit,
+        performanceByTopic: analysis.performanceByTopic,
+        weakTopics: analysis.weakTopics,
+        recommendations: analysis.recommendations
+      }
+      
+      history.unshift(historyEntry) // Add to beginning
+      localStorage.setItem(historyKey, JSON.stringify(history))
+    } catch (err) {
+      console.error('Failed to move quiz to history:', err)
     }
   }
 

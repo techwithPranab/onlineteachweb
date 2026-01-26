@@ -1,0 +1,174 @@
+import { ChevronLeft, ChevronRight } from 'lucide-react'
+
+/**
+ * Reusable Quiz Table Component
+ * 
+ * Purpose: Display quiz data in a consistent, sortable, paginated table format
+ * 
+ * @param {Array} data - Array of quiz objects
+ * @param {Array} columns - Column configuration
+ * @param {Function} onRowAction - Handler for row actions
+ * @param {Boolean} loading - Loading state
+ * @param {Object} emptyState - Empty state configuration
+ */
+export default function QuizTable({
+  data,
+  columns,
+  onRowAction,
+  loading = false,
+  emptyState = { title: 'No data', description: '' },
+  pagination = null,
+  onPageChange = null
+}) {
+
+  if (loading) {
+    return (
+      <div className="bg-white rounded-lg shadow-sm border border-gray-200">
+        <div className="p-12 text-center">
+          <div className="inline-block w-8 h-8 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin" />
+          <p className="mt-4 text-sm text-gray-500">Loading...</p>
+        </div>
+      </div>
+    )
+  }
+
+  if (data.length === 0) {
+    return (
+      <div className="bg-white rounded-lg shadow-sm border border-gray-200">
+        <div className="p-12 text-center">
+          <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
+            </svg>
+          </div>
+          <h3 className="text-lg font-medium text-gray-900 mb-2">{emptyState.title}</h3>
+          <p className="text-sm text-gray-500 mb-6">{emptyState.description}</p>
+          {emptyState.action && (
+            <button
+              onClick={emptyState.action.onClick}
+              className="btn-primary"
+            >
+              {emptyState.action.label}
+            </button>
+          )}
+        </div>
+      </div>
+    )
+  }
+
+  return (
+    <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+      <div className="overflow-x-auto">
+        <table className="w-full">
+          <thead className="bg-gray-50 border-b border-gray-200">
+            <tr>
+              {columns.map((column, index) => (
+                <th
+                  key={index}
+                  className={`
+                    px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider
+                    ${column.className || ''}
+                  `}
+                  style={{ width: column.width }}
+                >
+                  {column.header}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody className="bg-white divide-y divide-gray-200">
+            {data.map((row, rowIndex) => (
+              <tr
+                key={row.id || rowIndex}
+                className="hover:bg-gray-50 transition-colors"
+              >
+                {columns.map((column, colIndex) => (
+                  <td
+                    key={colIndex}
+                    className={`
+                      px-6 py-4 whitespace-nowrap text-sm
+                      ${column.cellClassName || ''}
+                    `}
+                  >
+                    {column.render
+                      ? column.render(row, rowIndex, onRowAction)
+                      : row[column.accessor]
+                    }
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      {/* Pagination */}
+      {pagination && (
+        <div className="bg-gray-50 px-6 py-3 border-t border-gray-200 flex items-center justify-between">
+          <div className="text-sm text-gray-700">
+            Showing <span className="font-medium">{pagination.from}</span> to{' '}
+            <span className="font-medium">{pagination.to}</span> of{' '}
+            <span className="font-medium">{pagination.total}</span> results
+          </div>
+          
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => onPageChange?.(pagination.currentPage - 1)}
+              disabled={pagination.currentPage === 1}
+              className="px-3 py-1 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1"
+            >
+              <ChevronLeft className="w-4 h-4" />
+              Previous
+            </button>
+            
+            <div className="flex items-center gap-1">
+              {Array.from({ length: pagination.totalPages }, (_, i) => i + 1)
+                .filter(page => {
+                  // Show first, last, current, and adjacent pages
+                  return (
+                    page === 1 ||
+                    page === pagination.totalPages ||
+                    Math.abs(page - pagination.currentPage) <= 1
+                  )
+                })
+                .map((page, index, array) => {
+                  // Add ellipsis
+                  const prevPage = array[index - 1]
+                  const showEllipsis = prevPage && page - prevPage > 1
+                  
+                  return (
+                    <div key={page} className="flex items-center gap-1">
+                      {showEllipsis && (
+                        <span className="px-2 text-gray-400">...</span>
+                      )}
+                      <button
+                        onClick={() => onPageChange?.(page)}
+                        className={`
+                          px-3 py-1 rounded-lg text-sm font-medium
+                          ${page === pagination.currentPage
+                            ? 'bg-indigo-600 text-white'
+                            : 'text-gray-700 hover:bg-gray-100'
+                          }
+                        `}
+                      >
+                        {page}
+                      </button>
+                    </div>
+                  )
+                })}
+            </div>
+            
+            <button
+              onClick={() => onPageChange?.(pagination.currentPage + 1)}
+              disabled={pagination.currentPage === pagination.totalPages}
+              className="px-3 py-1 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1"
+            >
+              Next
+              <ChevronRight className="w-4 h-4" />
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
