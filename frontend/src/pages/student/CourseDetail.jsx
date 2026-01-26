@@ -12,20 +12,16 @@ import {
   CheckCircle,
 } from 'lucide-react'
 import { courseService, materialService, sessionService } from '@/services/apiServices'
-import { useAuthStore } from '@/store/authStore'
 import LoadingSpinner from '@/components/common/LoadingSpinner'
 import ErrorMessage from '@/components/common/ErrorMessage'
-import Modal from '@/components/common/Modal'
 
 export default function CourseDetail() {
   const { id } = useParams()
   const navigate = useNavigate()
-  const { user } = useAuthStore()
   const [activeTab, setActiveTab] = useState('overview')
-  const [showEnrollModal, setShowEnrollModal] = useState(false)
 
   const { data: courseData, isLoading, error } = useQuery(
-    ['course', id],
+    ['course', id, 'v2'], // Added version to force refetch
     () => courseService.getCourseById(id)
   )
 
@@ -42,11 +38,6 @@ export default function CourseDetail() {
   )
 
   const course = courseData?.course
-  const isEnrolled = course?.enrolledStudents?.includes(user?._id)
-
-  const handleEnroll = () => {
-    setShowEnrollModal(true)
-  }
 
   if (isLoading) return <LoadingSpinner fullScreen />
   if (error) return <ErrorMessage message={error.message || 'Failed to load course'} />
@@ -82,18 +73,12 @@ export default function CourseDetail() {
                   Grade {course.grade} • {course.subject}
                 </p>
               </div>
-              {isEnrolled && (
-                <span className="flex items-center gap-2 px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs sm:text-sm w-fit flex-shrink-0">
-                  <CheckCircle className="w-3 h-3 sm:w-4 sm:h-4" />
-                  Enrolled
-                </span>
-              )}
             </div>
 
             <p className="text-gray-700 mb-4 sm:mb-6 text-sm sm:text-base leading-relaxed">{course.description}</p>
 
             {/* Stats */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 lg:gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-4 gap-3 sm:gap-4 lg:gap-6">
               <div className="flex items-center gap-2 text-gray-600">
                 <Star className="w-4 h-4 sm:w-5 sm:h-5 text-yellow-400 fill-current flex-shrink-0" />
                 <span className="font-medium text-sm sm:text-base">{course.averageRating?.toFixed(1) || 'N/A'}</span>
@@ -105,22 +90,15 @@ export default function CourseDetail() {
               </div>
               <div className="flex items-center gap-2 text-gray-600">
                 <BookOpen className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" />
+                <span className="text-sm sm:text-base">{course.questionCount || 0} questions available</span>
+              </div>
+              <div className="flex items-center gap-2 text-gray-600">
+                <FileText className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" />
                 <span className="capitalize text-sm sm:text-base">{course.level || 'Intermediate'} level</span>
               </div>
             </div>
           </div>
 
-          {/* Enrollment Card */}
-          {!isEnrolled && (
-            <div className="xl:w-80 w-full sm:w-auto bg-gray-50 rounded-lg p-4 sm:p-6 border border-gray-200 flex-shrink-0">
-              <button onClick={handleEnroll} className="btn-primary w-full mb-3 min-h-[44px] text-sm sm:text-base">
-                Enroll Now
-              </button>
-              <p className="text-xs sm:text-sm text-gray-600 text-center">
-                Start learning today!
-              </p>
-            </div>
-          )}
         </div>
       </div>
 
@@ -177,9 +155,15 @@ export default function CourseDetail() {
             <div>
               <h3 className="text-lg font-semibold mb-4">Course Syllabus</h3>
               <div className="prose max-w-none">
-                <p className="text-gray-700 whitespace-pre-line">
-                  {course.syllabus || 'Detailed syllabus will be provided after enrollment.'}
-                </p>
+                {course.syllabus && course.syllabus.length > 0 ? (
+                  <ul className="list-disc list-inside space-y-2 text-gray-700">
+                    {course.syllabus.map((item, index) => (
+                      <li key={index} className="text-sm sm:text-base">{item}</li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p className="text-gray-700">Detailed syllabus will be provided after enrollment.</p>
+                )}
               </div>
             </div>
           )}
@@ -230,7 +214,7 @@ export default function CourseDetail() {
                         <h4 className="font-medium text-gray-900 text-sm sm:text-base truncate">{material.title}</h4>
                         <p className="text-xs sm:text-sm text-gray-600 capitalize">{material.type}</p>
                       </div>
-                      {material.isFree || isEnrolled ? (
+                      {material.isFree ? (
                         <button className="text-primary-600 hover:text-primary-700 text-xs sm:text-sm font-medium min-h-[44px] px-2 py-1">
                           View
                         </button>
@@ -279,42 +263,6 @@ export default function CourseDetail() {
           )}
         </div>
       </div>
-
-      {/* Enrollment Modal */}
-      <Modal
-        isOpen={showEnrollModal}
-        onClose={() => setShowEnrollModal(false)}
-        title="Enroll in Course"
-      >
-        <div className="space-y-4 sm:space-y-6">
-          <p className="text-gray-700 text-sm sm:text-base">
-            You are about to enroll in <strong>{course.title}</strong>
-          </p>
-          <div className="bg-gray-50 p-3 sm:p-4 rounded-lg">
-            <div className="flex justify-between mb-2 text-sm sm:text-base">
-              <span className="text-gray-600">Course Price:</span>
-              <span className="font-semibold">${course.price || 0}</span>
-            </div>
-          </div>
-          <div className="flex flex-col sm:flex-row gap-3">
-            <button
-              onClick={() => setShowEnrollModal(false)}
-              className="flex-1 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 min-h-[44px]"
-            >
-              Cancel
-            </button>
-            <button
-              onClick={() => {
-                setShowEnrollModal(false)
-                navigate('/student/subscription')
-              }}
-              className="flex-1 btn-primary min-h-[44px]"
-            >
-              Proceed to Payment
-            </button>
-          </div>
-        </div>
-      </Modal>
     </div>
   )
 }

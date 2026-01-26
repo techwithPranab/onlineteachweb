@@ -6,6 +6,7 @@ import FilterBar from '@/components/quiz/FilterBar'
 import StatusBadge from '@/components/quiz/StatusBadge'
 import LoadingSpinner from '@/components/common/LoadingSpinner'
 import ErrorMessage from '@/components/common/ErrorMessage'
+import { algorithmQuizService } from '@/services/apiServices'
 import { Play, RotateCcw, Clock, Target, BookOpen, Trash2, AlertCircle } from 'lucide-react'
 
 /**
@@ -46,22 +47,18 @@ export default function ActiveQuizzes() {
   }, [user])
 
   /**
-   * Load active quizzes from localStorage (or API)
+   * Load active quizzes from API
    */
-  const loadActiveQuizzes = () => {
+  const loadActiveQuizzes = async () => {
     try {
       setLoading(true)
-      
-      // TODO: Replace with API call
-      const storageKey = `active_quizzes_${user?.id || 'demo'}`
-      const stored = localStorage.getItem(storageKey)
-      const activeQuizzes = stored ? JSON.parse(stored) : []
-      
-      setQuizzes(activeQuizzes)
+
+      const response = await algorithmQuizService.getActiveQuizzes()
+      setQuizzes(response.data || [])
       setError(null)
     } catch (err) {
       console.error('Failed to load active quizzes:', err)
-      setError('Failed to load quizzes. Please try again.')
+      setError(err.response?.data?.message || 'Failed to load quizzes. Please try again.')
     } finally {
       setLoading(false)
     }
@@ -158,47 +155,58 @@ export default function ActiveQuizzes() {
   /**
    * Handle starting/resuming a quiz
    */
-  const handleStartQuiz = (quiz) => {
-    // Check if another quiz is in progress
-    const inProgressQuiz = quizzes.find(q => q.status === 'IN_PROGRESS' && q.id !== quiz.id)
-    
-    if (inProgressQuiz) {
-      if (!window.confirm(
-        `You have another quiz in progress: "${inProgressQuiz.subject} - ${inProgressQuiz.courseName}". ` +
-        `Starting this quiz will mark the other as abandoned. Continue?`
-      )) {
-        return
-      }
-      
-      // Mark other quiz as abandoned
-      updateQuizStatus(inProgressQuiz.id, 'ACTIVE')
-    }
+  const handleStartQuiz = async (quiz) => {
+    try {
+      // Check if another quiz is in progress via API
+      const activeQuizzes = await algorithmQuizService.getActiveQuizzes()
+      const inProgressQuiz = activeQuizzes.data?.find(q => q.status === 'IN_PROGRESS' && q.quizId !== quiz.quizId)
 
-    // Mark current quiz as in progress
-    updateQuizStatus(quiz.id, 'IN_PROGRESS')
-    
-    // Navigate to quiz attempt page
-    navigate(`/student/quiz/${quiz.id}/attempt`, {
-      state: {
-        quiz,
-        sessionId: quiz.sessionId
+      if (inProgressQuiz) {
+        if (!window.confirm(
+          `You have another quiz in progress: "${inProgressQuiz.subject} - ${inProgressQuiz.courseName}". ` +
+          `Starting this quiz will mark the other as abandoned. Continue?`
+        )) {
+          return
+        }
+
+        // Abandon the other quiz
+        await algorithmQuizService.abandonQuiz(inProgressQuiz.quizId)
       }
-    })
+
+      // Start this quiz
+      await algorithmQuizService.startQuiz(quiz.quizId)
+
+      // Navigate to quiz attempt page
+      navigate(`/student/quiz/${quiz.quizId}/attempt`, {
+        state: {
+          quiz,
+          sessionId: quiz.sessionId
+        }
+      })
+    } catch (err) {
+      console.error('Failed to start quiz:', err)
+      setError(err.response?.data?.message || 'Failed to start quiz. Please try again.')
+      // Reload quizzes to reflect current state
+      loadActiveQuizzes()
+    }
   }
 
   /**
    * Handle deleting a quiz
    */
-  const handleDeleteQuiz = (quiz) => {
+  const handleDeleteQuiz = async (quiz) => {
     if (!window.confirm(`Are you sure you want to delete this quiz? This action cannot be undone.`)) {
       return
     }
 
-    const storageKey = `active_quizzes_${user?.id || 'demo'}`
-    const updatedQuizzes = quizzes.filter(q => q.id !== quiz.id)
-    
-    setQuizzes(updatedQuizzes)
-    localStorage.setItem(storageKey, JSON.stringify(updatedQuizzes))
+    try {
+      await algorithmQuizService.deleteQuiz(quiz.quizId)
+      // Reload quizzes after deletion
+      await loadActiveQuizzes()
+    } catch (err) {
+      console.error('Failed to delete quiz:', err)
+      setError(err.response?.data?.message || 'Failed to delete quiz. Please try again.')
+    }
   }
 
   /**
@@ -220,11 +228,11 @@ export default function ActiveQuizzes() {
   const columns = [
     {
       header: 'Quiz ID',
-      accessor: 'id',
+      accessor: 'quizId',
       width: '10%',
       render: (quiz) => (
         <span className="font-mono text-xs text-gray-600">
-          {quiz.id.slice(0, 8)}...
+          {quiz.quizId.slice(0, 8)}...
         </span>
       )
     },

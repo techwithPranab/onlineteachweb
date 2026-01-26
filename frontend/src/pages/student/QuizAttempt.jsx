@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { useParams, useNavigate, useLocation } from 'react-router-dom'
-import { quizService } from '../../services/apiServices'
+import { quizService, algorithmQuizService } from '../../services/apiServices'
 import { analyzeQuizResults, updateStudentPerformance } from '@/utils/quizAlgorithm'
 import { useAuthStore } from '@/store/authStore'
 import LoadingSpinner from '../../components/common/LoadingSpinner'
@@ -250,22 +250,30 @@ export default function QuizAttempt() {
         const results = {
           answers: answersArray,
           timeTaken,
-          totalTime: quizData.duration * 60
+          totalTime: quizData.duration * 60,
+          score: 0, // Will be calculated by algorithm
+          accuracy: 0, // Will be calculated by algorithm
+          performanceData: {} // Will be populated by algorithm
         }
-        
+
         // Use algorithm to analyze results
         const analysis = analyzeQuizResults(results, quizData, quizData.questions)
-        
+
+        // Update results with analysis data
+        results.score = analysis.score
+        results.accuracy = analysis.accuracy
+        results.performanceData = analysis
+
+        // Complete quiz in backend (replaces localStorage operations)
+        await algorithmQuizService.completeQuiz(quizData.id, results)
+
         // Update student performance
         await updateStudentPerformance(user?.id || 'demo', analysis)
-        
-        // Move quiz from active to history
-        moveQuizToHistory(quizData, analysis, isAutoSubmit)
-        
+
         // Navigate to results with analysis
         navigate(`/student/quiz/${quizData.id}/results`, {
-          state: { 
-            result: analysis, 
+          state: {
+            result: analysis,
             isAutoSubmit,
             quiz: quizData
           }
@@ -285,49 +293,6 @@ export default function QuizAttempt() {
     } finally {
       setSubmitting(false)
       setShowSubmitConfirm(false)
-    }
-  }
-
-  const moveQuizToHistory = (quiz, analysis, isAutoSubmit) => {
-    try {
-      const userId = user?.id || 'demo'
-      
-      // Remove from active quizzes
-      const activeKey = `active_quizzes_${userId}`
-      const activeQuizzes = JSON.parse(localStorage.getItem(activeKey) || '[]')
-      const updatedActive = activeQuizzes.filter(q => q.id !== quiz.id)
-      localStorage.setItem(activeKey, JSON.stringify(updatedActive))
-      
-      // Add to quiz history
-      const historyKey = `quiz_history_${userId}`
-      const history = JSON.parse(localStorage.getItem(historyKey) || '[]')
-      
-      const historyEntry = {
-        id: quiz.id,
-        quizId: quiz.id,
-        subject: quiz.subject,
-        courseName: quiz.courseName,
-        courseId: quiz.courseId,
-        difficulty: quiz.difficulty,
-        questionCount: quiz.questionCount,
-        duration: quiz.duration,
-        status: 'COMPLETED',
-        score: analysis.score,
-        totalScore: analysis.totalScore,
-        accuracy: analysis.accuracy,
-        timeTaken: analysis.timeTaken,
-        timeUtilization: analysis.timeUtilization,
-        completedAt: new Date().toISOString(),
-        isAutoSubmit,
-        performanceByTopic: analysis.performanceByTopic,
-        weakTopics: analysis.weakTopics,
-        recommendations: analysis.recommendations
-      }
-      
-      history.unshift(historyEntry) // Add to beginning
-      localStorage.setItem(historyKey, JSON.stringify(history))
-    } catch (err) {
-      console.error('Failed to move quiz to history:', err)
     }
   }
 

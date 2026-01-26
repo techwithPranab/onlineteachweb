@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuthStore } from '@/store/authStore'
+import { algorithmQuizService } from '@/services/apiServices'
 import QuizTable from '@/components/quiz/QuizTable'
 import FilterBar from '@/components/quiz/FilterBar'
 import StatusBadge from '@/components/quiz/StatusBadge'
@@ -54,21 +55,25 @@ export default function QuizHistory() {
   // Load quiz history on mount
   useEffect(() => {
     loadQuizHistory()
-  }, [user])
+  }, [user, currentPage, filters])
 
   /**
-   * Load quiz history from localStorage (or API)
+   * Load quiz history from backend API
    */
-  const loadQuizHistory = () => {
+  const loadQuizHistory = async () => {
     try {
       setLoading(true)
-      
-      // TODO: Replace with API call
-      const storageKey = `quiz_history_${user?.id || 'demo'}`
-      const stored = localStorage.getItem(storageKey)
-      const historyData = stored ? JSON.parse(stored) : []
-      
-      setHistory(historyData)
+
+      // Get quiz history from backend API
+      const response = await algorithmQuizService.getQuizHistory({
+        page: currentPage,
+        limit: itemsPerPage,
+        ...filters
+      })
+
+      // Ensure we always set history to an array
+      const historyData = response.data || response || []
+      setHistory(Array.isArray(historyData) ? historyData : [])
       setError(null)
     } catch (err) {
       console.error('Failed to load quiz history:', err)
@@ -137,6 +142,7 @@ export default function QuizHistory() {
    * Apply filters to history
    */
   const filteredHistory = useMemo(() => {
+    if (!Array.isArray(history)) return []
     return history.filter(entry => {
       // Filter by subject
       if (filters.subject !== 'all' && entry.subject !== filters.subject) return false
@@ -190,7 +196,7 @@ export default function QuizHistory() {
    * Calculate overall statistics
    */
   const statistics = useMemo(() => {
-    if (history.length === 0) return null
+    if (!Array.isArray(history) || history.length === 0) return null
     
     const totalQuizzes = history.length
     const passedQuizzes = history.filter(h => h.accuracy >= 60).length
@@ -487,5 +493,6 @@ function StatCard({ icon, label, value, color = 'blue' }) {
  * Helper: Get unique values from array of objects
  */
 function getUniqueValues(array, key) {
+  if (!Array.isArray(array)) return []
   return [...new Set(array.map(item => item[key]))].filter(Boolean)
 }

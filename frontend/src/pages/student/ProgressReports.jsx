@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import { useQuery } from 'react-query'
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, LineChart, Line } from 'recharts'
-import { TrendingUp, Award, Target, Calendar, Download } from 'lucide-react'
-import { reportService, evaluationService } from '@/services/apiServices'
+import { TrendingUp, Award, Target, Calendar, Download, Clock, BarChart3 } from 'lucide-react'
+import { reportService, evaluationService, algorithmQuizService } from '@/services/apiServices'
 import { useAuthStore } from '@/store/authStore'
 import LoadingSpinner from '@/components/common/LoadingSpinner'
 import ErrorMessage from '@/components/common/ErrorMessage'
@@ -21,11 +21,27 @@ export default function ProgressReports() {
     () => evaluationService.getStudentEvaluations(user._id)
   )
 
+  const { data: quizHistoryData } = useQuery(
+    ['quizHistory', user?._id],
+    () => algorithmQuizService.getQuizHistory({ limit: 1000 }) // Get all quiz history for statistics
+  )
+
   if (isLoading) return <LoadingSpinner fullScreen />
   if (error) return <ErrorMessage message={error.message || 'Failed to load reports'} />
 
   const report = reportData?.data || {}
-  const evaluations = evaluationsData?.data || []
+  const evaluations = Array.isArray(evaluationsData?.data) ? evaluationsData.data : []
+  const quizHistory = Array.isArray(quizHistoryData?.data) ? quizHistoryData.data : []
+
+  // Calculate quiz statistics
+  const quizStats = Array.isArray(quizHistory) && quizHistory.length > 0 ? {
+    totalQuizzes: quizHistory.length,
+    passedQuizzes: quizHistory.filter(q => q.accuracy >= 60).length,
+    passRate: ((quizHistory.filter(q => q.accuracy >= 60).length / quizHistory.length) * 100).toFixed(1),
+    avgAccuracy: (quizHistory.reduce((sum, q) => sum + q.accuracy, 0) / quizHistory.length).toFixed(1),
+    avgScore: (quizHistory.reduce((sum, q) => sum + q.score, 0) / quizHistory.length).toFixed(1),
+    totalTime: Math.floor(quizHistory.reduce((sum, q) => sum + q.timeTaken, 0) / 60) // minutes
+  } : null
 
   // Use actual data from backend instead of hardcoded values
   const stats = [
@@ -57,6 +73,34 @@ export default function ProgressReports() {
       icon: Target,
       color: 'blue',
     },
+    {
+      label: 'Quiz Pass Rate',
+      value: `${quizStats?.passRate || 0}%`,
+      change: '',
+      icon: Award,
+      color: 'purple',
+    },
+    {
+      label: 'Average Quiz Score',
+      value: `${quizStats?.avgAccuracy || 0}%`,
+      change: '',
+      icon: Target,
+      color: 'indigo',
+    },
+    {
+      label: 'Total Quizzes',
+      value: quizStats?.totalQuizzes || 0,
+      change: '',
+      icon: BarChart3,
+      color: 'orange',
+    },
+    {
+      label: 'Study Time (min)',
+      value: quizStats?.totalTime || 0,
+      change: '',
+      icon: Clock,
+      color: 'teal',
+    },
   ]
 
   // Map evaluations to performance data by subject
@@ -74,6 +118,15 @@ export default function ProgressReports() {
     subject,
     score: Math.round(performanceBySubject[subject].total / performanceBySubject[subject].count)
   }))
+
+  // Prepare quiz performance data for chart
+  const quizPerformanceData = Array.isArray(quizHistory) && quizHistory.length > 0 ?
+    quizHistory.slice(-10).map((quiz, index) => ({
+      quiz: `Quiz ${index + 1}`,
+      score: quiz.score,
+      accuracy: quiz.accuracy,
+      timeTaken: Math.floor(quiz.timeTaken / 60) // minutes
+    })) : []
 
   // Use attendance data from report
   const attendanceData = report.progress || []
@@ -104,7 +157,7 @@ export default function ProgressReports() {
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-6 sm:mb-8">
+      <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 gap-3 sm:gap-4 lg:gap-6 mb-6 sm:mb-8">
         {stats.map((stat, index) => (
           <div key={index} className="card">
             <div className="p-4 sm:p-5">
@@ -123,7 +176,7 @@ export default function ProgressReports() {
         ))}
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 mb-6 sm:mb-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
         {/* Attendance Trend */}
         <div className="card">
           <div className="p-4 sm:p-5 md:p-6">
@@ -165,6 +218,30 @@ export default function ProgressReports() {
             ) : (
               <div className="flex items-center justify-center h-56 text-gray-500">
                 <p className="text-sm sm:text-base">No performance data available</p>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Quiz Performance Trend */}
+        <div className="card">
+          <div className="p-4 sm:p-5 md:p-6">
+            <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-3 sm:mb-4">Quiz Performance Trend</h3>
+            {quizPerformanceData.length > 0 ? (
+              <ResponsiveContainer width="100%" height={250} className="min-h-[200px]">
+                <LineChart data={quizPerformanceData}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="quiz" tick={{ fontSize: 12 }} />
+                  <YAxis tick={{ fontSize: 12 }} />
+                  <Tooltip />
+                  <Legend wrapperStyle={{ fontSize: '12px' }} />
+                  <Line type="monotone" dataKey="accuracy" stroke="#6366f1" strokeWidth={2} name="Accuracy %" />
+                  <Line type="monotone" dataKey="score" stroke="#10b981" strokeWidth={2} name="Score %" />
+                </LineChart>
+              </ResponsiveContainer>
+            ) : (
+              <div className="flex items-center justify-center h-56 text-gray-500">
+                <p className="text-sm sm:text-base">No quiz data available</p>
               </div>
             )}
           </div>
@@ -214,6 +291,67 @@ export default function ProgressReports() {
                     <tr>
                       <td colSpan="5" className="py-6 sm:py-8 text-center text-gray-500 text-sm">
                         No evaluations yet
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Recent Quiz Attempts */}
+      <div className="card mt-4 sm:mt-6">
+        <div className="p-4 sm:p-5 md:p-6">
+          <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-3 sm:mb-4">Recent Quiz Attempts</h3>
+          <div className="overflow-x-auto -mx-4 sm:mx-0">
+            <div className="inline-block min-w-full align-middle px-4 sm:px-0">
+              <table className="min-w-full divide-y divide-gray-200">
+                <thead>
+                  <tr className="border-b border-gray-200">
+                    <th className="text-left py-2 px-2 sm:px-3 text-xs sm:text-sm font-medium text-gray-600 whitespace-nowrap">Date</th>
+                    <th className="text-left py-2 px-2 sm:px-3 text-xs sm:text-sm font-medium text-gray-600 whitespace-nowrap">Course</th>
+                    <th className="text-left py-2 px-2 sm:px-3 text-xs sm:text-sm font-medium text-gray-600 whitespace-nowrap">Score</th>
+                    <th className="text-left py-2 px-2 sm:px-3 text-xs sm:text-sm font-medium text-gray-600 whitespace-nowrap">Accuracy</th>
+                    <th className="text-left py-2 px-2 sm:px-3 text-xs sm:text-sm font-medium text-gray-600 whitespace-nowrap">Time</th>
+                    <th className="text-left py-2 px-2 sm:px-3 text-xs sm:text-sm font-medium text-gray-600 whitespace-nowrap">Status</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-100">
+                  {quizHistory.length > 0 ? (
+                    quizHistory.slice(0, 5).map((quiz, index) => (
+                      <tr key={index} className="hover:bg-gray-50">
+                        <td className="py-2 px-2 sm:px-3 text-xs sm:text-sm text-gray-900 whitespace-nowrap">
+                          {new Date(quiz.completedAt).toLocaleDateString()}
+                        </td>
+                        <td className="py-2 px-2 sm:px-3 text-xs sm:text-sm text-gray-900">
+                          <span className="line-clamp-1">{quiz.courseName || 'N/A'}</span>
+                        </td>
+                        <td className="py-2 px-2 sm:px-3 text-xs sm:text-sm text-gray-900 whitespace-nowrap">
+                          {quiz.score}%
+                        </td>
+                        <td className="py-2 px-2 sm:px-3 text-xs sm:text-sm text-gray-900 whitespace-nowrap">
+                          {quiz.accuracy}%
+                        </td>
+                        <td className="py-2 px-2 sm:px-3 text-xs sm:text-sm text-gray-600 whitespace-nowrap">
+                          {Math.floor(quiz.timeTaken / 60)}m {quiz.timeTaken % 60}s
+                        </td>
+                        <td className="py-2 px-2 sm:px-3 whitespace-nowrap">
+                          <span className={`px-2 py-1 rounded text-xs sm:text-sm font-medium ${
+                            quiz.accuracy >= 60 
+                              ? 'bg-green-100 text-green-700' 
+                              : 'bg-red-100 text-red-700'
+                          }`}>
+                            {quiz.accuracy >= 60 ? 'Passed' : 'Failed'}
+                          </span>
+                        </td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td colSpan="6" className="py-6 sm:py-8 text-center text-gray-500 text-sm">
+                        No quiz attempts yet
                       </td>
                     </tr>
                   )}

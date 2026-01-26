@@ -588,4 +588,12 @@ function generateRecommendations(weakTopics, performanceByDifficulty) {
   return recommendations;
 }
 
-module.exports = exports;
+module.exports = {
+  createAlgorithmQuiz: exports.createAlgorithmQuiz,
+  getActiveQuizzes: exports.getActiveQuizzes,
+  updateQuizStatus: exports.updateQuizStatus,
+  deleteQuiz: exports.deleteQuiz,
+  analyzeQuizResults: exports.analyzeQuizResults,
+  getQuizHistory: exports.getQuizHistory,
+  getStudentPerformance: exports.getStudentPerformance
+};

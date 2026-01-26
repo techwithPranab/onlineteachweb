@@ -600,6 +600,12 @@ export const quizService = {
 
 // Algorithm-based Quiz Service
 export const algorithmQuizService = {
+  // Get question count for a course
+  getQuestionCount: async (courseId) => {
+    const { data } = await api.get(`/questions/count/${courseId}`)
+    return data
+  },
+
   // Create quiz with algorithm-based question selection
   createAlgorithmQuiz: async (quizConfig) => {
     const { data } = await api.post('/algorithm-quiz/create', quizConfig)
@@ -644,6 +650,56 @@ export const algorithmQuizService = {
     const { data } = await api.get('/algorithm-quiz/performance')
     return data
   },
+
+  // ===== ACTIVE QUIZ MANAGEMENT (Backend Storage) =====
+
+  // Create a new active quiz (replaces localStorage)
+  createActiveQuiz: async (quizData) => {
+    const { data } = await api.post('/active-quizzes', quizData)
+    return data
+  },
+
+  // Get all active quizzes for current user (replaces localStorage)
+  getActiveQuizzesFromBackend: async (params = {}) => {
+    const { data } = await api.get('/active-quizzes', { params })
+    return data
+  },
+
+  // Get a specific active quiz by quizId
+  getActiveQuiz: async (quizId) => {
+    const { data } = await api.get(`/active-quizzes/${quizId}`)
+    return data
+  },
+
+  // Start an active quiz (change status to IN_PROGRESS)
+  startQuiz: async (quizId) => {
+    const { data } = await api.put(`/active-quizzes/${quizId}/start`)
+    return data
+  },
+
+  // Complete an active quiz with results
+  completeQuiz: async (quizId, results) => {
+    const { data } = await api.put(`/active-quizzes/${quizId}/complete`, results)
+    return data
+  },
+
+  // Abandon an active quiz
+  abandonQuiz: async (quizId) => {
+    const { data } = await api.put(`/active-quizzes/${quizId}/abandon`)
+    return data
+  },
+
+  // Delete an active quiz (soft delete)
+  deleteActiveQuiz: async (quizId) => {
+    const { data } = await api.delete(`/active-quizzes/${quizId}`)
+    return data
+  },
+
+  // Get quiz statistics for current user
+  getQuizStats: async () => {
+    const { data } = await api.get('/active-quizzes/stats/summary')
+    return data
+  }
 }
 
 export const quizEvaluationService = {

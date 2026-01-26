@@ -238,30 +238,78 @@ exports.getAllCoursesForAdmin = async (req, res, next) => {
       subject,
       search
     } = req.query;
-    
+
     const query = {};
-    
+
     if (status) query.status = status;
     if (grade) query.grade = parseInt(grade);
     if (subject) query.subject = new RegExp(subject, 'i');
     if (search) {
       query.$text = { $search: search };
     }
-    
+
     const skip = (parseInt(page) - 1) * parseInt(limit);
-    
-    const [courses, total] = await Promise.all([
-      Course.find(query)
-        .populate('createdBy', 'name avatar email')
-        .sort({ createdAt: -1 })
-        .skip(skip)
-        .limit(parseInt(limit)),
-      Course.countDocuments(query)
+
+    // Get courses with question counts using aggregation
+    const coursesWithCounts = await Course.aggregate([
+      { $match: query },
+      {
+        $lookup: {
+          from: 'questions',
+          localField: '_id',
+          foreignField: 'courseId',
+          as: 'questions'
+        }
+      },
+      {
+        $addFields: {
+          questionCount: { $size: '$questions' }
+        }
+      },
+      {
+        $lookup: {
+          from: 'users',
+          let: { createdBy: '$createdBy' },
+          pipeline: [
+            {
+              $match: {
+                $expr: {
+                  $and: [
+                    { $eq: ['$_id', '$$createdBy'] },
+                    { $ne: ['$$createdBy', null] },
+                    { $ne: ['$$createdBy', 'ADMIN_USER_ID_PLACEHOLDER'] }
+                  ]
+                }
+              }
+            }
+          ],
+          as: 'createdBy'
+        }
+      },
+      {
+        $unwind: {
+          path: '$createdBy',
+          preserveNullAndEmptyArrays: true
+        }
+      },
+      {
+        $project: {
+          questions: 0, // Remove the questions array from the result
+          'createdBy.password': 0, // Remove password from populated user
+          'createdBy.__v': 0 // Remove version field
+        }
+      },
+      { $sort: { createdAt: -1 } },
+      { $skip: skip },
+      { $limit: parseInt(limit) }
     ]);
-    
+
+    // Get total count
+    const total = await Course.countDocuments(query);
+
     res.json({
       success: true,
-      courses,
+      courses: coursesWithCounts,
       total,
       page: parseInt(page),
       pages: Math.ceil(total / parseInt(limit))

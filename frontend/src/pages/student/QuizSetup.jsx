@@ -145,77 +145,71 @@ export default function QuizSetup() {
       setError('Please accept the quiz rules before starting')
       return
     }
-    
+
     if (!config.courseId && !quizId) {
       setError('Please select both subject and course')
       return
     }
-    
+
     try {
       setLoading(true)
-      
+
+      // Check if sufficient questions are available for the course
+      const questionCountResponse = await algorithmQuizService.getQuestionCount(config.courseId)
+      const availableQuestions = questionCountResponse.count || 0
+
+      if (availableQuestions < 50) {
+        setError('Insufficient questions available to create a quiz. At least 50 questions are required.')
+        setLoading(false)
+        return
+      }
+
       // Get course and subject information
       const selectedCourse = courses.find(c => c._id === config.courseId)
       const subjectName = config.subject || selectedCourse?.subject || 'General'
       const courseName = selectedCourse?.title || 'Quiz'
-      
+
       // Use algorithm to select questions
       const pastPerformance = localStorage.getItem(`performance_${user?.id || 'demo'}`)
         ? JSON.parse(localStorage.getItem(`performance_${user?.id || 'demo'}`))
         : null
-      
+
       const selectedQuestions = selectQuestionsAlgorithm(pastPerformance, {
         courseId: config.courseId,
         difficulty: config.difficulty,
         questionCount: config.questionCount
       })
-      
-      // Generate quiz ID and session ID
-      const quizId = `quiz_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
-      const sessionId = `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
-      
-      // Create active quiz object
-      const activeQuiz = {
-        id: quizId,
-        sessionId,
-        userId: user?.id || 'demo',
+
+      // Create active quiz via API
+      const quizData = {
         subject: subjectName,
         courseName,
         courseId: config.courseId,
         difficulty: config.difficulty,
         questionCount: config.questionCount,
         duration: config.duration,
-        status: 'ACTIVE',
         questions: selectedQuestions,
-        createdAt: new Date().toISOString(),
-        lastUpdated: new Date().toISOString()
+        algorithmUsed: 'algorithm'
       }
-      
-      // Save to localStorage (active quizzes)
-      const storageKey = `active_quizzes_${user?.id || 'demo'}`
-      const existingQuizzes = localStorage.getItem(storageKey)
-        ? JSON.parse(localStorage.getItem(storageKey))
-        : []
-      
-      existingQuizzes.push(activeQuiz)
-      localStorage.setItem(storageKey, JSON.stringify(existingQuizzes))
-      
+
+      const response = await algorithmQuizService.createActiveQuiz(quizData)
+
       // Store configuration in session storage for quiz page
       sessionStorage.setItem('quizConfig', JSON.stringify({
         ...config,
-        sessionId,
-        quizId,
+        sessionId: response.data.sessionId,
+        quizId: response.data.quizId,
         startTime: Date.now()
       }))
-      
+
       // Navigate to active quiz list
       navigate('/student/active-quizzes', {
         state: {
           message: 'Quiz created successfully! Click Start to begin.',
-          newQuizId: quizId
+          newQuizId: response.data.quizId
         }
       })
-      
+
     } catch (err) {
       setError(err.message || 'Failed to create quiz')
       console.error('Quiz creation error:', err)
@@ -254,7 +248,7 @@ export default function QuizSetup() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+      <div className="w-full px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
         
         {/* Header */}
         <div className="mb-6 sm:mb-8">

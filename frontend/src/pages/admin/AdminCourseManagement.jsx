@@ -211,6 +211,9 @@ export default function AdminCourseManagement() {
                 Board
               </th>
               <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Questions
+              </th>
+              <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Status
               </th>
               <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -236,6 +239,9 @@ export default function AdminCourseManagement() {
                 </td>
                 <td className="px-4 py-3 whitespace-nowrap">
                   <div className="text-sm text-gray-900">{Array.isArray(course.board) ? course.board.join(', ') : course.board || 'CBSE'}</div>
+                </td>
+                <td className="px-4 py-3 whitespace-nowrap">
+                  <div className="text-sm text-gray-900">{course.questionCount || 0}</div>
                 </td>
                 <td className="px-4 py-3 whitespace-nowrap">
                   <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${statusColors[course.status]}`}>

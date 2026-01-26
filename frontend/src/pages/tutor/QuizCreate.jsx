@@ -223,7 +223,7 @@ export default function QuizCreate() {
           className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-indigo-500 min-h-[44px] sm:min-h-0"
         >
           <option value="">Select a course</option>
-          {courses.map(course => (
+          {(courses || []).map(course => (
             <option key={course._id} value={course._id}>
               {course.title} (Grade {course.grade})
             </option>
@@ -302,7 +302,7 @@ export default function QuizCreate() {
             Topic Weightage (optional - leave blank for equal distribution)
           </label>
           <div className="space-y-3">
-            {topics.map(topic => (
+            {(topics || []).map(topic => (
               <div key={topic.topic} className="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-4">
                 <span className="w-full sm:w-48 text-sm text-gray-600">{topic.topic}</span>
                 <span className="text-xs text-gray-400">({topic.questionCount} questions)</span>
@@ -417,7 +417,7 @@ export default function QuizCreate() {
       <p className="text-sm text-gray-500">Add instructions that will be shown to students before starting the quiz.</p>
 
       <div className="space-y-3">
-        {formData.instructions.map((instruction, index) => (
+        {(formData.instructions || []).map((instruction, index) => (
           <div key={index} className="flex flex-col sm:flex-row sm:items-center sm:space-x-2 space-y-2 sm:space-y-0">
             <span className="text-gray-500">{index + 1}.</span>
             <input
@@ -468,7 +468,7 @@ export default function QuizCreate() {
   )
 
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div className="w-full">
       <button
         onClick={() => navigate('/tutor/quizzes')}
         className="flex items-center text-gray-600 hover:text-gray-900 mb-6 min-h-[44px]"

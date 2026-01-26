@@ -406,3 +406,21 @@ exports.getCourseStructure = async (req, res, next) => {
     next(error);
   }
 };
+
+// @desc    Get question count for a course
+// @route   GET /api/questions/count/:courseId
+// @access  Public
+exports.getQuestionCount = async (req, res, next) => {
+  try {
+    const { courseId } = req.params;
+    
+    const count = await Question.countDocuments({ courseId });
+    
+    res.json({
+      success: true,
+      count
+    });
+  } catch (error) {
+    next(error);
+  }
+};

@@ -6,7 +6,16 @@ const aiGenerationController = require('../controllers/aiGeneration.controller')
 const { authenticate, authorize } = require('../middleware/auth');
 const validate = require('../middleware/validate');
 
-// All routes require authentication and tutor/admin role
+// Public route - Get question count for a course (students need this to check availability)
+router.get('/count/:courseId',
+  [
+    param('courseId').isMongoId().withMessage('Valid course ID required'),
+    validate
+  ],
+  questionController.getQuestionCount
+);
+
+// All routes below require authentication and tutor/admin role
 router.use(authenticate);
 router.use(authorize('tutor', 'admin'));
 

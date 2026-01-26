@@ -179,6 +179,10 @@ export default function CourseListing() {
                     <Star className="w-3 h-3 sm:w-4 sm:h-4 text-yellow-400 fill-current" />
                     <span>{course.averageRating?.toFixed(1) || 'N/A'}</span>
                   </div>
+                  <div className="flex items-center gap-1">
+                    <BookOpen className="w-3 h-3 sm:w-4 sm:h-4 text-blue-500" />
+                    <span>{course.questionCount || 0} questions</span>
+                  </div>
                   <div className="text-gray-500">
                     {course.level && <span className="capitalize">{course.level}</span>}
                   </div>

@@ -1,0 +1,272 @@
+const mongoose = require('mongoose');
+
+const activeQuizSchema = new mongoose.Schema({
+  // Unique identifier for the active quiz
+  quizId: {
+    type: String,
+    required: true,
+    unique: true,
+    index: true
+  },
+
+  // Session ID for tracking quiz attempts
+  sessionId: {
+    type: String,
+    required: true,
+    unique: true,
+    index: true
+  },
+
+  // Student who created this active quiz
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true,
+    index: true
+  },
+
+  // Quiz metadata
+  subject: {
+    type: String,
+    required: true,
+    trim: true
+  },
+
+  courseName: {
+    type: String,
+    required: true,
+    trim: true
+  },
+
+  courseId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Course',
+    required: true,
+    index: true
+  },
+
+  // Quiz configuration
+  difficulty: {
+    type: String,
+    enum: ['easy', 'medium', 'hard'],
+    required: true
+  },
+
+  questionCount: {
+    type: Number,
+    required: true,
+    min: 1,
+    max: 100
+  },
+
+  duration: {
+    type: Number, // in minutes
+    required: true,
+    min: 1,
+    max: 300
+  },
+
+  // Quiz status
+  status: {
+    type: String,
+    enum: ['ACTIVE', 'IN_PROGRESS', 'COMPLETED', 'ABANDONED'],
+    default: 'ACTIVE',
+    index: true
+  },
+
+  // Selected questions for this quiz
+  questions: [{
+    id: {
+      type: String,
+      required: true
+    },
+    question: {
+      type: String,
+      required: true
+    },
+    options: [{
+      type: String,
+      required: true
+    }],
+    correctAnswer: {
+      type: mongoose.Schema.Types.Mixed,
+      required: true
+    },
+    explanation: {
+      type: String
+    },
+    topic: {
+      type: String,
+      required: true
+    },
+    difficulty: {
+      type: String,
+      enum: ['easy', 'medium', 'hard'],
+      required: true
+    },
+    marks: {
+      type: Number,
+      default: 1
+    },
+    timeLimit: {
+      type: Number // in seconds, optional
+    }
+  }],
+
+  // Quiz timing
+  startedAt: {
+    type: Date
+  },
+
+  completedAt: {
+    type: Date
+  },
+
+  timeSpent: {
+    type: Number // in seconds
+  },
+
+  // Performance tracking
+  score: {
+    type: Number,
+    default: 0
+  },
+
+  totalMarks: {
+    type: Number,
+    default: 0
+  },
+
+  accuracy: {
+    type: Number, // percentage
+    min: 0,
+    max: 100
+  },
+
+  // Algorithm metadata
+  algorithmUsed: {
+    type: String,
+    default: 'algorithm'
+  },
+
+  performanceData: {
+    weakTopics: [{
+      type: String
+    }],
+    topicMastery: {
+      type: Map,
+      of: Number, // topic -> mastery percentage
+      default: new Map()
+    },
+    recommendations: [{
+      type: String
+    }]
+  },
+
+  // Timestamps
+  createdAt: {
+    type: Date,
+    default: Date.now,
+    index: true
+  },
+
+  lastUpdated: {
+    type: Date,
+    default: Date.now
+  },
+
+  // Soft delete
+  isDeleted: {
+    type: Boolean,
+    default: false,
+    index: true
+  }
+}, {
+  timestamps: true,
+  toJSON: { virtuals: true },
+  toObject: { virtuals: true }
+});
+
+// Indexes for performance
+activeQuizSchema.index({ userId: 1, status: 1 });
+activeQuizSchema.index({ userId: 1, createdAt: -1 });
+activeQuizSchema.index({ status: 1, createdAt: -1 });
+activeQuizSchema.index({ isDeleted: 1, createdAt: -1 });
+
+// Virtual for time remaining (if in progress)
+activeQuizSchema.virtual('timeRemaining').get(function() {
+  if (this.status !== 'IN_PROGRESS' || !this.startedAt) return null;
+
+  const elapsed = Math.floor((Date.now() - this.startedAt) / 1000); // seconds
+  const totalTime = this.duration * 60; // convert to seconds
+  const remaining = totalTime - elapsed;
+
+  return Math.max(0, remaining);
+});
+
+// Virtual for progress percentage
+activeQuizSchema.virtual('progressPercentage').get(function() {
+  if (!this.questions || this.questions.length === 0) return 0;
+
+  // This would need to be calculated based on answered questions
+  // For now, return 0 as we don't track individual question status here
+  return 0;
+});
+
+// Instance method to start quiz
+activeQuizSchema.methods.startQuiz = function() {
+  this.status = 'IN_PROGRESS';
+  this.startedAt = new Date();
+  this.lastUpdated = new Date();
+  return this.save();
+};
+
+// Instance method to complete quiz
+activeQuizSchema.methods.completeQuiz = function(score, totalMarks, timeSpent) {
+  this.status = 'COMPLETED';
+  this.completedAt = new Date();
+  this.score = score;
+  this.totalMarks = totalMarks;
+  this.timeSpent = timeSpent;
+  this.accuracy = totalMarks > 0 ? (score / totalMarks) * 100 : 0;
+  this.lastUpdated = new Date();
+  return this.save();
+};
+
+// Instance method to abandon quiz
+activeQuizSchema.methods.abandonQuiz = function() {
+  this.status = 'ABANDONED';
+  this.lastUpdated = new Date();
+  return this.save();
+};
+
+// Static method to get active quizzes for a user
+activeQuizSchema.statics.getActiveQuizzes = function(userId) {
+  return this.find({
+    userId,
+    status: { $in: ['ACTIVE', 'IN_PROGRESS'] },
+    isDeleted: false
+  }).sort({ createdAt: -1 });
+};
+
+// Static method to get completed quizzes for a user
+activeQuizSchema.statics.getCompletedQuizzes = function(userId, limit = 50) {
+  return this.find({
+    userId,
+    status: 'COMPLETED',
+    isDeleted: false
+  })
+  .sort({ completedAt: -1 })
+  .limit(limit);
+};
+
+// Static method to check if user has quiz in progress
+activeQuizSchema.statics.hasQuizInProgress = function(userId) {
+  return this.findOne({
+    userId,
+    status: 'IN_PROGRESS',
+    isDeleted: false
+  });
+};
+
+module.exports = mongoose.model('ActiveQuiz', activeQuizSchema);

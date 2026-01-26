@@ -1,0 +1,138 @@
+[{
+  "_id": {
+    "$oid": "696d8e8098d47cbd00770abd"
+  },
+  "name": "Admin User",
+  "email": "admin@meritai.in",
+  "password": "$2a$10$.LH/oqCJ8Tdla0JPqiNZ7.yIvNtI85XJJP90ToOWM7aimU8zq3Sz.",
+  "role": "admin",
+  "status": "active",
+  "avatar": "",
+  "enrolledCourses": [],
+  "subjects": [],
+  "experience": 0,
+  "rating": 0,
+  "totalRatings": 0,
+  "teachingHours": 0,
+  "notifications": {
+    "email": true,
+    "sms": false,
+    "push": true
+  },
+  "emailVerified": true,
+  "qualifications": [],
+  "refreshTokens": [],
+  "createdAt": {
+    "$date": "2026-01-19T01:53:04.787Z"
+  },
+  "updatedAt": {
+    "$date": "2026-01-19T01:53:04.787Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "696d8e8098d47cbd00770ac0"
+  },
+  "name": "Pranab Kumar",
+  "email": "pranabpiitk2024@gmail.com",
+  "password": "$2a$10$j9gTCA58hoajmlGHqC2Vge3GjdB0gfr2RhJdOjOiuUCZIAwNG39aS",
+  "role": "tutor",
+  "status": "active",
+  "avatar": "",
+  "bio": "Experienced mathematics and physics teacher.",
+  "enrolledCourses": [],
+  "subjects": [
+    "Mathematics",
+    "Physics"
+  ],
+  "qualifications": [
+    {
+      "degree": "MSc in Mathematics",
+      "institution": "IIT",
+      "year": 2016,
+      "_id": {
+        "$oid": "696d8e8098d47cbd00770ac1"
+      }
+    }
+  ],
+  "experience": 6,
+  "rating": 4.8,
+  "totalRatings": 0,
+  "teachingHours": 0,
+  "notifications": {
+    "email": true,
+    "sms": false,
+    "push": true
+  },
+  "emailVerified": true,
+  "refreshTokens": [],
+  "createdAt": {
+    "$date": "2026-01-19T01:53:04.858Z"
+  },
+  "updatedAt": {
+    "$date": "2026-01-19T01:53:04.858Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "696d8e8098d47cbd00770ac4"
+  },
+  "name": "Pranab Student",
+  "email": "pranabpiitk@gmail.com",
+  "password": "$2a$10$D41aKfThKoYuFuBJgj/2Au1J20jB91JEDnedUVXzbu.o0u62pk3i.",
+  "role": "student",
+  "status": "active",
+  "avatar": "",
+  "grade": 4,
+  "enrolledCourses": [],
+  "subjects": [],
+  "experience": 0,
+  "rating": 0,
+  "totalRatings": 0,
+  "teachingHours": 0,
+  "notifications": {
+    "email": true,
+    "sms": false,
+    "push": true
+  },
+  "emailVerified": true,
+  "qualifications": [],
+  "refreshTokens": [
+    {
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5NmQ4ZTgwOThkNDdjYmQwMDc3MGFjNCIsImlhdCI6MTc2ODc4ODc1MywiZXhwIjoxNzY5MzkzNTUzfQ.kl8PWfor15wVr-mX0AqwaHYLWMOqK4iVM5-izkJEj5Q",
+      "expiresAt": {
+        "$date": "2026-01-26T02:12:33.319Z"
+      },
+      "_id": {
+        "$oid": "696d9311cf6861487467067a"
+      },
+      "createdAt": {
+        "$date": "2026-01-19T02:12:33.323Z"
+      }
+    },
+    {
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5NmQ4ZTgwOThkNDdjYmQwMDc3MGFjNCIsImlhdCI6MTc2OTQxNzAxOSwiZXhwIjoxNzcwMDIxODE5fQ.qqoDAVahxLOG0kRaAqmV5QoC5YLEpsGp9laMlNhpf60",
+      "expiresAt": {
+        "$date": "2026-02-02T08:43:39.245Z"
+      },
+      "_id": {
+        "$oid": "6977293bbce274de795d5243"
+      },
+      "createdAt": {
+        "$date": "2026-01-26T08:43:39.246Z"
+      }
+    }
+  ],
+  "createdAt": {
+    "$date": "2026-01-19T01:53:04.920Z"
+  },
+  "updatedAt": {
+    "$date": "2026-01-26T08:43:39.248Z"
+  },
+  "__v": 3,
+  "lastLogin": {
+    "$date": "2026-01-26T08:43:39.246Z"
+  }
+}]
