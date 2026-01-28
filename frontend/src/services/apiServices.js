@@ -514,6 +514,12 @@ export const quizService = {
     return data
   },
 
+  // Get all available quizzes for students
+  getAllAvailableQuizzes: async (params = {}) => {
+    const { data } = await api.get('/quizzes/available', { params })
+    return data
+  },
+
   // Get available quizzes for a course (student)
   getAvailableQuizzes: async (courseId) => {
     const { data } = await api.get(`/quizzes/course/${courseId}/available`)

@@ -64,12 +64,12 @@ export default function CourseDetail() {
 
       {/* Course Header */}
       <div className="genz-card mb-4 sm:mb-6 relative overflow-hidden">
-        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-purple-500 to-indigo-500"></div>
+        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-emerald-500 to-teal-500"></div>
         <div className="flex flex-col xl:flex-row gap-4 sm:gap-6 p-4 sm:p-6 lg:p-8">
           <div className="flex-1 min-w-0">
             <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between mb-4 gap-2">
               <div className="min-w-0 flex-1">
-                <h1 className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent mb-2 break-words animate-shimmer">
+                <h1 className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent mb-2 break-words animate-shimmer">
                   {course.title} ✨
                 </h1>
                 <p className="text-gray-600 text-sm sm:text-base">
@@ -84,7 +84,7 @@ export default function CourseDetail() {
             <div className="grid grid-cols-1 sm:grid-cols-4 gap-3 sm:gap-4 lg:gap-6">
               <div className="flex items-center gap-2 text-gray-600">
                 <Star className="w-4 h-4 sm:w-5 sm:h-5 text-yellow-400 fill-current flex-shrink-0 animate-pulse" />
-                <span className="font-bold text-sm sm:text-base text-purple-600">{course.averageRating?.toFixed(1) || 'N/A'}</span>
+                <span className="font-bold text-sm sm:text-base text-emerald-600">{course.averageRating?.toFixed(1) || 'N/A'}</span>
                 <span className="text-xs sm:text-sm">({course.reviews?.length || 0} reviews)</span>
               </div>
               <div className="flex items-center gap-2 text-gray-600">
@@ -115,8 +115,8 @@ export default function CourseDetail() {
                 onClick={() => setActiveTab(tab.id)}
                 className={`flex items-center gap-1 sm:gap-2 px-2 sm:px-3 lg:px-4 py-3 border-b-2 transition-all whitespace-nowrap min-h-[44px] text-sm sm:text-base flex-shrink-0 hover:scale-105 ${
                   activeTab === tab.id
-                    ? 'border-purple-500 text-purple-600 bg-gradient-to-r from-purple-50 to-indigo-50'
-                    : 'border-transparent text-gray-600 hover:text-purple-600 hover:bg-purple-50'
+                    ? 'border-emerald-500 text-emerald-600 bg-gradient-to-r from-emerald-50 to-teal-50'
+                    : 'border-transparent text-gray-600 hover:text-emerald-600 hover:bg-emerald-50'
                 }`}
               >
                 <tab.icon className={`w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0 ${activeTab === tab.id ? 'animate-bounce-slow' : ''}`} />

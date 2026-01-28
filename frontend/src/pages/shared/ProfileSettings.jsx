@@ -231,43 +231,50 @@ export default function ProfileSettings() {
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <div className="bg-white rounded-lg shadow-lg">
-        {/* Header */}
-        <div className="p-6 border-b border-gray-200">
-          <h1 className="text-2xl font-bold text-gray-900">Profile Settings</h1>
-          <p className="text-gray-600 mt-1">
-            Manage your account settings and preferences
-          </p>
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
+      {/* Header */}
+      <div className="genz-card mb-4 sm:mb-6 relative overflow-hidden">
+        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-emerald-500 to-teal-500"></div>
+        <div className="p-4 sm:p-5 lg:p-6">
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent animate-shimmer mb-2">
+            ⚙️ Profile Settings
+          </h1>
+          <p className="text-gray-600 text-sm sm:text-base lg:text-lg">Manage your account settings and preferences 🚀</p>
         </div>
+      </div>
+
+      {/* Main Content Card */}
+      <div className="genz-card relative overflow-hidden">
+        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-emerald-400 to-teal-400"></div>
 
         {/* Tab Navigation */}
-        <div className="flex border-b border-gray-200">
+        <div className="flex border-b border-gray-200 overflow-x-auto bg-gradient-to-r from-emerald-50 to-teal-50">
           {tabs.map((tab) => (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`flex items-center px-6 py-4 text-sm font-medium border-b-2 transition-colors ${
+              className={`flex items-center px-4 sm:px-6 lg:px-8 py-4 text-sm sm:text-base font-semibold transition-all duration-300 whitespace-nowrap hover:bg-white/50 ${
                 activeTab === tab.id
-                  ? 'border-primary-500 text-primary-600'
-                  : 'border-transparent text-gray-500 hover:text-gray-700'
+                  ? 'text-emerald-600 border-b-2 border-emerald-500 bg-white/80 shadow-sm'
+                  : 'text-gray-600 hover:text-emerald-600'
               }`}
             >
-              <tab.icon className="w-4 h-4 mr-2" />
-              {tab.label}
+              <tab.icon className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
+              <span className="hidden sm:inline">{tab.label}</span>
+              <span className="sm:hidden">{tab.label.split(' ')[0]}</span>
             </button>
           ))}
         </div>
 
         {/* Tab Content */}
-        <div className="p-6">
+        <div className="p-4 sm:p-5 lg:p-6">
           {/* Profile Information Tab */}
           {activeTab === 'profile' && (
             <form onSubmit={profileForm.handleSubmit(handleProfileSubmit)} className="space-y-6">
               {/* Avatar Section */}
-              <div className="flex items-center space-x-6">
+              <div className="flex flex-col sm:flex-row items-center sm:items-start space-y-4 sm:space-y-0 sm:space-x-4 lg:space-x-6">
                 <div className="relative">
-                  <div className="w-24 h-24 bg-gray-200 rounded-full overflow-hidden">
+                  <div className="w-20 h-20 sm:w-24 sm:h-24 bg-gray-200 rounded-full overflow-hidden">
                     {avatarPreview || user?.avatar ? (
                       <img 
                         src={avatarPreview || user.avatar} 
@@ -276,7 +283,7 @@ export default function ProfileSettings() {
                       />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center">
-                        <User className="w-8 h-8 text-gray-400" />
+                        <User className="w-6 h-6 sm:w-8 sm:h-8 text-gray-400" />
                       </div>
                     )}
                   </div>
@@ -290,16 +297,16 @@ export default function ProfileSettings() {
                     />
                   </label>
                 </div>
-                <div>
+                <div className="text-center sm:text-left">
                   <h3 className="font-medium text-gray-900">Profile Photo</h3>
-                  <p className="text-sm text-gray-500">
+                  <p className="text-xs sm:text-sm text-gray-500">
                     Choose a photo to represent your profile
                   </p>
                 </div>
               </div>
 
               {/* Basic Information */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Full Name
@@ -307,7 +314,7 @@ export default function ProfileSettings() {
                   <input
                     type="text"
                     {...profileForm.register('name', { required: 'Name is required' })}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 transition-all text-sm sm:text-base bg-white"
                   />
                   {profileForm.formState.errors.name && (
                     <p className="text-red-500 text-sm mt-1">
@@ -323,7 +330,7 @@ export default function ProfileSettings() {
                   <input
                     type="email"
                     {...profileForm.register('email', { required: 'Email is required' })}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 transition-all text-sm sm:text-base bg-white"
                   />
                   {profileForm.formState.errors.email && (
                     <p className="text-red-500 text-sm mt-1">
@@ -339,7 +346,7 @@ export default function ProfileSettings() {
                   <input
                     type="tel"
                     {...profileForm.register('phone')}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 transition-all text-sm sm:text-base bg-white"
                   />
                 </div>
 
@@ -351,7 +358,7 @@ export default function ProfileSettings() {
                     type="text"
                     value={user?.role}
                     disabled
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg bg-gray-50 text-gray-500"
+                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl bg-gray-50 text-gray-500 text-sm sm:text-base"
                   />
                 </div>
               </div>
@@ -365,7 +372,7 @@ export default function ProfileSettings() {
                   {...profileForm.register('bio')}
                   rows="4"
                   placeholder="Tell us about yourself..."
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 transition-all text-sm sm:text-base bg-white resize-none"
                 />
               </div>
 
@@ -380,7 +387,7 @@ export default function ProfileSettings() {
                       type="text"
                       {...profileForm.register('subjects')}
                       placeholder="Mathematics, Physics, Chemistry..."
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+                      className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 transition-all text-sm sm:text-base bg-white"
                     />
                   </div>
 
@@ -392,7 +399,7 @@ export default function ProfileSettings() {
                       {...profileForm.register('experience')}
                       rows="3"
                       placeholder="Describe your teaching experience..."
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+                      className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 transition-all text-sm sm:text-base bg-white resize-none"
                     />
                   </div>
 
@@ -412,28 +419,28 @@ export default function ProfileSettings() {
                     
                     <div className="space-y-3">
                       {qualifications.map((qual, index) => (
-                        <div key={index} className="flex items-center gap-3 p-3 border border-gray-200 rounded-lg">
-                          <div className="flex-1 grid grid-cols-1 md:grid-cols-3 gap-3">
+                        <div key={index} className="flex flex-col sm:flex-row items-start sm:items-center gap-3 p-3 border border-gray-200 rounded-xl">
+                          <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 w-full">
                             <input
                               type="text"
                               placeholder="Degree/Certificate"
                               value={qual.degree}
                               onChange={(e) => updateQualification(index, 'degree', e.target.value)}
-                              className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm"
+                              className="px-3 py-2 border-2 border-gray-200 rounded-lg focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 transition-all text-sm bg-white"
                             />
                             <input
                               type="text"
                               placeholder="Institution"
                               value={qual.institution}
                               onChange={(e) => updateQualification(index, 'institution', e.target.value)}
-                              className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm"
+                              className="px-3 py-2 border-2 border-gray-200 rounded-lg focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 transition-all text-sm bg-white"
                             />
                             <input
                               type="number"
                               placeholder="Year"
                               value={qual.year}
                               onChange={(e) => updateQualification(index, 'year', e.target.value)}
-                              className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm"
+                              className="px-3 py-2 border-2 border-gray-200 rounded-lg focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 transition-all text-sm bg-white"
                               min="1950"
                               max={new Date().getFullYear()}
                             />
@@ -441,7 +448,7 @@ export default function ProfileSettings() {
                           <button
                             type="button"
                             onClick={() => removeQualification(index)}
-                            className="text-red-500 hover:text-red-700 p-1"
+                            className="text-red-500 hover:text-red-700 p-1 self-end sm:self-center"
                           >
                             <Trash2 className="w-4 h-4" />
                           </button>
@@ -456,11 +463,11 @@ export default function ProfileSettings() {
                 </>
               )}
 
-              <div className="flex justify-end">
+              <div className="flex justify-start sm:justify-end">
                 <button
                   type="submit"
                   disabled={updateProfileMutation.isLoading}
-                  className="flex items-center px-6 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 disabled:opacity-50"
+                  className="genz-btn-primary text-sm sm:text-base"
                 >
                   {updateProfileMutation.isLoading ? (
                     <LoadingSpinner size="small" />
@@ -475,9 +482,9 @@ export default function ProfileSettings() {
 
           {/* Security Tab */}
           {activeTab === 'security' && (
-            <div className="space-y-6">
-              <form onSubmit={passwordForm.handleSubmit(handlePasswordSubmit)} className="space-y-6">
-                <h3 className="text-lg font-medium text-gray-900">Change Password</h3>
+            <div className="space-y-4 sm:space-y-6">
+              <form onSubmit={passwordForm.handleSubmit(handlePasswordSubmit)} className="space-y-4 sm:space-y-6">
+                <h3 className="text-base sm:text-lg font-medium text-gray-900">Change Password</h3>
                 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -487,7 +494,7 @@ export default function ProfileSettings() {
                     <input
                       type={showPassword.current ? 'text' : 'password'}
                       {...passwordForm.register('currentPassword', { required: 'Current password is required' })}
-                      className="w-full px-3 py-2 pr-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+                      className="w-full px-4 py-3 pr-12 border-2 border-gray-200 rounded-xl focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 transition-all text-sm sm:text-base bg-white"
                     />
                     <button
                       type="button"
@@ -510,7 +517,7 @@ export default function ProfileSettings() {
                         required: 'New password is required',
                         minLength: { value: 8, message: 'Password must be at least 8 characters' }
                       })}
-                      className="w-full px-3 py-2 pr-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+                      className="w-full px-4 py-3 pr-12 border-2 border-gray-200 rounded-xl focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 transition-all text-sm sm:text-base bg-white"
                     />
                     <button
                       type="button"
@@ -530,7 +537,7 @@ export default function ProfileSettings() {
                     <input
                       type={showPassword.confirm ? 'text' : 'password'}
                       {...passwordForm.register('confirmPassword', { required: 'Please confirm your password' })}
-                      className="w-full px-3 py-2 pr-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+                      className="w-full px-4 py-3 pr-12 border-2 border-gray-200 rounded-xl focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 transition-all text-sm sm:text-base bg-white"
                     />
                     <button
                       type="button"
@@ -542,11 +549,11 @@ export default function ProfileSettings() {
                   </div>
                 </div>
 
-                <div className="flex justify-end">
+                <div className="flex justify-start sm:justify-end">
                   <button
                     type="submit"
                     disabled={changePasswordMutation.isLoading}
-                    className="flex items-center px-6 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 disabled:opacity-50"
+                    className="genz-btn-primary text-sm sm:text-base"
                   >
                     {changePasswordMutation.isLoading ? (
                       <LoadingSpinner size="small" />
@@ -562,16 +569,16 @@ export default function ProfileSettings() {
 
           {/* Notifications Tab */}
           {activeTab === 'notifications' && (
-            <div className="space-y-6">
-              <h3 className="text-lg font-medium text-gray-900">Notification Preferences</h3>
+            <div className="space-y-4 sm:space-y-6">
+              <h3 className="text-base sm:text-lg font-medium text-gray-900">Notification Preferences</h3>
               
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <div>
+              <div className="space-y-4 sm:space-y-6">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
+                  <div className="flex-1">
                     <h4 className="font-medium text-gray-900">Email Notifications</h4>
-                    <p className="text-sm text-gray-500">Receive notifications via email</p>
+                    <p className="text-xs sm:text-sm text-gray-500">Receive notifications via email</p>
                   </div>
-                  <label className="relative inline-flex items-center cursor-pointer">
+                  <label className="relative inline-flex items-center cursor-pointer self-start sm:self-center">
                     <input
                       type="checkbox"
                       checked={notifications.email}
@@ -582,12 +589,12 @@ export default function ProfileSettings() {
                   </label>
                 </div>
 
-                <div className="flex items-center justify-between">
-                  <div>
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
+                  <div className="flex-1">
                     <h4 className="font-medium text-gray-900">Push Notifications</h4>
-                    <p className="text-sm text-gray-500">Receive browser push notifications</p>
+                    <p className="text-xs sm:text-sm text-gray-500">Receive browser push notifications</p>
                   </div>
-                  <label className="relative inline-flex items-center cursor-pointer">
+                  <label className="relative inline-flex items-center cursor-pointer self-start sm:self-center">
                     <input
                       type="checkbox"
                       checked={notifications.push}
@@ -598,12 +605,12 @@ export default function ProfileSettings() {
                   </label>
                 </div>
 
-                <div className="flex items-center justify-between">
-                  <div>
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
+                  <div className="flex-1">
                     <h4 className="font-medium text-gray-900">SMS Notifications</h4>
-                    <p className="text-sm text-gray-500">Receive notifications via text message</p>
+                    <p className="text-xs sm:text-sm text-gray-500">Receive notifications via text message</p>
                   </div>
-                  <label className="relative inline-flex items-center cursor-pointer">
+                  <label className="relative inline-flex items-center cursor-pointer self-start sm:self-center">
                     <input
                       type="checkbox"
                       checked={notifications.sms}
@@ -614,12 +621,12 @@ export default function ProfileSettings() {
                   </label>
                 </div>
 
-                <div className="flex items-center justify-between">
-                  <div>
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
+                  <div className="flex-1">
                     <h4 className="font-medium text-gray-900">Marketing Communications</h4>
-                    <p className="text-sm text-gray-500">Receive updates about new features and promotions</p>
+                    <p className="text-xs sm:text-sm text-gray-500">Receive updates about new features and promotions</p>
                   </div>
-                  <label className="relative inline-flex items-center cursor-pointer">
+                  <label className="relative inline-flex items-center cursor-pointer self-start sm:self-center">
                     <input
                       type="checkbox"
                       checked={notifications.marketing}
@@ -635,43 +642,43 @@ export default function ProfileSettings() {
 
           {/* Privacy & Account Tab */}
           {activeTab === 'privacy' && (
-            <div className="space-y-6">
-              <h3 className="text-lg font-medium text-gray-900">Privacy & Account</h3>
+            <div className="space-y-4 sm:space-y-6">
+              <h3 className="text-base sm:text-lg font-medium text-gray-900">Privacy & Account</h3>
               
               {/* Account Status */}
-              <div className="bg-gray-50 p-4 rounded-lg">
+              <div className="bg-gray-50 p-3 sm:p-4 rounded-xl">
                 <div className="flex items-center">
-                  <CheckCircle className="w-5 h-5 text-green-500 mr-2" />
-                  <span className="font-medium text-gray-900">Account Status: Active</span>
+                  <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-green-500 mr-2" />
+                  <span className="font-medium text-gray-900 text-sm sm:text-base">Account Status: Active</span>
                 </div>
-                <p className="text-sm text-gray-600 mt-1">
+                <p className="text-xs sm:text-sm text-gray-600 mt-1">
                   Your account is active and in good standing
                 </p>
               </div>
 
               {/* Data Export */}
-              <div className="border border-gray-200 rounded-lg p-4">
-                <h4 className="font-medium text-gray-900 mb-2">Export Your Data</h4>
-                <p className="text-sm text-gray-600 mb-4">
+              <div className="border border-gray-200 rounded-xl p-3 sm:p-4">
+                <h4 className="font-medium text-gray-900 mb-2 text-sm sm:text-base">Export Your Data</h4>
+                <p className="text-xs sm:text-sm text-gray-600 mb-3 sm:mb-4">
                   Download a copy of all your data including profile information, courses, and activities.
                 </p>
-                <button className="flex items-center px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200">
-                  <Upload className="w-4 h-4 mr-2" />
+                <button className="flex items-center px-3 sm:px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 text-sm">
+                  <Upload className="w-3 h-3 sm:w-4 sm:h-4 mr-2" />
                   Request Data Export
                 </button>
               </div>
 
               {/* Delete Account */}
-              <div className="border border-red-200 rounded-lg p-4 bg-red-50">
-                <h4 className="font-medium text-red-900 mb-2">Delete Account</h4>
-                <p className="text-sm text-red-700 mb-4">
+              <div className="border border-red-200 rounded-xl p-3 sm:p-4 bg-red-50">
+                <h4 className="font-medium text-red-900 mb-2 text-sm sm:text-base">Delete Account</h4>
+                <p className="text-xs sm:text-sm text-red-700 mb-3 sm:mb-4">
                   Once you delete your account, there is no going back. Please be certain.
                 </p>
                 <button
                   onClick={() => setShowDeleteDialog(true)}
-                  className="flex items-center px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
+                  className="flex items-center px-3 sm:px-4 py-2 bg-red-600 text-white rounded-xl hover:bg-red-700 transition-all text-sm"
                 >
-                  <Trash2 className="w-4 h-4 mr-2" />
+                  <Trash2 className="w-3 h-3 sm:w-4 sm:h-4 mr-2" />
                   Delete Account
                 </button>
               </div>

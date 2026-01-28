@@ -37,7 +37,7 @@
   --meritai-orange: #F97316; /* orange-500 */
   --meritai-red: #EF4444;
   --meritai-muted: #EFF6FF;
-  --meritai-gradient-primary: linear-gradient(90deg, #6D28D9 0%, #4F46E5 100%);
+  --meritai-gradient-primary: linear-gradient(90deg, #0d9488 0%, #14b8a6 100%);
 }
 
 /* ========== Card Styles ========== */
@@ -62,7 +62,11 @@
 /* ========== Button Styles ========== */
 .genz-btn-primary {
   @apply px-6 py-3 rounded-xl font-semibold text-white shadow-lg transition-all duration-300 transform hover:scale-105 hover:shadow-xl;
-  background: var(--meritai-gradient-primary);
+  background-color: #0d9488;
+}
+
+.genz-btn-primary:hover {
+  background-color: #0f766e;
 }
 
 .genz-btn-secondary {
@@ -81,13 +85,13 @@
 }
 
 .genz-btn-outline {
-  @apply px-6 py-3 rounded-xl font-semibold border-2 border-purple-500 text-purple-600 hover:bg-purple-500 hover:text-white transition-all duration-300 transform hover:scale-105;
+  @apply px-6 py-3 rounded-xl font-semibold border-2 border-teal-500 text-teal-600 hover:bg-teal-500 hover:text-white transition-all duration-300 transform hover:scale-105;
 }
 
 .meritai-btn-primary {
   @apply px-5 py-2 rounded-md font-semibold text-white transition-all duration-200;
-  background: linear-gradient(90deg, #6D28D9, #4F46E5);
-  box-shadow: 0 6px 18px rgba(79,70,229,0.12);
+  background: linear-gradient(90deg, #0d9488, #14b8a6);
+  box-shadow: 0 6px 18px rgba(13,148,136,0.12);
 }
 
 .meritai-btn-accent {
@@ -102,7 +106,7 @@
 }
 
 .genz-badge-purple {
-  @apply bg-purple-100 text-purple-700 border border-purple-200;
+  @apply bg-emerald-100 text-emerald-700 border border-emerald-200;
 }
 
 .genz-badge-pink {
@@ -144,15 +148,15 @@
 
 /* ========== Input Styles ========== */
 .genz-input {
-  @apply w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-purple-500 focus:ring-4 focus:ring-purple-100 transition-all duration-300 outline-none;
+  @apply w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-teal-500 focus:ring-4 focus:ring-teal-100 transition-all duration-300 outline-none;
 }
 
 .genz-textarea {
-  @apply w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-purple-500 focus:ring-4 focus:ring-purple-100 transition-all duration-300 outline-none resize-none;
+  @apply w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-teal-500 focus:ring-4 focus:ring-teal-100 transition-all duration-300 outline-none resize-none;
 }
 
 .genz-select {
-  @apply w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-purple-500 focus:ring-4 focus:ring-purple-100 transition-all duration-300 outline-none cursor-pointer;
+  @apply w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-teal-500 focus:ring-4 focus:ring-teal-100 transition-all duration-300 outline-none cursor-pointer;
 }
 
 /* ========== Animation Classes ========== */
@@ -210,11 +214,11 @@
 }
 
 .genz-quiz-option {
-  @apply rounded-xl border-2 border-gray-300 p-4 transition-all duration-300 cursor-pointer hover:border-purple-500 hover:bg-purple-50 hover:shadow-md;
+  @apply rounded-xl border-2 border-gray-300 p-4 transition-all duration-300 cursor-pointer hover:border-teal-500 hover:bg-teal-50 hover:shadow-md;
 }
 
 .genz-quiz-option-selected {
-  @apply rounded-xl border-2 border-purple-500 bg-purple-100 p-4 shadow-md;
+  @apply rounded-xl border-2 border-teal-500 bg-teal-100 p-4 shadow-md;
 }
 
 .genz-quiz-option-correct {
@@ -324,7 +328,7 @@
 
 /* ========== Loading Spinner ========== */
 .genz-spinner {
-  @apply inline-block w-8 h-8 border-4 border-purple-200 border-t-purple-600 rounded-full;
+  @apply inline-block w-8 h-8 border-4 border-teal-200 border-t-teal-600 rounded-full;
   animation: genz-spin 1s linear infinite;
 }
 

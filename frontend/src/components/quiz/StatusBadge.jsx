@@ -36,9 +36,9 @@ const statusConfig = {
     label: 'Failed'
   },
   SUBMITTED: {
-    bg: 'bg-purple-100',
-    text: 'text-purple-800',
-    border: 'border-purple-200',
+    bg: 'bg-emerald-100',
+    text: 'text-emerald-800',
+    border: 'border-emerald-200',
     label: 'Submitted'
   },
   AUTO_SUBMITTED: {

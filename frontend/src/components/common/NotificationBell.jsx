@@ -85,7 +85,7 @@ export default function NotificationBell() {
   const getNotificationIcon = (type) => {
     switch (type) {
       case 'ai_generation_complete':
-        return <Sparkles className="w-5 h-5 text-purple-500" />;
+        return <Sparkles className="w-5 h-5 text-emerald-500" />;
       case 'quiz_results_published':
         return <ClipboardList className="w-5 h-5 text-green-500" />;
       case 'manual_evaluation_needed':

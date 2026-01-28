@@ -24,8 +24,8 @@ import {
   ChevronDown,
   ChevronRight,
   Mail,
-  Bell,
   History,
+  LogOut,
 } from 'lucide-react'
 
 const studentLinks = [
@@ -38,8 +38,8 @@ const studentLinks = [
   { to: '/student/quiz-history', icon: History, label: 'Quiz History' },
   { to: '/student/progress', icon: BarChart3, label: 'Progress' },
   { to: '/student/subscription', icon: CreditCard, label: 'Subscription' },
-  { to: '/student/notifications', icon: Bell, label: 'Notifications' },
   { to: '/student/profile', icon: Settings, label: 'Settings' },
+  { type: 'action', icon: LogOut, label: 'Logout', action: 'logout' },
 ]
 
 const tutorLinks = [
@@ -158,17 +158,6 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen }) {
 
   const sidebarInner = (
     <div className="flex flex-col h-full bg-white">
-      <div className="p-6 border-b border-gray-100">
-        <div className="flex items-center space-x-2">
-          <div className="p-2 bg-gradient-to-br from-purple-600 to-indigo-600 rounded-lg shadow-md">
-            <BookOpen className="h-8 w-8 text-white" />
-          </div>
-          <span className="text-xl font-bold text-gray-900">
-            MeritAI
-          </span>
-        </div>
-      </div>
-
       <nav className="px-4 space-y-1 flex-1 overflow-auto py-4">
         {links.map((link, index) => {
           if (link.type === 'group') {
@@ -197,8 +186,8 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen }) {
                           className={({ isActive }) =>
                             `flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-200 ${
                               isActive
-                                ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-md'
-                                : 'text-gray-700 hover:bg-purple-50 hover:text-purple-700'
+                                ? 'bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow-md'
+                                : 'text-gray-700 hover:bg-emerald-50 hover:text-emerald-700'
                             }`
                           }
                           onClick={() => setSidebarOpen?.(false)}
@@ -215,6 +204,26 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen }) {
           }
 
           const Icon = link.icon
+          
+          // Handle action items (like logout)
+          if (link.type === 'action') {
+            return (
+              <button
+                key={link.action}
+                onClick={() => {
+                  if (link.action === 'logout') {
+                    logout()
+                  }
+                  setSidebarOpen?.(false)
+                }}
+                className="w-full flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-200 text-red-600 hover:bg-red-50 hover:text-red-700 font-medium"
+              >
+                <Icon className="h-5 w-5" />
+                <span>{link.label}</span>
+              </button>
+            )
+          }
+
           return (
             <NavLink
               key={link.to}
@@ -223,8 +232,8 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen }) {
               className={({ isActive }) =>
                 `flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-200 ${
                   isActive
-                    ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-md'
-                    : 'text-gray-700 hover:bg-purple-50 hover:text-purple-700'
+                    ? 'bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow-md'
+                    : 'text-gray-700 hover:bg-emerald-50 hover:text-emerald-700'
                 }`
               }
               onClick={() => setSidebarOpen?.(false)}
@@ -236,32 +245,25 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen }) {
         })}
       </nav>
 
-      <div className="p-4 border-t border-gray-100">
-        <button
-          onClick={logout}
-          className="w-full text-left px-4 py-3 text-red-600 hover:bg-red-50 rounded-lg transition-all duration-200 font-medium"
-        >
-          Logout
-        </button>
-      </div>
     </div>
   )
 
   return (
     <>
       {/* Desktop sidebar */}
-      <aside className="hidden md:block w-64 bg-white border-r border-gray-200 min-h-screen shadow-sm">
+      <aside className="hidden md:block w-64 bg-white border-r border-gray-200 min-h-screen shadow-sm pb-24">
         {sidebarInner}
       </aside>
 
       {/* Mobile drawer */}
       {sidebarOpen && (
         <div className="md:hidden fixed inset-0 z-50 flex">
-          <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={() => setSidebarOpen(false)} />
-          <div className="relative w-64 bg-white border-r border-gray-200 h-full shadow-2xl">
+          {/* Dim overlay — stop above footer so footer remains visible */}
+          <div className="absolute top-0 left-0 right-0 bottom-[96px] bg-black/40 backdrop-blur-sm" onClick={() => setSidebarOpen(false)} />
+          <div className="relative w-64 bg-white border-r border-gray-200 h-[calc(100vh-96px)] shadow-2xl">
             <div className="p-4 flex items-center justify-between border-b border-gray-100">
               <div className="flex items-center space-x-2">
-                <div className="p-2 bg-gradient-to-br from-purple-600 to-indigo-600 rounded-lg shadow-md">
+                <div className="p-2 bg-gradient-to-br from-emerald-600 to-teal-600 rounded-lg shadow-md">
                   <BookOpen className="h-8 w-8 text-white" />
                 </div>
                 <span className="text-lg font-bold text-gray-900">
@@ -272,7 +274,7 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen }) {
                 <ChevronRight className="h-5 w-5 text-gray-700" />
               </button>
             </div>
-            <div className="h-[calc(100vh-72px)] overflow-auto">
+            <div className="h-full overflow-auto">
               {sidebarInner}
             </div>
           </div>

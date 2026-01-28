@@ -41,7 +41,7 @@ export default function UpcomingSessions() {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
       {/* Header */}
       <MeritaiCard className="mb-6 relative overflow-hidden">
-        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-purple-600 to-indigo-600"></div>
+        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-emerald-600 to-teal-600"></div>
         <div className="p-6">
           <h2 className="text-xl font-bold">Upcoming Sessions</h2>
           <p className="text-sm text-gray-500">Stay on track — your next live sessions.</p>
@@ -59,7 +59,7 @@ export default function UpcomingSessions() {
               placeholder="🔍 Search sessions..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="meritai-card p-3 pl-10 w-full border-2 border-gray-200 rounded-xl focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all"
+              className="meritai-card p-3 pl-10 w-full border-2 border-gray-200 rounded-xl focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 transition-all"
             />
           </div>
 
@@ -67,7 +67,7 @@ export default function UpcomingSessions() {
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="meritai-card p-3 border-2 border-gray-200 rounded-xl focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all md:w-48"
+            className="meritai-card p-3 border-2 border-gray-200 rounded-xl focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 transition-all md:w-48"
           >
             <option value="scheduled">📅 Scheduled</option>
             <option value="ongoing">🔴 Live Now</option>
@@ -123,7 +123,7 @@ function SessionCard({ session, onClick }) {
       onClick={onClick}
       className="hover:scale-105 transition-all cursor-pointer relative overflow-hidden group"
     >
-      <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-purple-600 to-indigo-600"></div>
+      <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-emerald-600 to-teal-600"></div>
 
       {/* Status Badge */}
       <div className="flex items-center justify-between mb-4">
@@ -144,14 +144,14 @@ function SessionCard({ session, onClick }) {
       </div>
 
       {/* Session Title */}
-      <h3 className="text-xl font-bold text-gray-900 mb-3 line-clamp-2 group-hover:text-purple-600 transition-colors">
+      <h3 className="text-xl font-bold text-gray-900 mb-3 line-clamp-2 group-hover:text-emerald-600 transition-colors">
         {session.title} 📚
       </h3>
 
       {/* Course Info */}
       <div className="genz-card p-3 mb-4 hover:scale-105 transition-all">
         <div className="flex items-center gap-2">
-          <BookOpen className="w-5 h-5 text-purple-500" />
+          <BookOpen className="w-5 h-5 text-emerald-500" />
           <p className="text-sm text-gray-700 font-medium line-clamp-1">{session.course?.title}</p>
         </div>
       </div>
@@ -165,7 +165,7 @@ function SessionCard({ session, onClick }) {
           <span className="font-medium">{dateText}</span>
         </div>
         <div className="flex items-center gap-3 text-sm text-gray-600">
-          <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-indigo-500 rounded-lg flex items-center justify-center shadow-md">
+          <div className="w-8 h-8 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-lg flex items-center justify-center shadow-md">
             <Clock className="w-4 h-4 text-white" />
           </div>
           <span className="font-medium">{session.duration} minutes ⏰</span>

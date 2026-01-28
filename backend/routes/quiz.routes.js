@@ -52,6 +52,18 @@ router.get('/course/:courseId/available',
   quizController.getAvailableQuizzes
 );
 
+// Get all available quizzes (Student)
+router.get('/available',
+  authenticate,
+  [
+    query('subject').optional().isString(),
+    query('courseId').optional().isMongoId(),
+    query('difficultyLevel').optional().isIn(['easy', 'medium', 'hard']),
+    validate
+  ],
+  quizController.getAllAvailableQuizzes
+);
+
 // Get quiz by ID
 router.get('/:id',
   authenticate,

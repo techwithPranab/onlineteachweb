@@ -2,7 +2,7 @@ import { Outlet } from 'react-router-dom'
 import { useState } from 'react'
 import Sidebar from '../components/layout/Sidebar'
 import DashboardHeader from '../components/layout/DashboardHeader'
-import StudentFooter from '../components/layout/StudentFooter'
+import Footer from '../components/layout/Footer'
 import { useAuthStore } from '../store/authStore'
 
 export default function DashboardLayout() {
@@ -10,16 +10,18 @@ export default function DashboardLayout() {
   const { user } = useAuthStore()
 
   return (
-    <div className="min-h-screen bg-gray-50 flex">
-      <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
-      <div className="flex-1 flex flex-col">
-        <DashboardHeader setSidebarOpen={setSidebarOpen} />
-        <main className="flex-1 p-4 overflow-auto">
-          <Outlet />
-        </main>
-        {/* Show Gen-Z footer only for students */}
-        {user?.role === 'student' && <StudentFooter />}
+    <div className="min-h-screen bg-white flex flex-col">
+      <div className="flex flex-1">
+        <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
+        <div className="flex-1 flex flex-col">
+          <DashboardHeader setSidebarOpen={setSidebarOpen} />
+          <main className="flex-1 p-4 overflow-auto bg-white">
+            <Outlet />
+          </main>
+        </div>
       </div>
+      {/* Show footer for all authenticated users - spans full width */}
+      <Footer />
     </div>
   )
 }

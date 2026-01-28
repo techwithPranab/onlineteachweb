@@ -73,9 +73,9 @@ export default function QuizStatsDashboardWidget() {
             <div className="text-2xl font-bold text-green-600">{stats?.published || 0}</div>
             <div className="text-xs text-green-700">Published</div>
           </div>
-          <div className="text-center p-3 bg-purple-50 rounded-lg">
-            <div className="text-2xl font-bold text-purple-600">{stats?.totalAttempts || 0}</div>
-            <div className="text-xs text-purple-700">Total Attempts</div>
+          <div className="text-center p-3 bg-emerald-50 rounded-lg">
+            <div className="text-2xl font-bold text-emerald-600">{stats?.totalAttempts || 0}</div>
+            <div className="text-xs text-emerald-700">Total Attempts</div>
           </div>
           <div className="text-center p-3 bg-orange-50 rounded-lg">
             <div className="text-2xl font-bold text-orange-600">{pendingEvaluations}</div>

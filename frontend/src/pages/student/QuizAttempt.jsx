@@ -325,8 +325,8 @@ export default function QuizAttempt() {
     switch (status) {
       case 'current': return 'bg-indigo-600 text-white'
       case 'answered': return 'bg-green-500 text-white'
-      case 'marked': return 'bg-purple-500 text-white'
-      case 'marked-answered': return 'bg-purple-500 text-white ring-2 ring-green-500'
+      case 'marked': return 'bg-emerald-500 text-white'
+      case 'marked-answered': return 'bg-emerald-500 text-white ring-2 ring-green-500'
       default: return 'bg-gray-200 text-gray-700'
     }
   }
@@ -389,13 +389,13 @@ export default function QuizAttempt() {
   if (!session) return null
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-white">
       {/* Header with Timer */}
       <MeritaiCard className="border-b sticky top-0 z-10 shadow-md">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-4">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
             <div>
-              <h1 className="text-lg sm:text-xl font-bold bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent animate-shimmer">
+              <h1 className="text-lg sm:text-xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent animate-shimmer">
                 🎯 Quiz in Progress
               </h1>
               <p className="text-sm text-gray-600 font-medium">{session.questions?.length} Questions • Good luck! 🚀</p>
@@ -505,7 +505,7 @@ export default function QuizAttempt() {
                   <span className="text-xs sm:text-sm">Not Visited</span>
                 </div>
                 <div className="flex items-center">
-                  <span className="w-3 h-3 sm:w-4 sm:h-4 rounded bg-purple-500 mr-2 flex-shrink-0"></span>
+                  <span className="w-3 h-3 sm:w-4 sm:h-4 rounded bg-emerald-500 mr-2 flex-shrink-0"></span>
                   <span className="text-xs sm:text-sm">Marked</span>
                 </div>
                 <div className="flex items-center">
@@ -537,7 +537,7 @@ export default function QuizAttempt() {
                 </div>
                 <div className="flex justify-between">
                   <span>Marked for Review:</span>
-                  <span className="font-medium text-purple-600">
+                  <span className="font-medium text-emerald-600">
                     {Object.keys(markedForReview).filter(k => markedForReview[k]).length}
                   </span>
                 </div>

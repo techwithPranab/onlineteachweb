@@ -83,7 +83,7 @@ export default function StudentDashboard() {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 space-y-6 sm:space-y-8">
       {/* Welcome Header with MeriTai Style */}
-      <div className="bg-gradient-to-r from-purple-600 to-indigo-600 p-6 sm:p-8 rounded-2xl text-center text-white shadow-lg">
+      <div className="bg-gradient-to-r from-emerald-600 to-teal-600 p-6 sm:p-8 rounded-2xl text-center text-white shadow-lg">
         <h1 className="text-2xl sm:text-3xl font-bold text-white mb-2">
           Welcome back, {user?.name?.split(' ')[0] || 'Student'}! 👋
         </h1>
@@ -99,7 +99,7 @@ export default function StudentDashboard() {
           label="Courses"
           value={availableCoursesCount}
           emoji="📚"
-          gradient="from-purple-500 to-purple-600"
+          gradient="from-emerald-500 to-emerald-600"
         />
         <StatCard
           icon={<Calendar className="h-6 w-6 sm:h-8 sm:w-8" />}

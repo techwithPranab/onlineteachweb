@@ -119,33 +119,33 @@ export default function SubscriptionManagement() {
   if (error) return <ErrorMessage message={(error && error.message) || 'Failed to load subscription'} />
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
       {/* Header */}
-      <div className="genz-card mb-6 relative overflow-hidden">
-        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-purple-500 to-indigo-500"></div>
-        <div className="p-6">
-          <h1 className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent animate-shimmer mb-2">
+      <div className="genz-card mb-4 sm:mb-6 relative overflow-hidden">
+        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-emerald-500 to-teal-500"></div>
+        <div className="p-4 sm:p-5 lg:p-6">
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent animate-shimmer mb-2">
             💎 Subscription Management
           </h1>
-          <p className="text-gray-600 text-base">Manage your subscription plan and billing 🚀</p>
+          <p className="text-gray-600 text-sm sm:text-base lg:text-lg">Manage your subscription plan and billing 🚀</p>
         </div>
       </div>
 
       {/* Current Subscription */}
       {currentSubscription && (
-        <div className="genz-card mb-6 relative overflow-hidden">
+        <div className="genz-card mb-4 sm:mb-6 relative overflow-hidden">
           <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-green-500 via-emerald-500 to-teal-500"></div>
-          <div className="p-6">
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-3">
+          <div className="p-4 sm:p-5 lg:p-6">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 sm:mb-6 gap-3">
               <div>
-                <h2 className="text-xl font-bold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent mb-2">
+                <h2 className="text-lg sm:text-xl font-bold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent mb-2">
                   🎯 Current Plan
                 </h2>
-                <p className="text-gray-600 text-base">
+                <p className="text-gray-600 text-sm sm:text-base">
                   {currentSubscription.plan?.name || 'No active subscription'} ✨
                 </p>
               </div>
-              <div className={`px-4 py-2 rounded-full flex items-center gap-2 text-sm font-bold shadow-lg ${
+              <div className={`px-3 sm:px-4 py-2 rounded-full flex items-center gap-2 text-sm font-bold shadow-lg ${
                 currentSubscription.status === 'active' ? 'bg-gradient-to-r from-green-400 to-emerald-500 text-white' :
                 currentSubscription.status === 'cancelled' ? 'bg-gradient-to-r from-red-400 to-pink-500 text-white' :
                 'bg-gradient-to-r from-yellow-400 to-orange-500 text-white'
@@ -157,41 +157,41 @@ export default function SubscriptionManagement() {
               </div>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
-              <div className="genz-card p-4 hover:scale-105 transition-all">
-                <p className="text-sm text-gray-500 font-medium mb-1">💰 Plan Price</p>
-                <p className="text-xl font-bold text-gray-900">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 mb-4 sm:mb-6">
+              <div className="genz-card p-3 sm:p-4 hover:scale-105 transition-all">
+                <p className="text-xs sm:text-sm text-gray-500 font-medium mb-1">💰 Plan Price</p>
+                <p className="text-lg sm:text-xl font-bold text-gray-900">
                   ₹{currentSubscription.plan?.price || 0}
-                  <span className="text-sm text-gray-600 font-normal">/month</span>
+                  <span className="text-xs sm:text-sm text-gray-600 font-normal">/month</span>
                 </p>
               </div>
-              <div className="genz-card p-4 hover:scale-105 transition-all">
-                <p className="text-sm text-gray-500 font-medium mb-1">📅 Next Billing Date</p>
-                <p className="text-base font-bold text-gray-900">
+              <div className="genz-card p-3 sm:p-4 hover:scale-105 transition-all">
+                <p className="text-xs sm:text-sm text-gray-500 font-medium mb-1">📅 Next Billing Date</p>
+                <p className="text-sm sm:text-base font-bold text-gray-900">
                   {currentSubscription.currentPeriodEnd
                     ? new Date(currentSubscription.currentPeriodEnd).toLocaleDateString()
                     : 'N/A'}
                 </p>
               </div>
-              <div className="genz-card p-4 hover:scale-105 transition-all">
-                <p className="text-sm text-gray-500 font-medium mb-1">💳 Payment Method</p>
+              <div className="genz-card p-3 sm:p-4 hover:scale-105 transition-all">
+                <p className="text-xs sm:text-sm text-gray-500 font-medium mb-1">💳 Payment Method</p>
                 <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 bg-gradient-to-br from-blue-400 to-cyan-500 rounded-lg flex items-center justify-center shadow-lg">
-                    <CreditCard className="w-4 h-4 text-white" />
+                  <div className="w-6 h-6 sm:w-8 sm:h-8 bg-gradient-to-br from-blue-400 to-cyan-500 rounded-lg flex items-center justify-center shadow-lg">
+                    <CreditCard className="w-3 h-3 sm:w-4 sm:h-4 text-white" />
                   </div>
-                  <p className="text-base font-bold text-gray-900">•••• 4242</p>
+                  <p className="text-sm sm:text-base font-bold text-gray-900">•••• 4242</p>
                 </div>
               </div>
             </div>
 
-            <div className="flex flex-col sm:flex-row gap-3 mt-6 pt-6 border-t border-gray-200">
-              <MeritaiButton className="flex items-center gap-2 text-base px-6 py-3 hover:scale-105 transition-all w-full sm:w-auto">
+            <div className="flex flex-col sm:flex-row gap-3 mt-4 sm:mt-6 pt-4 sm:pt-6 border-t border-gray-200">
+              <MeritaiButton className="flex items-center gap-2 text-sm sm:text-base px-4 sm:px-6 py-2 sm:py-3 hover:scale-105 transition-all w-full sm:w-auto">
                 🔄 Update Payment Method
               </MeritaiButton>
               {currentSubscription.status === 'active' && (
                 <button
                   onClick={() => setShowCancelDialog(true)}
-                  className="px-6 py-3 border-2 border-red-300 text-red-600 rounded-xl hover:bg-red-50 hover:scale-105 transition-all w-full sm:w-auto font-bold"
+                  className="px-4 sm:px-6 py-2 sm:py-3 border-2 border-red-300 text-red-600 rounded-xl hover:bg-red-50 hover:scale-105 transition-all w-full sm:w-auto font-bold text-sm sm:text-base"
                 >
                   ❌ Cancel Subscription
                 </button>
@@ -202,9 +202,9 @@ export default function SubscriptionManagement() {
       )}
 
       {/* Available Plans */}
-      <div className="mb-6">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-3">
-          <h2 className="text-xl font-bold bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">
+      <div className="mb-4 sm:mb-6">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 sm:mb-6 gap-3">
+          <h2 className="text-lg sm:text-xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
             {currentSubscription ? '🚀 Upgrade Your Plan' : '🎯 Choose a Plan'}
           </h2>
 
@@ -212,10 +212,10 @@ export default function SubscriptionManagement() {
           <div className="genz-card p-1 rounded-full inline-flex w-full sm:w-auto">
             <button
               onClick={() => setBilling('monthly')}
-              className={`px-4 py-2 rounded-full flex-1 sm:flex-none text-sm font-bold transition-all ${
+              className={`px-3 sm:px-4 py-2 rounded-full flex-1 sm:flex-none text-sm font-bold transition-all ${
                 billing === 'monthly' 
-                  ? 'bg-gradient-to-r from-purple-500 to-indigo-500 text-white shadow-lg scale-105' 
-                  : 'text-gray-600 hover:text-purple-600'
+                  ? 'bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-lg scale-105' 
+                  : 'text-gray-600 hover:text-emerald-600'
               }`}
               aria-pressed={billing === 'monthly'}
               aria-label="Monthly billing"
@@ -224,10 +224,10 @@ export default function SubscriptionManagement() {
             </button>
             <button
               onClick={() => setBilling('annually')}
-              className={`px-4 py-2 rounded-full flex-1 sm:flex-none text-sm font-bold transition-all ${
+              className={`px-3 sm:px-4 py-2 rounded-full flex-1 sm:flex-none text-sm font-bold transition-all ${
                 billing === 'annually' 
-                  ? 'bg-gradient-to-r from-purple-500 to-indigo-500 text-white shadow-lg scale-105' 
-                  : 'text-gray-600 hover:text-purple-600'
+                  ? 'bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-lg scale-105' 
+                  : 'text-gray-600 hover:text-emerald-600'
               }`}
               aria-pressed={billing === 'annually'}
               aria-label="Annual billing"
@@ -237,57 +237,57 @@ export default function SubscriptionManagement() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
           {plans.map((plan) => {
             const isCurrent = currentSubscription?.plan?._id?.toString() === (plan.docId?.toString() || plan.id)
             return (
               <div
                 key={plan.id}
                 className={`genz-card relative hover:scale-105 transition-all ${
-                  plan.popular ? 'border-2 border-purple-500 shadow-xl' : ''
+                  plan.popular ? 'border-2 border-emerald-500 shadow-xl' : ''
                 }`}
               >
                 {plan.popular && (
-                  <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-purple-500 to-indigo-500 text-white px-4 py-1 text-xs font-bold rounded-full shadow-lg animate-bounce-slow">
+                  <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-emerald-500 to-teal-500 text-white px-4 py-1 text-xs font-bold rounded-full shadow-lg animate-bounce-slow">
                     ⭐ POPULAR
                   </div>
                 )}
-                <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-purple-500 to-indigo-500"></div>
-                <div className="p-6">
-                  <h3 className="text-lg font-bold bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent mb-2">
+                <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-emerald-500 to-teal-500"></div>
+                <div className="p-4 sm:p-5 lg:p-6">
+                  <h3 className="text-base sm:text-lg font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent mb-2">
                     {plan.name} {plan.name === 'Free' ? '🆓' : '💎'}
                   </h3>
-                  <div className="mb-6">
-                    <span className="text-3xl font-bold text-gray-900">₹{plan.price}</span>
+                  <div className="mb-4 sm:mb-6">
+                    <span className="text-2xl sm:text-3xl font-bold text-gray-900">₹{plan.price}</span>
                     <span className="text-gray-600 text-sm">/{plan.interval}</span>
                   </div>
 
-                  <ul className="space-y-3 mb-6">
+                  <ul className="space-y-2 sm:space-y-3 mb-4 sm:mb-6">
                     {plan.features.map((feature, index) => (
-                      <li key={index} className="flex items-start gap-3">
-                        <div className="w-6 h-6 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full flex items-center justify-center shadow-lg flex-shrink-0 mt-0.5">
-                          <CheckCircle className="w-4 h-4 text-white" />
+                      <li key={index} className="flex items-start gap-2 sm:gap-3">
+                        <div className="w-5 h-5 sm:w-6 sm:h-6 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full flex items-center justify-center shadow-lg flex-shrink-0 mt-0.5">
+                          <CheckCircle className="w-3 h-3 sm:w-4 sm:h-4 text-white" />
                         </div>
-                        <span className="text-gray-700 text-sm font-medium">{feature}</span>
+                        <span className="text-gray-700 text-xs sm:text-sm font-medium">{feature}</span>
                       </li>
                     ))}
                   </ul>
 
                   {isCurrent ? (
-                    <MeritaiButton disabled className="w-full text-base py-3">
+                    <MeritaiButton disabled className="w-full text-sm sm:text-base py-2 sm:py-3">
                       ✅ Current Plan
                     </MeritaiButton>
                   ) : plan.price === 0 ? (
                     <button
                       onClick={() => handleUpgrade(plan)}
-                      className="genz-btn-secondary w-full text-base py-3 hover:scale-105 transition-all"
+                      className="genz-btn-secondary w-full text-sm sm:text-base py-2 sm:py-3 hover:scale-105 transition-all"
                     >
                       🔄 Switch to Free
                     </button>
                   ) : (
                     <MeritaiButton
                       onClick={() => handleUpgrade(plan)}
-                      className="w-full text-base py-3 hover:scale-105 transition-all"
+                      className="w-full text-sm sm:text-base py-2 sm:py-3 hover:scale-105 transition-all"
                     >
                       {currentSubscription ? '🚀 Upgrade' : '💎 Subscribe'}
                     </MeritaiButton>
@@ -301,28 +301,28 @@ export default function SubscriptionManagement() {
 
       {/* Billing History */}
       <div className="genz-card relative overflow-hidden">
-        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-500"></div>
-        <div className="p-6">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-3">
-            <h2 className="text-xl font-bold bg-gradient-to-r from-cyan-600 to-blue-600 bg-clip-text text-transparent">
+        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-emerald-500 to-teal-500"></div>
+        <div className="p-4 sm:p-5 lg:p-6">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 sm:mb-6 gap-3">
+            <h2 className="text-lg sm:text-xl font-bold bg-gradient-to-r from-cyan-600 to-blue-600 bg-clip-text text-transparent">
               📊 Billing History
             </h2>
-            <button className="genz-btn-secondary flex items-center gap-2 text-sm px-4 py-2 hover:scale-105 transition-all w-full sm:w-auto">
-              <Download className="w-5 h-5" />
+            <button className="genz-btn-secondary flex items-center gap-2 text-sm px-3 sm:px-4 py-2 hover:scale-105 transition-all w-full sm:w-auto">
+              <Download className="w-4 h-4 sm:w-5 sm:h-5" />
               📥 Download All
             </button>
           </div>
 
-          <div className="overflow-x-auto -mx-4 sm:mx-0">
-            <div className="inline-block min-w-full align-middle">
+          <div className="overflow-x-auto -mx-4 sm:-mx-5 lg:-mx-6">
+            <div className="inline-block min-w-full align-middle px-4 sm:px-5 lg:px-6">
               <table className="min-w-full">
                 <thead>
                   <tr className="border-b-2 border-gray-200">
-                    <th className="text-left py-4 px-4 text-sm font-bold text-gray-700 whitespace-nowrap">📅 Date</th>
-                    <th className="text-left py-4 px-4 text-sm font-bold text-gray-700">📝 Description</th>
-                    <th className="text-left py-4 px-4 text-sm font-bold text-gray-700 whitespace-nowrap">💰 Amount</th>
-                    <th className="text-left py-4 px-4 text-sm font-bold text-gray-700 whitespace-nowrap">📊 Status</th>
-                    <th className="text-left py-4 px-4 text-sm font-bold text-gray-700 whitespace-nowrap">📄 Invoice</th>
+                    <th className="text-left py-3 sm:py-4 px-2 sm:px-4 text-xs sm:text-sm font-bold text-gray-700 whitespace-nowrap">📅 Date</th>
+                    <th className="text-left py-3 sm:py-4 px-2 sm:px-4 text-xs sm:text-sm font-bold text-gray-700">📝 Description</th>
+                    <th className="text-left py-3 sm:py-4 px-2 sm:px-4 text-xs sm:text-sm font-bold text-gray-700 whitespace-nowrap">💰 Amount</th>
+                    <th className="text-left py-3 sm:py-4 px-2 sm:px-4 text-xs sm:text-sm font-bold text-gray-700 whitespace-nowrap">📊 Status</th>
+                    <th className="text-left py-3 sm:py-4 px-2 sm:px-4 text-xs sm:text-sm font-bold text-gray-700 whitespace-nowrap">📄 Invoice</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -331,23 +331,23 @@ export default function SubscriptionManagement() {
                     { date: '2023-12-01', description: 'Standard Plan - Monthly', amount: 29.99, status: 'paid' },
                     { date: '2023-11-01', description: 'Standard Plan - Monthly', amount: 29.99, status: 'paid' },
                   ].map((invoice, index) => (
-                    <tr key={index} className="border-b border-gray-100 hover:bg-gradient-to-r hover:from-purple-50 hover:to-indigo-50 transition-all">
-                      <td className="py-4 px-4 text-sm font-medium text-gray-900 whitespace-nowrap">
+                    <tr key={index} className="border-b border-gray-100 hover:bg-gradient-to-r hover:from-emerald-50 hover:to-teal-50 transition-all">
+                      <td className="py-3 sm:py-4 px-2 sm:px-4 text-xs sm:text-sm font-medium text-gray-900 whitespace-nowrap">
                         {new Date(invoice.date).toLocaleDateString()}
                       </td>
-                      <td className="py-4 px-4 text-sm text-gray-900 max-w-xs truncate font-medium">
+                      <td className="py-3 sm:py-4 px-2 sm:px-4 text-xs sm:text-sm text-gray-900 max-w-xs truncate font-medium">
                         {invoice.description}
                       </td>
-                      <td className="py-4 px-4 text-sm font-bold text-gray-900 whitespace-nowrap">
+                      <td className="py-3 sm:py-4 px-2 sm:px-4 text-xs sm:text-sm font-bold text-gray-900 whitespace-nowrap">
                         ₹{invoice.amount.toFixed(2)}
                       </td>
-                      <td className="py-4 px-4 whitespace-nowrap">
-                        <span className="px-3 py-1 bg-gradient-to-r from-green-400 to-emerald-500 text-white rounded-full text-xs font-bold capitalize shadow-lg">
+                      <td className="py-3 sm:py-4 px-2 sm:px-4 whitespace-nowrap">
+                        <span className="px-2 sm:px-3 py-1 bg-gradient-to-r from-green-400 to-emerald-500 text-white rounded-full text-xs font-bold capitalize shadow-lg">
                           ✅ {invoice.status}
                         </span>
                       </td>
-                      <td className="py-4 px-4 whitespace-nowrap">
-                        <button className="genz-btn-secondary text-sm px-3 py-1 hover:scale-105 transition-all">
+                      <td className="py-3 sm:py-4 px-2 sm:px-4 whitespace-nowrap">
+                        <button className="genz-btn-secondary text-xs sm:text-sm px-2 sm:px-3 py-1 hover:scale-105 transition-all">
                           📥 Download
                         </button>
                       </td>

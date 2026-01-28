@@ -351,6 +351,66 @@ exports.getAvailableQuizzes = async (req, res, next) => {
   }
 };
 
+// @desc    Get all available quizzes for students
+// @route   GET /api/quizzes/available
+// @access  Private (Student)
+exports.getAllAvailableQuizzes = async (req, res, next) => {
+  try {
+    const studentId = req.user._id;
+    const { subject, courseId, difficultyLevel } = req.query;
+
+    // Build filter object
+    const filter = {
+      status: 'published'
+    };
+
+    if (subject) {
+      filter['course.subject'] = subject;
+    }
+
+    if (courseId) {
+      filter.courseId = courseId;
+    }
+
+    if (difficultyLevel) {
+      filter.difficultyLevel = difficultyLevel;
+    }
+
+    const QuizSession = require('../models/QuizSession.model');
+
+    const quizzes = await Quiz.find(filter)
+      .populate('courseId', 'title subject grade')
+      .populate('createdBy', 'name')
+      .lean();
+
+    // Get attempt counts for each quiz
+    const quizzesWithAttempts = await Promise.all(
+      quizzes.map(async (quiz) => {
+        const attemptCount = await QuizSession.countDocuments({
+          quizId: quiz._id,
+          studentId,
+          status: { $in: ['completed', 'submitted'] }
+        });
+
+        return {
+          ...quiz,
+          course: quiz.courseId, // Rename for frontend compatibility
+          attemptsTaken: attemptCount,
+          attemptsRemaining: quiz.attemptsAllowed - attemptCount,
+          canAttempt: attemptCount < quiz.attemptsAllowed
+        };
+      })
+    );
+
+    res.json({
+      success: true,
+      quizzes: quizzesWithAttempts
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 // @desc    Start a quiz
 // @route   POST /api/quizzes/:id/start
 // @access  Private (Student)

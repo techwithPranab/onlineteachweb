@@ -387,7 +387,7 @@ export default function QuizHistory() {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
       {/* Header */}
       <div className="mb-6 text-center">
-        <h1 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent mb-3 animate-shimmer">
+        <h1 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent mb-3 animate-shimmer">
           📊 Quiz History
         </h1>
         <p className="text-gray-600 text-lg">
@@ -414,7 +414,7 @@ export default function QuizHistory() {
             icon={<TrendingUp className="w-5 h-5" />}
             label="Pass Rate"
             value={`${statistics.passRate}%`}
-            color="purple"
+            color="emerald"
           />
           <StatCard
             icon={<Award className="w-5 h-5" />}
@@ -472,9 +472,9 @@ function StatCard({ icon, label, value, color = 'blue' }) {
   const gradientClasses = {
     blue: 'bg-gradient-to-br from-blue-400 to-cyan-500',
     green: 'bg-gradient-to-br from-green-400 to-emerald-500',
-    purple: 'bg-gradient-to-br from-purple-500 to-indigo-500',
+    purple: 'bg-gradient-to-br from-emerald-500 to-teal-500',
     yellow: 'bg-gradient-to-br from-yellow-400 to-orange-500',
-    indigo: 'bg-gradient-to-br from-indigo-400 to-purple-500',
+    indigo: 'bg-gradient-to-br from-teal-400 to-emerald-500',
     gray: 'bg-gradient-to-br from-gray-400 to-slate-500',
     red: 'bg-gradient-to-br from-red-400 to-pink-500'
   }

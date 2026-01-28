@@ -45,12 +45,14 @@ export default function StudentFooter() {
   ]
 
   return (
-    <footer className="relative overflow-hidden bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-500 text-white mt-16">
-      {/* Animated Background Elements */}
+    <footer className="relative overflow-hidden bg-white text-gray-900 mt-16">
+      {/* Thin MeriTai top bar */}
+      <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-emerald-600 to-teal-600"></div>
+
+      {/* Subtle background shapes (toned-down MeriTai palette) */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-yellow-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"></div>
-        <div className="absolute top-0 right-1/4 w-96 h-96 bg-purple-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000"></div>
-        <div className="absolute -bottom-8 left-1/3 w-96 h-96 bg-pink-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-4000"></div>
+        <div className="absolute top-0 left-1/4 w-80 h-80 bg-emerald-300 rounded-full mix-blend-multiply filter blur-3xl opacity-10"></div>
+        <div className="absolute -bottom-8 right-1/4 w-80 h-80 bg-teal-300 rounded-full mix-blend-multiply filter blur-3xl opacity-10"></div>
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -63,13 +65,12 @@ export default function StudentFooter() {
               <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center">
                 <Zap className="w-6 h-6 text-indigo-600" />
               </div>
-              <h3 className="text-2xl font-bold bg-gradient-to-r from-white to-purple-100 bg-clip-text text-transparent">
+              <h3 className="text-2xl font-bold meritai-title-gradient">
                 MeritAI
               </h3>
             </div>
-            <p className="text-purple-100 text-sm leading-relaxed">
-              Level up your learning with AI-powered quizzes! 🚀 
-              Get smarter, faster, and have fun while you're at it! ✨
+            <p className="text-gray-700 text-sm leading-relaxed">
+              Level up your learning with AI-powered quizzes — subtle, focused, and professional.
             </p>
             
             {/* Social Links */}
@@ -80,7 +81,7 @@ export default function StudentFooter() {
                   href={social.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={`w-10 h-10 bg-white/10 backdrop-blur-sm rounded-lg flex items-center justify-center transition-all duration-300 ${social.color} hover:bg-white/20 hover:scale-110 hover:rotate-6`}
+                  className={`w-10 h-10 bg-indigo-50 rounded-lg flex items-center justify-center transition-all duration-300 hover:bg-indigo-100 hover:scale-110`}
                   aria-label={social.name}
                 >
                   <social.icon className="w-5 h-5" />
@@ -100,7 +101,7 @@ export default function StudentFooter() {
                 <li key={link.path}>
                   <Link
                     to={link.path}
-                    className="text-purple-100 hover:text-white transition-all duration-300 flex items-center group text-sm"
+                    className="text-gray-600 hover:text-gray-900 transition-all duration-300 flex items-center group text-sm"
                   >
                     <span className="group-hover:translate-x-1 transition-transform duration-300">
                       {link.name}
@@ -122,7 +123,7 @@ export default function StudentFooter() {
                 <li key={link.path}>
                   <Link
                     to={link.path}
-                    className="text-purple-100 hover:text-white transition-all duration-300 flex items-center group text-sm"
+                    className="text-gray-600 hover:text-gray-900 transition-all duration-300 flex items-center group text-sm"
                   >
                     <link.icon className="w-4 h-4 mr-2 opacity-70 group-hover:opacity-100" />
                     <span className="group-hover:translate-x-1 transition-transform duration-300">
@@ -135,28 +136,28 @@ export default function StudentFooter() {
           </div>
 
           {/* Stats & Motivation */}
-          <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
+          <div className="bg-gray-50 rounded-2xl p-6 border border-gray-100">
             <h4 className="text-lg font-bold mb-4 flex items-center">
               <Trophy className="w-5 h-5 mr-2 text-yellow-300" />
               Your Journey
             </h4>
             <div className="space-y-3">
               <div className="flex items-center justify-between">
-                <span className="text-purple-100 text-sm">Keep Learning!</span>
+                <span className="text-gray-600 text-sm">Keep Learning!</span>
                 <span className="text-2xl">🎯</span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-purple-100 text-sm">Stay Curious!</span>
+                <span className="text-gray-600 text-sm">Stay Curious!</span>
                 <span className="text-2xl">🧠</span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-purple-100 text-sm">Achieve More!</span>
+                <span className="text-gray-600 text-sm">Achieve More!</span>
                 <span className="text-2xl">⚡</span>
               </div>
             </div>
             <Link
               to="/student/quiz-setup"
-              className="mt-4 w-full bg-gradient-to-r from-yellow-400 to-orange-500 text-gray-900 font-bold py-2 px-4 rounded-lg hover:shadow-lg hover:scale-105 transition-all duration-300 flex items-center justify-center text-sm"
+              className="mt-4 w-full meritai-btn-accent font-bold py-2 px-4 rounded-lg flex items-center justify-center text-sm"
             >
               Start New Quiz 🚀
             </Link>
@@ -166,24 +167,24 @@ export default function StudentFooter() {
         {/* Bottom Bar */}
         <div className="pt-8 border-t border-white/20">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-            <div className="text-purple-100 text-sm text-center md:text-left">
-              <p className="flex items-center justify-center md:justify-start flex-wrap">
-                Made with 
-                <Heart className="w-4 h-4 mx-1 text-pink-300 fill-current animate-pulse" /> 
+            <div className="text-gray-600 text-sm text-center md:text-left">
+              <p className="flex items-center justify-center md:justify-start flex-wrap text-gray-600">
+                Made with
+                <Heart className="w-4 h-4 mx-1 text-pink-300 fill-current" />
                 for Students • © {currentYear} MeritAI
               </p>
             </div>
             
             <div className="flex flex-wrap justify-center md:justify-end space-x-4 text-sm">
-              <Link to="/privacy-policy" className="text-purple-100 hover:text-white transition-colors">
+              <Link to="/privacy-policy" className="text-gray-600 hover:text-gray-900 transition-colors">
                 Privacy
               </Link>
-              <span className="text-purple-300">•</span>
-              <Link to="/terms-of-service" className="text-purple-100 hover:text-white transition-colors">
+              <span className="text-gray-400">•</span>
+              <Link to="/terms-of-service" className="text-gray-600 hover:text-gray-900 transition-colors">
                 Terms
               </Link>
-              <span className="text-purple-300">•</span>
-              <Link to="/cookies" className="text-purple-100 hover:text-white transition-colors">
+              <span className="text-gray-400">•</span>
+              <Link to="/cookies" className="text-gray-600 hover:text-gray-900 transition-colors">
                 Cookies
               </Link>
             </div>
@@ -192,7 +193,7 @@ export default function StudentFooter() {
 
         {/* Fun Quote */}
         <div className="mt-8 text-center">
-          <p className="text-purple-100 text-sm italic font-light">
+          <p className="text-gray-600 text-sm italic font-light">
             "The best way to predict your future is to create it! 🌟"
           </p>
         </div>
@@ -200,20 +201,14 @@ export default function StudentFooter() {
 
       {/* CSS for animations */}
       <style jsx>{`
+        /* Reduced animation intensity for MeriTai theme */
         @keyframes blob {
           0% { transform: translate(0px, 0px) scale(1); }
-          33% { transform: translate(30px, -50px) scale(1.1); }
-          66% { transform: translate(-20px, 20px) scale(0.9); }
+          50% { transform: translate(10px, -10px) scale(1.02); }
           100% { transform: translate(0px, 0px) scale(1); }
         }
         .animate-blob {
-          animation: blob 7s infinite;
-        }
-        .animation-delay-2000 {
-          animation-delay: 2s;
-        }
-        .animation-delay-4000 {
-          animation-delay: 4s;
+          animation: blob 12s infinite;
         }
       `}</style>
     </footer>

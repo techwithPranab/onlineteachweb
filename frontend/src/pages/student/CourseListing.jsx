@@ -64,11 +64,11 @@ export default function CourseListing() {
       </div>
 
       {/* Search and Filters with Gen-Z styling */}
-      <div className="genz-card-glass p-4 sm:p-6 mb-6 sm:mb-8 border-2 border-purple-200">
+      <div className="genz-card-glass p-4 sm:p-6 mb-6 sm:mb-8 border-2 border-emerald-200">
         <div className="flex flex-col sm:flex-row gap-4">
           {/* Search */}
           <div className="flex-1 relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-purple-400" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-emerald-400" />
             <input
               type="text"
               placeholder="Search for amazing courses... 🔍"
@@ -162,7 +162,7 @@ export default function CourseListing() {
               className="genz-card hover:scale-105 transition-all duration-300 cursor-pointer overflow-hidden"
             >
               {/* Gradient Top Bar */}
-              <div className="h-2 bg-gradient-to-r from-purple-500 to-indigo-500"></div>
+              <div className="h-2 bg-gradient-to-r from-emerald-500 to-teal-500"></div>
               
               {/* Course Header */}
               <div className="p-4 sm:p-6">
