@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useQuery } from 'react-query'
 import {
@@ -19,6 +19,11 @@ export default function CourseDetail() {
   const { id } = useParams()
   const navigate = useNavigate()
   const [activeTab, setActiveTab] = useState('overview')
+
+  // Scroll to top when component mounts
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
 
   const { data: courseData, isLoading, error } = useQuery(
     ['course', id, 'v2'], // Added version to force refetch
@@ -52,24 +57,25 @@ export default function CourseDetail() {
   ]
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
-      {/* Back Button */}
-      <button
-        onClick={() => navigate('/student/courses')}
-        className="genz-btn-secondary inline-flex items-center gap-2 mb-4 sm:mb-6 min-h-[44px] px-4 py-2 rounded-lg transition-all hover:scale-105"
-      >
-        <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5" />
-        Back to Courses 📚
-      </button>
+    <div className="min-h-screen bg-gray-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
+        {/* Back Button */}
+        <button
+          onClick={() => navigate('/student/courses')}
+          className="genz-btn-secondary inline-flex items-center gap-2 mb-4 sm:mb-6 min-h-[44px] px-4 py-2 rounded-lg transition-all hover:scale-105"
+        >
+          <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5" />
+          <span className="text-sm sm:text-base">Back to Courses 📚</span>
+        </button>
 
       {/* Course Header */}
       <div className="genz-card mb-4 sm:mb-6 relative overflow-hidden">
         <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-emerald-500 to-teal-500"></div>
-        <div className="flex flex-col xl:flex-row gap-4 sm:gap-6 p-4 sm:p-6 lg:p-8">
+        <div className="flex flex-col lg:flex-row gap-4 sm:gap-6 p-4 sm:p-6 lg:p-8">
           <div className="flex-1 min-w-0">
             <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between mb-4 gap-2">
               <div className="min-w-0 flex-1">
-                <h1 className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent mb-2 break-words animate-shimmer">
+                <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent mb-2 break-words animate-shimmer">
                   {course.title} ✨
                 </h1>
                 <p className="text-gray-600 text-sm sm:text-base">
@@ -81,7 +87,7 @@ export default function CourseDetail() {
             <p className="text-gray-700 mb-4 sm:mb-6 text-sm sm:text-base leading-relaxed">{course.description}</p>
 
             {/* Stats */}
-            <div className="grid grid-cols-1 sm:grid-cols-4 gap-3 sm:gap-4 lg:gap-6">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 lg:gap-6">
               <div className="flex items-center gap-2 text-gray-600">
                 <Star className="w-4 h-4 sm:w-5 sm:h-5 text-yellow-400 fill-current flex-shrink-0 animate-pulse" />
                 <span className="font-bold text-sm sm:text-base text-emerald-600">{course.averageRating?.toFixed(1) || 'N/A'}</span>
@@ -120,8 +126,8 @@ export default function CourseDetail() {
                 }`}
               >
                 <tab.icon className={`w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0 ${activeTab === tab.id ? 'animate-bounce-slow' : ''}`} />
-                <span className="hidden xs:inline sm:inline">{tab.label}</span>
-                <span className="xs:hidden sm:hidden">{tab.label.slice(0, 4)}{tab.label.length > 4 ? '...' : ''}</span>
+                <span className="hidden sm:inline">{tab.label}</span>
+                <span className="sm:hidden">{tab.label.slice(0, 4)}{tab.label.length > 4 ? '...' : ''}</span>
               </button>
             ))}
           </nav>
@@ -187,7 +193,7 @@ export default function CourseDetail() {
               {sessionsData?.sessions?.length > 0 ? (
                 <div className="space-y-3">
                   {sessionsData.sessions.map((session) => (
-                    <div key={session._id} className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 p-3 sm:p-4 border border-gray-200 rounded-lg">
+                    <div key={session._id} className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 p-3 sm:p-4 border border-gray-200 rounded-lg hover:shadow-md transition-shadow">
                       <div className="w-10 h-10 sm:w-12 sm:h-12 bg-primary-100 rounded-lg flex items-center justify-center flex-shrink-0">
                         <Calendar className="w-5 h-5 sm:w-6 sm:h-6 text-primary-600" />
                       </div>
@@ -197,7 +203,7 @@ export default function CourseDetail() {
                           {new Date(session.scheduledAt).toLocaleString()}
                         </p>
                       </div>
-                      <span className={`px-2 py-1 sm:px-3 rounded-full text-xs sm:text-sm w-fit ${
+                      <span className={`px-2 py-1 sm:px-3 rounded-full text-xs sm:text-sm w-fit whitespace-nowrap ${
                         session.status === 'scheduled' ? 'bg-blue-100 text-blue-700' :
                         session.status === 'ongoing' ? 'bg-green-100 text-green-700' :
                         'bg-gray-100 text-gray-700'
@@ -217,9 +223,9 @@ export default function CourseDetail() {
             <div>
               <h3 className="text-base sm:text-lg font-semibold mb-4">Course Materials</h3>
               {materialsData?.data?.length > 0 ? (
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                <div className="grid grid-cols-1 gap-3 sm:gap-4">
                   {materialsData.data.map((material) => (
-                    <div key={material._id} className="flex items-center gap-3 sm:gap-4 p-3 sm:p-4 border border-gray-200 rounded-lg">
+                    <div key={material._id} className="flex items-center gap-3 sm:gap-4 p-3 sm:p-4 border border-gray-200 rounded-lg hover:shadow-md transition-shadow">
                       <div className="w-8 h-8 sm:w-10 sm:h-10 bg-primary-100 rounded-lg flex items-center justify-center flex-shrink-0">
                         {material.type === 'video' ? <Video className="w-4 h-4 sm:w-5 sm:h-5 text-primary-600" /> : <FileText className="w-4 h-4 sm:w-5 sm:h-5 text-primary-600" />}
                       </div>
@@ -276,6 +282,7 @@ export default function CourseDetail() {
           )}
         </div>
       </div>
+    </div>
     </div>
   )
 }

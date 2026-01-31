@@ -482,4 +482,50 @@ exports.getPublicSubscriptionPlans = async (req, res, next) => {
   }
 }
 
+// @desc    Get user billing history
+// @route   GET /api/payments/billing-history
+// @access  Private
+exports.getUserBillingHistory = async (req, res, next) => {
+  try {
+    const { page = 1, limit = 10 } = req.query;
+    const skip = (page - 1) * limit;
+
+    const payments = await Payment.find({ user: req.user._id })
+      .populate('subscription', 'planName')
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(parseInt(limit))
+      .select('amount currency status description invoiceUrl receiptUrl paidAt createdAt subscription');
+
+    const total = await Payment.countDocuments({ user: req.user._id });
+
+    // Format the response
+    const formattedPayments = payments.map(payment => ({
+      id: payment._id,
+      date: payment.paidAt || payment.createdAt,
+      description: payment.description || (payment.subscription ? `${payment.subscription.planName} Subscription` : 'Payment'),
+      amount: payment.amount,
+      currency: payment.currency,
+      status: payment.status,
+      invoiceUrl: payment.invoiceUrl,
+      receiptUrl: payment.receiptUrl
+    }));
+
+    res.status(200).json({
+      success: true,
+      data: {
+        payments: formattedPayments,
+        pagination: {
+          page: parseInt(page),
+          limit: parseInt(limit),
+          total,
+          pages: Math.ceil(total / limit)
+        }
+      }
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = exports;

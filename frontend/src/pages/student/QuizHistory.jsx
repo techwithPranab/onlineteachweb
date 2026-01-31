@@ -309,9 +309,53 @@ export default function QuizHistory() {
    */
   const columns = [
     {
+      header: 'Details',
+      accessor: 'subject',
+      width: '40%',
+      className: 'sm:hidden',
+      render: (entry) => (
+        <div className="space-y-2">
+          <div className="flex items-center gap-2">
+            <BookOpen className="w-4 h-4 text-gray-400 flex-shrink-0" />
+            <span className="font-medium text-gray-900 text-sm">{entry.subject}</span>
+          </div>
+          <div className="text-xs text-gray-600">{entry.courseName}</div>
+          <div className="flex items-center gap-2 text-xs">
+            <Calendar className="w-3 h-3 text-gray-400" />
+            <span>{new Date(entry.completedAt).toLocaleDateString()}</span>
+          </div>
+          <div className="flex items-center gap-2 text-xs">
+            <span className={`
+              inline-flex items-center px-1.5 py-0.5 rounded text-xs font-medium
+              ${entry.difficulty === 'easy' ? 'bg-green-100 text-green-800' : ''}
+              ${entry.difficulty === 'medium' ? 'bg-yellow-100 text-yellow-800' : ''}
+              ${entry.difficulty === 'hard' ? 'bg-red-100 text-red-800' : ''}
+            `}>
+              <Target className="w-3 h-3 mr-1" />
+              {entry.difficulty ? (entry.difficulty.charAt(0).toUpperCase() + entry.difficulty.slice(1)) : 'Medium'}
+            </span>
+            <span className="text-gray-500">{entry.questionCount} Qs</span>
+          </div>
+          <div className="flex items-center justify-between">
+            <div className="text-sm font-bold text-gray-900">
+              {entry.score}/{entry.totalScore}
+            </div>
+            <div className={`text-sm font-bold ${
+              entry.accuracy >= 80 ? 'text-green-600' :
+              entry.accuracy >= 60 ? 'text-yellow-600' :
+              'text-red-600'
+            }`}>
+              {entry.accuracy.toFixed(1)}%
+            </div>
+          </div>
+        </div>
+      )
+    },
+    {
       header: 'Date',
       accessor: 'completedAt',
       width: '15%',
+      className: 'hidden sm:table-cell',
       render: (entry) => (
         <div className="flex items-center gap-2">
           <Calendar className="w-4 h-4 text-gray-400" />
@@ -333,6 +377,7 @@ export default function QuizHistory() {
       header: 'Subject',
       accessor: 'subject',
       width: '12%',
+      className: 'hidden sm:table-cell',
       render: (entry) => (
         <div className="flex items-center gap-2">
           <BookOpen className="w-4 h-4 text-gray-400" />
@@ -344,6 +389,7 @@ export default function QuizHistory() {
       header: 'Course',
       accessor: 'courseName',
       width: '18%',
+      className: 'hidden md:table-cell',
       render: (entry) => (
         <span className="text-gray-700">{entry.courseName}</span>
       )
@@ -352,6 +398,7 @@ export default function QuizHistory() {
       header: 'Difficulty',
       accessor: 'difficulty',
       width: '10%',
+      className: 'hidden md:table-cell',
       render: (entry) => (
         <span className={`
           inline-flex items-center px-2 py-1 rounded-full text-xs font-medium
@@ -368,6 +415,7 @@ export default function QuizHistory() {
       header: 'Score',
       accessor: 'score',
       width: '10%',
+      className: 'hidden sm:table-cell',
       render: (entry) => (
         <div className="text-center">
           <div className="font-bold text-gray-900">
@@ -383,6 +431,7 @@ export default function QuizHistory() {
       header: 'Accuracy',
       accessor: 'accuracy',
       width: '10%',
+      className: 'hidden sm:table-cell',
       render: (entry) => {
         const accuracy = entry.accuracy || 0;
         return (
@@ -409,6 +458,7 @@ export default function QuizHistory() {
       header: 'Time',
       accessor: 'timeTaken',
       width: '10%',
+      className: 'hidden lg:table-cell',
       render: (entry) => (
         <div className="flex items-center gap-1 text-gray-700">
           <Clock className="w-4 h-4 text-gray-400" />

@@ -248,18 +248,18 @@ export default function ProfileSettings() {
         <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-emerald-400 to-teal-400"></div>
 
         {/* Tab Navigation */}
-        <div className="flex border-b border-gray-200 overflow-x-auto bg-gradient-to-r from-emerald-50 to-teal-50">
+        <div className="flex border-b border-gray-200 overflow-x-auto bg-gradient-to-r from-emerald-50 to-teal-50 scrollbar-hide">
           {tabs.map((tab) => (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`flex items-center px-4 sm:px-6 lg:px-8 py-4 text-sm sm:text-base font-semibold transition-all duration-300 whitespace-nowrap hover:bg-white/50 ${
+              className={`flex items-center px-3 sm:px-4 lg:px-6 py-3 sm:py-4 text-sm sm:text-base font-semibold transition-all duration-300 whitespace-nowrap hover:bg-white/50 min-h-[44px] ${
                 activeTab === tab.id
                   ? 'text-emerald-600 border-b-2 border-emerald-500 bg-white/80 shadow-sm'
                   : 'text-gray-600 hover:text-emerald-600'
               }`}
             >
-              <tab.icon className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
+              <tab.icon className="w-4 h-4 sm:w-5 sm:h-5 mr-2 flex-shrink-0" />
               <span className="hidden sm:inline">{tab.label}</span>
               <span className="sm:hidden">{tab.label.split(' ')[0]}</span>
             </button>
@@ -272,9 +272,9 @@ export default function ProfileSettings() {
           {activeTab === 'profile' && (
             <form onSubmit={profileForm.handleSubmit(handleProfileSubmit)} className="space-y-6">
               {/* Avatar Section */}
-              <div className="flex flex-col sm:flex-row items-center sm:items-start space-y-4 sm:space-y-0 sm:space-x-4 lg:space-x-6">
+              <div className="flex flex-col sm:flex-row items-center sm:items-start space-y-4 sm:space-y-0 sm:space-x-6">
                 <div className="relative">
-                  <div className="w-20 h-20 sm:w-24 sm:h-24 bg-gray-200 rounded-full overflow-hidden">
+                  <div className="w-24 h-24 sm:w-28 sm:h-28 bg-gray-200 rounded-full overflow-hidden">
                     {avatarPreview || user?.avatar ? (
                       <img 
                         src={avatarPreview || user.avatar} 
@@ -283,12 +283,12 @@ export default function ProfileSettings() {
                       />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center">
-                        <User className="w-6 h-6 sm:w-8 sm:h-8 text-gray-400" />
+                        <User className="w-8 h-8 sm:w-10 sm:h-10 text-gray-400" />
                       </div>
                     )}
                   </div>
-                  <label className="absolute bottom-0 right-0 p-1 bg-primary-600 rounded-full text-white cursor-pointer hover:bg-primary-700">
-                    <Camera className="w-3 h-3" />
+                  <label className="absolute bottom-0 right-0 p-2 bg-primary-600 rounded-full text-white cursor-pointer hover:bg-primary-700 transition-all min-h-[44px] min-w-[44px] flex items-center justify-center">
+                    <Camera className="w-4 h-4" />
                     <input 
                       type="file" 
                       accept="image/*" 
@@ -298,10 +298,11 @@ export default function ProfileSettings() {
                   </label>
                 </div>
                 <div className="text-center sm:text-left">
-                  <h3 className="font-medium text-gray-900">Profile Photo</h3>
-                  <p className="text-xs sm:text-sm text-gray-500">
+                  <h3 className="font-medium text-gray-900 text-base sm:text-lg">Profile Photo</h3>
+                  <p className="text-sm sm:text-base text-gray-500 mt-1">
                     Choose a photo to represent your profile
                   </p>
+                  <p className="text-xs text-gray-400 mt-1">Max 5MB, JPG/PNG only</p>
                 </div>
               </div>
 
@@ -314,7 +315,7 @@ export default function ProfileSettings() {
                   <input
                     type="text"
                     {...profileForm.register('name', { required: 'Name is required' })}
-                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 transition-all text-sm sm:text-base bg-white"
+                    className="w-full px-3 py-2 sm:px-4 sm:py-3 border-2 border-gray-200 rounded-xl focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 transition-all text-sm sm:text-base bg-white min-h-[44px]"
                   />
                   {profileForm.formState.errors.name && (
                     <p className="text-red-500 text-sm mt-1">
@@ -330,7 +331,7 @@ export default function ProfileSettings() {
                   <input
                     type="email"
                     {...profileForm.register('email', { required: 'Email is required' })}
-                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 transition-all text-sm sm:text-base bg-white"
+                    className="w-full px-3 py-2 sm:px-4 sm:py-3 border-2 border-gray-200 rounded-xl focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 transition-all text-sm sm:text-base bg-white min-h-[44px]"
                   />
                   {profileForm.formState.errors.email && (
                     <p className="text-red-500 text-sm mt-1">
@@ -346,7 +347,7 @@ export default function ProfileSettings() {
                   <input
                     type="tel"
                     {...profileForm.register('phone')}
-                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 transition-all text-sm sm:text-base bg-white"
+                    className="w-full px-3 py-2 sm:px-4 sm:py-3 border-2 border-gray-200 rounded-xl focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 transition-all text-sm sm:text-base bg-white min-h-[44px]"
                   />
                 </div>
 
@@ -419,39 +420,50 @@ export default function ProfileSettings() {
                     
                     <div className="space-y-3">
                       {qualifications.map((qual, index) => (
-                        <div key={index} className="flex flex-col sm:flex-row items-start sm:items-center gap-3 p-3 border border-gray-200 rounded-xl">
-                          <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 w-full">
-                            <input
-                              type="text"
-                              placeholder="Degree/Certificate"
-                              value={qual.degree}
-                              onChange={(e) => updateQualification(index, 'degree', e.target.value)}
-                              className="px-3 py-2 border-2 border-gray-200 rounded-lg focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 transition-all text-sm bg-white"
-                            />
-                            <input
-                              type="text"
-                              placeholder="Institution"
-                              value={qual.institution}
-                              onChange={(e) => updateQualification(index, 'institution', e.target.value)}
-                              className="px-3 py-2 border-2 border-gray-200 rounded-lg focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 transition-all text-sm bg-white"
-                            />
-                            <input
-                              type="number"
-                              placeholder="Year"
-                              value={qual.year}
-                              onChange={(e) => updateQualification(index, 'year', e.target.value)}
-                              className="px-3 py-2 border-2 border-gray-200 rounded-lg focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 transition-all text-sm bg-white"
-                              min="1950"
-                              max={new Date().getFullYear()}
-                            />
+                        <div key={index} className="p-3 sm:p-4 border border-gray-200 rounded-xl bg-white">
+                          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 mb-3">
+                            <div className="sm:col-span-2 lg:col-span-1">
+                              <label className="block text-xs font-medium text-gray-700 mb-1">Degree/Certificate</label>
+                              <input
+                                type="text"
+                                placeholder="Degree/Certificate"
+                                value={qual.degree}
+                                onChange={(e) => updateQualification(index, 'degree', e.target.value)}
+                                className="w-full px-3 py-2 sm:px-4 sm:py-3 border-2 border-gray-200 rounded-lg focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 transition-all text-sm bg-white min-h-[44px]"
+                              />
+                            </div>
+                            <div className="sm:col-span-2 lg:col-span-1">
+                              <label className="block text-xs font-medium text-gray-700 mb-1">Institution</label>
+                              <input
+                                type="text"
+                                placeholder="Institution"
+                                value={qual.institution}
+                                onChange={(e) => updateQualification(index, 'institution', e.target.value)}
+                                className="w-full px-3 py-2 sm:px-4 sm:py-3 border-2 border-gray-200 rounded-lg focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 transition-all text-sm bg-white min-h-[44px]"
+                              />
+                            </div>
+                            <div>
+                              <label className="block text-xs font-medium text-gray-700 mb-1">Year</label>
+                              <input
+                                type="number"
+                                placeholder="Year"
+                                value={qual.year}
+                                onChange={(e) => updateQualification(index, 'year', e.target.value)}
+                                className="w-full px-3 py-2 sm:px-4 sm:py-3 border-2 border-gray-200 rounded-lg focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 transition-all text-sm bg-white min-h-[44px]"
+                                min="1950"
+                                max={new Date().getFullYear()}
+                              />
+                            </div>
                           </div>
-                          <button
-                            type="button"
-                            onClick={() => removeQualification(index)}
-                            className="text-red-500 hover:text-red-700 p-1 self-end sm:self-center"
-                          >
-                            <Trash2 className="w-4 h-4" />
-                          </button>
+                          <div className="flex justify-end">
+                            <button
+                              type="button"
+                              onClick={() => removeQualification(index)}
+                              className="text-red-500 hover:text-red-700 p-2 hover:bg-red-50 rounded-lg transition-all min-h-[44px] min-w-[44px] flex items-center justify-center"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </button>
+                          </div>
                         </div>
                       ))}
                       
@@ -467,7 +479,7 @@ export default function ProfileSettings() {
                 <button
                   type="submit"
                   disabled={updateProfileMutation.isLoading}
-                  className="genz-btn-primary text-sm sm:text-base"
+                  className="px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white font-semibold rounded-xl shadow-lg transition-all duration-300 transform hover:scale-105 hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none text-sm sm:text-base min-h-[44px] flex items-center justify-center"
                 >
                   {updateProfileMutation.isLoading ? (
                     <LoadingSpinner size="small" />
@@ -494,12 +506,12 @@ export default function ProfileSettings() {
                     <input
                       type={showPassword.current ? 'text' : 'password'}
                       {...passwordForm.register('currentPassword', { required: 'Current password is required' })}
-                      className="w-full px-4 py-3 pr-12 border-2 border-gray-200 rounded-xl focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 transition-all text-sm sm:text-base bg-white"
+                      className="w-full px-3 py-2 sm:px-4 sm:py-3 pr-12 border-2 border-gray-200 rounded-xl focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 transition-all text-sm sm:text-base bg-white min-h-[44px]"
                     />
                     <button
                       type="button"
                       onClick={() => setShowPassword(prev => ({ ...prev, current: !prev.current }))}
-                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 min-h-[44px] min-w-[44px] flex items-center justify-center"
                     >
                       {showPassword.current ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                     </button>
@@ -517,12 +529,12 @@ export default function ProfileSettings() {
                         required: 'New password is required',
                         minLength: { value: 8, message: 'Password must be at least 8 characters' }
                       })}
-                      className="w-full px-4 py-3 pr-12 border-2 border-gray-200 rounded-xl focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 transition-all text-sm sm:text-base bg-white"
+                      className="w-full px-3 py-2 sm:px-4 sm:py-3 pr-12 border-2 border-gray-200 rounded-xl focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 transition-all text-sm sm:text-base bg-white min-h-[44px]"
                     />
                     <button
                       type="button"
                       onClick={() => setShowPassword(prev => ({ ...prev, new: !prev.new }))}
-                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 min-h-[44px] min-w-[44px] flex items-center justify-center"
                     >
                       {showPassword.new ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                     </button>
@@ -537,12 +549,12 @@ export default function ProfileSettings() {
                     <input
                       type={showPassword.confirm ? 'text' : 'password'}
                       {...passwordForm.register('confirmPassword', { required: 'Please confirm your password' })}
-                      className="w-full px-4 py-3 pr-12 border-2 border-gray-200 rounded-xl focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 transition-all text-sm sm:text-base bg-white"
+                      className="w-full px-3 py-2 sm:px-4 sm:py-3 pr-12 border-2 border-gray-200 rounded-xl focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 transition-all text-sm sm:text-base bg-white min-h-[44px]"
                     />
                     <button
                       type="button"
                       onClick={() => setShowPassword(prev => ({ ...prev, confirm: !prev.confirm }))}
-                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 min-h-[44px] min-w-[44px] flex items-center justify-center"
                     >
                       {showPassword.confirm ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                     </button>
@@ -553,7 +565,7 @@ export default function ProfileSettings() {
                   <button
                     type="submit"
                     disabled={changePasswordMutation.isLoading}
-                    className="genz-btn-primary text-sm sm:text-base"
+                    className="px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white font-semibold rounded-xl shadow-lg transition-all duration-300 transform hover:scale-105 hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none text-sm sm:text-base min-h-[44px] flex items-center justify-center"
                   >
                     {changePasswordMutation.isLoading ? (
                       <LoadingSpinner size="small" />

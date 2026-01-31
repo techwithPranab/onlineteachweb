@@ -166,10 +166,30 @@ questionSchema.methods.validateAnswer = function(answer) {
   
   switch (this.type) {
     case 'mcq-single':
-    case 'mcq-multiple':
+    case 'mcq':
     case 'true-false':
-      // For MCQ questions, compare with the correct option text
-      return this.correctAnswer.toLowerCase() === answer.toLowerCase();
+      // Check if answer matches correct option ID or text
+      const correctOption = this.options?.find(opt => {
+        const optId = opt._id?.toString() || opt.id;
+        return optId === answer || opt.text === answer;
+      });
+      return correctOption && (correctOption.isCorrect || correctOption.text === this.correctAnswer);
+    
+    case 'mcq-multiple':
+      // For multiple choice, answer should be comma-separated IDs or array
+      if (typeof answer === 'string') {
+        const answerIds = answer.split(',').map(id => id.trim());
+        const correctOptions = this.options?.filter(opt => opt.isCorrect) || [];
+        const correctIds = correctOptions.map(opt => opt._id?.toString() || opt.id);
+        return answerIds.length === correctIds.length && 
+               answerIds.every(id => correctIds.includes(id));
+      } else if (Array.isArray(answer)) {
+        const correctOptions = this.options?.filter(opt => opt.isCorrect) || [];
+        const correctIds = correctOptions.map(opt => opt._id?.toString() || opt.id);
+        return answer.length === correctIds.length && 
+               answer.every(id => correctIds.includes(id));
+      }
+      return false;
     
     case 'numerical':
       const numAnswer = parseFloat(answer);

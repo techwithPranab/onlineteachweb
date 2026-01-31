@@ -93,14 +93,22 @@ function checkAnswer(question, answer) {
     case 'mcq-single':
     case 'mcq':
     case 'true-false':
-      return question.correctAnswer === answer
+      // Find the correct option by text and compare with option ID
+      const correctOption = question.options?.find(opt => opt.text === question.correctAnswer)
+      return correctOption && (correctOption._id || correctOption.id) === answer
     
     case 'mcq-multiple':
     case 'multiple-select':
       if (!Array.isArray(answer)) return false
-      const correctAnswers = question.correctAnswer.split(',').map(id => id.trim())
-      return correctAnswers.length === answer.length && 
-             correctAnswers.every(correctId => answer.includes(correctId))
+      // Split correctAnswer by comma and find matching option IDs
+      const correctAnswerTexts = question.correctAnswer.split(',').map(text => text.trim())
+      const correctOptionIds = question.options
+        ?.filter(opt => correctAnswerTexts.includes(opt.text))
+        .map(opt => opt._id || opt.id) || []
+      
+      // Check if all correct options are selected and no extra options
+      return correctOptionIds.length === answer.length && 
+             correctOptionIds.every(id => answer.includes(id))
     
     case 'numerical':
       if (!question.numericalAnswer) return false

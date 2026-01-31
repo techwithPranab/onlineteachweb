@@ -58,7 +58,38 @@ export default function QuizTable({
 
   return (
     <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
-      <div className="overflow-x-auto">
+      {/* Mobile Card View */}
+      <div className="block md:hidden">
+        <div className="divide-y divide-gray-200">
+          {data.map((row, rowIndex) => (
+            <div
+              key={row.id || rowIndex}
+              className="p-4 hover:bg-gray-50 transition-colors"
+            >
+              <div className="space-y-3">
+                {columns
+                  .filter(column => !column.className?.includes('hidden') || column.className?.includes('sm:hidden'))
+                  .map((column, colIndex) => (
+                  <div key={colIndex} className="flex justify-between items-center">
+                    <span className="text-sm font-medium text-gray-500">
+                      {column.header}:
+                    </span>
+                    <div className="text-sm text-gray-900 text-right">
+                      {column.render
+                        ? column.render(row, rowIndex, onRowAction)
+                        : row[column.accessor]
+                      }
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Desktop Table View */}
+      <div className="hidden md:block overflow-x-auto">
         <table className="w-full min-w-[600px]">
           <thead className="bg-gray-50 border-b border-gray-200">
             <tr>

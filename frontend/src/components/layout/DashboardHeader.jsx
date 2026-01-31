@@ -23,7 +23,7 @@ export default function DashboardHeader({ setSidebarOpen }) {
               <Sparkles className="h-5 w-5 text-emerald-600" />
             </h1>
             <p className="text-gray-600 capitalize text-sm font-medium">
-              {user?.role} Dashboard
+              {user?.role}
             </p>
           </div>
         </div>

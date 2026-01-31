@@ -147,14 +147,14 @@ export default function ProgressReports() {
       {/* Controls */}
       <div className="genz-card mb-4 sm:mb-6 relative overflow-hidden">
         <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-indigo-400 to-indigo-500"></div>
-        <div className="p-4 sm:p-5 lg:p-6">
-          <div className="flex flex-col sm:flex-row gap-4">
+        <div className="p-3 sm:p-4 lg:p-6">
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
             <div className="flex-1">
-              <label className="block text-sm font-medium text-gray-700 mb-2">📅 Time Period</label>
+              <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-2">📅 Time Period</label>
               <select
                 value={selectedPeriod}
                 onChange={(e) => setSelectedPeriod(e.target.value)}
-                className="genz-card p-2 sm:p-3 border-2 border-gray-200 rounded-xl focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 transition-all w-full text-sm sm:text-base"
+                className="genz-card p-2.5 sm:p-3 border-2 border-gray-200 rounded-xl focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 transition-all w-full text-sm sm:text-base bg-white"
               >
                 <option value="week">📅 This Week</option>
                 <option value="month">📆 This Month</option>
@@ -195,36 +195,43 @@ export default function ProgressReports() {
         {/* Attendance Trend */}
         <div className="genz-card relative overflow-hidden">
           <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-green-500 via-emerald-500 to-teal-500"></div>
-          <div className="p-4 sm:p-6">
-            <h3 className="text-lg sm:text-xl font-bold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent mb-3 sm:mb-4 flex items-center gap-2">
+          <div className="p-3 sm:p-4 lg:p-6">
+            <h3 className="text-base sm:text-lg lg:text-xl font-bold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent mb-3 sm:mb-4 flex items-center gap-2">
               📅 Attendance Trend
             </h3>
             {attendanceData.length > 0 ? (
-              <ResponsiveContainer width="100%" height={200} className="min-h-[180px] sm:min-h-[200px]">
+              <ResponsiveContainer width="100%" height={180} className="min-h-[140px] sm:min-h-[160px] lg:min-h-[180px]">
                 <LineChart data={attendanceData}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-                  <XAxis dataKey="month" tick={{ fontSize: 10, fill: '#6b7280' }} />
-                  <YAxis tick={{ fontSize: 10, fill: '#6b7280' }} />
+                  <XAxis
+                    dataKey="month"
+                    tick={{ fontSize: 9, fill: '#6b7280' }}
+                    interval="preserveStartEnd"
+                  />
+                  <YAxis
+                    tick={{ fontSize: 9, fill: '#6b7280' }}
+                    domain={[0, 100]}
+                  />
                   <Tooltip
                     contentStyle={{
                       backgroundColor: '#f8fafc',
                       border: 'none',
-                      borderRadius: '12px',
+                      borderRadius: '8px',
                       boxShadow: '0 10px 25px rgba(0,0,0,0.1)',
-                      fontSize: '12px'
+                      fontSize: '11px'
                     }}
                   />
-                  <Legend wrapperStyle={{ fontSize: '10px', color: '#374151' }} />
-                  <Line type="monotone" dataKey="attendance" stroke="#10b981" strokeWidth={2} dot={{ fill: '#10b981', strokeWidth: 2, r: 3 }} />
+                  <Legend wrapperStyle={{ fontSize: '9px', color: '#374151' }} />
+                  <Line type="monotone" dataKey="attendance" stroke="#10b981" strokeWidth={2} dot={{ fill: '#10b981', strokeWidth: 2, r: 2 }} />
                 </LineChart>
               </ResponsiveContainer>
             ) : (
-              <div className="flex items-center justify-center h-40 sm:h-56 text-gray-500 bg-gray-50 rounded-lg">
+              <div className="flex items-center justify-center h-28 sm:h-32 lg:h-40 text-gray-500 bg-gray-50 rounded-lg">
                 <div className="text-center">
-                  <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-gray-400 to-gray-500 rounded-full flex items-center justify-center mx-auto mb-2 sm:mb-3">
+                  <div className="w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 bg-gradient-to-br from-gray-400 to-gray-500 rounded-full flex items-center justify-center mx-auto mb-2 text-lg sm:text-xl lg:text-2xl">
                     📊
                   </div>
-                  <p className="text-sm sm:text-base font-medium">No attendance data available</p>
+                  <p className="text-xs sm:text-sm font-medium">No attendance data available</p>
                 </div>
               </div>
             )}
@@ -234,36 +241,46 @@ export default function ProgressReports() {
         {/* Performance by Subject */}
         <div className="genz-card relative overflow-hidden">
           <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 via-cyan-500 to-teal-500"></div>
-          <div className="p-4 sm:p-6">
-            <h3 className="text-lg sm:text-xl font-bold bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent mb-3 sm:mb-4 flex items-center gap-2">
+          <div className="p-3 sm:p-4 lg:p-6">
+            <h3 className="text-base sm:text-lg lg:text-xl font-bold bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent mb-3 sm:mb-4 flex items-center gap-2">
               📚 Performance by Subject
             </h3>
             {performanceData.length > 0 ? (
-              <ResponsiveContainer width="100%" height={200} className="min-h-[180px] sm:min-h-[200px]">
+              <ResponsiveContainer width="100%" height={180} className="min-h-[140px] sm:min-h-[160px] lg:min-h-[180px]">
                 <BarChart data={performanceData}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-                  <XAxis dataKey="subject" tick={{ fontSize: 10, fill: '#6b7280' }} />
-                  <YAxis tick={{ fontSize: 10, fill: '#6b7280' }} />
+                  <XAxis
+                    dataKey="subject"
+                    tick={{ fontSize: 9, fill: '#6b7280' }}
+                    interval={0}
+                    angle={-45}
+                    textAnchor="end"
+                    height={60}
+                  />
+                  <YAxis
+                    tick={{ fontSize: 9, fill: '#6b7280' }}
+                    domain={[0, 100]}
+                  />
                   <Tooltip
                     contentStyle={{
                       backgroundColor: '#f8fafc',
                       border: 'none',
-                      borderRadius: '12px',
+                      borderRadius: '8px',
                       boxShadow: '0 10px 25px rgba(0,0,0,0.1)',
-                      fontSize: '12px'
+                      fontSize: '11px'
                     }}
                   />
-                  <Legend wrapperStyle={{ fontSize: '10px', color: '#374151' }} />
-                  <Bar dataKey="score" fill="#3b82f6" radius={[4, 4, 0, 0]} />
+                  <Legend wrapperStyle={{ fontSize: '9px', color: '#374151' }} />
+                  <Bar dataKey="score" fill="#3b82f6" radius={[3, 3, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
             ) : (
-              <div className="flex items-center justify-center h-40 sm:h-56 text-gray-500 bg-gray-50 rounded-lg">
+              <div className="flex items-center justify-center h-28 sm:h-32 lg:h-40 text-gray-500 bg-gray-50 rounded-lg">
                 <div className="text-center">
-                  <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-gray-400 to-gray-500 rounded-full flex items-center justify-center mx-auto mb-2 sm:mb-3">
+                  <div className="w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 bg-gradient-to-br from-gray-400 to-gray-500 rounded-full flex items-center justify-center mx-auto mb-2 text-lg sm:text-xl lg:text-2xl">
                     📈
                   </div>
-                  <p className="text-sm sm:text-base font-medium">No performance data available</p>
+                  <p className="text-xs sm:text-sm font-medium">No performance data available</p>
                 </div>
               </div>
             )}
@@ -273,37 +290,44 @@ export default function ProgressReports() {
         {/* Quiz Performance Trend */}
         <div className="genz-card relative overflow-hidden md:col-span-2 lg:col-span-1">
           <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-emerald-500 to-teal-500"></div>
-          <div className="p-4 sm:p-6">
-            <h3 className="text-lg sm:text-xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent mb-3 sm:mb-4 flex items-center gap-2">
+          <div className="p-3 sm:p-4 lg:p-6">
+            <h3 className="text-base sm:text-lg lg:text-xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent mb-3 sm:mb-4 flex items-center gap-2">
               🎯 Quiz Performance Trend
             </h3>
             {quizPerformanceData.length > 0 ? (
-              <ResponsiveContainer width="100%" height={200} className="min-h-[180px] sm:min-h-[200px]">
+              <ResponsiveContainer width="100%" height={180} className="min-h-[140px] sm:min-h-[160px] lg:min-h-[180px]">
                 <LineChart data={quizPerformanceData}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-                  <XAxis dataKey="quiz" tick={{ fontSize: 10, fill: '#6b7280' }} />
-                  <YAxis tick={{ fontSize: 10, fill: '#6b7280' }} />
+                  <XAxis
+                    dataKey="quiz"
+                    tick={{ fontSize: 9, fill: '#6b7280' }}
+                    interval="preserveStartEnd"
+                  />
+                  <YAxis
+                    tick={{ fontSize: 9, fill: '#6b7280' }}
+                    domain={[0, 100]}
+                  />
                   <Tooltip
                     contentStyle={{
                       backgroundColor: '#f8fafc',
                       border: 'none',
-                      borderRadius: '12px',
+                      borderRadius: '8px',
                       boxShadow: '0 10px 25px rgba(0,0,0,0.1)',
-                      fontSize: '12px'
+                      fontSize: '11px'
                     }}
                   />
-                  <Legend wrapperStyle={{ fontSize: '10px', color: '#374151' }} />
-                  <Line type="monotone" dataKey="accuracy" stroke="#10b981" strokeWidth={2} name="Accuracy %" dot={{ fill: '#10b981', strokeWidth: 2, r: 3 }} />
-                  <Line type="monotone" dataKey="score" stroke="#14b8a6" strokeWidth={2} name="Score %" dot={{ fill: '#14b8a6', strokeWidth: 2, r: 3 }} />
+                  <Legend wrapperStyle={{ fontSize: '9px', color: '#374151' }} />
+                  <Line type="monotone" dataKey="accuracy" stroke="#10b981" strokeWidth={2} name="Accuracy %" dot={{ fill: '#10b981', strokeWidth: 2, r: 2 }} />
+                  <Line type="monotone" dataKey="score" stroke="#14b8a6" strokeWidth={2} name="Score %" dot={{ fill: '#14b8a6', strokeWidth: 2, r: 2 }} />
                 </LineChart>
               </ResponsiveContainer>
             ) : (
-              <div className="flex items-center justify-center h-40 sm:h-56 text-gray-500 bg-gray-50 rounded-lg">
+              <div className="flex items-center justify-center h-28 sm:h-32 lg:h-40 text-gray-500 bg-gray-50 rounded-lg">
                 <div className="text-center">
-                  <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-gray-400 to-gray-500 rounded-full flex items-center justify-center mx-auto mb-2 sm:mb-3">
+                  <div className="w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 bg-gradient-to-br from-gray-400 to-gray-500 rounded-full flex items-center justify-center mx-auto mb-2 text-lg sm:text-xl lg:text-2xl">
                     📊
                   </div>
-                  <p className="text-sm sm:text-base font-medium">No quiz data available</p>
+                  <p className="text-xs sm:text-sm font-medium">No quiz data available</p>
                 </div>
               </div>
             )}
@@ -314,11 +338,53 @@ export default function ProgressReports() {
       {/* Recent Evaluations */}
       <div className="genz-card relative overflow-hidden mt-4 sm:mt-6">
         <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-orange-500 via-yellow-500 to-red-500"></div>
-        <div className="p-4 sm:p-5 lg:p-6">
-          <h3 className="text-lg sm:text-xl font-bold bg-gradient-to-r from-orange-600 to-yellow-600 bg-clip-text text-transparent mb-3 sm:mb-4 flex items-center gap-2">
+        <div className="p-3 sm:p-4 lg:p-6">
+          <h3 className="text-base sm:text-lg lg:text-xl font-bold bg-gradient-to-r from-orange-600 to-yellow-600 bg-clip-text text-transparent mb-3 sm:mb-4 flex items-center gap-2">
             📝 Recent Evaluations
           </h3>
-          <div className="overflow-x-auto -mx-4 sm:-mx-5 lg:-mx-6">
+
+          {/* Mobile Card View */}
+          <div className="block sm:hidden space-y-3">
+            {evaluations.length > 0 ? (
+              evaluations.slice(0, 5).map((evaluation, index) => (
+                <div key={index} className="genz-card p-4 hover:shadow-md transition-all">
+                  <div className="flex justify-between items-start mb-3">
+                    <div className="flex-1">
+                      <p className="text-sm font-medium text-gray-900 mb-1">{evaluation.course?.title || 'N/A'}</p>
+                      <p className="text-xs text-gray-600">{new Date(evaluation.createdAt).toLocaleDateString()}</p>
+                    </div>
+                    <span className={`px-2 py-1 rounded-full text-xs font-bold whitespace-nowrap ${
+                      evaluation.grade >= 80 ? 'bg-green-100 text-green-800' :
+                      evaluation.grade >= 60 ? 'bg-yellow-100 text-yellow-800' :
+                      'bg-red-100 text-red-800'
+                    }`}>
+                      {evaluation.grade || 0}% {
+                        evaluation.grade >= 80 ? '🌟' :
+                        evaluation.grade >= 60 ? '👍' :
+                        '💪'
+                      }
+                    </span>
+                  </div>
+                  <div className="flex justify-between items-center mb-2">
+                    <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs font-medium">
+                      {evaluation.type || 'Assessment'} 📝
+                    </span>
+                  </div>
+                  <p className="text-xs text-gray-600 line-clamp-2">{evaluation.feedback || 'No feedback available'}</p>
+                </div>
+              ))
+            ) : (
+              <div className="text-center py-8">
+                <div className="w-12 h-12 bg-gradient-to-br from-gray-400 to-gray-500 rounded-full flex items-center justify-center mx-auto mb-3 text-2xl">
+                  📝
+                </div>
+                <p className="text-sm font-medium text-gray-500">No evaluations available</p>
+              </div>
+            )}
+          </div>
+
+          {/* Desktop Table View */}
+          <div className="hidden sm:block overflow-x-auto -mx-4 sm:-mx-5 lg:-mx-6">
             <div className="inline-block min-w-full align-middle px-4 sm:px-5 lg:px-6">
               <table className="min-w-full divide-y divide-gray-200">
                 <thead>
@@ -385,11 +451,57 @@ export default function ProgressReports() {
       {/* Recent Quiz Attempts */}
       <div className="genz-card relative overflow-hidden mt-4 sm:mt-6">
         <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-emerald-500 to-teal-500"></div>
-        <div className="p-4 sm:p-5 lg:p-6">
-          <h3 className="text-lg sm:text-xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent mb-3 sm:mb-4 flex items-center gap-2">
+        <div className="p-3 sm:p-4 lg:p-6">
+          <h3 className="text-base sm:text-lg lg:text-xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent mb-3 sm:mb-4 flex items-center gap-2">
             🎯 Recent Quiz Attempts
           </h3>
-          <div className="overflow-x-auto -mx-4 sm:-mx-5 lg:-mx-6">
+
+          {/* Mobile Card View */}
+          <div className="block sm:hidden space-y-3">
+            {quizHistory.length > 0 ? (
+              quizHistory.slice(0, 5).map((quiz, index) => (
+                <div key={index} className="genz-card p-4 hover:shadow-md transition-all">
+                  <div className="flex justify-between items-start mb-3">
+                    <div className="flex-1">
+                      <p className="text-sm font-medium text-gray-900 mb-1">{quiz.courseName || 'N/A'}</p>
+                      <p className="text-xs text-gray-600">{new Date(quiz.completedAt).toLocaleDateString()}</p>
+                    </div>
+                    <span className={`px-2 py-1 rounded-full text-xs font-bold whitespace-nowrap ${
+                      quiz.accuracy >= 60 ? 'bg-green-100 text-green-800' :
+                      'bg-red-100 text-red-800'
+                    }`}>
+                      {quiz.accuracy >= 60 ? '✅ Passed' : '❌ Failed'}
+                    </span>
+                  </div>
+                  <div className="grid grid-cols-2 gap-2 mb-2">
+                    <div className="text-center">
+                      <p className="text-xs text-gray-600">Score</p>
+                      <p className="text-sm font-bold text-emerald-600">{quiz.score}%</p>
+                    </div>
+                    <div className="text-center">
+                      <p className="text-xs text-gray-600">Accuracy</p>
+                      <p className="text-sm font-bold text-blue-600">{quiz.accuracy}%</p>
+                    </div>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-xs text-gray-600">
+                      {Math.floor(quiz.timeTaken / 60)}m {quiz.timeTaken % 60}s ⏱️
+                    </span>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <div className="text-center py-8">
+                <div className="w-12 h-12 bg-gradient-to-br from-gray-400 to-gray-500 rounded-full flex items-center justify-center mx-auto mb-3 text-2xl">
+                  🎯
+                </div>
+                <p className="text-sm font-medium text-gray-500">No quiz attempts yet</p>
+              </div>
+            )}
+          </div>
+
+          {/* Desktop Table View */}
+          <div className="hidden sm:block overflow-x-auto -mx-4 sm:-mx-5 lg:-mx-6">
             <div className="inline-block min-w-full align-middle px-4 sm:px-5 lg:px-6">
               <table className="min-w-full divide-y divide-gray-200">
                 <thead>

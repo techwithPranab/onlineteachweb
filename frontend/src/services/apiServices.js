@@ -290,6 +290,11 @@ export const paymentService = {
     const { data } = await api.post(`/admin/payments/${paymentId}/refund`)
     return data
   },
+
+  getUserBillingHistory: async (params = {}) => {
+    const { data } = await api.get('/payments/billing-history', { params })
+    return data
+  },
 }
 
 export const reportService = {

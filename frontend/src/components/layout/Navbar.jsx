@@ -29,12 +29,7 @@ export default function Navbar() {
               </Link>
 
               {isAuthenticated ? (
-                <Link
-                  to={`/${user.role}`}
-                  className="btn-primary inline-flex items-center space-x-2"
-                >
-                  <span>Dashboard</span>
-                </Link>
+                null
               ) : (
                 <div className="flex items-center space-x-6">
                   <Link
@@ -75,7 +70,7 @@ export default function Navbar() {
             <Link to="/courses" className="block text-gray-700 font-medium" onClick={() => setMobileOpen(false)}>Courses</Link>
             <Link to="/pricing" className="block text-gray-700 font-medium" onClick={() => setMobileOpen(false)}>Pricing</Link>
             {isAuthenticated ? (
-              <Link to={`/${user.role}`} className="block btn-primary text-center" onClick={() => setMobileOpen(false)}>Dashboard</Link>
+              null
             ) : (
               <>
                 <Link to="/login" className="block text-gray-700" onClick={() => setMobileOpen(false)}>Login</Link>

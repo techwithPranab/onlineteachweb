@@ -567,8 +567,33 @@ async function getUserPerformance(userId) {
       topicMastery[question.topic].total++;
       
       const answer = session.answers?.find(a => a.questionId === question.questionId.toString());
-      if (answer && answer.answer === question.correctAnswer) {
-        topicMastery[question.topic].correct++;
+      if (answer) {
+        // Check if answer is correct
+        let isCorrect = false;
+        if (question.type === 'mcq-single' || question.type === 'mcq' || question.type === 'true-false') {
+          // Find the correct option and compare IDs
+          const correctOption = question.options?.find(opt => opt.text === question.correctAnswer);
+          isCorrect = correctOption && (correctOption._id?.toString() || correctOption.id) === answer.answer;
+        } else if (question.type === 'mcq-multiple' || question.type === 'multiple-select') {
+          // For multiple choice, check if all correct options are selected
+          const correctAnswerTexts = question.correctAnswer.split(',').map(text => text.trim());
+          const correctOptionIds = question.options
+            ?.filter(opt => correctAnswerTexts.includes(opt.text))
+            .map(opt => opt._id?.toString() || opt.id) || [];
+          
+          if (Array.isArray(answer.answer)) {
+            isCorrect = correctOptionIds.length === answer.answer.length && 
+                       correctOptionIds.every(id => answer.answer.includes(id));
+          } else if (typeof answer.answer === 'string') {
+            const answerIds = answer.answer.split(',').map(id => id.trim());
+            isCorrect = correctOptionIds.length === answerIds.length && 
+                       correctOptionIds.every(id => answerIds.includes(id));
+          }
+        }
+        
+        if (isCorrect) {
+          topicMastery[question.topic].correct++;
+        }
       }
       
       recentQuestions.push({

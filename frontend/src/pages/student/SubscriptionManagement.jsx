@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from 'react-query'
 import { CreditCard, CheckCircle, Clock, XCircle, Download } from 'lucide-react'
-import { subscriptionService } from '@/services/apiServices'
+import { subscriptionService, paymentService } from '@/services/apiServices'
 import LoadingSpinner from '@/components/common/LoadingSpinner'
 import ErrorMessage from '@/components/common/ErrorMessage'
 import Modal from '@/components/common/Modal'
@@ -35,8 +35,14 @@ export default function SubscriptionManagement() {
     subscriptionService.getPublicPlans
   )
 
-  const isLoading = statusLoading || plansLoading
-  const error = statusError || plansError
+  // Billing history
+  const { data: billingData, isLoading: billingLoading, error: billingError } = useQuery(
+    'billingHistory',
+    () => paymentService.getUserBillingHistory({ limit: 20 })
+  )
+
+  const isLoading = statusLoading || plansLoading || billingLoading
+  const error = statusError || plansError || billingError
 
   const cancelMutation = useMutation(
     (reason) => subscriptionService.cancel(reason),
@@ -119,7 +125,8 @@ export default function SubscriptionManagement() {
   if (error) return <ErrorMessage message={(error && error.message) || 'Failed to load subscription'} />
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
+    <div className="min-h-screen bg-gray-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
       {/* Header */}
       <div className="genz-card mb-4 sm:mb-6 relative overflow-hidden">
         <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-emerald-500 to-teal-500"></div>
@@ -212,7 +219,7 @@ export default function SubscriptionManagement() {
           <div className="genz-card p-1 rounded-full inline-flex w-full sm:w-auto">
             <button
               onClick={() => setBilling('monthly')}
-              className={`px-3 sm:px-4 py-2 rounded-full flex-1 sm:flex-none text-sm font-bold transition-all ${
+              className={`px-4 sm:px-4 py-2 rounded-full flex-1 sm:flex-none text-sm font-bold transition-all min-h-[44px] ${
                 billing === 'monthly' 
                   ? 'bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-lg scale-105' 
                   : 'text-gray-600 hover:text-emerald-600'
@@ -224,7 +231,7 @@ export default function SubscriptionManagement() {
             </button>
             <button
               onClick={() => setBilling('annually')}
-              className={`px-3 sm:px-4 py-2 rounded-full flex-1 sm:flex-none text-sm font-bold transition-all ${
+              className={`px-4 sm:px-4 py-2 rounded-full flex-1 sm:flex-none text-sm font-bold transition-all min-h-[44px] ${
                 billing === 'annually' 
                   ? 'bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-lg scale-105' 
                   : 'text-gray-600 hover:text-emerald-600'
@@ -237,7 +244,7 @@ export default function SubscriptionManagement() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
+        <div className="grid grid-cols-1 gap-4 sm:gap-6">
           {plans.map((plan) => {
             const isCurrent = currentSubscription?.plan?._id?.toString() === (plan.docId?.toString() || plan.id)
             return (
@@ -313,7 +320,54 @@ export default function SubscriptionManagement() {
             </button>
           </div>
 
-          <div className="overflow-x-auto -mx-4 sm:-mx-5 lg:-mx-6">
+          {/* Mobile Card View */}
+          <div className="block sm:hidden space-y-3">
+            {billingLoading ? (
+              <div className="flex justify-center py-8">
+                <LoadingSpinner />
+              </div>
+            ) : billingData?.data?.payments?.length > 0 ? (
+              billingData.data.payments.map((invoice, index) => (
+                <div key={invoice.id || index} className="genz-card p-4 hover:shadow-md transition-all">
+                  <div className="flex justify-between items-start mb-3">
+                    <div>
+                      <p className="text-sm font-medium text-gray-900">{invoice.description}</p>
+                      <p className="text-xs text-gray-600">{new Date(invoice.date).toLocaleDateString()}</p>
+                    </div>
+                    <span className={`px-2 py-1 rounded-full text-xs font-bold capitalize ${
+                      invoice.status === 'completed' ? 'bg-gradient-to-r from-green-400 to-emerald-500 text-white' :
+                      invoice.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
+                      'bg-red-100 text-red-800'
+                    }`}>
+                      {invoice.status === 'completed' ? '✅ Paid' : invoice.status}
+                    </span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <p className="text-lg font-bold text-gray-900">
+                      {invoice.currency === 'INR' ? '₹' : '$'}{invoice.amount.toFixed(2)}
+                    </p>
+                    {invoice.invoiceUrl && (
+                      <a
+                        href={invoice.invoiceUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="genz-btn-secondary text-xs px-3 py-1 hover:scale-105 transition-all"
+                      >
+                        📥 Download
+                      </a>
+                    )}
+                  </div>
+                </div>
+              ))
+            ) : (
+              <div className="text-center py-8">
+                <p className="text-gray-500">No billing history found</p>
+              </div>
+            )}
+          </div>
+
+          {/* Desktop Table View */}
+          <div className="hidden sm:block overflow-x-auto -mx-4 sm:-mx-5 lg:-mx-6">
             <div className="inline-block min-w-full align-middle px-4 sm:px-5 lg:px-6">
               <table className="min-w-full">
                 <thead>
@@ -326,33 +380,56 @@ export default function SubscriptionManagement() {
                   </tr>
                 </thead>
                 <tbody>
-                  {[
-                    { date: '2024-01-01', description: 'Standard Plan - Monthly', amount: 29.99, status: 'paid' },
-                    { date: '2023-12-01', description: 'Standard Plan - Monthly', amount: 29.99, status: 'paid' },
-                    { date: '2023-11-01', description: 'Standard Plan - Monthly', amount: 29.99, status: 'paid' },
-                  ].map((invoice, index) => (
-                    <tr key={index} className="border-b border-gray-100 hover:bg-gradient-to-r hover:from-emerald-50 hover:to-teal-50 transition-all">
-                      <td className="py-3 sm:py-4 px-2 sm:px-4 text-xs sm:text-sm font-medium text-gray-900 whitespace-nowrap">
-                        {new Date(invoice.date).toLocaleDateString()}
-                      </td>
-                      <td className="py-3 sm:py-4 px-2 sm:px-4 text-xs sm:text-sm text-gray-900 max-w-xs truncate font-medium">
-                        {invoice.description}
-                      </td>
-                      <td className="py-3 sm:py-4 px-2 sm:px-4 text-xs sm:text-sm font-bold text-gray-900 whitespace-nowrap">
-                        ₹{invoice.amount.toFixed(2)}
-                      </td>
-                      <td className="py-3 sm:py-4 px-2 sm:px-4 whitespace-nowrap">
-                        <span className="px-2 sm:px-3 py-1 bg-gradient-to-r from-green-400 to-emerald-500 text-white rounded-full text-xs font-bold capitalize shadow-lg">
-                          ✅ {invoice.status}
-                        </span>
-                      </td>
-                      <td className="py-3 sm:py-4 px-2 sm:px-4 whitespace-nowrap">
-                        <button className="genz-btn-secondary text-xs sm:text-sm px-2 sm:px-3 py-1 hover:scale-105 transition-all">
-                          📥 Download
-                        </button>
+                  {billingLoading ? (
+                    <tr>
+                      <td colSpan="5" className="py-8 text-center">
+                        <LoadingSpinner />
                       </td>
                     </tr>
-                  ))}
+                  ) : billingData?.data?.payments?.length > 0 ? (
+                    billingData.data.payments.map((invoice, index) => (
+                      <tr key={invoice.id || index} className="border-b border-gray-100 hover:bg-gradient-to-r hover:from-emerald-50 hover:to-teal-50 transition-all">
+                        <td className="py-3 sm:py-4 px-2 sm:px-4 text-xs sm:text-sm font-medium text-gray-900 whitespace-nowrap">
+                          {new Date(invoice.date).toLocaleDateString()}
+                        </td>
+                        <td className="py-3 sm:py-4 px-2 sm:px-4 text-xs sm:text-sm text-gray-900 max-w-xs truncate font-medium">
+                          {invoice.description}
+                        </td>
+                        <td className="py-3 sm:py-4 px-2 sm:px-4 text-xs sm:text-sm font-bold text-gray-900 whitespace-nowrap">
+                          {invoice.currency === 'INR' ? '₹' : '$'}{invoice.amount.toFixed(2)}
+                        </td>
+                        <td className="py-3 sm:py-4 px-2 sm:px-4 whitespace-nowrap">
+                          <span className={`px-2 sm:px-3 py-1 rounded-full text-xs font-bold capitalize shadow-lg ${
+                            invoice.status === 'completed' ? 'bg-gradient-to-r from-green-400 to-emerald-500 text-white' :
+                            invoice.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
+                            'bg-red-100 text-red-800'
+                          }`}>
+                            {invoice.status === 'completed' ? '✅ Paid' : invoice.status}
+                          </span>
+                        </td>
+                        <td className="py-3 sm:py-4 px-2 sm:px-4 whitespace-nowrap">
+                          {invoice.invoiceUrl ? (
+                            <a
+                              href={invoice.invoiceUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="genz-btn-secondary text-xs sm:text-sm px-2 sm:px-3 py-1 hover:scale-105 transition-all inline-block"
+                            >
+                              📥 Download
+                            </a>
+                          ) : (
+                            <span className="text-gray-400 text-xs">N/A</span>
+                          )}
+                        </td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td colSpan="5" className="py-8 text-center text-gray-500">
+                        No billing history found
+                      </td>
+                    </tr>
+                  )}
                 </tbody>
               </table>
             </div>
@@ -390,8 +467,8 @@ export default function SubscriptionManagement() {
                     Stripe is not configured in this environment. We will create the subscription entry without processing payment.
                   </div>
                   <div className="flex flex-col sm:flex-row gap-3">
-                    <button onClick={() => setShowUpgradeModal(false)} className="flex-1 px-4 py-2 border rounded-lg hover:bg-gray-50 min-h-[44px]">Cancel</button>
-                    <button onClick={handleConfirmWithoutStripe} className="flex-1 btn-primary min-h-[44px]">Confirm Subscription</button>
+                    <button onClick={() => setShowUpgradeModal(false)} className="flex-1 px-4 py-3 border rounded-lg hover:bg-gray-50 min-h-[44px] text-sm sm:text-base font-medium">Cancel</button>
+                    <button onClick={handleConfirmWithoutStripe} className="flex-1 btn-primary min-h-[44px] text-sm sm:text-base font-medium">Confirm Subscription</button>
                   </div>
                 </div>
               )
@@ -409,14 +486,14 @@ export default function SubscriptionManagement() {
                 </div>
                 <p className="text-sm text-gray-600">This plan does not require a payment method.</p>
                 <div className="flex flex-col sm:flex-row gap-3">
-                  <button onClick={() => setShowUpgradeModal(false)} className="flex-1 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 min-h-[44px]">Cancel</button>
+                  <button onClick={() => setShowUpgradeModal(false)} className="flex-1 px-4 py-3 border border-gray-300 rounded-lg hover:bg-gray-50 min-h-[44px] text-sm sm:text-base font-medium">Cancel</button>
                   <button
                     onClick={() => {
                       // switch to free plan
                       downgradeMutation.mutate()
                       setShowUpgradeModal(false)
                     }}
-                    className="flex-1 btn-primary min-h-[44px]"
+                    className="flex-1 btn-primary min-h-[44px] text-sm sm:text-base font-medium"
                   >
                     Switch to Free
                   </button>
@@ -437,6 +514,7 @@ export default function SubscriptionManagement() {
         confirmText="Yes, Cancel"
         variant="danger"
       />
+    </div>
     </div>
   )
 }
