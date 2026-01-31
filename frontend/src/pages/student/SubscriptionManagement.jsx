@@ -131,7 +131,7 @@ export default function SubscriptionManagement() {
       <div className="genz-card mb-4 sm:mb-6 relative overflow-hidden">
         <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-emerald-500 to-teal-500"></div>
         <div className="p-4 sm:p-5 lg:p-6">
-          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent animate-shimmer mb-2">
+          <h1 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent animate-shimmer mb-2">
             💎 Subscription Management
           </h1>
           <p className="text-gray-600 text-sm sm:text-base lg:text-lg">Manage your subscription plan and billing 🚀</p>

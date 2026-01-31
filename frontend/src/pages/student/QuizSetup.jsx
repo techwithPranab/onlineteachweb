@@ -334,10 +334,8 @@ export default function QuizSetup() {
         
         {/* Header with MeriTai styling */}
         <div className="mb-6 sm:mb-8 text-center">
-          <h1 className="text-3xl sm:text-4xl font-black mb-2">
-            <span className="meritai-title-gradient">
-              {quiz ? quiz.title : '✨ Quiz Setup ✨'}
-            </span>
+          <h1 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent mb-3">
+            {quiz ? quiz.title : '✨ Quiz Setup ✨'}
           </h1>
           <p className="text-base sm:text-lg text-gray-600 font-medium">
             Configure your awesome quiz settings before you begin! 🚀

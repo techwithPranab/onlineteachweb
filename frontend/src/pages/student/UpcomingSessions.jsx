@@ -43,7 +43,9 @@ export default function UpcomingSessions() {
       <MeritaiCard className="mb-6 relative overflow-hidden">
         <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-emerald-600 to-teal-600"></div>
         <div className="p-6">
-          <h2 className="text-xl font-bold">Upcoming Sessions</h2>
+          <h1 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent mb-3">
+            Upcoming Sessions
+          </h1>
           <p className="text-sm text-gray-500">Stay on track — your next live sessions.</p>
         </div>
       </MeritaiCard>

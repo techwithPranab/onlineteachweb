@@ -96,7 +96,7 @@ export default function QuizListing() {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="mb-8 text-center">
-        <h1 className="text-4xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent mb-3 animate-shimmer">
+        <h1 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent mb-3 animate-shimmer">
           🎯 Available Quizzes
         </h1>
         <p className="text-gray-600 text-lg">Browse and attempt custom quizzes created by our expert tutors! 🚀</p>

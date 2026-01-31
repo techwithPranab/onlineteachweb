@@ -7,8 +7,15 @@ export default function MeritaiButton({ variant = 'primary', className = '', chi
   }
 
   const variantClass = variants[variant] || variants.primary
+  
+  // Ensure primary variant has the correct background
+  const style = variant === 'primary' ? {
+    background: 'linear-gradient(90deg, #059669, #0d9488)',
+    ...props.style
+  } : props.style
+  
   return (
-    <button className={`${variantClass} ${className}`} {...props}>
+    <button className={`${className} ${variantClass}`} style={style} {...props}>
       {children}
     </button>
   )

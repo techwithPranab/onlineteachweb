@@ -100,7 +100,7 @@ export default function SessionDetail() {
         <div className="flex items-start justify-between mb-4 p-6">
           <div className="flex-1">
             <div className="flex items-center gap-3 mb-2">
-              <h1 className="text-3xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent animate-shimmer">
+              <h1 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent animate-shimmer">
                 {session.title} 📅
               </h1>
               {getStatusBadge()}

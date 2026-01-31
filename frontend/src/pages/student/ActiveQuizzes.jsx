@@ -395,10 +395,8 @@ export default function ActiveQuizzes() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8">
         {/* Header with MeriTai styling */}
         <div className="mb-6 sm:mb-8 text-center">
-          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black mb-2 sm:mb-3">
-            <span className="meritai-title-gradient">
-              🎯 Active Quizzes
-            </span>
+          <h1 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent mb-3">
+            🎯 Active Quizzes
           </h1>
           <p className="text-base sm:text-lg text-gray-600 font-medium px-4">
             Let's ace those quizzes! 🚀 Start when you're ready!

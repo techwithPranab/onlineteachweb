@@ -191,8 +191,8 @@ export default function QuizSetup() {
         
         {/* Header */}
         <div className="mb-6 sm:mb-8">
-          <h1 className="text-xl sm:text-2xl font-bold mb-2">
-            <span className="meritai-title-gradient">{quiz ? quiz.title : 'Quiz Setup'}</span>
+          <h1 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent mb-3">
+            {quiz ? quiz.title : 'Quiz Setup'}
           </h1>
           <p className="text-sm sm:text-base text-gray-600">
             Configure your assessment settings before you begin

@@ -53,10 +53,8 @@ export default function CourseListing() {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
       {/* Gen-Z Header */}
       <div className="mb-8 text-center">
-        <h1 className="text-3xl sm:text-4xl font-black mb-3">
-          <span className="genz-gradient-text-rainbow">
-            📚 Explore Courses
-          </span>
+        <h1 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent mb-3">
+          📚 Explore Courses
         </h1>
         <p className="text-lg text-gray-600 font-medium">
           Find awesome courses to level up your skills! 🚀
@@ -205,15 +203,15 @@ export default function CourseListing() {
 
                 {/* Action Button with Gen-Z styling */}
                 <div className="pt-3 sm:pt-4 border-t border-gray-200">
-                  <MeritaiButton
+                  <button
                     onClick={(e) => {
                       e.stopPropagation()
                       navigate(`/student/courses/${course._id}`)
                     }}
-                    className="text-xs sm:text-sm w-full min-h-[36px] sm:min-h-[40px]"
+                    className="px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white font-semibold rounded-xl shadow-lg transition-all duration-300 transform hover:scale-105 hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none text-sm sm:text-base min-h-[44px] flex items-center justify-center"
                   >
                     View Details 🚀
-                  </MeritaiButton>
+                  </button>
                 </div>
               </div>
             </div>
