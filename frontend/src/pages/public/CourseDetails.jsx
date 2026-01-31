@@ -67,7 +67,7 @@ export default function CourseDetails() {
       return (
         <svg
           key={index}
-          className={`h-6 w-6 ${
+          className={`h-5 w-5 sm:h-6 sm:w-6 ${
             interactive ? 'cursor-pointer' : ''
           } ${
             starValue <= (interactive ? (hoverRating || rating) : currentRating)
@@ -88,8 +88,8 @@ export default function CourseDetails() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-6">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gray-50 py-4 sm:py-6">
+      <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8">
         {/* Back Button */}
         <button
           onClick={() => navigate(-1)}
@@ -101,33 +101,35 @@ export default function CourseDetails() {
 
         {/* Course Header */}
         <div className="bg-white rounded-lg shadow-lg overflow-hidden mb-6">
-          <div className="p-6">
-            <div className="flex items-start justify-between mb-3">
+          <div className="p-4 sm:p-6">
+            <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4 mb-3">
               <div className="flex-1">
-                <h1 className="text-3xl font-bold text-gray-900 mb-2">{course.title}</h1>
-                <p className="text-lg text-gray-600 mb-3">{course.description}</p>
+                <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">{course.title}</h1>
+                <p className="text-base sm:text-lg text-gray-600 mb-3">{course.description}</p>
                 
-                <div className="flex items-center gap-6 mb-3">
+                <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-6 mb-3">
                   <div className="flex items-center gap-2">
-                    {renderStars(course.rating || course.averageRating || 0)}
-                    <span className="text-gray-600">
+                    <div className="flex">
+                      {renderStars(course.rating || course.averageRating || 0)}
+                    </div>
+                    <span className="text-sm sm:text-base text-gray-600">
                       {course.rating || course.averageRating ? (course.rating || course.averageRating).toFixed(1) : 'No ratings'} ({course.reviewCount || course.reviews?.length || 0} reviews)
                     </span>
                   </div>
                 </div>
 
                 <div className="flex flex-wrap gap-2 mb-3">
-                  <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
+                  <span className="inline-flex items-center px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-medium bg-blue-100 text-blue-800">
                     Grade {course.grade}
                   </span>
-                  <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
+                  <span className="inline-flex items-center px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-medium bg-green-100 text-green-800">
                     {course.subject}
                   </span>
-                  <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-purple-100 text-purple-800">
+                  <span className="inline-flex items-center px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-medium bg-purple-100 text-purple-800">
                     {course.level || 'Intermediate'}
                   </span>
                   {course.board && course.board.map((b, idx) => (
-                    <span key={idx} className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-yellow-100 text-yellow-800">
+                    <span key={idx} className="inline-flex items-center px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-medium bg-yellow-100 text-yellow-800">
                       {b}
                     </span>
                   ))}
@@ -141,13 +143,13 @@ export default function CourseDetails() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-6">
           {/* Main Content */}
-          <div className="lg:col-span-2 space-y-6">
+          <div className="lg:col-span-2 space-y-4 lg:space-y-6 order-2 lg:order-1">
             {/* Course Info */}
-            <div className="bg-white rounded-lg shadow p-4">
+            <div className="bg-white rounded-lg shadow p-4 sm:p-6">
               <h2 className="text-xl font-bold text-gray-900 mb-3">Course Information</h2>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <p className="text-sm text-gray-500">Duration</p>
                   <p className="font-semibold">{course.duration || 'Self-paced'}</p>
@@ -248,13 +250,13 @@ export default function CourseDetails() {
             )}
 
             {/* Reviews Section */}
-            <div className="bg-white rounded-lg shadow p-4">
-              <div className="flex items-center justify-between mb-4">
+            <div className="bg-white rounded-lg shadow p-4 sm:p-6">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
                 <h2 className="text-xl font-bold text-gray-900">Student Reviews</h2>
                 {isAuthenticated && !showReviewForm && (
                   <button
                     onClick={() => setShowReviewForm(true)}
-                    className="bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700 transition-colors"
+                    className="bg-primary-600 text-white px-3 sm:px-4 py-2 rounded-lg hover:bg-primary-700 transition-colors text-sm sm:text-base w-full sm:w-auto"
                   >
                     Write a Review
                   </button>
@@ -289,11 +291,11 @@ export default function CourseDetails() {
                     />
                   </div>
 
-                  <div className="flex gap-3">
+                  <div className="flex flex-col sm:flex-row gap-3">
                     <button
                       type="submit"
                       disabled={submitReviewMutation.isLoading}
-                      className="bg-primary-600 text-white px-6 py-2 rounded-lg hover:bg-primary-700 transition-colors disabled:opacity-50"
+                      className="bg-primary-600 text-white px-4 sm:px-6 py-2 rounded-lg hover:bg-primary-700 transition-colors disabled:opacity-50 text-sm sm:text-base w-full sm:w-auto"
                     >
                       {submitReviewMutation.isLoading ? 'Submitting...' : 'Submit Review'}
                     </button>
@@ -304,7 +306,7 @@ export default function CourseDetails() {
                         setRating(0)
                         setComment('')
                       }}
-                      className="bg-gray-300 text-gray-700 px-6 py-2 rounded-lg hover:bg-gray-400 transition-colors"
+                      className="bg-gray-300 text-gray-700 px-4 sm:px-6 py-2 rounded-lg hover:bg-gray-400 transition-colors text-sm sm:text-base w-full sm:w-auto"
                     >
                       Cancel
                     </button>
@@ -347,7 +349,7 @@ export default function CourseDetails() {
           </div>
 
           {/* Sidebar */}
-          <div className="lg:col-span-1">
+          <div className="lg:col-span-1 order-1 lg:order-2">
             {/* Prerequisites */}
             {course.prerequisites && course.prerequisites.length > 0 && (
               <div className="bg-white rounded-lg shadow p-4 mb-4">
@@ -370,7 +372,7 @@ export default function CourseDetails() {
                   {course.tags.map((tag, index) => (
                     <span
                       key={index}
-                      className="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded-full hover:bg-gray-200 cursor-pointer"
+                      className="px-2 sm:px-3 py-1 bg-gray-100 text-gray-700 text-xs sm:text-sm rounded-full hover:bg-gray-200 cursor-pointer"
                     >
                       {tag}
                     </span>

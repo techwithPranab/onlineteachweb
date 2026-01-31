@@ -36,9 +36,6 @@ export default function LandingPage() {
       {/* Audience Section */}
       <AudienceSection />
       
-      {/* Tutor & Mentorship Section */}
-      <TutorMentorshipSection />
-      
       {/* Trust & Value Section */}
       <TrustValueSection />
       
@@ -344,103 +341,7 @@ function AudienceSection() {
 }
 
 // =============================================
-// 6. TUTOR & MENTORSHIP SECTION
-// =============================================
-function TutorMentorshipSection() {
-  return (
-    <section className="py-20 bg-gradient-to-br from-primary-600 to-primary-800 text-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          {/* Left Content */}
-          <div>
-            <h2 className="text-4xl md:text-5xl font-bold mb-6">
-              Learn from Experienced Tutors
-            </h2>
-            <p className="text-xl text-primary-100 mb-8 leading-relaxed">
-              Our expert mentors don't just teach—they understand your unique learning gaps 
-              and guide you step-by-step to mastery.
-            </p>
-            
-            {/* Mentor Features */}
-            <div className="space-y-4 mb-8">
-              <div className="flex items-start space-x-3">
-                <div className="bg-white/20 p-2 rounded-lg mt-1">
-                  <Users className="h-5 w-5" />
-                </div>
-                <div>
-                  <h3 className="font-semibold text-lg">Live Online Sessions</h3>
-                  <p className="text-primary-100">Interactive classes with screen sharing and whiteboard</p>
-                </div>
-              </div>
-              
-              <div className="flex items-start space-x-3">
-                <div className="bg-white/20 p-2 rounded-lg mt-1">
-                  <Target className="h-5 w-5" />
-                </div>
-                <div>
-                  <h3 className="font-semibold text-lg">Personalized Doubt Clearing</h3>
-                  <p className="text-primary-100">One-on-one attention to address your specific questions</p>
-                </div>
-              </div>
-              
-              <div className="flex items-start space-x-3">
-                <div className="bg-white/20 p-2 rounded-lg mt-1">
-                  <TrendingUp className="h-5 w-5" />
-                </div>
-                <div>
-                  <h3 className="font-semibold text-lg">Progress Tracking & Feedback</h3>
-                  <p className="text-primary-100">Regular assessments and detailed performance reports</p>
-                </div>
-              </div>
-            </div>
-            
-            {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Link
-                to="/signup?role=student"
-                className="bg-white text-primary-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition text-center"
-              >
-                Talk to a Tutor
-              </Link>
-              <Link
-                to="/for-tutors"
-                 className="border-2 border-white text-white px-6 py-3 rounded-lg font-semibold hover:bg-white hover:text-primary-600 transition text-center"
-               >
-                 Become a Mentor
-               </Link>
-            </div>
-          </div>
-
-          {/* Right Content - Stats/Visual */}
-          <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8">
-            <h3 className="text-2xl font-bold mb-6 text-center">Our Mentors</h3>
-            <div className="grid grid-cols-2 gap-6">
-              <div className="text-center">
-                <div className="text-4xl font-bold mb-2">500+</div>
-                <div className="text-primary-200">Expert Tutors</div>
-              </div>
-              <div className="text-center">
-                <div className="text-4xl font-bold mb-2">15+</div>
-                <div className="text-primary-200">Years Experience</div>
-              </div>
-              <div className="text-center">
-                <div className="text-4xl font-bold mb-2">98%</div>
-                <div className="text-primary-200">Success Rate</div>
-              </div>
-              <div className="text-center">
-                <div className="text-4xl font-bold mb-2">50k+</div>
-                <div className="text-primary-200">Sessions Completed</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  )
-}
-
-// =============================================
-// 7. TRUST & VALUE SECTION
+// 6. TRUST & VALUE SECTION
 // =============================================
 function TrustValueSection() {
   const benefits = [

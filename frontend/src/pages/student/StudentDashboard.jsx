@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from 'react-query'
-import { BookOpen, Calendar, TrendingUp, Video, FileText, Play, UserPlus, ArrowRight } from 'lucide-react'
-import { courseService, sessionService, materialService, reportService } from '@/services/apiServices'
+import { BookOpen, Calendar, TrendingUp, Video, FileText, Play, UserPlus, ArrowRight, Target, Award } from 'lucide-react'
+import { courseService, sessionService, materialService, reportService, algorithmQuizService } from '@/services/apiServices'
 import { useAuthStore } from '@/store/authStore'
 import { Link } from 'react-router-dom'
 import LoadingSpinner from '@/components/common/LoadingSpinner'
@@ -39,10 +39,26 @@ export default function StudentDashboard() {
     { enabled: !!user }
   )
 
+  // Fetch quiz performance data
+  const { data: quizPerformanceData } = useQuery(
+    ['quizPerformance', user?._id],
+    () => algorithmQuizService.getStudentPerformance(),
+    { enabled: !!user }
+  )
+
+  // Fetch quiz history for total count
+  const { data: quizHistoryData } = useQuery(
+    ['quizHistory', user?._id],
+    () => algorithmQuizService.getQuizHistory({ limit: 1000 }),
+    { enabled: !!user }
+  )
+
   const courses = coursesData?.data || []
   const sessions = sessionsData?.sessions || []
   const materials = materialsData?.data || []
   const report = reportData?.data || {}
+  const quizPerformance = quizPerformanceData?.performance || {}
+  const quizHistory = quizHistoryData?.data || []
 
   const isLoading = coursesLoading || sessionsLoading || materialsLoading
 
@@ -74,11 +90,11 @@ export default function StudentDashboard() {
     return <LoadingSpinner fullScreen />
   }
 
-  // Calculate stats
+  // Calculate stats - now focused on quiz performance
+  const totalQuizzesTaken = quizHistory.length
+  const averageQuizScore = quizPerformance.averageScore || 0
+  const averageAccuracy = quizPerformance.averageAccuracy || 0
   const availableCoursesCount = courses.length
-  const upcomingClassesCount = sessions.length
-  const attendanceRate = report.attendanceRate || 0
-  const hoursLearned = report.totalHours || 0
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 space-y-6 sm:space-y-8">
@@ -92,35 +108,35 @@ export default function StudentDashboard() {
         </p>
       </div>
 
-      {/* Stats Cards with MeriTai styling */}
+      {/* Stats Cards with MeriTai styling - Quiz Focused */}
       <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
+        <StatCard
+          icon={<Target className="h-6 w-6 sm:h-8 sm:w-8" />}
+          label="Quizzes Taken"
+          value={totalQuizzesTaken}
+          emoji="🎯"
+          gradient="from-emerald-500 to-emerald-600"
+        />
+        <StatCard
+          icon={<Award className="h-6 w-6 sm:h-8 sm:w-8" />}
+          label="Avg Score"
+          value={`${averageQuizScore}%`}
+          emoji="🏆"
+          gradient="from-blue-500 to-blue-600"
+        />
+        <StatCard
+          icon={<TrendingUp className="h-6 w-6 sm:h-8 sm:w-8" />}
+          label="Accuracy"
+          value={`${averageAccuracy}%`}
+          emoji="📈"
+          gradient="from-orange-500 to-orange-600"
+        />
         <StatCard
           icon={<BookOpen className="h-6 w-6 sm:h-8 sm:w-8" />}
           label="Courses"
           value={availableCoursesCount}
           emoji="📚"
-          gradient="from-emerald-500 to-emerald-600"
-        />
-        <StatCard
-          icon={<Calendar className="h-6 w-6 sm:h-8 sm:w-8" />}
-          label="Classes"
-          value={upcomingClassesCount}
-          emoji="📅"
-          gradient="from-indigo-500 to-indigo-600"
-        />
-        <StatCard
-          icon={<TrendingUp className="h-6 w-6 sm:h-8 sm:w-8" />}
-          label="Attendance"
-          value={`${attendanceRate}%`}
-          emoji="📈"
-          gradient="from-orange-500 to-orange-600"
-        />
-        <StatCard
-          icon={<Video className="h-6 w-6 sm:h-8 sm:w-8" />}
-          label="Hours"
-          value={hoursLearned}
-          emoji="⏱️"
-          gradient="from-red-500 to-red-600"
+          gradient="from-purple-500 to-purple-600"
         />
       </div>
 
