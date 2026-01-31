@@ -26,9 +26,12 @@
     "$date": "2026-01-19T01:53:04.787Z"
   },
   "updatedAt": {
-    "$date": "2026-01-19T01:53:04.787Z"
+    "$date": "2026-01-28T07:06:30.602Z"
   },
-  "__v": 0
+  "__v": 1,
+  "lastLogin": {
+    "$date": "2026-01-28T04:05:34.453Z"
+  }
 },
 {
   "_id": {
@@ -71,15 +74,18 @@
     "$date": "2026-01-19T01:53:04.858Z"
   },
   "updatedAt": {
-    "$date": "2026-01-19T01:53:04.858Z"
+    "$date": "2026-01-28T04:05:23.423Z"
   },
-  "__v": 0
+  "__v": 1,
+  "lastLogin": {
+    "$date": "2026-01-28T03:40:03.760Z"
+  }
 },
 {
   "_id": {
     "$oid": "696d8e8098d47cbd00770ac4"
   },
-  "name": "Pranab Student",
+  "name": "Adrija Paul",
   "email": "pranabpiitk@gmail.com",
   "password": "$2a$10$D41aKfThKoYuFuBJgj/2Au1J20jB91JEDnedUVXzbu.o0u62pk3i.",
   "role": "student",
@@ -113,15 +119,15 @@
       }
     },
     {
-      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5NmQ4ZTgwOThkNDdjYmQwMDc3MGFjNCIsImlhdCI6MTc2OTQxNzAxOSwiZXhwIjoxNzcwMDIxODE5fQ.qqoDAVahxLOG0kRaAqmV5QoC5YLEpsGp9laMlNhpf60",
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5NmQ4ZTgwOThkNDdjYmQwMDc3MGFjNCIsImlhdCI6MTc2OTgxNzIwMiwiZXhwIjoxNzcwNDIyMDAyfQ.fn8WljgvRobMbbwRIhABS9J90sl8-MPWN_OVBfre9Gg",
       "expiresAt": {
-        "$date": "2026-02-02T08:43:39.245Z"
+        "$date": "2026-02-06T23:53:22.689Z"
       },
       "_id": {
-        "$oid": "6977293bbce274de795d5243"
+        "$oid": "697d44720061476fff2e3289"
       },
       "createdAt": {
-        "$date": "2026-01-26T08:43:39.246Z"
+        "$date": "2026-01-30T23:53:22.691Z"
       }
     }
   ],
@@ -129,10 +135,44 @@
     "$date": "2026-01-19T01:53:04.920Z"
   },
   "updatedAt": {
-    "$date": "2026-01-26T08:43:39.248Z"
+    "$date": "2026-01-30T23:53:22.692Z"
   },
-  "__v": 3,
+  "__v": 8,
   "lastLogin": {
-    "$date": "2026-01-26T08:43:39.246Z"
-  }
+    "$date": "2026-01-30T23:53:22.691Z"
+  },
+  "bio": ""
+},
+{
+  "_id": {
+    "$oid": "697c30dd24cc274f5f5103eb"
+  },
+  "name": "Test Student",
+  "email": "test@student.com",
+  "password": "$2a$10$jok3VqvSHAy/8SjameXfTumOryJQwbFxi8/K8fF08SNVY1YuRe3.K",
+  "role": "student",
+  "avatar": "",
+  "grade": 5,
+  "enrolledCourses": [],
+  "subjects": [],
+  "experience": 0,
+  "rating": 0,
+  "totalRatings": 0,
+  "teachingHours": 0,
+  "notifications": {
+    "email": true,
+    "sms": false,
+    "push": true
+  },
+  "emailVerified": false,
+  "status": "active",
+  "qualifications": [],
+  "refreshTokens": [],
+  "createdAt": {
+    "$date": "2026-01-30T04:17:33.955Z"
+  },
+  "updatedAt": {
+    "$date": "2026-01-30T04:17:33.955Z"
+  },
+  "__v": 0
 }]

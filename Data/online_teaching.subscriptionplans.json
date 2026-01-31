@@ -1,0 +1,85 @@
+[{
+  "_id": {
+    "$oid": "696d8e8098d47cbd00770ac6"
+  },
+  "name": "Free",
+  "description": "Free plan - 5 quizzes per subject per month, progress reports, and access to online study material",
+  "price": 0,
+  "currency": "USD",
+  "interval": "month",
+  "features": [
+    "5 Quizzes per Subject / month",
+    "Progress Report",
+    "Online Study Material"
+  ],
+  "maxCourses": 0,
+  "maxLiveSessions": 0,
+  "downloadMaterials": true,
+  "priority": 1,
+  "isActive": true,
+  "createdAt": {
+    "$date": "2026-01-19T01:53:04.982Z"
+  },
+  "updatedAt": {
+    "$date": "2026-01-19T01:53:04.982Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "696d8e8098d47cbd00770ac7"
+  },
+  "name": "Standard (Monthly)",
+  "description": "Standard monthly subscription - unlimited quizzes, tutor session on identified gaps and mentorship",
+  "price": 100,
+  "currency": "USD",
+  "interval": "month",
+  "features": [
+    "Unlimited Quizzes",
+    "Session with expert tutor on identified gap",
+    "Expert Study Material",
+    "Progress Tracking & Analytics",
+    "Personalized Mentorship"
+  ],
+  "maxCourses": -1,
+  "maxLiveSessions": -1,
+  "downloadMaterials": true,
+  "priority": 2,
+  "isActive": true,
+  "createdAt": {
+    "$date": "2026-01-19T01:53:04.982Z"
+  },
+  "updatedAt": {
+    "$date": "2026-01-19T01:53:04.982Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "696d8e8098d47cbd00770ac8"
+  },
+  "name": "Standard (Annual)",
+  "description": "Standard annual subscription (best value)",
+  "price": 1000,
+  "currency": "USD",
+  "interval": "year",
+  "features": [
+    "Unlimited Quizzes",
+    "Session with expert tutor on identified gap",
+    "Expert Study Material",
+    "Progress Tracking & Analytics",
+    "Personalized Mentorship"
+  ],
+  "maxCourses": -1,
+  "maxLiveSessions": -1,
+  "downloadMaterials": true,
+  "priority": 3,
+  "isActive": true,
+  "createdAt": {
+    "$date": "2026-01-19T01:53:04.982Z"
+  },
+  "updatedAt": {
+    "$date": "2026-01-19T01:53:04.982Z"
+  },
+  "__v": 0
+}]
