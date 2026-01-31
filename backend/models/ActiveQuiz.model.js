@@ -84,13 +84,30 @@ const activeQuizSchema = new mongoose.Schema({
       type: String,
       required: true
     },
-    options: [{
+    type: {
       type: String,
-      required: true
+      enum: ['mcq-single', 'mcq-multiple', 'true-false', 'numerical', 'short-answer', 'long-answer', 'case-based'],
+      default: 'mcq-single'
+    },
+    options: [{
+      id: {
+        type: String,
+        required: true
+      },
+      text: {
+        type: String,
+        required: true
+      }
     }],
     correctAnswer: {
       type: mongoose.Schema.Types.Mixed,
       required: true
+    },
+    expectedAnswer: {
+      type: String
+    },
+    numericalAnswer: {
+      type: Object
     },
     explanation: {
       type: String
@@ -110,6 +127,46 @@ const activeQuizSchema = new mongoose.Schema({
     },
     timeLimit: {
       type: Number // in seconds, optional
+    }
+  }],
+
+  // User answers with detailed tracking
+  answers: [{
+    questionId: {
+      type: String,
+      required: true
+    },
+    answer: {
+      type: mongoose.Schema.Types.Mixed // Can be string, array, number, etc.
+    },
+    isCorrect: {
+      type: Boolean
+    },
+    markedForReview: {
+      type: Boolean,
+      default: false
+    },
+    skipped: {
+      type: Boolean,
+      default: false
+    },
+    timeSpent: {
+      type: Number, // Time spent on this question in seconds
+      default: 0
+    },
+    attempts: {
+      type: Number, // Number of times answer was changed
+      default: 0
+    },
+    firstAnsweredAt: {
+      type: Date
+    },
+    lastUpdatedAt: {
+      type: Date
+    },
+    visitCount: {
+      type: Number, // How many times user visited this question
+      default: 0
     }
   }],
 
@@ -150,17 +207,8 @@ const activeQuizSchema = new mongoose.Schema({
   },
 
   performanceData: {
-    weakTopics: [{
-      type: String
-    }],
-    topicMastery: {
-      type: Map,
-      of: Number, // topic -> mastery percentage
-      default: new Map()
-    },
-    recommendations: [{
-      type: String
-    }]
+    type: mongoose.Schema.Types.Mixed, // Allow any structure for flexibility
+    default: {}
   },
 
   // Timestamps
@@ -208,10 +256,102 @@ activeQuizSchema.virtual('timeRemaining').get(function() {
 activeQuizSchema.virtual('progressPercentage').get(function() {
   if (!this.questions || this.questions.length === 0) return 0;
 
-  // This would need to be calculated based on answered questions
-  // For now, return 0 as we don't track individual question status here
-  return 0;
+  const answeredCount = this.answers ? this.answers.filter(a => a.answer !== null && a.answer !== undefined && !a.skipped).length : 0;
+  return Math.round((answeredCount / this.questions.length) * 100);
 });
+
+// Instance method to save individual answer
+activeQuizSchema.methods.saveAnswer = function(questionId, answerData) {
+  const { answer, markedForReview = false, timeSpent = 0 } = answerData;
+  
+  // Find existing answer
+  const existingAnswerIndex = this.answers.findIndex(a => a.questionId === questionId);
+  
+  if (existingAnswerIndex >= 0) {
+    // Update existing answer
+    const existingAnswer = this.answers[existingAnswerIndex];
+    existingAnswer.answer = answer;
+    existingAnswer.markedForReview = markedForReview;
+    existingAnswer.timeSpent = (existingAnswer.timeSpent || 0) + timeSpent;
+    existingAnswer.attempts = (existingAnswer.attempts || 0) + 1;
+    existingAnswer.lastUpdatedAt = new Date();
+    existingAnswer.visitCount = (existingAnswer.visitCount || 0) + 1;
+    
+    if (!existingAnswer.firstAnsweredAt) {
+      existingAnswer.firstAnsweredAt = new Date();
+    }
+    
+    // Clear skipped status if answer is provided
+    if (answer !== null && answer !== undefined) {
+      existingAnswer.skipped = false;
+    }
+  } else {
+    // Create new answer entry
+    this.answers.push({
+      questionId,
+      answer,
+      markedForReview,
+      skipped: answer === null || answer === undefined,
+      timeSpent,
+      attempts: 1,
+      firstAnsweredAt: new Date(),
+      lastUpdatedAt: new Date(),
+      visitCount: 1
+    });
+  }
+  
+  this.lastUpdated = new Date();
+  return this.save();
+};
+
+// Instance method to mark question for review
+activeQuizSchema.methods.toggleReviewMark = function(questionId) {
+  const answer = this.answers.find(a => a.questionId === questionId);
+  
+  if (answer) {
+    answer.markedForReview = !answer.markedForReview;
+    answer.lastUpdatedAt = new Date();
+  } else {
+    // Create placeholder if doesn't exist
+    this.answers.push({
+      questionId,
+      answer: null,
+      markedForReview: true,
+      skipped: false,
+      timeSpent: 0,
+      attempts: 0,
+      visitCount: 1
+    });
+  }
+  
+  this.lastUpdated = new Date();
+  return this.save();
+};
+
+// Instance method to skip question
+activeQuizSchema.methods.skipQuestion = function(questionId, timeSpent = 0) {
+  const answer = this.answers.find(a => a.questionId === questionId);
+  
+  if (answer) {
+    answer.skipped = true;
+    answer.timeSpent = (answer.timeSpent || 0) + timeSpent;
+    answer.visitCount = (answer.visitCount || 0) + 1;
+    answer.lastUpdatedAt = new Date();
+  } else {
+    this.answers.push({
+      questionId,
+      answer: null,
+      markedForReview: false,
+      skipped: true,
+      timeSpent,
+      attempts: 0,
+      visitCount: 1
+    });
+  }
+  
+  this.lastUpdated = new Date();
+  return this.save();
+};
 
 // Instance method to start quiz
 activeQuizSchema.methods.startQuiz = function() {

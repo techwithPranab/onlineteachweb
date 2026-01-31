@@ -36,9 +36,8 @@ exports.generateQuestions = async (req, res, next) => {
       });
     }
 
-    // Check user permissions (admin or course tutor)
-    if (req.user.role !== 'admin' && 
-        course.createdBy.toString() !== req.user._id.toString()) {
+    // Check user permissions (admin or tutor)
+    if (req.user.role !== 'admin' && req.user.role !== 'tutor') {
       return res.status(403).json({
         success: false,
         message: 'Not authorized to generate questions for this course'
@@ -75,11 +74,14 @@ exports.generateQuestions = async (req, res, next) => {
  */
 exports.getDrafts = async (req, res, next) => {
   try {
-    const { courseId, status, page, limit } = req.query;
+    const { courseId, status, page, limit, grade, subject } = req.query;
 
-    // If not admin, filter by courses user has access to
+    // Build query - note: grade and subject are not in schema, they're in questionPayload
+    // For now, we'll just pass courseId, status to the service and let frontend filter by grade/subject
     let query = {};
-    if (req.user.role !== 'admin') {
+    
+    // If not admin or tutor, filter by courses user has access to
+    if (req.user.role !== 'admin' && req.user.role !== 'tutor') {
       const userCourses = await Course.find({ createdBy: req.user._id }).select('_id');
       const courseIds = userCourses.map(c => c._id);
       query.courseId = { $in: courseIds };
@@ -123,9 +125,24 @@ exports.getDraftById = async (req, res, next) => {
       });
     }
 
-    // Check access
-    if (req.user.role !== 'admin') {
-      const course = await Course.findById(draft.courseId);
+    // Check access - allow both admins and tutors to view any draft
+    if (req.user.role !== 'admin' && req.user.role !== 'tutor') {
+      const courseId = draft.questionPayload?.courseId;
+      if (!courseId) {
+        return res.status(400).json({
+          success: false,
+          message: 'Draft is missing course information'
+        });
+      }
+      
+      const course = await Course.findById(courseId);
+      if (!course) {
+        return res.status(410).json({
+          success: false,
+          message: 'The course for this question draft has been deleted. Please contact an administrator to resolve this issue.'
+        });
+      }
+      
       if (course.createdBy.toString() !== req.user._id.toString()) {
         return res.status(403).json({
           success: false,
@@ -160,9 +177,24 @@ exports.approveDraft = async (req, res, next) => {
       });
     }
 
-    // Check access
-    if (req.user.role !== 'admin') {
-      const course = await Course.findById(draft.courseId);
+    // Check access - allow both admins and tutors to approve any draft
+    if (req.user.role !== 'admin' && req.user.role !== 'tutor') {
+      const courseId = draft.questionPayload?.courseId;
+      if (!courseId) {
+        return res.status(400).json({
+          success: false,
+          message: 'Draft is missing course information'
+        });
+      }
+      
+      const course = await Course.findById(courseId);
+      if (!course) {
+        return res.status(410).json({
+          success: false,
+          message: 'The course for this question draft has been deleted. Please contact an administrator to resolve this issue.'
+        });
+      }
+      
       if (course.createdBy.toString() !== req.user._id.toString()) {
         return res.status(403).json({
           success: false,
@@ -214,9 +246,24 @@ exports.rejectDraft = async (req, res, next) => {
       });
     }
 
-    // Check access
-    if (req.user.role !== 'admin') {
-      const course = await Course.findById(draft.courseId);
+    // Check access - allow both admins and tutors to reject any draft
+    if (req.user.role !== 'admin' && req.user.role !== 'tutor') {
+      const courseId = draft.questionPayload?.courseId;
+      if (!courseId) {
+        return res.status(400).json({
+          success: false,
+          message: 'Draft is missing course information'
+        });
+      }
+      
+      const course = await Course.findById(courseId);
+      if (!course) {
+        return res.status(410).json({
+          success: false,
+          message: 'The course for this question draft has been deleted. Please contact an administrator to resolve this issue.'
+        });
+      }
+      
       if (course.createdBy.toString() !== req.user._id.toString()) {
         return res.status(403).json({
           success: false,
@@ -327,9 +374,24 @@ exports.editDraft = async (req, res, next) => {
       });
     }
 
-    // Check access
-    if (req.user.role !== 'admin') {
-      const course = await Course.findById(draft.courseId);
+    // Check access - allow both admins and tutors to edit any draft
+    if (req.user.role !== 'admin' && req.user.role !== 'tutor') {
+      const courseId = draft.questionPayload?.courseId;
+      if (!courseId) {
+        return res.status(400).json({
+          success: false,
+          message: 'Draft is missing course information'
+        });
+      }
+      
+      const course = await Course.findById(courseId);
+      if (!course) {
+        return res.status(410).json({
+          success: false,
+          message: 'The course for this question draft has been deleted. Please contact an administrator to resolve this issue.'
+        });
+      }
+      
       if (course.createdBy.toString() !== req.user._id.toString()) {
         return res.status(403).json({
           success: false,
@@ -470,8 +532,7 @@ exports.generateQuestionsAsync = async (req, res, next) => {
     }
 
     // Check user permissions
-    if (req.user.role !== 'admin' && 
-        course.createdBy.toString() !== req.user._id.toString()) {
+    if (req.user.role !== 'admin' && req.user.role !== 'tutor') {
       return res.status(403).json({
         success: false,
         message: 'Not authorized to generate questions for this course'
@@ -589,6 +650,51 @@ exports.cancelJob = async (req, res, next) => {
 };
 
 /**
+ * @desc    Clean up orphaned drafts (Admin only)
+ * @route   DELETE /api/ai/questions/drafts/orphaned
+ * @access  Private (Admin only)
+ */
+exports.cleanupOrphanedDrafts = async (req, res, next) => {
+  try {
+    // Only admins can clean up orphaned drafts
+    if (req.user.role !== 'admin') {
+      return res.status(403).json({
+        success: false,
+        message: 'Access denied. Admin privileges required.'
+      });
+    }
+
+    // Find all drafts
+    const allDrafts = await AIQuestionDraft.find({});
+    const orphanedDrafts = [];
+
+    // Check each draft's course
+    for (const draft of allDrafts) {
+      const course = await Course.findById(draft.courseId);
+      if (!course) {
+        orphanedDrafts.push(draft._id);
+      }
+    }
+
+    // Delete orphaned drafts
+    if (orphanedDrafts.length > 0) {
+      await AIQuestionDraft.deleteMany({ _id: { $in: orphanedDrafts } });
+    }
+
+    logger.info(`Cleaned up ${orphanedDrafts.length} orphaned drafts by admin ${req.user._id}`);
+
+    res.json({
+      success: true,
+      message: `Successfully cleaned up ${orphanedDrafts.length} orphaned drafts`,
+      orphanedDrafts: orphanedDrafts.length,
+      deletedIds: orphanedDrafts
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
  * @desc    Get queue stats
  * @route   GET /api/ai/questions/queue/stats
  * @access  Private (Admin)
@@ -601,6 +707,56 @@ exports.getQueueStats = async (req, res, next) => {
     res.json({
       success: true,
       stats
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
+ * @desc    Clean up orphaned drafts (Admin only)
+ * @route   DELETE /api/ai/questions/drafts/orphaned
+ * @access  Private (Admin only)
+ */
+exports.cleanupOrphanedDrafts = async (req, res, next) => {
+  try {
+    // Only admins can clean up orphaned drafts
+    if (req.user.role !== 'admin') {
+      return res.status(403).json({
+        success: false,
+        message: 'Access denied. Admin privileges required.'
+      });
+    }
+
+    // Find all drafts
+    const allDrafts = await AIQuestionDraft.find({});
+    const orphanedDrafts = [];
+
+    // Check each draft's course
+    for (const draft of allDrafts) {
+      const courseId = draft.questionPayload?.courseId;
+      if (courseId) {
+        const course = await Course.findById(courseId);
+        if (!course) {
+          orphanedDrafts.push(draft._id);
+        }
+      } else {
+        orphanedDrafts.push(draft._id);
+      }
+    }
+
+    // Delete orphaned drafts
+    if (orphanedDrafts.length > 0) {
+      await AIQuestionDraft.deleteMany({ _id: { $in: orphanedDrafts } });
+    }
+
+    logger.info(`Cleaned up ${orphanedDrafts.length} orphaned drafts by admin ${req.user._id}`);
+
+    res.json({
+      success: true,
+      message: `Successfully cleaned up ${orphanedDrafts.length} orphaned drafts`,
+      orphanedDrafts: orphanedDrafts.length,
+      deletedIds: orphanedDrafts
     });
   } catch (error) {
     next(error);

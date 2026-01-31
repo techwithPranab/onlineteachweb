@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const router = express.Router();
 const ActiveQuiz = require('../models/ActiveQuiz.model');
+const QuizSession = require('../models/QuizSession.model');
 const { authenticate, authorize } = require('../middleware/auth');
 const { body, param, validationResult } = require('express-validator');
 
@@ -16,6 +17,7 @@ const validateQuizCreation = [
   body('questions').isArray().withMessage('Questions array is required'),
   body('questions.*.id').isString().notEmpty().withMessage('Question ID is required'),
   body('questions.*.question').isString().notEmpty().withMessage('Question text is required'),
+  body('questions.*.type').isIn(['mcq-single', 'mcq-multiple', 'true-false', 'numerical', 'short-answer', 'long-answer', 'case-based']).withMessage('Valid question type required'),
   body('questions.*.options').isArray().withMessage('Question options are required'),
   body('questions.*.correctAnswer').exists().withMessage('Correct answer is required'),
   body('questions.*.topic').isString().notEmpty().withMessage('Question topic is required'),
@@ -24,11 +26,193 @@ const validateQuizCreation = [
 
 const validateQuizUpdate = [
   param('quizId').isString().notEmpty().withMessage('Valid quiz ID is required'),
-  body('status').optional().isIn(['ACTIVE', 'IN_PROGRESS', 'COMPLETED', 'ABANDONED']).withMessage('Valid status required')
+  body('status').optional().isIn(['ACTIVE', 'IN_PROGRESS', 'completed', 'ABANDONED']).withMessage('Valid status required')
 ];
 
 // Apply authentication to all routes
 router.use(authenticate);
+
+// @route   PUT /api/active-quizzes/:quizId/answer
+// @desc    Save answer for a specific question
+// @access  Private (Student)
+router.put('/:quizId/answer', [
+  param('quizId').isString().notEmpty().withMessage('Valid quiz ID is required'),
+  body('questionId').isString().notEmpty().withMessage('Question ID is required'),
+  body('answer').exists().withMessage('Answer is required'),
+  body('markedForReview').optional().isBoolean(),
+  body('timeSpent').optional().isNumeric()
+], async (req, res) => {
+  try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({
+        success: false,
+        message: 'Validation failed',
+        errors: errors.array()
+      });
+    }
+
+    const { quizId } = req.params;
+    const userId = req.user._id;
+    const { questionId, answer, markedForReview = false, timeSpent = 0 } = req.body;
+
+    const quiz = await ActiveQuiz.findOne({ quizId, userId, isDeleted: false });
+
+    if (!quiz) {
+      return res.status(404).json({
+        success: false,
+        message: 'Active quiz not found'
+      });
+    }
+
+    if (quiz.status === 'completed' || quiz.status === 'ABANDONED') {
+      return res.status(400).json({
+        success: false,
+        message: `Cannot save answer for ${quiz.status.toLowerCase()} quiz`
+      });
+    }
+
+    // Save the answer
+    await quiz.saveAnswer(questionId, { answer, markedForReview, timeSpent });
+
+    res.json({
+      success: true,
+      message: 'Answer saved successfully',
+      data: {
+        questionId,
+        saved: true,
+        progressPercentage: quiz.progressPercentage
+      }
+    });
+
+  } catch (error) {
+    console.error('Error saving answer:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to save answer',
+      error: process.env.NODE_ENV === 'development' ? error.message : undefined
+    });
+  }
+});
+
+// @route   PUT /api/active-quizzes/:quizId/review/:questionId
+// @desc    Toggle review mark for a question
+// @access  Private (Student)
+router.put('/:quizId/review/:questionId', [
+  param('quizId').isString().notEmpty().withMessage('Valid quiz ID is required'),
+  param('questionId').isString().notEmpty().withMessage('Valid question ID is required')
+], async (req, res) => {
+  try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({
+        success: false,
+        message: 'Validation failed',
+        errors: errors.array()
+      });
+    }
+
+    const { quizId, questionId } = req.params;
+    const userId = req.user._id;
+
+    const quiz = await ActiveQuiz.findOne({ quizId, userId, isDeleted: false });
+
+    if (!quiz) {
+      return res.status(404).json({
+        success: false,
+        message: 'Active quiz not found'
+      });
+    }
+
+    if (quiz.status === 'completed' || quiz.status === 'ABANDONED') {
+      return res.status(400).json({
+        success: false,
+        message: `Cannot mark question for ${quiz.status.toLowerCase()} quiz`
+      });
+    }
+
+    // Toggle review mark
+    await quiz.toggleReviewMark(questionId);
+    const answer = quiz.answers.find(a => a.questionId === questionId);
+
+    res.json({
+      success: true,
+      message: answer?.markedForReview ? 'Question marked for review' : 'Review mark removed',
+      data: {
+        questionId,
+        markedForReview: answer?.markedForReview || false
+      }
+    });
+
+  } catch (error) {
+    console.error('Error toggling review mark:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to toggle review mark',
+      error: process.env.NODE_ENV === 'development' ? error.message : undefined
+    });
+  }
+});
+
+// @route   PUT /api/active-quizzes/:quizId/skip/:questionId
+// @desc    Skip a question
+// @access  Private (Student)
+router.put('/:quizId/skip/:questionId', [
+  param('quizId').isString().notEmpty().withMessage('Valid quiz ID is required'),
+  param('questionId').isString().notEmpty().withMessage('Valid question ID is required'),
+  body('timeSpent').optional().isNumeric()
+], async (req, res) => {
+  try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({
+        success: false,
+        message: 'Validation failed',
+        errors: errors.array()
+      });
+    }
+
+    const { quizId, questionId } = req.params;
+    const userId = req.user._id;
+    const { timeSpent = 0 } = req.body;
+
+    const quiz = await ActiveQuiz.findOne({ quizId, userId, isDeleted: false });
+
+    if (!quiz) {
+      return res.status(404).json({
+        success: false,
+        message: 'Active quiz not found'
+      });
+    }
+
+    if (quiz.status === 'completed' || quiz.status === 'ABANDONED') {
+      return res.status(400).json({
+        success: false,
+        message: `Cannot skip question for ${quiz.status.toLowerCase()} quiz`
+      });
+    }
+
+    // Skip the question
+    await quiz.skipQuestion(questionId, timeSpent);
+
+    res.json({
+      success: true,
+      message: 'Question skipped',
+      data: {
+        questionId,
+        skipped: true
+      }
+    });
+
+  } catch (error) {
+    console.error('Error skipping question:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to skip question',
+      error: process.env.NODE_ENV === 'development' ? error.message : undefined
+    });
+  }
+});
 
 // @route   POST /api/active-quizzes
 // @desc    Create a new active quiz
@@ -45,7 +229,7 @@ router.post('/', validateQuizCreation, async (req, res) => {
       });
     }
 
-    const userId = req.user.id;
+    const userId = req.user._id;
     const {
       subject,
       courseName,
@@ -124,7 +308,7 @@ router.post('/', validateQuizCreation, async (req, res) => {
 // @access  Private (Student)
 router.get('/', async (req, res) => {
   try {
-    const userId = req.user.id;
+    const userId = req.user._id;
     const { status, limit = 50 } = req.query;
 
     let query = { userId, isDeleted: false };
@@ -177,7 +361,7 @@ router.get('/:quizId', [
     }
 
     const { quizId } = req.params;
-    const userId = req.user.id;
+    const userId = req.user._id;
 
     const quiz = await ActiveQuiz.findOne({ quizId, userId, isDeleted: false });
 
@@ -221,7 +405,7 @@ router.put('/:quizId/start', [
     }
 
     const { quizId } = req.params;
-    const userId = req.user.id;
+    const userId = req.user._id;
 
     // Check if user already has a quiz in progress
     const existingInProgress = await ActiveQuiz.hasQuizInProgress(userId);
@@ -283,9 +467,9 @@ router.put('/:quizId/start', [
 // @access  Private (Student)
 router.put('/:quizId/complete', [
   param('quizId').isString().notEmpty().withMessage('Valid quiz ID is required'),
-  body('score').isNumeric().withMessage('Score is required'),
-  body('totalMarks').isNumeric().withMessage('Total marks is required'),
-  body('timeSpent').isNumeric().withMessage('Time spent is required'),
+  body('score').custom(value => typeof value === 'number' || !isNaN(Number(value))).withMessage('Score must be a number'),
+  body('totalMarks').custom(value => typeof value === 'number' || !isNaN(Number(value))).withMessage('Total marks must be a number'),
+  body('timeSpent').custom(value => typeof value === 'number' || !isNaN(Number(value))).withMessage('Time spent must be a number'),
   body('performanceData').optional().isObject().withMessage('Performance data must be an object')
 ], async (req, res) => {
   try {
@@ -299,7 +483,7 @@ router.put('/:quizId/complete', [
     }
 
     const { quizId } = req.params;
-    const userId = req.user.id;
+    const userId = req.user._id;
     const { score, totalMarks, timeSpent, performanceData } = req.body;
 
     const quiz = await ActiveQuiz.findOne({ quizId, userId, isDeleted: false });
@@ -325,6 +509,74 @@ router.put('/:quizId/complete', [
 
     // Complete the quiz
     await quiz.completeQuiz(score, totalMarks, timeSpent);
+
+    // Create or update QuizSession for history tracking
+    try {
+      const quizSessionData = {
+        studentId: userId,
+        quizId: quiz._id, // Use ActiveQuiz._id instead of quiz.quizId
+        courseId: quiz.courseId || null, // Allow null for algorithm quizzes
+        attemptNumber: 1, // We can enhance this later to track multiple attempts
+        status: 'completed', // Use lowercase to match enum
+        score: Number(score) || 0,
+        totalScore: Number(totalMarks) || 0,
+        totalMarks: Number(totalMarks) || 0, // Add required field
+        accuracy: quiz.accuracy || 0,
+        timeTaken: Number(timeSpent) || 0,
+        duration: quiz.duration, // Keep in minutes as expected by QuizSession model
+        difficulty: quiz.difficulty,
+        totalQuestions: quiz.questions?.length || 0,
+        startedAt: quiz.createdAt || new Date(), // Add required field
+        expiresAt: new Date(Date.now() + (quiz.duration * 60 * 1000)), // Add required field
+        submittedAt: new Date(), // Add submittedAt
+        passingPercentage: 60, // Default passing percentage
+        algorithmVersion: 'algorithm-v1', // Add required field
+        metadata: {
+          subject: quiz.subject,
+          courseName: quiz.courseName,
+          questionCount: quiz.questionCount,
+          isAlgorithmGenerated: true
+        }
+      };
+
+      console.log('Creating QuizSession with data:', {
+        studentId: userId,
+        quizId: quiz._id,
+        status: 'completed',
+        score: Number(score) || 0,
+        totalScore: Number(totalMarks) || 0,
+        subject: quiz.subject,
+        courseName: quiz.courseName
+      })
+
+      // Check if session already exists for this quiz
+      let session = await QuizSession.findOne({ 
+        quizId: quiz._id, 
+        studentId: userId 
+      });
+
+      if (session) {
+        // Update existing session
+        Object.assign(session, quizSessionData);
+        await session.save();
+        console.log('Updated existing QuizSession:', session._id);
+      } else {
+        // Create new session
+        try {
+          session = await QuizSession.create(quizSessionData);
+          console.log('Created new QuizSession:', session._id);
+        } catch (createError) {
+          console.error('Failed to create QuizSession:', createError);
+          console.error('QuizSession data:', JSON.stringify(quizSessionData, null, 2));
+          throw createError; // Re-throw to be caught by outer try-catch
+        }
+      }
+
+      console.log('QuizSession created/updated for history:', session._id);
+    } catch (sessionError) {
+      // Log error but don't fail the quiz completion
+      console.error('Error creating/updating QuizSession:', sessionError);
+    }
 
     res.json({
       success: true,
@@ -367,7 +619,7 @@ router.put('/:quizId/abandon', [
     }
 
     const { quizId } = req.params;
-    const userId = req.user.id;
+    const userId = req.user._id;
 
     const quiz = await ActiveQuiz.findOne({ quizId, userId, isDeleted: false });
 
@@ -378,7 +630,7 @@ router.put('/:quizId/abandon', [
       });
     }
 
-    if (quiz.status === 'COMPLETED') {
+    if (quiz.status === 'completed') {
       return res.status(400).json({
         success: false,
         message: 'Cannot abandon a completed quiz'
@@ -425,7 +677,7 @@ router.delete('/:quizId', [
     }
 
     const { quizId } = req.params;
-    const userId = req.user.id;
+    const userId = req.user._id;
 
     const quiz = await ActiveQuiz.findOneAndUpdate(
       { quizId, userId, isDeleted: false },
@@ -467,7 +719,7 @@ router.delete('/:quizId', [
 // @access  Private (Student)
 router.get('/stats/summary', async (req, res) => {
   try {
-    const userId = req.user.id;
+    const userId = req.user._id;
 
     const stats = await ActiveQuiz.aggregate([
       { $match: { userId: mongoose.Types.ObjectId(userId), isDeleted: false } },
@@ -482,7 +734,7 @@ router.get('/stats/summary', async (req, res) => {
             $sum: { $cond: [{ $eq: ['$status', 'IN_PROGRESS'] }, 1, 0] }
           },
           completedQuizzes: {
-            $sum: { $cond: [{ $eq: ['$status', 'COMPLETED'] }, 1, 0] }
+            $sum: { $cond: [{ $eq: ['$status', 'completed'] }, 1, 0] }
           },
           averageScore: { $avg: '$score' },
           averageAccuracy: { $avg: '$accuracy' },

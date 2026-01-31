@@ -29,11 +29,206 @@ export default function QuizResults() {
   // Check if coming from submission
   const submissionResult = location.state?.result
   const isAutoSubmit = location.state?.isAutoSubmit
+  const quizData = location.state?.quiz
 
   useEffect(() => {
-    fetchResults()
+    // If we have algorithm quiz results in location state, use them directly
+    if (submissionResult && quizData) {
+      handleAlgorithmQuizResults()
+    } else {
+      // Otherwise fetch from API (for regular quizzes)
+      fetchResults()
+    }
     fetchAnalytics()
-  }, [quizId])
+  }, [quizId, submissionResult])
+
+  const handleAlgorithmQuizResults = () => {
+    try {
+      setLoading(true)
+      
+      // Get answers from QuizAttempt page navigation state
+      const answersObject = {}
+      if (submissionResult.overallAnalysis?.answersObject) {
+        Object.assign(answersObject, submissionResult.overallAnalysis.answersObject)
+      }
+      
+      // Transform algorithm quiz results to match expected format
+      const transformedResult = {
+        quiz: {
+          _id: quizData.quizId || quizData._id,
+          title: `${quizData.subject} - ${quizData.courseName}`,
+          subject: quizData.subject,
+          difficulty: quizData.difficulty,
+          passingPercentage: 60,
+          duration: quizData.duration
+        },
+        session: {
+          _id: quizData.quizId,
+          score: submissionResult.score || 0,
+          totalMarks: submissionResult.totalMarks || 0,
+          percentage: submissionResult.percentage || 0,
+          passed: submissionResult.passed || false,
+          timeSpent: submissionResult.timeTaken || submissionResult.totalTime || 0,
+          completedAt: new Date().toISOString(),
+          pendingManualEvaluation: false,
+          attemptNumber: 1
+        },
+        evaluation: {
+          overallAnalysis: submissionResult.overallAnalysis || {
+            totalQuestions: submissionResult.totalQuestions || 0,
+            correct: submissionResult.overallAnalysis?.correct || 0,
+            wrong: submissionResult.overallAnalysis?.wrong || 0,
+            unattempted: submissionResult.overallAnalysis?.unattempted || 0,
+            accuracy: submissionResult.accuracy || 0
+          },
+          topicAnalysis: submissionResult.topicAnalysis || [],
+          difficultyAnalysis: submissionResult.difficultyAnalysis || {},
+          timeAnalysis: submissionResult.timeAnalysis || {}
+        },
+        detailedAnswers: quizData.questions?.map((q, index) => {
+          const userAnswer = answersObject[index.toString()] || answersObject[q.id] || null
+          const isCorrect = checkAnswerCorrect(q, userAnswer)
+          
+          return {
+            questionId: q.id,
+            questionText: q.question,
+            type: q.type,
+            options: q.options,
+            correctAnswer: getCorrectAnswerDisplay(q),
+            yourAnswer: userAnswer,
+            isCorrect: isCorrect,
+            marks: q.marks || 1,
+            scoredMarks: isCorrect ? (q.marks || 1) : 0,
+            topic: q.topic,
+            difficulty: q.difficulty,
+            explanation: q.explanation || ''
+          }
+        }) || []
+      }
+      
+      setResult(transformedResult)
+      setLoading(false)
+    } catch (err) {
+      console.error('Error handling algorithm quiz results:', err)
+      setError('Failed to process quiz results')
+      setLoading(false)
+    }
+  }
+
+  const getCorrectAnswerDisplay = (question) => {
+    if (!question) return 'N/A'
+    
+    switch (question.type) {
+      case 'mcq-single':
+      case 'mcq':
+      case 'true-false':
+        // Find the option that matches the correct answer ID
+        const correctOption = question.options?.find(opt => 
+          opt.id === question.correctAnswer || opt._id === question.correctAnswer
+        )
+        // Return the text if found, otherwise return the ID as fallback
+        return correctOption ? correctOption.text : question.correctAnswer
+      
+      case 'mcq-multiple':
+      case 'multiple-select':
+        // Handle multiple correct answers (can be array or comma-separated string)
+        let correctIds = []
+        if (Array.isArray(question.correctAnswer)) {
+          correctIds = question.correctAnswer
+        } else if (typeof question.correctAnswer === 'string') {
+          correctIds = question.correctAnswer.split(',').map(id => id.trim())
+        }
+        
+        // Find all options that match the correct answer IDs
+        const correctOptions = question.options?.filter(opt => 
+          correctIds.includes(opt.id) || correctIds.includes(opt._id)
+        )
+        
+        // Return comma-separated text, or IDs as fallback
+        return correctOptions && correctOptions.length > 0
+          ? correctOptions.map(opt => opt.text).join(', ')
+          : (Array.isArray(question.correctAnswer) ? question.correctAnswer.join(', ') : question.correctAnswer)
+      
+      case 'numerical':
+        return question.correctAnswer
+      
+      case 'short-answer':
+      case 'long-answer':
+        return question.expectedAnswer || question.correctAnswer
+      
+      default:
+        return question.correctAnswer
+    }
+  }
+
+  const checkAnswerCorrect = (question, userAnswer) => {
+    if (!userAnswer) return false
+    
+    switch (question.type) {
+      case 'mcq-single':
+      case 'mcq':
+      case 'true-false':
+        return question.correctAnswer === userAnswer
+      
+      case 'mcq-multiple':
+      case 'multiple-select':
+        if (!Array.isArray(userAnswer)) return false
+        // Handle both array and string format for correct answers
+        let correctAnswers = []
+        if (Array.isArray(question.correctAnswer)) {
+          correctAnswers = question.correctAnswer
+        } else if (typeof question.correctAnswer === 'string') {
+          correctAnswers = question.correctAnswer.split(',').map(id => id.trim())
+        }
+        return correctAnswers.length === userAnswer.length && 
+               correctAnswers.every(correctId => userAnswer.includes(correctId))
+      
+      case 'numerical':
+        return Math.abs(parseFloat(question.correctAnswer) - parseFloat(userAnswer)) < 0.01
+      
+      default:
+        return false
+    }
+  }
+
+  /**
+   * Get user answer display text (convert IDs to readable text)
+   */
+  const getUserAnswerDisplay = (question, userAnswer) => {
+    if (!userAnswer || userAnswer === '') return 'Not Answered'
+    
+    switch (question.type) {
+      case 'mcq-single':
+      case 'mcq':
+      case 'true-false':
+        // Find the option that matches the user's answer ID
+        const selectedOption = question.options?.find(opt => 
+          opt.id === userAnswer || opt._id === userAnswer
+        )
+        return selectedOption ? selectedOption.text : userAnswer
+      
+      case 'mcq-multiple':
+      case 'multiple-select':
+        if (!Array.isArray(userAnswer)) return userAnswer
+        
+        // Find all options that match the user's answer IDs
+        const selectedOptions = question.options?.filter(opt => 
+          userAnswer.includes(opt.id) || userAnswer.includes(opt._id)
+        )
+        
+        return selectedOptions && selectedOptions.length > 0
+          ? selectedOptions.map(opt => opt.text).join(', ')
+          : userAnswer.join(', ')
+      
+      case 'numerical':
+      case 'short-answer':
+      case 'long-answer':
+        return userAnswer
+      
+      default:
+        return userAnswer
+    }
+  }
 
   // Enhanced analysis using quiz utilities
   const enhancedAnalysis = useMemo(() => {
@@ -338,9 +533,10 @@ export default function QuizResults() {
                     <div>
                       <h4 className="text-sm font-medium text-gray-500 mb-1">Your Answer:</h4>
                       <p className="text-gray-900">
-                        {typeof answer.yourAnswer === 'object' 
-                          ? JSON.stringify(answer.yourAnswer) 
-                          : answer.yourAnswer || 'Not answered'}
+                        {getUserAnswerDisplay(
+                          { type: answer.type, options: answer.options },
+                          answer.yourAnswer
+                        )}
                       </p>
                     </div>
                     
@@ -348,10 +544,12 @@ export default function QuizResults() {
                       <div>
                         <h4 className="text-sm font-medium text-gray-500 mb-1">Correct Answer:</h4>
                         <p className="text-green-600">
-                          {answer.correctAnswer.options?.map(o => o.text).join(', ') ||
-                           answer.correctAnswer.numericalAnswer?.value ||
-                           answer.correctAnswer.expectedAnswer ||
-                           'N/A'}
+                          {typeof answer.correctAnswer === 'string' 
+                            ? answer.correctAnswer
+                            : (answer.correctAnswer.options?.map(o => o.text).join(', ') ||
+                               answer.correctAnswer.numericalAnswer?.value ||
+                               answer.correctAnswer.expectedAnswer ||
+                               'N/A')}
                         </p>
                       </div>
                     )}
@@ -471,7 +669,7 @@ export default function QuizResults() {
                 <div className="text-center p-4 bg-gray-50 rounded-lg">
                   <h4 className="text-sm font-medium text-gray-500 mb-2">Time Utilization</h4>
                   <div className="text-2xl font-bold text-indigo-600">
-                    {Math.round(enhancedAnalysis.timeAnalysis.timeUtilization)}%
+                    {Math.round(Number(enhancedAnalysis.timeAnalysis.timeUtilization || 0))}%
                   </div>
                 </div>
               </div>

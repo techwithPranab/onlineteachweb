@@ -60,6 +60,7 @@ const tutorLinks = [
   { to: '/tutor/analytics', icon: TrendingUp, label: 'Quiz Analytics' },
   { to: '/tutor/evaluation', icon: ClipboardCheck, label: 'Student Evaluation' },
   { to: '/tutor/profile', icon: Settings, label: 'Settings' },
+  { type: 'action', icon: LogOut, label: 'Logout', action: 'logout' },
 ]
 
 const adminLinks = [
@@ -124,6 +125,7 @@ const adminLinks = [
       { to: '/admin/profile', icon: Settings, label: 'Settings' },
     ]
   },
+  { type: 'action', icon: LogOut, label: 'Logout', action: 'logout' },
 ]
 
 export default function Sidebar({ sidebarOpen, setSidebarOpen }) {

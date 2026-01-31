@@ -178,9 +178,12 @@ exports.getQuestionById = async (req, res, next) => {
       });
     }
     
-    // Check access for tutors
+    // Check access for tutors (students and admins can access any questions)
     if (req.user.role === 'tutor' && 
-        question.createdBy._id.toString() !== req.user._id.toString()) {
+        question.createdBy && 
+        question.createdBy._id && 
+        question.createdBy._id.toString() !== req.user._id.toString() &&
+        typeof question.createdBy !== 'string') { // Allow AI-generated questions
       return res.status(403).json({
         success: false,
         message: 'Access denied'

@@ -33,6 +33,9 @@ export default function QuestionCard({
   disabled = false
 }) {
   
+  // Define question type for consistent use across functions
+  const questionType = question.type || 'mcq-single'
+
   /**
    * Handle answer selection for MCQ
    */
@@ -67,7 +70,7 @@ export default function QuestionCard({
    * Check if option is selected
    */
   const isOptionSelected = (optionId) => {
-    if (question.type === 'multiple-select') {
+    if (questionType === 'mcq-multiple' || questionType === 'multiple-select') {
       return Array.isArray(selectedAnswer) && selectedAnswer.includes(optionId)
     }
     return selectedAnswer === optionId
@@ -112,7 +115,8 @@ export default function QuestionCard({
    * Render question based on type
    */
   const renderQuestionContent = () => {
-    switch (question.type) {
+    switch (questionType) {
+      case 'mcq-single':
       case 'mcq':
       case 'true-false':
         return (
@@ -160,6 +164,7 @@ export default function QuestionCard({
           </div>
         )
       
+      case 'mcq-multiple':
       case 'multiple-select':
         return (
           <div className="space-y-3">
@@ -212,6 +217,7 @@ export default function QuestionCard({
         )
       
       case 'short-answer':
+      case 'long-answer':
         return (
           <div>
             <textarea
@@ -252,6 +258,13 @@ export default function QuestionCard({
                 </p>
               </div>
             )}
+          </div>
+        )
+      
+      case 'case-based':
+        return (
+          <div className="p-4 bg-blue-50 rounded-lg text-center text-blue-600">
+            Case-based questions are not yet supported in quiz mode
           </div>
         )
       

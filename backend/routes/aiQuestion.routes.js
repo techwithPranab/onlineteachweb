@@ -182,6 +182,14 @@ router.delete(
   aiQuestionController.cancelJob
 );
 
+// Clean up orphaned drafts (admin only)
+router.delete(
+  '/questions/drafts/orphaned',
+  authenticate,
+  authorize('admin'),
+  aiQuestionController.cleanupOrphanedDrafts
+);
+
 // Get queue stats (admin only)
 router.get(
   '/questions/queue/stats',

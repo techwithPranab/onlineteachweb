@@ -77,12 +77,43 @@ exports.createAlgorithmQuiz = async (req, res, next) => {
       }
     });
     
+    // Also create an ActiveQuiz record for consistency with the completion API
+    const ActiveQuiz = require('../models/ActiveQuiz.model');
+    const activeQuiz = await ActiveQuiz.create({
+      quizId: session._id.toString(), // Use session ID as quizId
+      sessionId: session._id.toString(),
+      userId,
+      subject,
+      courseName: 'Algorithm Generated Quiz', // Will be populated from course
+      courseId,
+      difficulty,
+      questionCount,
+      duration: duration * 60,
+      status: 'ACTIVE',
+      questions: questions.map(q => ({
+        questionId: q._id,
+        questionText: q.questionText,
+        options: q.options,
+        correctAnswer: q.correctAnswer,
+        expectedAnswer: q.expectedAnswer,
+        numericalAnswer: q.numericalAnswer,
+        topic: q.topic,
+        difficulty: q.difficulty,
+        marks: q.marks || 1,
+        type: q.type || 'mcq-single'
+      })),
+      totalMarks: questions.reduce((sum, q) => sum + (q.marks || 1), 0),
+      algorithmUsed: 'algorithm',
+      performanceData: {}
+    });
+    
     logger.info(`Algorithm quiz created: ${session._id} for user ${userId}`);
     
     res.status(201).json({
       success: true,
       quiz: {
         id: session._id,
+        quizId: activeQuiz.quizId, // Include the ActiveQuiz quizId for completion
         sessionId: session._id,
         subject,
         courseId,
@@ -124,8 +155,9 @@ exports.getActiveQuizzes = async (req, res, next) => {
     
     const activeQuizzes = sessions.map(session => ({
       id: session._id,
+      quizId: session._id.toString(), // ActiveQuiz uses session._id as quizId
       sessionId: session._id,
-      subject: session.metadata?.subject || session.courseId?.subject,
+      subject: (typeof session.metadata?.subject === 'object' ? session.metadata?.subject?.name : session.metadata?.subject) || session.courseId?.subject,
       courseName: session.courseId?.title,
       courseId: session.courseId?._id,
       difficulty: session.difficulty,
@@ -155,7 +187,7 @@ exports.updateQuizStatus = async (req, res, next) => {
     const { status } = req.body;
     const userId = req.user._id;
     
-    if (!['ACTIVE', 'IN_PROGRESS', 'COMPLETED'].includes(status)) {
+    if (!['ACTIVE', 'IN_PROGRESS', 'completed'].includes(status)) {
       return res.status(400).json({
         success: false,
         message: 'Invalid status'
@@ -308,12 +340,12 @@ exports.analyzeQuizResults = async (req, res, next) => {
       .map(([topic, _]) => topic);
     
     // Update session
-    session.status = 'COMPLETED';
-    session.completedAt = new Date();
+    session.status = 'completed';
+    session.submittedAt = new Date();
     session.answers = answers;
     session.score = totalScore;
     session.accuracy = accuracy;
-    session.timeTaken = timeTaken;
+    session.timeSpent = timeTaken;
     await session.save();
     
     // Update student performance (would use algorithm)
@@ -368,9 +400,11 @@ exports.getQuizHistory = async (req, res, next) => {
     
     const query = {
       studentId: userId,
-      status: 'COMPLETED'
+      status: 'completed' // Use lowercase to match enum
     };
     
+    console.log('Quiz history query:', query);
+    console.log('Quiz dateRange:', dateRange);
     if (subject) {
       query['metadata.subject'] = subject;
     }
@@ -392,36 +426,41 @@ exports.getQuizHistory = async (req, res, next) => {
       }
       
       if (startDate) {
-        query.completedAt = { $gte: startDate };
+        query.submittedAt = { $gte: startDate };
       }
     }
-    
+    console.log('Quiz history query:', query);
+    console.log('Quiz dateRange:', dateRange);
     const sessions = await QuizSession.find(query)
       .populate('courseId', 'title subject grade')
-      .sort({ completedAt: -1 })
+      .sort({ submittedAt: -1 })
       .limit(parseInt(limit));
+    
+    console.log('Found quiz sessions:', sessions.length);
     
     const history = sessions.map(session => ({
       id: session._id,
       quizId: session._id,
-      subject: session.metadata?.subject || session.courseId?.subject,
+      subject: (typeof session.metadata?.subject === 'object' ? session.metadata?.subject?.name : session.metadata?.subject) || session.courseId?.subject,
       courseName: session.courseId?.title,
       courseId: session.courseId?._id,
       difficulty: session.difficulty,
       questionCount: session.totalQuestions,
-      duration: Math.floor(session.duration / 60),
-      score: session.score,
-      totalScore: session.questions.reduce((sum, q) => sum + q.marks, 0),
-      accuracy: session.accuracy,
-      timeTaken: session.timeTaken,
-      timeUtilization: ((session.timeTaken / session.duration) * 100).toFixed(1),
-      completedAt: session.completedAt,
-      status: 'COMPLETED'
+      duration: session.duration,
+      score: session.totalScore,
+      totalScore: session.totalMarks, // Use stored totalMarks
+      accuracy: session.percentage,
+      timeTaken: session.timeSpent,
+      timeUtilization: parseFloat(((session.timeSpent / (session.duration * 60)) * 100).toFixed(1)),
+      completedAt: session.submittedAt, // Use submittedAt instead of completedAt
+      status: 'completed'
     }));
+    
+    console.log('Returning quiz history:', history.length, 'records');
     
     res.json({
       success: true,
-      history
+      data: history  // Return history as data property
     });
   } catch (error) {
     logger.error(`Get quiz history error: ${error.message}`);
@@ -439,8 +478,8 @@ exports.getStudentPerformance = async (req, res, next) => {
     // Get all completed quizzes
     const sessions = await QuizSession.find({
       studentId: userId,
-      status: 'COMPLETED'
-    }).sort({ completedAt: -1 });
+      status: 'completed' // Use lowercase to match enum
+    }).sort({ submittedAt: -1 });
     
     if (sessions.length === 0) {
       return res.json({
@@ -513,8 +552,8 @@ exports.getStudentPerformance = async (req, res, next) => {
 async function getUserPerformance(userId) {
   const sessions = await QuizSession.find({
     studentId: userId,
-    status: 'COMPLETED'
-  }).limit(10).sort({ completedAt: -1 });
+    status: 'completed'
+  }).limit(10).sort({ submittedAt: -1 });
   
   // Aggregate performance data
   const topicMastery = {};

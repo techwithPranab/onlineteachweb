@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuthStore } from '@/store/authStore'
-import { algorithmQuizService } from '@/services/apiServices'
+import { algorithmQuizService, courseService } from '@/services/apiServices'
 import QuizTable from '@/components/quiz/QuizTable'
 import FilterBar from '@/components/quiz/FilterBar'
 import StatusBadge from '@/components/quiz/StatusBadge'
@@ -17,8 +17,7 @@ import {
   Eye,
   BookOpen,
   CheckCircle,
-  XCircle,
-  BarChart3
+  XCircle
 } from 'lucide-react'
 
 /**
@@ -45,6 +44,11 @@ export default function QuizHistory() {
   const [currentPage, setCurrentPage] = useState(1)
   const [itemsPerPage] = useState(10)
 
+  // Available subjects and courses
+  const [availableSubjects, setAvailableSubjects] = useState([])
+  const [availableCourses, setAvailableCourses] = useState([])
+  const [loadingSubjects, setLoadingSubjects] = useState(false)
+
   // Filter state
   const [filters, setFilters] = useState({
     subject: 'all',
@@ -53,10 +57,69 @@ export default function QuizHistory() {
     status: 'all'
   })
 
-  // Load quiz history on mount
+  // Load subjects and courses on mount
+  useEffect(() => {
+    loadSubjectsAndCourses()
+  }, [])
+
+  // Load quiz history on mount and when filters change
   useEffect(() => {
     loadQuizHistory()
   }, [user, currentPage, filters])
+
+  // Load courses when subject changes
+  useEffect(() => {
+    if (filters.subject !== 'all') {
+      loadCoursesForSubject(filters.subject)
+    } else {
+      setAvailableCourses([])
+      setFilters(prev => ({ ...prev, course: 'all' }))
+    }
+  }, [filters.subject])
+
+  /**
+   * Load available subjects and courses from API
+   */
+  const loadSubjectsAndCourses = async () => {
+    try {
+      setLoadingSubjects(true)
+      
+      // Get all subjects
+      const subjectsResponse = await courseService.getSubjects()
+      const subjects = subjectsResponse.subjects || subjectsResponse || []
+      console.log('Fetched subjects:', subjectsResponse)
+      // Filter subjects that have courses
+      const subjectsWithCourses = subjects.filter(subject => 
+        subject.courses && subject.courses.length > 0
+      )
+      
+      setAvailableSubjects(subjectsWithCourses)
+      
+      console.log('Loaded subjects:', subjectsWithCourses.length)
+    } catch (err) {
+      console.error('Failed to load subjects:', err)
+    } finally {
+      setLoadingSubjects(false)
+    }
+  }
+
+  /**
+   * Load courses for a specific subject
+   */
+  const loadCoursesForSubject = async (subjectName) => {
+    try {
+      const subject = availableSubjects.find(s => s.name === subjectName)
+      if (subject && subject.courses) {
+        setAvailableCourses(subject.courses)
+        console.log(`Loaded ${subject.courses.length} courses for ${subjectName}`)
+      } else {
+        setAvailableCourses([])
+      }
+    } catch (err) {
+      console.error('Failed to load courses for subject:', err)
+      setAvailableCourses([])
+    }
+  }
 
   /**
    * Load quiz history from backend API
@@ -65,16 +128,34 @@ export default function QuizHistory() {
     try {
       setLoading(true)
 
-      // Get quiz history from backend API
-      const response = await algorithmQuizService.getQuizHistory({
+      // Prepare query parameters for backend
+      const queryParams = {
         page: currentPage,
-        limit: itemsPerPage,
-        ...filters
-      })
+        limit: itemsPerPage
+      }
+
+      // Only pass subject and dateRange filters to backend
+      if (filters.subject !== 'all') {
+        queryParams.subject = filters.subject
+      }
+      
+      if (filters.dateRange !== 'all') {
+        queryParams.dateRange = filters.dateRange
+      }
+
+      console.log('Loading quiz history with params:', queryParams)
+
+      // Get quiz history from backend API
+      const response = await algorithmQuizService.getQuizHistory(queryParams)
+
+      console.log('Quiz history response:', response)
 
       // Ensure we always set history to an array
       const historyData = response.data || response || []
-      setHistory(Array.isArray(historyData) ? historyData : [])
+      const historyArray = Array.isArray(historyData) ? historyData : []
+      
+      console.log('Quiz history data:', historyArray.length, 'records')
+      setHistory(historyArray)
       setError(null)
     } catch (err) {
       console.error('Failed to load quiz history:', err)
@@ -95,9 +176,10 @@ export default function QuizHistory() {
       defaultValue: 'all',
       options: [
         { value: 'all', label: 'All Subjects' },
-        ...getUniqueValues(history, 'subject').map(s => ({
-          value: s,
-          label: s
+        // Add dynamic options from available subjects
+        ...availableSubjects.map(subject => ({
+          value: subject.name,
+          label: subject.name
         }))
       ]
     },
@@ -108,9 +190,10 @@ export default function QuizHistory() {
       defaultValue: 'all',
       options: [
         { value: 'all', label: 'All Courses' },
-        ...getUniqueValues(history, 'courseName').map(c => ({
-          value: c,
-          label: c
+        // Add dynamic options from available courses (filtered by subject)
+        ...availableCourses.map(course => ({
+          value: course.title || course.name,
+          label: course.title || course.name
         }))
       ]
     },
@@ -153,9 +236,10 @@ export default function QuizHistory() {
       
       // Filter by status
       if (filters.status !== 'all') {
-        const passed = entry.accuracy >= 60 // Passing threshold
-        if (filters.status === 'passed' && !passed) return false
-        if (filters.status === 'failed' && passed) return false
+        const accuracy = entry.accuracy || 0;
+        const passed = accuracy >= 60; // Passing threshold
+        if (filters.status === 'passed' && !passed) return false;
+        if (filters.status === 'failed' && passed) return false;
       }
       
       // Filter by date range
@@ -194,38 +278,16 @@ export default function QuizHistory() {
   }), [currentPage, filteredHistory.length, itemsPerPage])
 
   /**
-   * Calculate overall statistics
-   */
-  const statistics = useMemo(() => {
-    if (!Array.isArray(history) || history.length === 0) return null
-    
-    const totalQuizzes = history.length
-    const passedQuizzes = history.filter(h => h.accuracy >= 60).length
-    const avgAccuracy = history.reduce((sum, h) => sum + h.accuracy, 0) / totalQuizzes
-    const avgScore = history.reduce((sum, h) => sum + h.score, 0) / totalQuizzes
-    const totalTimeTaken = history.reduce((sum, h) => sum + h.timeTaken, 0)
-    
-    return {
-      totalQuizzes,
-      passedQuizzes,
-      passRate: ((passedQuizzes / totalQuizzes) * 100).toFixed(1),
-      avgAccuracy: avgAccuracy.toFixed(1),
-      avgScore: avgScore.toFixed(1),
-      totalTime: Math.floor(totalTimeTaken / 60) // minutes
-    }
-  }, [history])
-
-  /**
    * Handle viewing detailed results
    */
   const handleViewDetails = (entry) => {
     navigate(`/student/quiz/${entry.quizId}/results`, {
       state: {
         result: {
-          score: entry.score,
-          totalScore: entry.totalScore,
-          accuracy: entry.accuracy,
-          timeTaken: entry.timeTaken,
+          score: entry.score || 0,
+          totalScore: entry.totalScore || 0,
+          accuracy: entry.accuracy || 0,
+          timeTaken: entry.timeTaken || 0,
           timeUtilization: entry.timeUtilization,
           performanceByTopic: entry.performanceByTopic,
           weakTopics: entry.weakTopics,
@@ -234,7 +296,7 @@ export default function QuizHistory() {
         quiz: {
           subject: entry.subject,
           courseName: entry.courseName,
-          difficulty: entry.difficulty,
+          difficulty: entry.difficulty || 'medium',
           questionCount: entry.questionCount
         },
         fromHistory: true
@@ -298,7 +360,7 @@ export default function QuizHistory() {
           ${entry.difficulty === 'hard' ? 'bg-red-100 text-red-800' : ''}
         `}>
           <Target className="w-3 h-3 mr-1" />
-          {entry.difficulty.charAt(0).toUpperCase() + entry.difficulty.slice(1)}
+          {entry.difficulty ? (entry.difficulty.charAt(0).toUpperCase() + entry.difficulty.slice(1)) : 'Medium'}
         </span>
       )
     },
@@ -321,24 +383,27 @@ export default function QuizHistory() {
       header: 'Accuracy',
       accessor: 'accuracy',
       width: '10%',
-      render: (entry) => (
-        <div className="text-center">
-          <div className={`font-bold ${
-            entry.accuracy >= 80 ? 'text-green-600' :
-            entry.accuracy >= 60 ? 'text-yellow-600' :
-            'text-red-600'
-          }`}>
-            {entry.accuracy.toFixed(1)}%
+      render: (entry) => {
+        const accuracy = entry.accuracy || 0;
+        return (
+          <div className="text-center">
+            <div className={`font-bold ${
+              accuracy >= 80 ? 'text-green-600' :
+              accuracy >= 60 ? 'text-yellow-600' :
+              'text-red-600'
+            }`}>
+              {accuracy.toFixed(1)}%
+            </div>
+            <div className="text-xs text-gray-500">
+              {accuracy >= 60 ? (
+                <CheckCircle className="w-3 h-3 text-green-600 inline" />
+              ) : (
+                <XCircle className="w-3 h-3 text-red-600 inline" />
+              )}
+            </div>
           </div>
-          <div className="text-xs text-gray-500">
-            {entry.accuracy >= 60 ? (
-              <CheckCircle className="w-3 h-3 text-green-600 inline" />
-            ) : (
-              <XCircle className="w-3 h-3 text-red-600 inline" />
-            )}
-          </div>
-        </div>
-      )
+        );
+      }
     },
     {
       header: 'Time',
@@ -350,7 +415,7 @@ export default function QuizHistory() {
           <div>
             <div className="font-medium">{Math.floor(entry.timeTaken / 60)}m</div>
             <div className="text-xs text-gray-500">
-              {entry.timeUtilization?.toFixed(0)}%
+              {Number(entry.timeUtilization || 0).toFixed(0)}%
             </div>
           </div>
         </div>
@@ -387,55 +452,13 @@ export default function QuizHistory() {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
       {/* Header */}
       <div className="mb-6 text-center">
-        <h1 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent mb-3 animate-shimmer">
+        <h1 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent mb-3">
           📊 Quiz History
         </h1>
         <p className="text-gray-600 text-lg">
           Track your performance and level up! 🚀
         </p>
       </div>
-
-      {/* Statistics Cards */}
-      {statistics && (
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-6">
-          <StatCard
-            icon={<BarChart3 className="w-5 h-5" />}
-            label="Total Quizzes"
-            value={statistics.totalQuizzes}
-            color="blue"
-          />
-          <StatCard
-            icon={<CheckCircle className="w-5 h-5" />}
-            label="Passed"
-            value={statistics.passedQuizzes}
-            color="green"
-          />
-          <StatCard
-            icon={<TrendingUp className="w-5 h-5" />}
-            label="Pass Rate"
-            value={`${statistics.passRate}%`}
-            color="emerald"
-          />
-          <StatCard
-            icon={<Award className="w-5 h-5" />}
-            label="Avg Accuracy"
-            value={`${statistics.avgAccuracy}%`}
-            color="yellow"
-          />
-          <StatCard
-            icon={<Target className="w-5 h-5" />}
-            label="Avg Score"
-            value={statistics.avgScore}
-            color="indigo"
-          />
-          <StatCard
-            icon={<Clock className="w-5 h-5" />}
-            label="Total Time"
-            value={`${statistics.totalTime}m`}
-            color="gray"
-          />
-        </div>
-      )}
 
       {/* Filters */}
       <FilterBar
@@ -461,41 +484,6 @@ export default function QuizHistory() {
         pagination={pagination}
         onPageChange={setCurrentPage}
       />
-    </div>
-  )
-}
-
-/**
- * Statistic Card Component
- */
-function StatCard({ icon, label, value, color = 'blue' }) {
-  const gradientClasses = {
-    blue: 'bg-gradient-to-br from-blue-400 to-cyan-500',
-    green: 'bg-gradient-to-br from-green-400 to-emerald-500',
-    purple: 'bg-gradient-to-br from-emerald-500 to-teal-500',
-    yellow: 'bg-gradient-to-br from-yellow-400 to-orange-500',
-    indigo: 'bg-gradient-to-br from-teal-400 to-emerald-500',
-    gray: 'bg-gradient-to-br from-gray-400 to-slate-500',
-    red: 'bg-gradient-to-br from-red-400 to-pink-500'
-  }
-
-  const emojiMap = {
-    blue: '📊',
-    green: '✅',
-    purple: '🎯',
-    yellow: '⭐',
-    indigo: '🏆',
-    gray: '⏱️',
-    red: '❌'
-  }
-
-  return (
-    <div className="genz-card group hover:scale-105 transition-all duration-300">
-      <div className={`inline-flex items-center justify-center w-12 h-12 rounded-xl mb-3 ${gradientClasses[color]} text-white shadow-lg group-hover:shadow-xl transition-shadow`}>
-        <span className="text-xl animate-bounce-slow">{emojiMap[color]}</span>
-      </div>
-      <div className="text-3xl font-bold text-gray-900 mb-1">{value}</div>
-      <div className="text-sm text-gray-600 font-medium">{label}</div>
     </div>
   )
 }

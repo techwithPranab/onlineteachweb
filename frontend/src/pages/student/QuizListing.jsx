@@ -117,8 +117,8 @@ export default function QuizListing() {
               >
                 <option value="">All Subjects</option>
                 {subjects.map((subject) => (
-                  <option key={subject} value={subject}>
-                    {subject}
+                  <option key={subject.name} value={subject.name}>
+                    {subject.name}
                   </option>
                 ))}
               </select>

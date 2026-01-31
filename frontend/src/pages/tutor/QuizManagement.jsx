@@ -1,12 +1,14 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { quizService, courseService } from '../../services/apiServices'
+import { useAuthStore } from '../../store/authStore'
 import LoadingSpinner from '../../components/common/LoadingSpinner'
 import ErrorMessage from '../../components/common/ErrorMessage'
 import EmptyState from '../../components/common/EmptyState'
 import ConfirmDialog from '../../components/common/ConfirmDialog'
 
 export default function QuizManagement() {
+  const { user } = useAuthStore()
   const [quizzes, setQuizzes] = useState([])
   const [courses, setCourses] = useState([])
   const [loading, setLoading] = useState(true)
@@ -19,6 +21,10 @@ export default function QuizManagement() {
   const [pagination, setPagination] = useState({ page: 1, pages: 1, total: 0 })
   const [deleteQuiz, setDeleteQuiz] = useState(null)
   const navigate = useNavigate()
+
+  const getBasePath = () => {
+    return user?.role === 'admin' ? '/admin' : '/tutor'
+  }
 
   useEffect(() => {
     fetchCourses()
@@ -122,7 +128,7 @@ export default function QuizManagement() {
             Question Bank
           </button>
           <button
-            onClick={() => navigate('/tutor/quizzes/create')}
+            onClick={() => navigate(`${getBasePath()}/quizzes/new`)}
             className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700"
           >
             Create Quiz
@@ -192,7 +198,7 @@ export default function QuizManagement() {
           description="Create your first quiz to get started"
           action={
             <button
-              onClick={() => navigate('/tutor/quizzes/create')}
+              onClick={() => navigate(`${getBasePath()}/quizzes/new`)}
               className="mt-4 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700"
             >
               Create Quiz
@@ -271,14 +277,14 @@ export default function QuizManagement() {
                         </button>
                       )}
                       <button
-                        onClick={() => navigate(`/tutor/quizzes/${quiz._id}`)}
+                        onClick={() => navigate(`${getBasePath()}/quizzes/${quiz._id}/preview`)}
                         className="text-indigo-600 hover:text-indigo-900"
                       >
                         View
                       </button>
                       {quiz.status === 'draft' && (
                         <button
-                          onClick={() => navigate(`/tutor/quizzes/${quiz._id}/edit`)}
+                          onClick={() => navigate(`${getBasePath()}/quizzes/${quiz._id}/edit`)}
                           className="text-gray-600 hover:text-gray-900"
                         >
                           Edit

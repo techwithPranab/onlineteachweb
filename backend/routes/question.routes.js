@@ -15,12 +15,15 @@ router.get('/count/:courseId',
   questionController.getQuestionCount
 );
 
-// All routes below require authentication and tutor/admin role
+// All routes below require authentication
 router.use(authenticate);
-router.use(authorize('tutor', 'admin'));
+
+// Routes that require tutor/admin role
+const tutorAdminOnly = authorize('tutor', 'admin');
 
 // Create a new question
 router.post('/',
+  tutorAdminOnly,
   [
     body('courseId').isMongoId().withMessage('Valid course ID is required'),
     body('chapterName').trim().notEmpty().withMessage('Chapter name is required'),
@@ -37,6 +40,7 @@ router.post('/',
 
 // Create multiple questions (bulk)
 router.post('/bulk',
+  tutorAdminOnly,
   [
     body('questions').isArray({ min: 1 }).withMessage('Questions array is required'),
     body('questions.*.courseId').isMongoId().withMessage('Valid course ID is required'),
@@ -56,7 +60,7 @@ router.get('/',
     query('difficultyLevel').optional().isIn(['easy', 'medium', 'hard']),
     query('type').optional().isIn(['mcq-single', 'mcq-multiple', 'true-false', 'numerical', 'short-answer', 'long-answer', 'case-based']),
     query('page').optional().isInt({ min: 1 }),
-    query('limit').optional().isInt({ min: 1, max: 100 }),
+    query('limit').optional().isInt({ min: 1, max: 500 }), // Increased for quiz generation
     validate
   ],
   questionController.getQuestions
@@ -92,6 +96,7 @@ router.get('/course/:courseId/structure',
 // AI Question Generation Routes
 // Generate questions with AI
 router.post('/generate',
+  tutorAdminOnly,
   [
     body('courseId').isMongoId().withMessage('Valid course ID is required'),
     body('chapterName').trim().notEmpty().withMessage('Chapter name is required'),
@@ -137,6 +142,7 @@ router.get('/:id',
 
 // Update a question
 router.put('/:id',
+  tutorAdminOnly,
   [
     param('id').isMongoId().withMessage('Valid question ID required'),
     validate
@@ -146,6 +152,7 @@ router.put('/:id',
 
 // Delete (deactivate) a question
 router.delete('/:id',
+  tutorAdminOnly,
   [
     param('id').isMongoId().withMessage('Valid question ID required'),
     validate

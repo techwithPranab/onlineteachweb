@@ -180,14 +180,14 @@ export default function QuizProgressBar({
       {onNavigate && (
         <div className="pt-4 border-t border-gray-200">
           <h4 className="text-sm font-medium text-gray-700 mb-3">Navigate to Question</h4>
-          <div className="grid grid-cols-5 sm:grid-cols-6 md:grid-cols-8 gap-2">
+          <div className="grid grid-cols-5 sm:grid-cols-6 md:grid-cols-8 gap-0.5">
             {Array.from({ length: total }, (_, index) => (
               <button
                 key={index}
                 onClick={() => onNavigate(index)}
                 className={`
-                  w-full aspect-square rounded-lg border-2 
-                  text-sm font-medium transition-all
+                  w-full aspect-[5/2] rounded border 
+                  text-xs font-medium transition-all
                   hover:scale-105 active:scale-95
                   ${getStatusColor(index)}
                 `}

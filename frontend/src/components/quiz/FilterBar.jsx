@@ -52,7 +52,7 @@ export default function FilterBar({ filters, setFilters, filterConfig, onReset }
         )}
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         {filterConfig.map(config => (
           <div key={config.field}>
             <label className="block text-sm font-medium text-gray-700 mb-1">

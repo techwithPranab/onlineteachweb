@@ -474,10 +474,40 @@ exports.getGrades = async (req, res, next) => {
 // @access  Private
 exports.getSubjects = async (req, res, next) => {
   try {
-    const subjects = await Course.distinct('subject');
+    const userGrade = req.user.grade;
+
+    // Get subjects with courses filtered by user's grade
+    const subjectsWithCourses = await Course.aggregate([
+      {
+        $match: { grade: userGrade } // Filter courses by user's grade
+      },
+      {
+        $group: {
+          _id: '$subject',
+          courses: {
+            $push: {
+              _id: '$_id',
+              title: '$title',
+              grade: '$grade'
+            }
+          }
+        }
+      },
+      {
+        $project: {
+          _id: 0,
+          name: '$_id',
+          courses: 1
+        }
+      },
+      {
+        $sort: { name: 1 }
+      }
+    ]);
+
     res.json({
       success: true,
-      subjects: subjects.sort()
+      subjects: subjectsWithCourses
     });
   } catch (error) {
     next(error);

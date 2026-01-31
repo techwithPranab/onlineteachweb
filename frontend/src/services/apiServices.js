@@ -677,9 +677,53 @@ export const algorithmQuizService = {
     return data
   },
 
+  // Check if quiz is already completed
+  checkQuizStatus: async (quizId) => {
+    try {
+      const { data } = await api.get(`/active-quizzes/${quizId}`)
+      return {
+        exists: true,
+        status: data.data?.status || 'unknown',
+        isCompleted: data.data?.status === 'completed',
+        quizData: data.data
+      }
+    } catch (error) {
+      // Quiz not found in active quizzes (might be completed or never started)
+      return {
+        exists: false,
+        status: 'not_found',
+        isCompleted: false,
+        quizData: null
+      }
+    }
+  },
+
   // Start an active quiz (change status to IN_PROGRESS)
   startQuiz: async (quizId) => {
     const { data } = await api.put(`/active-quizzes/${quizId}/start`)
+    return data
+  },
+
+  // Save answer for a specific question
+  saveAnswer: async (quizId, questionId, answer, markedForReview = false, timeSpent = 0) => {
+    const { data } = await api.put(`/active-quizzes/${quizId}/answer`, {
+      questionId,
+      answer,
+      markedForReview,
+      timeSpent
+    })
+    return data
+  },
+
+  // Toggle review mark for a question
+  toggleReviewMark: async (quizId, questionId) => {
+    const { data } = await api.put(`/active-quizzes/${quizId}/review/${questionId}`)
+    return data
+  },
+
+  // Skip a question
+  skipQuestion: async (quizId, questionId, timeSpent = 0) => {
+    const { data } = await api.put(`/active-quizzes/${quizId}/skip/${questionId}`, { timeSpent })
     return data
   },
 

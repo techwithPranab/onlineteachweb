@@ -49,9 +49,10 @@ const mockQuestionPool = [
  * 
  * @param {Object} pastPerformance - Student's historical performance data
  * @param {Object} quizConfig - Quiz configuration from setup page
+ * @param {Array} preFetchedQuestions - Optional pre-fetched questions to avoid API call
  * @returns {Array} - Selected question IDs with metadata
  */
-export const selectQuestionsAlgorithm = (pastPerformance, quizConfig) => {
+export const selectQuestionsAlgorithm = async (pastPerformance, quizConfig, preFetchedQuestions = null) => {
   console.log('[Algorithm] Starting question selection...')
   console.log('[Algorithm] Config:', quizConfig)
   console.log('[Algorithm] Performance:', pastPerformance)
@@ -65,8 +66,25 @@ export const selectQuestionsAlgorithm = (pastPerformance, quizConfig) => {
     topicPreferences = [] // Optional: specific topics to focus
   } = quizConfig
 
-  // Step 1: Filter available questions by course and subject
-  const availableQuestions = filterQuestionsByCourse(courseId, subject)
+  // Step 1: Get available questions - use pre-fetched or fetch from API
+  let availableQuestions
+  if (preFetchedQuestions && preFetchedQuestions.length > 0) {
+    console.log('[Algorithm] Using pre-fetched questions:', preFetchedQuestions.length)
+    // Transform database questions to algorithm format
+    availableQuestions = preFetchedQuestions.map(q => ({
+      id: q._id,
+      subject: q.subject,
+      courseId: q.courseId,
+      topic: q.topic,
+      difficulty: q.difficultyLevel,
+      lastUsed: q.updatedAt,
+      avgSuccessRate: 0.7,
+      estimatedTime: q.recommendedTime || 120
+    }))
+  } else {
+    console.log('[Algorithm] Fetching questions from API...')
+    availableQuestions = await filterQuestionsByCourse(courseId, subject)
+  }
   console.log(`[Algorithm] Available questions: ${availableQuestions.length}`)
 
   // Step 2: Identify weak topics for prioritization
@@ -119,11 +137,44 @@ export const selectQuestionsAlgorithm = (pastPerformance, quizConfig) => {
 /**
  * Filter questions by course and subject
  */
-const filterQuestionsByCourse = (courseId, subject) => {
-  // TODO: Replace with actual API call
-  // For now, return mock data
-  const mockQuestions = generateMockQuestions(courseId, subject, 100)
-  return mockQuestions
+const filterQuestionsByCourse = async (courseId, subject) => {
+  try {
+    console.log('[Algorithm] Fetching questions for courseId:', courseId)
+    // Import the question service dynamically to avoid circular imports
+    const { questionService } = await import('../services/apiServices')
+    
+    const response = await questionService.getQuestions({
+      courseId,
+      limit: 1000 // Get a large number of questions
+    })
+    
+    console.log('[Algorithm] API Response:', response)
+    console.log('[Algorithm] Questions count:', response.questions?.length || 0)
+    
+    if (!response.questions || response.questions.length === 0) {
+      console.warn('[Algorithm] No questions found, falling back to mock data')
+      return generateMockQuestions(courseId, subject, 50)
+    }
+    
+    const mappedQuestions = response.questions.map(q => ({
+      id: q._id,
+      subject: q.subject,
+      courseId: q.courseId,
+      topic: q.topic,
+      difficulty: q.difficultyLevel,
+      lastUsed: q.updatedAt,
+      avgSuccessRate: 0.7, // Default success rate since we don't have historical data
+      estimatedTime: q.recommendedTime || 120
+    }))
+    
+    console.log('[Algorithm] Mapped questions:', mappedQuestions.length)
+    return mappedQuestions
+  } catch (error) {
+    console.error('[Algorithm] Failed to fetch questions:', error)
+    console.error('[Algorithm] Error details:', error.response?.data || error.message)
+    // Fallback to mock data if API fails
+    return generateMockQuestions(courseId, subject, 50)
+  }
 }
 
 /**
@@ -464,35 +515,41 @@ const generateRecommendations = (weakAreas, strongAreas, quizConfig) => {
  * This would integrate with backend analytics service
  */
 export const updateStudentPerformance = (studentId, quizAnalysis) => {
+  // Use topicAnalysis from the quizAnalysis object
+  const topicPerformance = quizAnalysis.topicAnalysis || []
+  
   // TODO: API call to update student performance
   console.log('[Performance Update]', {
     studentId,
-    updates: quizAnalysis.topicPerformance
+    updates: topicPerformance
   })
 
   // Mock localStorage update for now
   const performanceKey = `student_performance_${studentId}`
   const existing = JSON.parse(localStorage.getItem(performanceKey) || '{}')
 
-  quizAnalysis.topicPerformance.forEach(update => {
-    if (!existing.topicMastery) {
-      existing.topicMastery = {}
-    }
+  // Only process if we have topic performance data
+  if (topicPerformance && Array.isArray(topicPerformance)) {
+    topicPerformance.forEach(update => {
+      if (!existing.topicMastery) {
+        existing.topicMastery = {}
+      }
 
-    const current = existing.topicMastery[update.topic] || {
-      attempts: 0,
-      successRate: 0,
-      totalTime: 0
-    }
+      const current = existing.topicMastery[update.topic] || {
+        attempts: 0,
+        successRate: 0,
+        totalTime: 0
+      }
 
-    // Update with exponential moving average for success rate
-    existing.topicMastery[update.topic] = {
-      attempts: current.attempts + update.questionsAttempted,
-      successRate: (current.successRate * 0.7) + (update.successRate * 0.3), // Weighted average
-      lastAttempt: update.timestamp,
-      avgTimeSpent: (current.totalTime + update.avgTimePerQuestion) / (current.attempts + 1)
-    }
-  })
+      // Update with exponential moving average for success rate
+      existing.topicMastery[update.topic] = {
+        attempts: current.attempts + (update.questionsAttempted || update.total || 1),
+        successRate: (current.successRate * 0.7) + ((update.successRate || update.accuracy || 0) * 0.3), // Weighted average
+        lastAttempt: update.timestamp || new Date().toISOString(),
+        avgTimeSpent: (current.totalTime + (update.avgTimePerQuestion || 0)) / (current.attempts + 1)
+      }
+    })
+  }
 
   localStorage.setItem(performanceKey, JSON.stringify(existing))
   

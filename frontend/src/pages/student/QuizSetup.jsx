@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { quizService, courseService, algorithmQuizService } from '@/services/apiServices'
+import { quizService, courseService, algorithmQuizService, questionService } from '@/services/apiServices'
 import { useAuthStore } from '@/store/authStore'
 import LoadingSpinner from '@/components/common/LoadingSpinner'
 import ErrorMessage from '@/components/common/ErrorMessage'
@@ -111,6 +111,11 @@ export default function QuizSetup() {
     }
   }, [config.subject, courses])
 
+  // Scroll to top when transitioning between steps
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }, [showCourseSelection])
+
   /**
    * Handle configuration changes
    */
@@ -158,8 +163,29 @@ export default function QuizSetup() {
       const questionCountResponse = await algorithmQuizService.getQuestionCount(config.courseId)
       const availableQuestions = questionCountResponse.count || 0
 
-      if (availableQuestions < 50) {
-        setError('Insufficient questions available to create a quiz. At least 50 questions are required.')
+      if (availableQuestions < config.questionCount) {
+        setError(`Insufficient questions available. Required: ${config.questionCount}, Available: ${availableQuestions}. Please reduce the number of questions or contact your tutor.`)
+        setLoading(false)
+        return
+      }
+
+      // Fetch all questions for the course
+      console.log('[QuizSetup] Fetching questions for courseId:', config.courseId)
+      const questionsResponse = await questionService.getQuestions({
+        courseId: config.courseId,
+        limit: 500 // Fetch up to 500 questions for better selection
+      })
+
+      console.log('[QuizSetup] Questions fetched:', questionsResponse.questions?.length || 0)
+
+      if (!questionsResponse.questions || questionsResponse.questions.length === 0) {
+        setError('No questions found for this course. Please contact your tutor to add questions.')
+        setLoading(false)
+        return
+      }
+
+      if (questionsResponse.questions.length < config.questionCount) {
+        setError(`Not enough questions available. Required: ${config.questionCount}, Available: ${questionsResponse.questions.length}. Please reduce the number of questions.`)
         setLoading(false)
         return
       }
@@ -169,16 +195,72 @@ export default function QuizSetup() {
       const subjectName = config.subject || selectedCourse?.subject || 'General'
       const courseName = selectedCourse?.title || 'Quiz'
 
-      // Use algorithm to select questions
+      // Get student's past performance from localStorage
       const pastPerformance = localStorage.getItem(`performance_${user?.id || 'demo'}`)
         ? JSON.parse(localStorage.getItem(`performance_${user?.id || 'demo'}`))
         : null
 
-      const selectedQuestions = selectQuestionsAlgorithm(pastPerformance, {
-        courseId: config.courseId,
-        difficulty: config.difficulty,
-        questionCount: config.questionCount
-      })
+      // Use intelligent algorithm to select questions based on difficulty and performance
+      console.log('[QuizSetup] Using algorithm to select questions...')
+      const selectedQuestions = await selectQuestionsAlgorithm(
+        pastPerformance,
+        {
+          courseId: config.courseId,
+          subject: subjectName,
+          difficulty: config.difficulty,
+          questionCount: config.questionCount,
+          duration: config.duration
+        },
+        questionsResponse.questions // Pass the fetched questions directly
+      )
+
+      console.log('[QuizSetup] Algorithm selected questions:', selectedQuestions.length)
+
+      if (!selectedQuestions || selectedQuestions.length === 0) {
+        setError('Failed to select questions using the algorithm. Please try again.')
+        setLoading(false)
+        return
+      }
+
+      if (selectedQuestions.length < config.questionCount) {
+        setError(`Algorithm could only select ${selectedQuestions.length} questions. Required: ${config.questionCount}. Please adjust difficulty or reduce question count.`)
+        setLoading(false)
+        return
+      }
+
+      // Get full question data for selected question IDs
+      const fullQuestions = selectedQuestions.map(selected => {
+        const question = questionsResponse.questions.find(q => q._id === selected.questionId)
+        if (!question) {
+          console.warn('[QuizSetup] Question not found for ID:', selected.questionId)
+          return null
+        }
+        
+        return {
+          id: question._id,
+          question: question.text,
+          type: question.type, // Keep original type from Question model
+          options: (question.options || []).map(option => ({
+            id: option._id,
+            text: option.text
+          })),
+          correctAnswer: question.correctAnswer,
+          expectedAnswer: question.expectedAnswer,
+          numericalAnswer: question.numericalAnswer,
+          topic: question.topic,
+          difficulty: question.difficultyLevel,
+          marks: question.marks || 1
+        }
+      }).filter(Boolean) // Remove any null values
+
+      console.log('[QuizSetup] Full questions prepared:', fullQuestions.length)
+      console.log('[QuizSetup] Sample question:', fullQuestions[0])
+
+      if (fullQuestions.length < config.questionCount) {
+        setError(`Could not load all selected questions. Loaded: ${fullQuestions.length}, Required: ${config.questionCount}`)
+        setLoading(false)
+        return
+      }
 
       // Create active quiz via API
       const quizData = {
@@ -188,7 +270,7 @@ export default function QuizSetup() {
         difficulty: config.difficulty,
         questionCount: config.questionCount,
         duration: config.duration,
-        questions: selectedQuestions,
+        questions: fullQuestions,
         algorithmUsed: 'algorithm'
       }
 

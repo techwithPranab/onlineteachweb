@@ -45,6 +45,7 @@ export default function AIQuestionReview() {
   useEffect(() => {
     fetchGrades()
     fetchStats()
+    fetchDrafts(1)
   }, [])
 
   useEffect(() => {

@@ -38,10 +38,14 @@ export function calculateQuizScore(questions, answers, evaluation = null) {
   let totalScore = 0
   let maxScore = 0
   
-  questions.forEach((question, index) => {
-    const answer = answers[index.toString()]
+  questions.forEach((question) => {
+    // Use questionId to match answers
+    const questionId = question.questionId || question.id
+    const answer = answers[questionId]
     const marks = question.marks || 1
     maxScore += marks
+    
+    console.log(`Checking question ${questionId}: answer=${answer}, correctAnswer=${question.correctAnswer}`)
     
     if (!answer || answer === '' || (Array.isArray(answer) && answer.length === 0)) {
       unattempted++
@@ -49,6 +53,7 @@ export function calculateQuizScore(questions, answers, evaluation = null) {
     }
     
     const isCorrect = checkAnswer(question, answer)
+    console.log(`Question ${questionId} is ${isCorrect ? 'CORRECT' : 'WRONG'}`)
     
     if (isCorrect) {
       correct++
@@ -60,6 +65,8 @@ export function calculateQuizScore(questions, answers, evaluation = null) {
   
   const percentage = maxScore > 0 ? (totalScore / maxScore) * 100 : 0
   const accuracy = questions.length > 0 ? (correct / questions.length) * 100 : 0
+  
+  console.log(`Score calculation: ${correct}/${questions.length} correct, ${totalScore}/${maxScore} marks, ${percentage}%`)
   
   return {
     totalQuestions: questions.length,
@@ -83,16 +90,17 @@ export function calculateQuizScore(questions, answers, evaluation = null) {
  */
 function checkAnswer(question, answer) {
   switch (question.type) {
+    case 'mcq-single':
     case 'mcq':
     case 'true-false':
-      const correctOption = question.options?.find(opt => opt.isCorrect)
-      return correctOption && (correctOption._id === answer || correctOption.id === answer)
+      return question.correctAnswer === answer
     
+    case 'mcq-multiple':
     case 'multiple-select':
       if (!Array.isArray(answer)) return false
-      const correctOptions = question.options?.filter(opt => opt.isCorrect).map(opt => opt._id || opt.id) || []
-      return correctOptions.length === answer.length && 
-             correctOptions.every(opt => answer.includes(opt))
+      const correctAnswers = question.correctAnswer.split(',').map(id => id.trim())
+      return correctAnswers.length === answer.length && 
+             correctAnswers.every(correctId => answer.includes(correctId))
     
     case 'numerical':
       if (!question.numericalAnswer) return false
@@ -102,6 +110,7 @@ function checkAnswer(question, answer) {
       return Math.abs(userNum - correctNum) <= tolerance
     
     case 'short-answer':
+    case 'long-answer':
       if (!question.expectedAnswer) return false
       // Simple string comparison (case-insensitive)
       return answer.toLowerCase().trim() === question.expectedAnswer.toLowerCase().trim()
@@ -119,11 +128,15 @@ function checkAnswer(question, answer) {
  * @returns {Array} Topic-wise performance analysis
  */
 export function analyzeByTopic(questions, answers) {
+  if (!questions || !Array.isArray(questions)) {
+    return []
+  }
+  
   const topicMap = new Map()
   
   questions.forEach((question, index) => {
     const topic = question.topic || question.subject || 'General'
-    const answer = answers[index.toString()]
+    const answer = answers ? answers[index.toString()] : undefined
     
     if (!topicMap.has(topic)) {
       topicMap.set(topic, {
@@ -302,24 +315,32 @@ export function identifyImprovementAreas(scoreAnalysis, topicAnalysis, difficult
   const strongAreas = []
   const recommendations = []
   
+  // Ensure inputs are valid
+  if (!scoreAnalysis) scoreAnalysis = {}
+  if (!topicAnalysis || !Array.isArray(topicAnalysis)) topicAnalysis = []
+  if (!difficultyAnalysis) difficultyAnalysis = {}
+  if (!timeAnalysis) timeAnalysis = {}
+  
   // Analyze topics
-  topicAnalysis.forEach(topic => {
-    if (topic.accuracy < 60) {
-      weakAreas.push({
-        type: 'topic',
-        area: topic.topic,
-        accuracy: topic.accuracy,
-        priority: topic.accuracy < 40 ? 'high' : 'medium',
-        recommendation: `Focus on ${topic.topic} - your accuracy is ${topic.accuracy.toFixed(1)}%`
-      })
-    } else if (topic.accuracy >= 80) {
-      strongAreas.push({
-        type: 'topic',
-        area: topic.topic,
-        accuracy: topic.accuracy
-      })
-    }
-  })
+  if (topicAnalysis && Array.isArray(topicAnalysis)) {
+    topicAnalysis.forEach(topic => {
+      if (topic.accuracy < 60) {
+        weakAreas.push({
+          type: 'topic',
+          area: topic.topic,
+          accuracy: topic.accuracy,
+          priority: topic.accuracy < 40 ? 'high' : 'medium',
+          recommendation: `Focus on ${topic.topic} - your accuracy is ${topic.accuracy.toFixed(1)}%`
+        })
+      } else if (topic.accuracy >= 80) {
+        strongAreas.push({
+          type: 'topic',
+          area: topic.topic,
+          accuracy: topic.accuracy
+        })
+      }
+    })
+  }
   
   // Analyze difficulty levels
   Object.entries(difficultyAnalysis).forEach(([level, stats]) => {
@@ -390,8 +411,12 @@ export function identifyImprovementAreas(scoreAnalysis, topicAnalysis, difficult
 export function generateNextActions(improvementAreas, scoreAnalysis) {
   const actions = []
   
+  // Ensure inputs are valid
+  if (!improvementAreas) improvementAreas = { weakAreas: [], strongAreas: [], recommendations: [] }
+  if (!scoreAnalysis) scoreAnalysis = { accuracy: 0 }
+  
   // Review study material
-  if (improvementAreas.weakAreas.length > 0) {
+  if (improvementAreas.weakAreas && improvementAreas.weakAreas.length > 0) {
     const weakTopics = improvementAreas.weakAreas
       .filter(area => area.type === 'topic')
       .map(area => area.area)
@@ -526,5 +551,74 @@ export function clearQuizHistory() {
   } catch (error) {
     console.error('Error clearing quiz history:', error)
     return false
+  }
+}
+
+/**
+ * Comprehensive quiz results analysis
+ * 
+ * @param {Object} results - Quiz results object
+ * @param {Object} quizData - Quiz metadata
+ * @param {Array} questions - Array of quiz questions
+ * @returns {Object} Complete analysis including score, accuracy, and detailed breakdowns
+ */
+export function analyzeQuizResults(results, quizData, questions) {
+  // Convert answers array to object format expected by analysis functions
+  // Use questionId as key to match the answers state in QuizAttempt
+  const answersObject = {}
+  
+  if (results.answers && Array.isArray(results.answers)) {
+    results.answers.forEach(answer => {
+      // Use questionId from answer object
+      if (answer.questionId) {
+        answersObject[answer.questionId] = answer.answer
+      }
+    })
+  }
+
+  // Debug logging
+  console.log('analyzeQuizResults - answersObject:', answersObject)
+  console.log('analyzeQuizResults - questions:', questions)
+
+  // Calculate overall score
+  const scoreAnalysis = calculateQuizScore(questions, answersObject)
+  
+  console.log('analyzeQuizResults - scoreAnalysis:', scoreAnalysis)
+  
+  // Analyze by topic
+  const topicAnalysis = analyzeByTopic(questions, answersObject) || []
+  
+  // Analyze by difficulty
+  const difficultyAnalysis = analyzeByDifficulty(questions, answersObject) || {}
+  
+  // Analyze time management (mock data since we don't have per-question timing)
+  const timeAnalysis = analyzeTimeManagement(questions, {}, results.totalTime) || {}
+  
+  // Identify improvement areas
+  const improvementAreas = identifyImprovementAreas(scoreAnalysis, topicAnalysis, difficultyAnalysis, timeAnalysis) || {}
+  
+  // Generate next actions
+  const nextActions = generateNextActions(improvementAreas, scoreAnalysis) || []
+
+  return {
+    // Basic metrics
+    score: scoreAnalysis.score || 0,
+    totalMarks: scoreAnalysis.totalMarks || 0,
+    percentage: scoreAnalysis.percentage || 0,
+    accuracy: scoreAnalysis.accuracy || 0,
+    passed: scoreAnalysis.passed || false,
+    
+    // Detailed breakdowns
+    overallAnalysis: scoreAnalysis,
+    topicAnalysis,
+    difficultyAnalysis,
+    timeAnalysis,
+    improvementAreas,
+    nextActions,
+    
+    // Metadata
+    totalQuestions: questions ? questions.length : 0,
+    timeTaken: results ? results.timeTaken : 0,
+    totalTime: results ? results.totalTime : 0
   }
 }

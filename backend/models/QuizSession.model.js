@@ -75,7 +75,7 @@ const quizSessionSchema = new mongoose.Schema({
   courseId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Course',
-    required: true,
+    required: false, // Make optional for algorithm quizzes
     index: true
   },
   attemptNumber: {
@@ -130,6 +130,10 @@ const quizSessionSchema = new mongoose.Schema({
   duration: {
     type: Number, // in minutes
     required: true
+  },
+  totalQuestions: {
+    type: Number,
+    default: 0
   },
   timeSpent: {
     type: Number, // in seconds
@@ -187,6 +191,16 @@ const quizSessionSchema = new mongoose.Schema({
   algorithmVersion: {
     type: String,
     required: true
+  },
+  // Difficulty level for algorithm-generated quizzes
+  difficulty: {
+    type: String,
+    enum: ['easy', 'medium', 'hard'],
+    default: 'medium'
+  },
+  // Metadata for algorithm-generated quizzes
+  metadata: {
+    type: mongoose.Schema.Types.Mixed
   },
   // Selection criteria used
   selectionCriteria: {
