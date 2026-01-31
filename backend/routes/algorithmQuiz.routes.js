@@ -31,4 +31,7 @@ router.get('/history', authenticate, authorize('student'), algorithmQuizControll
 // Get student performance
 router.get('/performance', authenticate, authorize('student'), algorithmQuizController.getStudentPerformance);
 
+// Migrate localStorage data to backend
+router.post('/migrate-local-data', authenticate, authorize('student'), algorithmQuizController.migrateLocalData);
+
 module.exports = router;

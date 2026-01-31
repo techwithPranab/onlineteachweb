@@ -55,7 +55,10 @@ export default function ActiveQuizzes() {
       setLoading(true)
 
       // Use the correct backend endpoint for active quizzes
-      const response = await algorithmQuizService.getActiveQuizzesFromBackend()
+      const response = await algorithmQuizService.getActiveQuizzesFromBackend({
+        status: ['active', 'in-progress']
+      })
+      console.log('Active quizzes loaded:', response.data)
       setQuizzes(response.data || [])
       setError(null)
     } catch (err) {
@@ -103,8 +106,8 @@ export default function ActiveQuizzes() {
       defaultValue: 'all',
       options: [
         { value: 'all', label: 'All Status' },
-        { value: 'ACTIVE', label: 'Active' },
-        { value: 'IN_PROGRESS', label: 'In Progress' }
+        { value: 'active', label: 'Active' },
+        { value: 'in-progress', label: 'In Progress' }
       ]
     },
     {
@@ -159,24 +162,8 @@ export default function ActiveQuizzes() {
    */
   const handleStartQuiz = async (quiz) => {
     try {
-      // Check if another quiz is in progress via API
-      const activeQuizzes = await algorithmQuizService.getActiveQuizzesFromBackend()
-      const inProgressQuiz = activeQuizzes.data?.find(q => q.status === 'IN_PROGRESS' && q.quizId !== quiz.quizId)
-
-      if (inProgressQuiz) {
-        if (!window.confirm(
-          `You have another quiz in progress: "${inProgressQuiz.subject} - ${inProgressQuiz.courseName}". ` +
-          `Starting this quiz will mark the other as abandoned. Continue?`
-        )) {
-          return
-        }
-
-        // Abandon the other quiz
-        await algorithmQuizService.abandonQuiz(inProgressQuiz.quizId)
-      }
-
       // Start this quiz (only if not already in progress)
-      if (quiz.status === 'ACTIVE') {
+      if (quiz.status === 'active') {
         await algorithmQuizService.startQuiz(quiz.quizId)
       }
 
@@ -215,15 +202,17 @@ export default function ActiveQuizzes() {
 
   /**
    * Update quiz status
+   * Now handled entirely by backend API
    */
-  const updateQuizStatus = (quizId, newStatus) => {
-    const storageKey = `active_quizzes_${user?.id || 'demo'}`
-    const updatedQuizzes = quizzes.map(q =>
-      q.id === quizId ? { ...q, status: newStatus, lastUpdated: new Date().toISOString() } : q
-    )
-    
-    setQuizzes(updatedQuizzes)
-    localStorage.setItem(storageKey, JSON.stringify(updatedQuizzes))
+  const updateQuizStatus = async (quizId, newStatus) => {
+    try {
+      await algorithmQuizService.updateQuizStatus(quizId, newStatus)
+      // Reload quizzes to get updated data from backend
+      await loadActiveQuizzes()
+    } catch (err) {
+      console.error('Failed to update quiz status:', err)
+      setError(err.response?.data?.message || 'Failed to update quiz status')
+    }
   }
 
   /**
@@ -340,13 +329,13 @@ export default function ActiveQuizzes() {
             onClick={() => onAction('start', quiz)}
             className={`
               inline-flex items-center gap-1 px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg text-xs sm:text-sm font-medium transition-colors
-              ${quiz.status === 'IN_PROGRESS'
+              ${quiz.status === 'in-progress'
                 ? 'bg-yellow-100 text-yellow-800 hover:bg-yellow-200'
                 : 'bg-indigo-600 text-white hover:bg-indigo-700'
               }
             `}
           >
-            {quiz.status === 'IN_PROGRESS' ? (
+            {quiz.status === 'in-progress' ? (
               <>
                 <RotateCcw className="w-3 h-3 sm:w-4 sm:h-4" />
                 <span className="hidden xs:inline">Resume</span>
@@ -404,7 +393,7 @@ export default function ActiveQuizzes() {
         </div>
 
         {/* Info Alert */}
-        {quizzes.some(q => q.status === 'IN_PROGRESS') && (
+        {quizzes.some(q => q.status === 'in-progress') && (
           <MeritaiCard className="mb-4 sm:mb-6 bg-orange-50 border-2 border-orange-200 rounded-xl sm:rounded-2xl p-3 sm:p-5 shadow-md">
             <div className="flex items-start gap-3">
               <AlertCircle className="w-5 h-5 sm:w-6 sm:h-6 flex-shrink-0 mt-0.5 animate-pulse text-orange-500" />

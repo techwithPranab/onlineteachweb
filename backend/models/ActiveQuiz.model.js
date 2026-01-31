@@ -69,8 +69,8 @@ const activeQuizSchema = new mongoose.Schema({
   // Quiz status
   status: {
     type: String,
-    enum: ['ACTIVE', 'IN_PROGRESS', 'COMPLETED', 'ABANDONED'],
-    default: 'ACTIVE',
+    enum: ['active', 'in-progress', 'completed', 'abandoned'],
+    default: 'active',
     index: true
   },
 
@@ -243,7 +243,7 @@ activeQuizSchema.index({ isDeleted: 1, createdAt: -1 });
 
 // Virtual for time remaining (if in progress)
 activeQuizSchema.virtual('timeRemaining').get(function() {
-  if (this.status !== 'IN_PROGRESS' || !this.startedAt) return null;
+  if (this.status !== 'in-progress' || !this.startedAt) return null;
 
   const elapsed = Math.floor((Date.now() - this.startedAt) / 1000); // seconds
   const totalTime = this.duration * 60; // convert to seconds
@@ -355,7 +355,7 @@ activeQuizSchema.methods.skipQuestion = function(questionId, timeSpent = 0) {
 
 // Instance method to start quiz
 activeQuizSchema.methods.startQuiz = function() {
-  this.status = 'IN_PROGRESS';
+  this.status = 'in-progress';
   this.startedAt = new Date();
   this.lastUpdated = new Date();
   return this.save();
@@ -363,7 +363,7 @@ activeQuizSchema.methods.startQuiz = function() {
 
 // Instance method to complete quiz
 activeQuizSchema.methods.completeQuiz = function(score, totalMarks, timeSpent) {
-  this.status = 'COMPLETED';
+  this.status = 'completed';
   this.completedAt = new Date();
   this.score = score;
   this.totalMarks = totalMarks;
@@ -375,7 +375,7 @@ activeQuizSchema.methods.completeQuiz = function(score, totalMarks, timeSpent) {
 
 // Instance method to abandon quiz
 activeQuizSchema.methods.abandonQuiz = function() {
-  this.status = 'ABANDONED';
+  this.status = 'abandoned';
   this.lastUpdated = new Date();
   return this.save();
 };
@@ -384,7 +384,7 @@ activeQuizSchema.methods.abandonQuiz = function() {
 activeQuizSchema.statics.getActiveQuizzes = function(userId) {
   return this.find({
     userId,
-    status: { $in: ['ACTIVE', 'IN_PROGRESS'] },
+    status: { $in: ['active', 'in-progress'] },
     isDeleted: false
   }).sort({ createdAt: -1 });
 };
@@ -393,7 +393,7 @@ activeQuizSchema.statics.getActiveQuizzes = function(userId) {
 activeQuizSchema.statics.getCompletedQuizzes = function(userId, limit = 50) {
   return this.find({
     userId,
-    status: 'COMPLETED',
+    status: 'completed',
     isDeleted: false
   })
   .sort({ completedAt: -1 })
@@ -404,7 +404,7 @@ activeQuizSchema.statics.getCompletedQuizzes = function(userId, limit = 50) {
 activeQuizSchema.statics.hasQuizInProgress = function(userId) {
   return this.findOne({
     userId,
-    status: 'IN_PROGRESS',
+    status: 'in-progress',
     isDeleted: false
   });
 };

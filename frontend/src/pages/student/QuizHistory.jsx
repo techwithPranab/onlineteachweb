@@ -155,7 +155,27 @@ export default function QuizHistory() {
       const historyArray = Array.isArray(historyData) ? historyData : []
       
       console.log('Quiz history data:', historyArray.length, 'records')
-      setHistory(historyArray)
+      
+      // ✅ PHASE 2: Validate and fix entries
+      const validatedSessions = historyArray.map(session => {
+        // Ensure quizId exists (use _id as fallback)
+        if (!session.quizId && session._id) {
+          console.warn(`Session ${session._id} missing quizId, using _id as fallback`);
+          session.quizId = session._id;
+        }
+        
+        // Ensure sessionId is accessible
+        session.sessionId = session._id;
+        
+        return session;
+      });
+      
+      console.log('Validated sessions:', {
+        count: validatedSessions.length,
+        allHaveQuizId: validatedSessions.every(s => s.quizId)
+      });
+      
+      setHistory(validatedSessions)
       setError(null)
     } catch (err) {
       console.error('Failed to load quiz history:', err)
@@ -281,6 +301,20 @@ export default function QuizHistory() {
    * Handle viewing detailed results
    */
   const handleViewDetails = (entry) => {
+    console.log('Viewing quiz details:', {
+      quizId: entry.quizId,
+      hasQuizId: !!entry.quizId,
+      sessionId: entry._id || entry.sessionId,
+      entryKeys: Object.keys(entry)
+    });
+    console.log('Viewing quiz details:', entry);
+    // ✅ PHASE 2: Validate quizId exists
+    if (!entry.quizId) {
+      console.error('Cannot view details: quizId is missing from entry');
+      // TODO: Show error toast or alert
+      return;
+    }
+    
     navigate(`/student/quiz/${entry.quizId}/results`, {
       state: {
         result: {
@@ -299,9 +333,23 @@ export default function QuizHistory() {
           difficulty: entry.difficulty || 'medium',
           questionCount: entry.questionCount
         },
-        fromHistory: true
+        fromHistory: true,
+        // ✅ Also pass sessionId for direct lookup if quizId fails
+        sessionId: entry._id || entry.sessionId
       }
     })
+    
+    console.log('🚀 Navigation details:', {
+      targetUrl: `/student/quiz/${entry.quizId}/results`,
+      entryQuizId: entry.quizId,
+      entryId: entry._id,
+      stateKeys: Object.keys({
+        result: { score: entry.score || 0 },
+        quiz: { subject: entry.subject },
+        fromHistory: true,
+        sessionId: entry._id || entry.sessionId
+      })
+    });
   }
 
   /**
@@ -341,11 +389,11 @@ export default function QuizHistory() {
               {entry.score}/{entry.totalScore}
             </div>
             <div className={`text-sm font-bold ${
-              entry.accuracy >= 80 ? 'text-green-600' :
-              entry.accuracy >= 60 ? 'text-yellow-600' :
+              (entry.accuracy || 0) >= 80 ? 'text-green-600' :
+              (entry.accuracy || 0) >= 60 ? 'text-yellow-600' :
               'text-red-600'
             }`}>
-              {entry.accuracy.toFixed(1)}%
+              {(entry.accuracy || 0).toFixed(1)}%
             </div>
           </div>
         </div>

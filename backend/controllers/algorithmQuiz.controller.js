@@ -2,6 +2,7 @@ const Quiz = require('../models/Quiz.model');
 const QuizSession = require('../models/QuizSession.model');
 const Question = require('../models/Question.model');
 const User = require('../models/User.model');
+const StudentPerformance = require('../models/StudentPerformance.model');
 const logger = require('../utils/logger');
 
 /**
@@ -69,7 +70,7 @@ exports.createAlgorithmQuiz = async (req, res, next) => {
       difficulty,
       duration: duration * 60, // convert to seconds
       remainingTime: duration * 60,
-      status: 'ACTIVE',
+      status: 'active',
       metadata: {
         subject,
         generatedBy: 'algorithm',
@@ -89,7 +90,7 @@ exports.createAlgorithmQuiz = async (req, res, next) => {
       difficulty,
       questionCount,
       duration: duration * 60,
-      status: 'ACTIVE',
+      status: 'active',
       questions: questions.map(q => ({
         questionId: q._id,
         questionText: q.questionText,
@@ -128,7 +129,7 @@ exports.createAlgorithmQuiz = async (req, res, next) => {
           difficulty: q.difficulty,
           marks: q.marks || 1
         })),
-        status: 'ACTIVE',
+        status: 'active',
         createdAt: session.createdAt
       }
     });
@@ -148,7 +149,7 @@ exports.getActiveQuizzes = async (req, res, next) => {
     // Get all active and in-progress quiz sessions
     const sessions = await QuizSession.find({
       studentId: userId,
-      status: { $in: ['ACTIVE', 'IN_PROGRESS'] }
+      status: { $in: ['active', 'in-progress'] }
     })
     .populate('courseId', 'title subject grade')
     .sort({ createdAt: -1 });
@@ -187,7 +188,7 @@ exports.updateQuizStatus = async (req, res, next) => {
     const { status } = req.body;
     const userId = req.user._id;
     
-    if (!['ACTIVE', 'IN_PROGRESS', 'completed'].includes(status)) {
+    if (!['active', 'in-progress', 'completed'].includes(status)) {
       return res.status(400).json({
         success: false,
         message: 'Invalid status'
@@ -207,20 +208,20 @@ exports.updateQuizStatus = async (req, res, next) => {
     }
     
     // Prevent multiple in-progress quizzes
-    if (status === 'IN_PROGRESS') {
+    if (status === 'in-progress') {
       await QuizSession.updateMany(
         {
           studentId: userId,
-          status: 'IN_PROGRESS',
+          status: 'in-progress',
           _id: { $ne: id }
         },
-        { status: 'ACTIVE' }
+        { status: 'active' }
       );
     }
     
     session.status = status;
     session.lastUpdated = new Date();
-    if (status === 'IN_PROGRESS' && !session.startedAt) {
+    if (status === 'in-progress' && !session.startedAt) {
       session.startedAt = new Date();
     }
     await session.save();
@@ -258,8 +259,8 @@ exports.deleteQuiz = async (req, res, next) => {
       });
     }
     
-    // Only allow deletion of ACTIVE quizzes
-    if (session.status !== 'ACTIVE') {
+    // Only allow deletion of active quizzes
+    if (session.status !== 'active') {
       return res.status(400).json({
         success: false,
         message: 'Can only delete quizzes that have not been started'
@@ -346,14 +347,52 @@ exports.analyzeQuizResults = async (req, res, next) => {
     session.score = totalScore;
     session.accuracy = accuracy;
     session.timeSpent = timeTaken;
+    
+    // Save performance data to session metadata
+    if (!session.metadata) session.metadata = {};
+    session.metadata.performanceData = {
+      performanceByTopic,
+      performanceByDifficulty,
+      weakTopics
+    };
+    
+    console.log('💾 Saving performance data to session metadata:', {
+      sessionId: session._id,
+      hasPerformanceData: !!session.metadata.performanceData,
+      topicCount: Object.keys(performanceByTopic).length,
+      difficultyCount: Object.keys(performanceByDifficulty).length,
+      weakTopicsCount: weakTopics.length,
+      sampleTopic: Object.keys(performanceByTopic)[0],
+      sampleDifficulty: Object.keys(performanceByDifficulty)[0]
+    });
+    
     await session.save();
+    
+    // Update ActiveQuiz status to completed
+    try {
+      const ActiveQuiz = require('../models/ActiveQuiz.model');
+      await ActiveQuiz.findOneAndUpdate(
+        { quizId: id }, // Find by quizId (which is session._id)
+        { status: 'completed' },
+        { new: true }
+      );
+      logger.info(`Marked ActiveQuiz ${id} as completed`);
+    } catch (error) {
+      logger.error(`Error updating ActiveQuiz status: ${error.message}`);
+    }
     
     // Update student performance (would use algorithm)
     await updateStudentPerformanceDB(userId, {
+      quizId: id,
+      subject: session.metadata?.subject || 'General',
       courseId: session.courseId,
-      accuracy,
       score: totalScore,
+      totalQuestions,
+      correct: correctAnswers,
+      accuracy,
+      timeSpent: timeTaken,
       performanceByTopic,
+      performanceByDifficulty,
       weakTopics
     });
     
@@ -442,18 +481,75 @@ exports.getQuizHistory = async (req, res, next) => {
       id: session._id,
       quizId: session._id,
       subject: (typeof session.metadata?.subject === 'object' ? session.metadata?.subject?.name : session.metadata?.subject) || session.courseId?.subject,
-      courseName: session.courseId?.title,
+      courseName: session.courseId?.title || session.metadata?.courseName,
       courseId: session.courseId?._id,
       difficulty: session.difficulty,
       questionCount: session.totalQuestions,
       duration: session.duration,
       score: session.totalScore,
       totalScore: session.totalMarks, // Use stored totalMarks
-      accuracy: session.percentage,
-      timeTaken: session.timeSpent,
+      accuracy: session.percentage || session.accuracy,
+      timeTaken: session.timeSpent || session.timeTaken,
       timeUtilization: parseFloat(((session.timeSpent / (session.duration * 60)) * 100).toFixed(1)),
       completedAt: session.submittedAt, // Use submittedAt instead of completedAt
-      status: 'completed'
+      status: 'completed',
+      
+      // ✅ Parse snapshots before returning
+      questions: session.selectedQuestions?.map(q => {
+        let parsedSnapshot = {};
+        try {
+          parsedSnapshot = JSON.parse(q.snapshot);
+        } catch (e) {
+          console.error('Failed to parse question snapshot:', e);
+        }
+        
+        return {
+          questionId: q.questionId,
+          snapshot: parsedSnapshot,  // Return as parsed object
+          // Spread for direct access
+          text: parsedSnapshot.text,
+          type: parsedSnapshot.type,
+          options: parsedSnapshot.options,
+          correctAnswer: parsedSnapshot.correctAnswer,
+          expectedAnswer: parsedSnapshot.expectedAnswer,
+          numericalAnswer: parsedSnapshot.numericalAnswer,
+          marks: parsedSnapshot.marks,
+          negativeMarks: parsedSnapshot.negativeMarks,
+          topic: parsedSnapshot.topic,
+          difficultyLevel: parsedSnapshot.difficultyLevel,
+          difficulty: parsedSnapshot.difficultyLevel,
+          explanation: parsedSnapshot.explanation
+        };
+      }) || [],
+      
+      // ✅ Parse answer snapshots
+      answers: session.answers?.map(a => {
+        let parsedQuestionSnapshot = {};
+        try {
+          if (a.questionSnapshot) {
+            parsedQuestionSnapshot = JSON.parse(a.questionSnapshot);
+          }
+        } catch (e) {
+          console.error('Failed to parse answer snapshot:', e);
+        }
+        
+        return {
+          questionId: a.questionId,
+          answer: a.answer,
+          isCorrect: a.isCorrect,
+          marksAwarded: a.marksAwarded,
+          timeSpent: a.timeSpent,
+          isVisited: a.isVisited,
+          isMarkedForReview: a.isMarkedForReview,
+          questionSnapshot: parsedQuestionSnapshot  // Return as parsed object
+        };
+      }) || [],
+      
+      // Include performance data
+      performanceByTopic: session.metadata?.performanceData?.performanceByTopic || [],
+      performanceByDifficulty: session.metadata?.performanceData?.performanceByDifficulty || {},
+      weakTopics: session.metadata?.performanceData?.weakTopics || [],
+      recommendations: session.metadata?.performanceData?.recommendations || []
     }));
     
     console.log('Returning quiz history:', history.length, 'records');
@@ -503,6 +599,11 @@ exports.getStudentPerformance = async (req, res, next) => {
       totalScore += session.score || 0;
       totalAccuracy += session.accuracy || 0;
       
+      // Skip if session doesn't have questions array
+      if (!session.questions || !Array.isArray(session.questions)) {
+        return;
+      }
+      
       session.questions.forEach(question => {
         const topic = question.topic;
         if (!topicMastery[topic]) {
@@ -545,70 +646,164 @@ exports.getStudentPerformance = async (req, res, next) => {
   }
 };
 
+// @desc    Migrate localStorage data to backend
+// @route   POST /api/algorithm-quiz/migrate-local-data
+// @access  Private (Student)
+exports.migrateLocalData = async (req, res, next) => {
+  try {
+    const userId = req.user._id;
+    const { performance, history } = req.body;
+    
+    console.log(`[Migration] Starting migration for user ${userId}`);
+    
+    let migratedPerformance = false;
+    let migratedHistory = false;
+    
+    // Migrate performance data
+    if (performance) {
+      try {
+        // Check if performance already exists
+        let studentPerformance = await StudentPerformance.findOne({ studentId: userId });
+        
+        if (!studentPerformance) {
+          studentPerformance = new StudentPerformance({
+            studentId: userId,
+            topicMastery: performance.topicMastery || {},
+            weakTopics: performance.weakTopics || [],
+            totalQuizzesTaken: performance.totalQuizzesTaken || 0,
+            averageScore: performance.averageScore || 0,
+            averageAccuracy: performance.averageAccuracy || 0,
+            lastUpdated: new Date()
+          });
+        } else {
+          // Update existing performance
+          studentPerformance.topicMastery = { ...studentPerformance.topicMastery, ...performance.topicMastery };
+          studentPerformance.weakTopics = performance.weakTopics || studentPerformance.weakTopics;
+          studentPerformance.totalQuizzesTaken = performance.totalQuizzesTaken || studentPerformance.totalQuizzesTaken;
+          studentPerformance.averageScore = performance.averageScore || studentPerformance.averageScore;
+          studentPerformance.averageAccuracy = performance.averageAccuracy || studentPerformance.averageAccuracy;
+          studentPerformance.lastUpdated = new Date();
+        }
+        
+        await studentPerformance.save();
+        migratedPerformance = true;
+        console.log(`[Migration] Performance data migrated for user ${userId}`);
+      } catch (perfError) {
+        console.error(`[Migration] Failed to migrate performance for user ${userId}:`, perfError);
+      }
+    }
+    
+    // Migrate quiz history
+    if (history && Array.isArray(history)) {
+      try {
+        let migratedCount = 0;
+        
+        for (const quiz of history) {
+          // Check if quiz session already exists
+          const existingSession = await QuizSession.findOne({
+            studentId: userId,
+            'metadata.subject': quiz.subject,
+            submittedAt: { $gte: new Date(Date.now() - 24 * 60 * 60 * 1000) } // Within last 24 hours
+          });
+          
+          if (!existingSession) {
+            // Create new session from history data
+            const sessionData = {
+              studentId: userId,
+              quizId: quiz.quizId || `migrated_${Date.now()}_${Math.random()}`,
+              courseId: null, // Will be set if available
+              attemptNumber: 1,
+              status: 'completed',
+              score: quiz.score || 0,
+              totalScore: quiz.totalScore || 0,
+              totalMarks: quiz.totalScore || 0,
+              accuracy: quiz.accuracy || 0,
+              timeTaken: quiz.timeTaken || 0,
+              duration: quiz.duration || 30,
+              startedAt: new Date(quiz.completedAt || Date.now()),
+              expiresAt: new Date(Date.now() + (quiz.duration || 30) * 60 * 1000),
+              submittedAt: new Date(quiz.completedAt || Date.now()),
+              passingPercentage: 60,
+              algorithmVersion: 'migrated',
+              metadata: {
+                subject: quiz.subject,
+                courseName: quiz.courseName,
+                questionCount: quiz.questionCount,
+                isAlgorithmGenerated: true,
+                migratedFromLocalStorage: true
+              }
+            };
+            
+            await QuizSession.create(sessionData);
+            migratedCount++;
+          }
+        }
+        
+        if (migratedCount > 0) {
+          migratedHistory = true;
+          console.log(`[Migration] Migrated ${migratedCount} quiz sessions for user ${userId}`);
+        }
+      } catch (histError) {
+        console.error(`[Migration] Failed to migrate history for user ${userId}:`, histError);
+      }
+    }
+    
+    res.json({
+      success: true,
+      message: 'Migration completed',
+      migrated: {
+        performance: migratedPerformance,
+        history: migratedHistory
+      }
+    });
+    
+  } catch (error) {
+    logger.error(`Migrate local data error: ${error.message}`);
+    next(error);
+  }
+};
+
 // =====================
 // HELPER FUNCTIONS
 // =====================
 
 async function getUserPerformance(userId) {
-  const sessions = await QuizSession.find({
-    studentId: userId,
-    status: 'completed'
-  }).limit(10).sort({ submittedAt: -1 });
-  
-  // Aggregate performance data
-  const topicMastery = {};
-  const recentQuestions = [];
-  
-  sessions.forEach(session => {
-    session.questions.forEach(question => {
-      if (!topicMastery[question.topic]) {
-        topicMastery[question.topic] = { correct: 0, total: 0 };
-      }
-      topicMastery[question.topic].total++;
-      
-      const answer = session.answers?.find(a => a.questionId === question.questionId.toString());
-      if (answer) {
-        // Check if answer is correct
-        let isCorrect = false;
-        if (question.type === 'mcq-single' || question.type === 'mcq' || question.type === 'true-false') {
-          // Find the correct option and compare IDs
-          const correctOption = question.options?.find(opt => opt.text === question.correctAnswer);
-          isCorrect = correctOption && (correctOption._id?.toString() || correctOption.id) === answer.answer;
-        } else if (question.type === 'mcq-multiple' || question.type === 'multiple-select') {
-          // For multiple choice, check if all correct options are selected
-          const correctAnswerTexts = question.correctAnswer.split(',').map(text => text.trim());
-          const correctOptionIds = question.options
-            ?.filter(opt => correctAnswerTexts.includes(opt.text))
-            .map(opt => opt._id?.toString() || opt.id) || [];
-          
-          if (Array.isArray(answer.answer)) {
-            isCorrect = correctOptionIds.length === answer.answer.length && 
-                       correctOptionIds.every(id => answer.answer.includes(id));
-          } else if (typeof answer.answer === 'string') {
-            const answerIds = answer.answer.split(',').map(id => id.trim());
-            isCorrect = correctOptionIds.length === answerIds.length && 
-                       correctOptionIds.every(id => answerIds.includes(id));
-          }
-        }
-        
-        if (isCorrect) {
-          topicMastery[question.topic].correct++;
-        }
-      }
-      
-      recentQuestions.push({
-        id: question.questionId,
-        topic: question.topic,
-        difficulty: question.difficulty
-      });
-    });
-  });
-  
-  return {
-    topicMastery,
-    recentQuestions,
-    totalQuizzes: sessions.length
-  };
+  try {
+    // Get student performance from database
+    const performance = await StudentPerformance.findOne({ studentId: userId });
+    
+    if (!performance) {
+      return {
+        topicMastery: {},
+        recentQuestions: [],
+        totalQuizzes: 0
+      };
+    }
+    
+    // Convert Map to object for topicMastery
+    const topicMastery = {};
+    for (const [key, value] of performance.topicMastery) {
+      topicMastery[value.topic] = {
+        correct: value.questionsCorrect,
+        total: value.questionsAttempted,
+        successRate: value.successRate
+      };
+    }
+    
+    return {
+      topicMastery,
+      weakAreas: performance.weakAreas,
+      recentQuestions: [], // We can populate this from recent quiz sessions if needed
+      totalQuizzes: performance.totalQuizzesTaken
+    };
+  } catch (error) {
+    logger.error(`Error fetching user performance: ${error.message}`);
+    return {
+      topicMastery: {},
+      recentQuestions: [],
+      totalQuizzes: 0
+    };
+  }
 }
 
 async function selectQuestionsForQuiz({ courseId, difficulty, questionCount, pastPerformance }) {
@@ -624,9 +819,53 @@ async function selectQuestionsForQuiz({ courseId, difficulty, questionCount, pas
 }
 
 async function updateStudentPerformanceDB(userId, performanceData) {
-  // Update user's performance metrics
-  // This would store in a separate Performance collection
-  logger.info(`Updated performance for user ${userId}`);
+  try {
+    // Prepare topic performance array
+    const topicPerformance = [];
+    
+    if (performanceData.performanceByTopic) {
+      Object.entries(performanceData.performanceByTopic).forEach(([topic, perf]) => {
+        topicPerformance.push({
+          topic,
+          subject: performanceData.subject || 'General',
+          total: perf.total,
+          correct: perf.correct,
+          successRate: (perf.correct / perf.total) * 100,
+          questionsAttempted: perf.total,
+          questionsCorrect: perf.correct
+        });
+      });
+    }
+    
+    // Prepare difficulty performance data
+    const difficultyPerformance = {};
+    if (performanceData.performanceByDifficulty) {
+      Object.entries(performanceData.performanceByDifficulty).forEach(([difficulty, perf]) => {
+        difficultyPerformance[difficulty] = {
+          attempted: perf.total,
+          correct: perf.correct,
+          successRate: (perf.correct / perf.total) * 100
+        };
+      });
+    }
+    
+    // Update student performance in database
+    await StudentPerformance.updateAfterQuiz(userId, {
+      quizId: performanceData.quizId,
+      subject: performanceData.subject || 'General',
+      score: performanceData.score,
+      totalQuestions: performanceData.totalQuestions,
+      correctAnswers: performanceData.correct,
+      accuracy: performanceData.accuracy,
+      timeSpent: performanceData.timeSpent,
+      topicPerformance,
+      difficultyPerformance
+    });
+    
+    logger.info(`Updated performance for user ${userId}`);
+  } catch (error) {
+    logger.error(`Error updating student performance: ${error.message}`);
+  }
 }
 
 function generateRecommendations(weakTopics, performanceByDifficulty) {
@@ -659,5 +898,6 @@ module.exports = {
   deleteQuiz: exports.deleteQuiz,
   analyzeQuizResults: exports.analyzeQuizResults,
   getQuizHistory: exports.getQuizHistory,
-  getStudentPerformance: exports.getStudentPerformance
+  getStudentPerformance: exports.getStudentPerformance,
+  migrateLocalData: exports.migrateLocalData
 };

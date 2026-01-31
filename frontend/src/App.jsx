@@ -141,7 +141,7 @@ function App() {
             <Route path="active-quizzes" element={<ActiveQuizzes />} />
             <Route path="quiz/:quizId/setup" element={<QuizSetup />} />
             <Route path="quiz/:quizId/attempt" element={<QuizAttempt />} />
-            <Route path="quiz/:sessionId/results" element={<QuizResults />} />
+            <Route path="quiz/:quizId/results" element={<QuizResults />} />
             <Route path="quiz-history" element={<QuizHistory />} />
           </Route>
 

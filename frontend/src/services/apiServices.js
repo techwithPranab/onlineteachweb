@@ -703,7 +703,7 @@ export const algorithmQuizService = {
     }
   },
 
-  // Start an active quiz (change status to IN_PROGRESS)
+  // Start an active quiz (change status to in-progress)
   startQuiz: async (quizId) => {
     const { data } = await api.put(`/active-quizzes/${quizId}/start`)
     return data

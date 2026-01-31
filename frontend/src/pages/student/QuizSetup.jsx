@@ -195,10 +195,18 @@ export default function QuizSetup() {
       const subjectName = config.subject || selectedCourse?.subject || 'General'
       const courseName = selectedCourse?.title || 'Quiz'
 
-      // Get student's past performance from localStorage
-      const pastPerformance = localStorage.getItem(`performance_${user?.id || 'demo'}`)
-        ? JSON.parse(localStorage.getItem(`performance_${user?.id || 'demo'}`))
-        : null
+      // Get student's past performance from backend API
+      let pastPerformance = null
+      try {
+        const performanceResponse = await algorithmQuizService.getStudentPerformance()
+        if (performanceResponse.success && performanceResponse.performance) {
+          pastPerformance = performanceResponse.performance
+          console.log('[QuizSetup] Loaded performance from backend:', pastPerformance)
+        }
+      } catch (perfError) {
+        console.warn('[QuizSetup] Could not load performance data:', perfError)
+        // Continue without performance data
+      }
 
       // Use intelligent algorithm to select questions based on difficulty and performance
       console.log('[QuizSetup] Using algorithm to select questions...')

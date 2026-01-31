@@ -88,7 +88,7 @@ export function calculateQuizScore(questions, answers, evaluation = null) {
  * @param {*} answer - User's answer
  * @returns {boolean} True if correct
  */
-function checkAnswer(question, answer) {
+export function checkAnswer(question, answer) {
   switch (question.type) {
     case 'mcq-single':
     case 'mcq':
@@ -136,15 +136,28 @@ function checkAnswer(question, answer) {
  * @returns {Array} Topic-wise performance analysis
  */
 export function analyzeByTopic(questions, answers) {
-  if (!questions || !Array.isArray(questions)) {
+  // ✅ PHASE 2: Enhanced validation
+  if (!questions || !Array.isArray(questions) || questions.length === 0) {
+    console.warn('analyzeByTopic: No questions provided')
     return []
   }
   
   const topicMap = new Map()
   
   questions.forEach((question, index) => {
-    const topic = question.topic || question.subject || 'General'
-    const answer = answers ? answers[index.toString()] : undefined
+    // ✅ Better fallback logic
+    const topic = question.topic || question.subject || 'Uncategorized'
+    
+    // ✅ Try both index and questionId for answer lookup
+    const answer = answers 
+      ? (answers[question.questionId] || answers[index.toString()])
+      : undefined
+    
+    console.log(`Topic analysis for Q${index}:`, {
+      topic,
+      hasAnswer: !!answer,
+      questionId: question.questionId
+    })
     
     if (!topicMap.has(topic)) {
       topicMap.set(topic, {
@@ -177,6 +190,9 @@ export function analyzeByTopic(questions, answers) {
     ...topic,
     accuracy: topic.total > 0 ? (topic.correct / topic.total) * 100 : 0
   }))
+  
+  // ✅ Log result
+  console.log('Topic analysis result:', topicAnalysis)
   
   // Sort by accuracy (lowest first for improvement focus)
   return topicAnalysis.sort((a, b) => a.accuracy - b.accuracy)
@@ -491,75 +507,40 @@ export function generateNextActions(improvementAreas, scoreAnalysis) {
 
 /**
  * Store quiz attempt in history
+ * NOTE: This is now handled by the backend via QuizSession
+ * This function is kept for backward compatibility but does nothing
  * 
  * @param {Object} attemptData - Quiz attempt data
  */
 export function storeQuizAttempt(attemptData) {
-  try {
-    const history = JSON.parse(localStorage.getItem('quizHistory') || '[]')
-    
-    const attempt = {
-      id: `attempt_${Date.now()}`,
-      sessionId: attemptData.sessionId,
-      quizId: attemptData.quizId,
-      quizTitle: attemptData.quizTitle,
-      subject: attemptData.subject,
-      difficulty: attemptData.difficulty,
-      score: attemptData.score,
-      totalMarks: attemptData.totalMarks,
-      accuracy: attemptData.accuracy,
-      percentage: attemptData.percentage,
-      passed: attemptData.passed,
-      totalQuestions: attemptData.totalQuestions,
-      correct: attemptData.correct,
-      wrong: attemptData.wrong,
-      unattempted: attemptData.unattempted,
-      timeSpent: attemptData.timeSpent,
-      completedAt: attemptData.completedAt || new Date().toISOString(),
-      passingPercentage: attemptData.passingPercentage || 60
-    }
-    
-    history.unshift(attempt)
-    
-    // Keep only last 100 attempts
-    if (history.length > 100) {
-      history.splice(100)
-    }
-    
-    localStorage.setItem('quizHistory', JSON.stringify(history))
-    
-    return attempt
-  } catch (error) {
-    console.error('Error storing quiz attempt:', error)
-    return null
+  // Quiz history is now stored in backend via QuizSession
+  // See QuizAttempt.jsx -> algorithmQuizService.completeQuiz()
+  console.log('[Quiz History] Attempt stored in backend:', attemptData.quizId)
+  return {
+    id: `attempt_${Date.now()}`,
+    ...attemptData,
+    completedAt: attemptData.completedAt || new Date().toISOString()
   }
 }
 
 /**
  * Get quiz history
+ * NOTE: This should now fetch from backend API
  * 
- * @returns {Array} Quiz attempt history
+ * @returns {Array} Empty array - use algorithmQuizService.getQuizHistory() instead
  */
 export function getQuizHistory() {
-  try {
-    return JSON.parse(localStorage.getItem('quizHistory') || '[]')
-  } catch (error) {
-    console.error('Error loading quiz history:', error)
-    return []
-  }
+  console.warn('[Quiz History] localStorage usage deprecated - use algorithmQuizService.getQuizHistory() instead')
+  return []
 }
 
 /**
  * Clear quiz history
+ * NOTE: No longer needed as history is stored in backend
  */
 export function clearQuizHistory() {
-  try {
-    localStorage.removeItem('quizHistory')
-    return true
-  } catch (error) {
-    console.error('Error clearing quiz history:', error)
-    return false
-  }
+  console.log('[Quiz History] History is now managed by backend')
+  return true
 }
 
 /**

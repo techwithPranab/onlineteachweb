@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from 'react'
 import { useParams, useNavigate, useLocation } from 'react-router-dom'
-import { quizService, quizEvaluationService } from '../../services/apiServices'
+import { quizService, quizEvaluationService, algorithmQuizService } from '../../services/apiServices'
 import { useAuthStore } from '../../store/authStore'
 import LoadingSpinner from '../../components/common/LoadingSpinner'
 import ErrorMessage from '../../components/common/ErrorMessage'
@@ -11,7 +11,8 @@ import {
   analyzeTimeManagement,
   identifyImprovementAreas,
   generateNextActions,
-  storeQuizAttempt
+  storeQuizAttempt,
+  checkAnswer
 } from '../../utils/quiz'
 
 export default function QuizResults() {
@@ -19,6 +20,15 @@ export default function QuizResults() {
   const navigate = useNavigate()
   const location = useLocation()
   const { user } = useAuthStore()
+  
+  console.log('🎯 QuizResults component mounted:', {
+    urlParams: useParams(),
+    pathname: location.pathname,
+    search: location.search,
+    hash: location.hash,
+    quizIdFromParams: quizId,
+    fullLocation: location
+  });
   
   const [result, setResult] = useState(null)
   const [analytics, setAnalytics] = useState(null)
@@ -32,8 +42,22 @@ export default function QuizResults() {
   const quizData = location.state?.quiz
 
   useEffect(() => {
-    // If we have algorithm quiz results in location state, use them directly
-    if (submissionResult && quizData) {
+    console.log('🔍 QuizResults useEffect triggered:', {
+      quizId,
+      hasSubmissionResult: !!submissionResult,
+      hasQuizData: !!quizData,
+      locationState: location.state,
+      fromHistory: location.state?.fromHistory,
+      hasLocationState: !!location.state
+    });
+    
+    // ✅ PRIORITY 1: Check if coming from history FIRST
+    if (location.state?.fromHistory) {
+      // Fetch data from history (QuizSession)
+      console.log('Fetching results from history due to location state');
+      fetchResultsFromHistory()
+    } else if (submissionResult && quizData) {
+      // If we have algorithm quiz results in location state, use them directly
       handleAlgorithmQuizResults()
     } else {
       // Otherwise fetch from API (for regular quizzes)
@@ -87,7 +111,7 @@ export default function QuizResults() {
         },
         detailedAnswers: quizData.questions?.map((q, index) => {
           const userAnswer = answersObject[index.toString()] || answersObject[q.id] || null
-          const isCorrect = checkAnswerCorrect(q, userAnswer)
+          const isCorrect = checkAnswer(q, userAnswer)
           
           return {
             questionId: q.id,
@@ -122,32 +146,19 @@ export default function QuizResults() {
       case 'mcq-single':
       case 'mcq':
       case 'true-false':
-        // Find the option that matches the correct answer ID
-        const correctOption = question.options?.find(opt => 
-          opt.id === question.correctAnswer || opt._id === question.correctAnswer
-        )
-        // Return the text if found, otherwise return the ID as fallback
+        // Find the option that matches the correct answer text
+        const correctOption = question.options?.find(opt => opt.text === question.correctAnswer)
+        // Return the text if found, otherwise return the stored correct answer
         return correctOption ? correctOption.text : question.correctAnswer
       
       case 'mcq-multiple':
       case 'multiple-select':
-        // Handle multiple correct answers (can be array or comma-separated string)
-        let correctIds = []
-        if (Array.isArray(question.correctAnswer)) {
-          correctIds = question.correctAnswer
-        } else if (typeof question.correctAnswer === 'string') {
-          correctIds = question.correctAnswer.split(',').map(id => id.trim())
+        // Handle multiple correct answers (comma-separated text)
+        if (typeof question.correctAnswer === 'string') {
+          const correctAnswerTexts = question.correctAnswer.split(',').map(text => text.trim())
+          return correctAnswerTexts.join(', ')
         }
-        
-        // Find all options that match the correct answer IDs
-        const correctOptions = question.options?.filter(opt => 
-          correctIds.includes(opt.id) || correctIds.includes(opt._id)
-        )
-        
-        // Return comma-separated text, or IDs as fallback
-        return correctOptions && correctOptions.length > 0
-          ? correctOptions.map(opt => opt.text).join(', ')
-          : (Array.isArray(question.correctAnswer) ? question.correctAnswer.join(', ') : question.correctAnswer)
+        return question.correctAnswer
       
       case 'numerical':
         return question.correctAnswer
@@ -158,36 +169,6 @@ export default function QuizResults() {
       
       default:
         return question.correctAnswer
-    }
-  }
-
-  const checkAnswerCorrect = (question, userAnswer) => {
-    if (!userAnswer) return false
-    
-    switch (question.type) {
-      case 'mcq-single':
-      case 'mcq':
-      case 'true-false':
-        return question.correctAnswer === userAnswer
-      
-      case 'mcq-multiple':
-      case 'multiple-select':
-        if (!Array.isArray(userAnswer)) return false
-        // Handle both array and string format for correct answers
-        let correctAnswers = []
-        if (Array.isArray(question.correctAnswer)) {
-          correctAnswers = question.correctAnswer
-        } else if (typeof question.correctAnswer === 'string') {
-          correctAnswers = question.correctAnswer.split(',').map(id => id.trim())
-        }
-        return correctAnswers.length === userAnswer.length && 
-               correctAnswers.every(correctId => userAnswer.includes(correctId))
-      
-      case 'numerical':
-        return Math.abs(parseFloat(question.correctAnswer) - parseFloat(userAnswer)) < 0.01
-      
-      default:
-        return false
     }
   }
 
@@ -232,6 +213,14 @@ export default function QuizResults() {
 
   // Enhanced analysis using quiz utilities
   const enhancedAnalysis = useMemo(() => {
+    console.log('🔬 Enhanced Analysis Starting:', {
+      hasResult: !!result,
+      hasSession: !!result?.session,
+      hasQuiz: !!result?.quiz,
+      hasDetailedAnswers: !!result?.detailedAnswers,
+      detailedAnswersLength: result?.detailedAnswers?.length
+    });
+
     if (!result || !result.session || !result.quiz) return null
 
     try {
@@ -239,25 +228,78 @@ export default function QuizResults() {
       
       // Prepare questions and answers for analysis
       const questions = detailedAnswers || []
-      const answers = {}
       
-      questions.forEach(q => {
-        answers[q.questionId] = q.yourAnswer
+      console.log('🔬 Questions array for analysis:', {
+        questionsLength: questions.length,
+        firstQuestion: questions[0],
+        questionsSample: questions.slice(0, 2)
+      });
+      
+      // ✅ PHASE 2: Check for empty questions
+      if (questions.length === 0) {
+        console.warn('No questions available for analysis')
+        return {
+          scoreAnalysis: { totalQuestions: 0, correct: 0, wrong: 0, percentage: 0 },
+          topicAnalysis: [],
+          difficultyAnalysis: { easy: { total: 0, correct: 0 }, medium: {}, hard: {} },
+          timeAnalysis: {},
+          improvementAreas: [],
+          nextActions: []
+        }
+      }
+      
+      // ✅ Build answers map with BOTH questionId and index
+      const answers = {}
+      questions.forEach((q, index) => {
+        answers[q.questionId] = q.yourAnswer           // For questionId lookup
+        answers[index.toString()] = q.yourAnswer       // For index lookup
+      })
+      
+      console.log('Enhanced Analysis Input:', {
+        questionsCount: questions.length,
+        answersCount: Object.keys(answers).length,
+        sampleQuestion: questions[0],
+        hasEvaluation: !!result.evaluation
       })
 
       // Calculate comprehensive score
       const scoreAnalysis = calculateQuizScore(questions, answers, result.evaluation)
       
-      // Analyze by topic
-      const topicAnalysis = analyzeByTopic(questions, answers)
+      // Use pre-calculated analysis from history if available, otherwise calculate
+      let topicAnalysis, difficultyAnalysis;
       
-      // Analyze by difficulty
-      const difficultyAnalysis = analyzeByDifficulty(questions, answers)
+      if (result.evaluation && result.evaluation.topicAnalysis && result.evaluation.topicAnalysis.length > 0) {
+        // Use pre-calculated topic analysis from quiz history
+        topicAnalysis = result.evaluation.topicAnalysis;
+        console.log('Using pre-calculated topic analysis from history:', topicAnalysis);
+      } else {
+        // Calculate topic analysis from questions
+        topicAnalysis = analyzeByTopic(questions, answers);
+      }
       
-      // Analyze time management
+      if (result.evaluation && result.evaluation.difficultyAnalysis && Object.keys(result.evaluation.difficultyAnalysis).length > 0) {
+        // Use pre-calculated difficulty analysis from quiz history
+        difficultyAnalysis = result.evaluation.difficultyAnalysis;
+        console.log('Using pre-calculated difficulty analysis from history:', difficultyAnalysis);
+      } else {
+        // Calculate difficulty analysis from questions
+        difficultyAnalysis = analyzeByDifficulty(questions, answers);
+      }
+      
+      // ✅ PHASE 2 FIX: Build timeSpentPerQuestion object from answers
+      const timeSpentPerQuestion = {}
+      if (Array.isArray(detailedAnswers)) {
+        detailedAnswers.forEach((ans, index) => {
+          // Use answer's timeSpent if available, otherwise distribute total time evenly
+          timeSpentPerQuestion[index.toString()] = ans.timeSpent || 
+            (session.timeSpent / detailedAnswers.length) || 0
+        })
+      }
+      
+      // Analyze time management with proper data structure
       const timeAnalysis = analyzeTimeManagement(
         questions,
-        session.timeSpent || 0,
+        timeSpentPerQuestion,
         (quiz.duration || 30) * 60
       )
       
@@ -271,6 +313,13 @@ export default function QuizResults() {
       
       // Generate next action suggestions
       const nextActions = generateNextActions(improvementAreas, scoreAnalysis)
+      
+      console.log('Enhanced Analysis Output:', {
+        scoreAnalysis,
+        topicsCount: topicAnalysis.length,
+        difficultyLevels: Object.keys(difficultyAnalysis).length,
+        timeAnalysis
+      })
       
       // Store attempt in quiz history
       storeQuizAttempt({
@@ -321,6 +370,209 @@ export default function QuizResults() {
     }
   }
 
+  const fetchResultsFromHistory = async () => {
+    try {
+      setLoading(true)
+      setError(null)
+      
+      console.log('🔍 Fetching results from history:', {
+        quizId,
+        quizIdType: typeof quizId,
+        hasLocationState: !!location.state,
+        sessionId: location.state?.sessionId,
+        locationState: location.state,
+        willUseSessionIdFallback: !quizId && location.state?.sessionId
+      });
+      
+      // If quizId is not available from URL, try to use sessionId from state
+      const searchId = quizId || location.state?.sessionId;
+      
+      if (!searchId) {
+        console.error('❌ No quizId or sessionId available for search');
+        setError('Missing quiz identifier');
+        setLoading(false);
+        return;
+      }
+      
+      // Fetch quiz session data from history
+      const response = await algorithmQuizService.getQuizHistory({ limit: 1000 })
+      const historyData = response.data || response || []
+      
+      console.log('📦 History data received:', {
+        totalRecords: historyData.length,
+        firstRecord: historyData[0] ? {
+          id: historyData[0].id,
+          quizId: historyData[0].quizId,
+          idType: typeof historyData[0].id,
+          quizIdType: typeof historyData[0].quizId
+        } : null
+      });
+      
+      // Try to find session by matching quizId (convert both to strings for comparison)
+      const sessionData = historyData.find(h => 
+        String(h.quizId) === String(searchId) || 
+        String(h.id) === String(searchId) ||
+        String(h._id) === String(searchId)
+      )
+      
+      if (!sessionData) {
+        console.error('❌ Quiz session not found in history for searchId:', searchId);
+        console.error('Available IDs:', historyData.map(h => ({
+          id: h.id,
+          quizId: h.quizId,
+          subject: h.subject
+        })));
+        setError('Quiz results not found in history')
+        setLoading(false)
+        return
+      }
+
+      console.log('✅ Session data loaded:', {
+        id: sessionData.id,
+        quizId: sessionData.quizId,
+        subject: sessionData.subject,
+        hasQuestions: !!sessionData.questions,
+        questionsCount: sessionData.questions?.length || 0,
+        hasAnswers: !!sessionData.answers,
+        answersCount: sessionData.answers?.length || 0,
+        sampleQuestion: sessionData.questions?.[0],
+        sampleAnswer: sessionData.answers?.[0],
+        questionsType: typeof sessionData.questions,
+        answersType: typeof sessionData.answers
+      });
+      
+      // ✅ PHASE 2: Validate session has required data
+      if (!sessionData.questions || sessionData.questions.length === 0) {
+        console.error('Session found but has no questions');
+        setError('Quiz session data is incomplete');
+        setLoading(false);
+        return;
+      }
+
+      // Transform session data to result format
+      const transformedResult = {
+        quiz: {
+          _id: sessionData.quizId,
+          title: `${sessionData.subject} - ${sessionData.courseName}`,
+          subject: sessionData.subject,
+          difficulty: sessionData.difficulty,
+          passingPercentage: 60,
+          duration: sessionData.duration
+        },
+        session: {
+          _id: sessionData.id,
+          score: sessionData.score || 0,
+          totalMarks: sessionData.totalScore || 0,
+          percentage: sessionData.accuracy || 0,
+          passed: (sessionData.accuracy || 0) >= 60,
+          timeSpent: sessionData.timeTaken || 0,
+          completedAt: sessionData.completedAt,
+          pendingManualEvaluation: false,
+          attemptNumber: 1
+        },
+        evaluation: {
+          overallAnalysis: {
+            totalQuestions: sessionData.questionCount || 0,
+            correct: Math.round((sessionData.accuracy || 0) * (sessionData.questionCount || 0) / 100),
+            wrong: (sessionData.questionCount || 0) - Math.round((sessionData.accuracy || 0) * (sessionData.questionCount || 0) / 100),
+            unattempted: 0,
+            accuracy: sessionData.accuracy || 0
+          },
+          topicAnalysis: sessionData.performanceByTopic || [],
+          difficultyAnalysis: sessionData.performanceByDifficulty || {},
+          timeAnalysis: {
+            totalTimeUsed: sessionData.timeTaken || 0,
+            totalTimeAllowed: (sessionData.duration || 0) * 60,
+            timeUtilization: sessionData.timeUtilization || 0
+          }
+        },
+        detailedAnswers: sessionData.questions?.map((q, index) => {
+          console.log('🔧 Processing question:', {
+            index,
+            questionId: q.questionId,
+            questionIdType: typeof q.questionId,
+            hasSnapshot: !!q.snapshot,
+            snapshotType: typeof q.snapshot,
+            answersCount: sessionData.answers?.length || 0
+          });
+          
+          const answer = sessionData.answers?.find(a => {
+            const match = a.questionId?.toString() === q.questionId?.toString();
+            console.log('🔧 Answer matching:', {
+              answerQuestionId: a.questionId,
+              questionQuestionId: q.questionId,
+              match,
+              answerQuestionIdType: typeof a.questionId
+            });
+            return match;
+          });
+          
+          // ✅ Snapshots are now already parsed by backend
+          const questionData = q.snapshot || q;
+          
+          // ✅ PHASE 2: Add debug logging
+          console.log('Processing question for analysis:', {
+            index,
+            questionId: q.questionId,
+            hasAnswer: !!answer,
+            topic: questionData.topic,
+            difficulty: questionData.difficulty,
+            snapshotType: typeof q.snapshot
+          });
+          
+          return {
+            questionId: q.questionId,
+            questionText: questionData.text || q.text,
+            type: questionData.type || 'mcq-single',
+            options: questionData.options || [],
+            correctAnswer: questionData.correctAnswer,      // ✅ Now available
+            expectedAnswer: questionData.expectedAnswer,    // ✅ Now available
+            numericalAnswer: questionData.numericalAnswer,  // ✅ Now available
+            yourAnswer: answer?.answer,
+            isCorrect: answer?.isCorrect,                   // ✅ Now evaluated
+            marks: questionData.marks || 1,
+            marksAwarded: answer?.marksAwarded || 0,        // ✅ Now calculated
+            timeSpent: answer?.timeSpent || 0,              // ✅ PHASE 2 FIX: Include time spent
+            topic: questionData.topic,
+            difficulty: questionData.difficultyLevel || questionData.difficulty,
+            explanation: questionData.explanation || ''     // ✅ Now available
+          }
+        }) || []
+      }
+
+      console.log('🔧 Detailed answers mapping complete:', {
+        inputQuestionsCount: sessionData.questions?.length || 0,
+        inputAnswersCount: sessionData.answers?.length || 0,
+        outputDetailedAnswersCount: transformedResult.detailedAnswers?.length || 0,
+        sampleOutput: transformedResult.detailedAnswers?.[0]
+      });
+
+      console.log('🎯 Transformed result:', {
+        hasQuiz: !!transformedResult.quiz,
+        hasSession: !!transformedResult.session,
+        hasEvaluation: !!transformedResult.evaluation,
+        detailedAnswersCount: transformedResult.detailedAnswers?.length || 0,
+        quizTitle: transformedResult.quiz?.title,
+        sessionScore: transformedResult.session?.score,
+        totalQuestions: transformedResult.evaluation?.overallAnalysis?.totalQuestions,
+        firstDetailedAnswer: transformedResult.detailedAnswers?.[0],
+        detailedAnswersPreview: transformedResult.detailedAnswers?.slice(0, 2),
+        hasTopicAnalysis: !!transformedResult.evaluation?.topicAnalysis,
+        topicAnalysisLength: transformedResult.evaluation?.topicAnalysis?.length || 0,
+        hasDifficultyAnalysis: !!transformedResult.evaluation?.difficultyAnalysis,
+        difficultyAnalysisKeys: Object.keys(transformedResult.evaluation?.difficultyAnalysis || {})
+      });
+
+      setResult(transformedResult)
+      console.log('✅ Result state set successfully');
+      setLoading(false)
+    } catch (err) {
+      console.error('❌ Failed to load results from history:', err)
+      setError('Failed to load quiz results')
+      setLoading(false)
+    }
+  }
+
   const fetchAnalytics = async () => {
     try {
       const response = await quizEvaluationService.getStudentAnalytics(user._id)
@@ -346,7 +598,19 @@ export default function QuizResults() {
 
   if (loading) return <LoadingSpinner />
   if (error) return <ErrorMessage message={error} />
-  if (!result) return null
+  if (!result) {
+    console.log('⚠️ Result is null, not rendering');
+    return null
+  }
+
+  console.log('📊 Rendering with result:', {
+    hasResult: !!result,
+    hasSession: !!result.session,
+    hasEvaluation: !!result.evaluation,
+    hasDetailedAnswers: !!result.detailedAnswers,
+    hasQuiz: !!result.quiz,
+    detailedAnswersLength: result.detailedAnswers?.length
+  });
 
   const { session, evaluation, detailedAnswers, quiz } = result
 

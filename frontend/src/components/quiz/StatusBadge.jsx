@@ -5,49 +5,49 @@
  */
 
 const statusConfig = {
-  ACTIVE: {
+  active: {
     bg: 'bg-blue-100',
     text: 'text-blue-800',
     border: 'border-blue-200',
     label: 'Active'
   },
-  IN_PROGRESS: {
+  'in-progress': {
     bg: 'bg-yellow-100',
     text: 'text-yellow-800',
     border: 'border-yellow-200',
     label: 'In Progress'
   },
-  COMPLETED: {
+  completed: {
     bg: 'bg-green-100',
     text: 'text-green-800',
     border: 'border-green-200',
     label: 'Completed'
   },
-  PASSED: {
+  passed: {
     bg: 'bg-green-100',
     text: 'text-green-800',
     border: 'border-green-200',
     label: 'Passed'
   },
-  FAILED: {
+  failed: {
     bg: 'bg-red-100',
     text: 'text-red-800',
     border: 'border-red-200',
     label: 'Failed'
   },
-  SUBMITTED: {
+  submitted: {
     bg: 'bg-emerald-100',
     text: 'text-emerald-800',
     border: 'border-emerald-200',
     label: 'Submitted'
   },
-  AUTO_SUBMITTED: {
+  auto_submitted: {
     bg: 'bg-orange-100',
     text: 'text-orange-800',
     border: 'border-orange-200',
     label: 'Auto-Submitted'
   },
-  EVALUATING: {
+  evaluating: {
     bg: 'bg-indigo-100',
     text: 'text-indigo-800',
     border: 'border-indigo-200',
@@ -56,7 +56,7 @@ const statusConfig = {
 }
 
 export default function StatusBadge({ status, size = 'md', showIcon = false }) {
-  const config = statusConfig[status] || statusConfig.ACTIVE
+  const config = statusConfig[status] || statusConfig.active
   
   const sizeClasses = {
     sm: 'px-2 py-0.5 text-xs',

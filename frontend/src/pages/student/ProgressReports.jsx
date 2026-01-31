@@ -36,11 +36,11 @@ export default function ProgressReports() {
   // Calculate quiz statistics
   const quizStats = Array.isArray(quizHistory) && quizHistory.length > 0 ? {
     totalQuizzes: quizHistory.length,
-    passedQuizzes: quizHistory.filter(q => q.accuracy >= 60).length,
-    passRate: ((quizHistory.filter(q => q.accuracy >= 60).length / quizHistory.length) * 100).toFixed(1),
-    avgAccuracy: (quizHistory.reduce((sum, q) => sum + q.accuracy, 0) / quizHistory.length).toFixed(1),
-    avgScore: (quizHistory.reduce((sum, q) => sum + q.score, 0) / quizHistory.length).toFixed(1),
-    totalTime: Math.floor(quizHistory.reduce((sum, q) => sum + q.timeTaken, 0) / 60) // minutes
+    passedQuizzes: quizHistory.filter(q => (q.accuracy || 0) >= 60).length,
+    passRate: ((quizHistory.filter(q => (q.accuracy || 0) >= 60).length / quizHistory.length) * 100).toFixed(1),
+    avgAccuracy: (quizHistory.reduce((sum, q) => sum + (q.accuracy || 0), 0) / quizHistory.length).toFixed(1),
+    avgScore: (quizHistory.reduce((sum, q) => sum + (q.score || 0), 0) / quizHistory.length).toFixed(1),
+    totalTime: Math.floor(quizHistory.reduce((sum, q) => sum + (q.timeTaken || 0), 0) / 60) // minutes
   } : null
 
   // Use actual data from backend instead of hardcoded values
@@ -123,9 +123,9 @@ export default function ProgressReports() {
   const quizPerformanceData = Array.isArray(quizHistory) && quizHistory.length > 0 ?
     quizHistory.slice(-10).map((quiz, index) => ({
       quiz: `Quiz ${index + 1}`,
-      score: quiz.score,
-      accuracy: quiz.accuracy,
-      timeTaken: Math.floor(quiz.timeTaken / 60) // minutes
+      score: quiz.score || 0,
+      accuracy: quiz.accuracy || 0,
+      timeTaken: Math.floor((quiz.timeTaken || 0) / 60) // minutes
     })) : []
 
   // Use attendance data from report
@@ -467,20 +467,20 @@ export default function ProgressReports() {
                       <p className="text-xs text-gray-600">{new Date(quiz.completedAt).toLocaleDateString()}</p>
                     </div>
                     <span className={`px-2 py-1 rounded-full text-xs font-bold whitespace-nowrap ${
-                      quiz.accuracy >= 60 ? 'bg-green-100 text-green-800' :
+                      (quiz.accuracy || 0) >= 60 ? 'bg-green-100 text-green-800' :
                       'bg-red-100 text-red-800'
                     }`}>
-                      {quiz.accuracy >= 60 ? '✅ Passed' : '❌ Failed'}
+                      {(quiz.accuracy || 0) >= 60 ? '✅ Passed' : '❌ Failed'}
                     </span>
                   </div>
                   <div className="grid grid-cols-2 gap-2 mb-2">
                     <div className="text-center">
                       <p className="text-xs text-gray-600">Score</p>
-                      <p className="text-sm font-bold text-emerald-600">{quiz.score}%</p>
+                      <p className="text-sm font-bold text-emerald-600">{quiz.score || 0}%</p>
                     </div>
                     <div className="text-center">
                       <p className="text-xs text-gray-600">Accuracy</p>
-                      <p className="text-sm font-bold text-blue-600">{quiz.accuracy}%</p>
+                      <p className="text-sm font-bold text-blue-600">{quiz.accuracy || 0}%</p>
                     </div>
                   </div>
                   <div className="flex justify-between items-center">
@@ -525,10 +525,10 @@ export default function ProgressReports() {
                           <span className="line-clamp-1 font-medium">{quiz.courseName || 'N/A'}</span>
                         </td>
                         <td className="py-3 sm:py-4 px-2 sm:px-4 text-xs sm:text-sm font-bold text-gray-900 whitespace-nowrap">
-                          <span className="text-emerald-600">{quiz.score}%</span>
+                          <span className="text-emerald-600">{quiz.score || 0}%</span>
                         </td>
                         <td className="py-3 sm:py-4 px-2 sm:px-4 text-xs sm:text-sm font-bold text-gray-900 whitespace-nowrap">
-                          <span className="text-blue-600">{quiz.accuracy}%</span>
+                          <span className="text-blue-600">{quiz.accuracy || 0}%</span>
                         </td>
                         <td className="py-3 sm:py-4 px-2 sm:px-4 text-xs sm:text-sm text-gray-600 whitespace-nowrap">
                           <span className="bg-gray-100 px-2 py-1 rounded-full text-xs font-medium">
@@ -537,11 +537,11 @@ export default function ProgressReports() {
                         </td>
                         <td className="py-3 sm:py-4 px-2 sm:px-4 whitespace-nowrap">
                           <span className={`px-2 sm:px-3 py-1 rounded-full text-xs font-bold ${
-                            quiz.accuracy >= 60
+                            (quiz.accuracy || 0) >= 60
                               ? 'bg-gradient-to-r from-green-400 to-emerald-500 text-white'
                               : 'bg-gradient-to-r from-red-400 to-pink-500 text-white'
                           }`}>
-                            {quiz.accuracy >= 60 ? '✅ Passed' : '❌ Failed'}
+                            {(quiz.accuracy || 0) >= 60 ? '✅ Passed' : '❌ Failed'}
                           </span>
                         </td>
                       </tr>

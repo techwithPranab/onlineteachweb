@@ -31,6 +31,7 @@ const offlinePromptRoutes = require('./routes/offlinePrompt.routes');
 const testRoutes = require('./routes/test.routes');
 const contactRoutes = require('./routes/contact.routes');
 const activeQuizRoutes = require('./routes/activeQuiz.routes');
+const studentPerformanceRoutes = require('./routes/studentPerformance.routes');
 
 const app = express();
 const server = http.createServer(app);
@@ -93,6 +94,7 @@ app.use('/api/quizzes', quizRoutes);
 app.use('/api/quiz-evaluations', quizEvaluationRoutes);
 app.use('/api/algorithm-quiz', algorithmQuizRoutes);
 app.use('/api/active-quizzes', activeQuizRoutes);
+app.use('/api/student-performance', studentPerformanceRoutes);
 app.use('/api/ai', aiQuestionRoutes);
 app.use('/api/questions', questionExportRoutes); // Import/Export endpoints (merged with question routes)
 app.use('/api/offline-prompts', offlinePromptRoutes);

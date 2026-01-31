@@ -148,7 +148,7 @@ export default function QuizAttempt() {
             quizStartTime.current = Date.now()
             
             // Only try to start the quiz if it's not already in progress
-            if (fullQuiz.status === 'ACTIVE') {
+            if (fullQuiz.status === 'active') {
               try {
                 await algorithmQuizService.startQuiz(quizId)
                 console.log('▶️ Quiz started successfully')
@@ -647,6 +647,7 @@ export default function QuizAttempt() {
             total={session.questions.length}
             answers={answers}
             markedForReview={markedForReview}
+            questions={session.questions}
             onNavigate={navigateToQuestion}
             compact={false}
           />

@@ -3,8 +3,10 @@ const mongoose = require('mongoose');
 const router = express.Router();
 const ActiveQuiz = require('../models/ActiveQuiz.model');
 const QuizSession = require('../models/QuizSession.model');
+const StudentPerformance = require('../models/StudentPerformance.model');
 const { authenticate, authorize } = require('../middleware/auth');
 const { body, param, validationResult } = require('express-validator');
+const { evaluateAnswer, calculateMarksAwarded } = require('../utils/answerEvaluation');
 
 // Validation middleware
 const validateQuizCreation = [
@@ -26,7 +28,7 @@ const validateQuizCreation = [
 
 const validateQuizUpdate = [
   param('quizId').isString().notEmpty().withMessage('Valid quiz ID is required'),
-  body('status').optional().isIn(['ACTIVE', 'IN_PROGRESS', 'completed', 'ABANDONED']).withMessage('Valid status required')
+  body('status').optional().isIn(['active', 'in-progress', 'completed', 'abandoned']).withMessage('Valid status required')
 ];
 
 // Apply authentication to all routes
@@ -65,7 +67,7 @@ router.put('/:quizId/answer', [
       });
     }
 
-    if (quiz.status === 'completed' || quiz.status === 'ABANDONED') {
+    if (quiz.status === 'completed' || quiz.status === 'abandoned') {
       return res.status(400).json({
         success: false,
         message: `Cannot save answer for ${quiz.status.toLowerCase()} quiz`
@@ -124,7 +126,7 @@ router.put('/:quizId/review/:questionId', [
       });
     }
 
-    if (quiz.status === 'completed' || quiz.status === 'ABANDONED') {
+    if (quiz.status === 'completed' || quiz.status === 'abandoned') {
       return res.status(400).json({
         success: false,
         message: `Cannot mark question for ${quiz.status.toLowerCase()} quiz`
@@ -185,7 +187,7 @@ router.put('/:quizId/skip/:questionId', [
       });
     }
 
-    if (quiz.status === 'completed' || quiz.status === 'ABANDONED') {
+    if (quiz.status === 'completed' || quiz.status === 'abandoned') {
       return res.status(400).json({
         success: false,
         message: `Cannot skip question for ${quiz.status.toLowerCase()} quiz`
@@ -389,7 +391,7 @@ router.get('/:quizId', [
 });
 
 // @route   PUT /api/active-quizzes/:quizId/start
-// @desc    Start an active quiz (change status to IN_PROGRESS)
+// @desc    Start an active quiz (change status to in-progress)
 // @access  Private (Student)
 router.put('/:quizId/start', [
   param('quizId').isString().notEmpty().withMessage('Valid quiz ID is required')
@@ -430,7 +432,7 @@ router.put('/:quizId/start', [
       });
     }
 
-    if (quiz.status !== 'ACTIVE') {
+    if (quiz.status !== 'active') {
       return res.status(400).json({
         success: false,
         message: `Cannot start quiz with status: ${quiz.status}`
@@ -495,7 +497,7 @@ router.put('/:quizId/complete', [
       });
     }
 
-    if (quiz.status !== 'IN_PROGRESS') {
+    if (quiz.status !== 'in-progress') {
       return res.status(400).json({
         success: false,
         message: `Cannot complete quiz with status: ${quiz.status}`
@@ -512,6 +514,39 @@ router.put('/:quizId/complete', [
 
     // Create or update QuizSession for history tracking
     try {
+      // Map questions with their data
+      const questionsData = quiz.questions.map((q, index) => {
+        return {
+          questionId: q.questionId || q._id || null, // May be null for algorithm-generated quizzes
+          originalOrder: index,
+          displayOrder: index,
+          snapshot: JSON.stringify({
+            text: q.question || q.text || '', // ActiveQuiz uses 'question' field
+            type: q.type || 'mcq-single',
+            options: (q.options || []).map(opt => ({
+              _id: opt._id || opt.id, // Map id to _id for consistency
+              text: opt.text
+            })),
+            correctAnswer: q.correctAnswer,      // ✅ Store correct answer
+            expectedAnswer: q.expectedAnswer,    // ✅ For text questions
+            numericalAnswer: q.numericalAnswer,  // ✅ For numerical questions
+            marks: q.marks || 1,
+            negativeMarks: q.negativeMarks || 0,
+            // ✅ PHASE 2: Better fallbacks for analysis fields
+            topic: q.topic || q.subject || 'General',
+            subject: q.subject || q.topic || 'General',
+            difficultyLevel: q.difficulty || q.difficultyLevel || 'medium',
+            difficulty: q.difficulty || q.difficultyLevel || 'medium',
+            explanation: q.explanation || '',     // ✅ Store explanation
+            // ✅ Add metadata for debugging
+            _meta: {
+              source: 'ActiveQuiz',
+              capturedAt: new Date().toISOString()
+            }
+          })
+        };
+      });
+      
       const quizSessionData = {
         studentId: userId,
         quizId: quiz._id, // Use ActiveQuiz._id instead of quiz.quizId
@@ -521,8 +556,10 @@ router.put('/:quizId/complete', [
         score: Number(score) || 0,
         totalScore: Number(totalMarks) || 0,
         totalMarks: Number(totalMarks) || 0, // Add required field
+        percentage: quiz.accuracy || 0,
         accuracy: quiz.accuracy || 0,
         timeTaken: Number(timeSpent) || 0,
+        timeSpent: Number(timeSpent) || 0,
         duration: quiz.duration, // Keep in minutes as expected by QuizSession model
         difficulty: quiz.difficulty,
         totalQuestions: quiz.questions?.length || 0,
@@ -530,12 +567,80 @@ router.put('/:quizId/complete', [
         expiresAt: new Date(Date.now() + (quiz.duration * 60 * 1000)), // Add required field
         submittedAt: new Date(), // Add submittedAt
         passingPercentage: 60, // Default passing percentage
+        passed: (quiz.accuracy || 0) >= 60,
         algorithmVersion: 'algorithm-v1', // Add required field
+        
+        // Store questions snapshot for detailed results viewing
+        selectedQuestions: questionsData,
+        
+        // Store answers from ActiveQuiz
+        answers: quiz.answers?.map(ans => {
+          // Find the corresponding question to get its snapshot
+          const question = quiz.questions.find(q => q.id === ans.questionId);
+          const questionSnapshot = question ? JSON.stringify({
+            text: question.question || question.text || '',
+            type: question.type || 'mcq-single',
+            options: (question.options || []).map(opt => ({
+              _id: opt._id || opt.id,
+              text: opt.text
+            })),
+            correctAnswer: question.correctAnswer,      // ✅ Include correct answer
+            expectedAnswer: question.expectedAnswer,    // ✅ Include expected answer
+            numericalAnswer: question.numericalAnswer,  // ✅ Include numerical answer
+            marks: question.marks || 1,
+            negativeMarks: question.negativeMarks || 0,
+            topic: question.topic || '',
+            difficultyLevel: question.difficulty || 'medium',
+            explanation: question.explanation || ''
+          }) : '{}';
+          
+          // ✅ Evaluate answer if not already evaluated
+          let isCorrect = ans.isCorrect;
+          let marksAwarded = ans.marksAwarded;
+          
+          if (question && (isCorrect === undefined || isCorrect === null)) {
+            isCorrect = evaluateAnswer(question, ans.answer);
+            marksAwarded = calculateMarksAwarded(question, ans.answer, isCorrect);
+          } else if (marksAwarded === undefined || marksAwarded === null) {
+            marksAwarded = isCorrect ? (question?.marks || 1) : 0;
+          }
+          
+          return {
+            questionId: ans.questionId,
+            questionSnapshot: questionSnapshot,
+            answer: ans.answer,
+            isCorrect: isCorrect,              // ✅ Evaluated
+            marksAwarded: marksAwarded,        // ✅ Calculated
+            timeSpent: ans.timeSpent || 0,
+            isVisited: ans.answer !== null && ans.answer !== undefined,
+            isMarkedForReview: ans.markedForReview || false
+          };
+        }) || [],
+        
         metadata: {
           subject: quiz.subject,
           courseName: quiz.courseName,
           questionCount: quiz.questionCount,
-          isAlgorithmGenerated: true
+          isAlgorithmGenerated: true,
+          performanceData: {
+            accuracy: quiz.accuracy || 0,
+            totalQuestions: quiz.questionCount || 0,
+            correct: Math.round(((quiz.accuracy || 0) / 100) * (quiz.questionCount || 0)),
+            wrong: (quiz.questionCount || 0) - Math.round(((quiz.accuracy || 0) / 100) * (quiz.questionCount || 0)),
+            unattempted: 0,
+            
+            // Store detailed performance data
+            performanceByTopic: performanceData?.topicAnalysis || 
+                               performanceData?.performanceByTopic || [],
+            performanceByDifficulty: performanceData?.difficultyAnalysis || 
+                                    performanceData?.performanceByDifficulty || {},
+            
+            // Store weak areas and recommendations
+            weakTopics: performanceData?.weakTopics || 
+                       performanceData?.improvementAreas?.weakAreas?.map(a => a.area) || [],
+            recommendations: performanceData?.recommendations || 
+                           performanceData?.nextActions?.map(a => a.description) || []
+          }
         }
       };
 
@@ -546,7 +651,9 @@ router.put('/:quizId/complete', [
         score: Number(score) || 0,
         totalScore: Number(totalMarks) || 0,
         subject: quiz.subject,
-        courseName: quiz.courseName
+        courseName: quiz.courseName,
+        questionsCount: quizSessionData.selectedQuestions.length,
+        answersCount: quizSessionData.answers.length
       })
 
       // Check if session already exists for this quiz
@@ -576,6 +683,90 @@ router.put('/:quizId/complete', [
     } catch (sessionError) {
       // Log error but don't fail the quiz completion
       console.error('Error creating/updating QuizSession:', sessionError);
+    }
+
+    // ✅ PHASE 2: Update StudentPerformance
+    try {
+      console.log('Updating StudentPerformance for user:', userId);
+      
+      // Prepare topic performance data
+      const topicPerformance = [];
+      
+      // Extract topic performance from performanceData or calculate from questions
+      if (performanceData && performanceData.performanceByTopic) {
+        Object.entries(performanceData.performanceByTopic).forEach(([topic, data]) => {
+          const questionsAttempted = data.total || 0;
+          const questionsCorrect = data.correct || 0;
+          const accuracy = questionsAttempted > 0 ? (questionsCorrect / questionsAttempted) * 100 : 0;
+          
+          topicPerformance.push({
+            subject: quiz.subject || performanceData.subject || 'General',
+            topic: topic,
+            questionsAttempted: questionsAttempted,
+            questionsCorrect: questionsCorrect,
+            accuracy: accuracy,
+            successRate: accuracy, // Same as accuracy for now
+            total: questionsAttempted,
+            correct: questionsCorrect
+          });
+        });
+      } else {
+        // Fallback: Calculate from questions if performanceData not provided
+        const topicStats = {};
+        
+        quiz.questions.forEach((q, index) => {
+          const topic = q.topic || 'General';
+          
+          if (!topicStats[topic]) {
+            topicStats[topic] = { total: 0, correct: 0 };
+          }
+          
+          topicStats[topic].total++;
+          
+          // Check if answer is correct
+          const answer = quiz.answers && quiz.answers[index];
+          if (answer && answer.isCorrect) {
+            topicStats[topic].correct++;
+          }
+        });
+        
+        Object.entries(topicStats).forEach(([topic, stats]) => {
+          const accuracy = stats.total > 0 ? (stats.correct / stats.total) * 100 : 0;
+          
+          topicPerformance.push({
+            subject: quiz.subject || 'General',
+            topic: topic,
+            questionsAttempted: stats.total,
+            questionsCorrect: stats.correct,
+            accuracy: accuracy,
+            successRate: accuracy, // Same as accuracy for now
+            total: stats.total,
+            correct: stats.correct
+          });
+        });
+      }
+      
+      // Call StudentPerformance.updateAfterQuiz
+      const quizResultsData = {
+        quizId: quiz._id,
+        subject: quiz.subject || 'General',
+        totalQuestions: quiz.questions?.length || 0,
+        correctAnswers: Math.round((quiz.accuracy || 0) * (quiz.questions?.length || 0) / 100),
+        score: quiz.score || 0,
+        accuracy: quiz.accuracy || 0,
+        timeSpent: quiz.timeSpent || 0,
+        topicPerformance: topicPerformance
+      };
+      
+      console.log('StudentPerformance update data:', JSON.stringify(quizResultsData, null, 2));
+      
+      await StudentPerformance.updateAfterQuiz(userId, quizResultsData);
+      
+      console.log('StudentPerformance updated successfully for', topicPerformance.length, 'topics');
+    } catch (performanceError) {
+      // Log error but don't fail the quiz completion
+      console.error('Error updating StudentPerformance:', performanceError);
+      console.error('Performance error stack:', performanceError.stack);
     }
 
     res.json({
@@ -728,10 +919,10 @@ router.get('/stats/summary', async (req, res) => {
           _id: null,
           totalQuizzes: { $sum: 1 },
           activeQuizzes: {
-            $sum: { $cond: [{ $eq: ['$status', 'ACTIVE'] }, 1, 0] }
+            $sum: { $cond: [{ $eq: ['$status', 'active'] }, 1, 0] }
           },
           inProgressQuizzes: {
-            $sum: { $cond: [{ $eq: ['$status', 'IN_PROGRESS'] }, 1, 0] }
+            $sum: { $cond: [{ $eq: ['$status', 'in-progress'] }, 1, 0] }
           },
           completedQuizzes: {
             $sum: { $cond: [{ $eq: ['$status', 'completed'] }, 1, 0] }

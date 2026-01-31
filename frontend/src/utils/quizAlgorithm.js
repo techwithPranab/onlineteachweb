@@ -512,48 +512,28 @@ const generateRecommendations = (weakAreas, strongAreas, quizConfig) => {
 
 /**
  * Update student performance profile
- * This would integrate with backend analytics service
+ * Now uses backend API - performance is updated automatically during quiz completion
  */
 export const updateStudentPerformance = (studentId, quizAnalysis) => {
   // Use topicAnalysis from the quizAnalysis object
   const topicPerformance = quizAnalysis.topicAnalysis || []
   
-  // TODO: API call to update student performance
-  console.log('[Performance Update]', {
+  console.log('[Performance Update] Performance updated via backend during quiz completion', {
     studentId,
-    updates: topicPerformance
+    topicsUpdated: topicPerformance.length
   })
 
-  // Mock localStorage update for now
-  const performanceKey = `student_performance_${studentId}`
-  const existing = JSON.parse(localStorage.getItem(performanceKey) || '{}')
-
-  // Only process if we have topic performance data
-  if (topicPerformance && Array.isArray(topicPerformance)) {
-    topicPerformance.forEach(update => {
-      if (!existing.topicMastery) {
-        existing.topicMastery = {}
+  // Return mock data for compatibility - actual data comes from backend
+  return {
+    topicMastery: topicPerformance.reduce((acc, topic) => {
+      acc[topic.topic] = {
+        attempts: 1,
+        successRate: topic.accuracy || 0,
+        lastAttempt: new Date().toISOString()
       }
-
-      const current = existing.topicMastery[update.topic] || {
-        attempts: 0,
-        successRate: 0,
-        totalTime: 0
-      }
-
-      // Update with exponential moving average for success rate
-      existing.topicMastery[update.topic] = {
-        attempts: current.attempts + (update.questionsAttempted || update.total || 1),
-        successRate: (current.successRate * 0.7) + ((update.successRate || update.accuracy || 0) * 0.3), // Weighted average
-        lastAttempt: update.timestamp || new Date().toISOString(),
-        avgTimeSpent: (current.totalTime + (update.avgTimePerQuestion || 0)) / (current.attempts + 1)
-      }
-    })
+      return acc
+    }, {})
   }
-
-  localStorage.setItem(performanceKey, JSON.stringify(existing))
-  
-  return existing
 }
 
 export default {

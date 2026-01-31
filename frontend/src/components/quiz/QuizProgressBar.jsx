@@ -14,8 +14,9 @@ import { CheckCircle, Circle } from 'lucide-react'
  * Props:
  * @param {number} current - Current question index (0-based)
  * @param {number} total - Total number of questions
- * @param {object} answers - Map of answered questions
- * @param {object} markedForReview - Map of questions marked for review
+ * @param {object} answers - Map of answered questions (keyed by questionId)
+ * @param {object} markedForReview - Map of questions marked for review (keyed by questionId)
+ * @param {array} questions - Array of question objects
  * @param {function} onNavigate - Callback when clicking a question
  * @param {boolean} compact - Show compact version (for mobile)
  */
@@ -24,6 +25,7 @@ export default function QuizProgressBar({
   total, 
   answers = {}, 
   markedForReview = {},
+  questions = [],
   onNavigate = null,
   compact = false
 }) {
@@ -32,13 +34,16 @@ export default function QuizProgressBar({
    * Get question status
    */
   const getQuestionStatus = (index) => {
-    const questionKey = index.toString()
+    const question = questions[index]
+    if (!question) return 'unanswered'
     
-    if (markedForReview[questionKey]) {
+    const questionId = question.questionId || question.id
+    
+    if (markedForReview[questionId]) {
       return 'review'
     }
     
-    if (answers[questionKey] !== undefined && answers[questionKey] !== null && answers[questionKey] !== '') {
+    if (answers[questionId] !== undefined && answers[questionId] !== null && answers[questionId] !== '') {
       return 'answered'
     }
     

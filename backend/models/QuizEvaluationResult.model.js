@@ -319,7 +319,7 @@ quizEvaluationResultSchema.statics.generateFromSession = async function(quizSess
     
     if (!questionData) continue;
     
-    const { topic, difficultyLevel, type, marks } = questionData.snapshot;
+    const { topic, difficultyLevel, type, marks } = JSON.parse(questionData.snapshot);
     
     // Topic analysis
     if (!topicMap.has(topic)) {

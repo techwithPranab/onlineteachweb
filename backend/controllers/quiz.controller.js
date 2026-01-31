@@ -453,7 +453,7 @@ exports.startQuiz = async (req, res, next) => {
           questions: activeSession.selectedQuestions.map(q => ({
             questionId: q.questionId,
             displayOrder: q.displayOrder,
-            ...q.snapshot
+            ...JSON.parse(q.snapshot)
           })),
           answers: activeSession.answers,
           currentQuestionIndex: activeSession.currentQuestionIndex,
@@ -510,12 +510,18 @@ exports.startQuiz = async (req, res, next) => {
     const startedAt = new Date();
     const expiresAt = new Date(startedAt.getTime() + quiz.duration * 60 * 1000);
     
+    // Stringify snapshots for storage
+    const processedQuestions = selectedQuestions.map(q => ({
+      ...q,
+      snapshot: JSON.stringify(q.snapshot)
+    }));
+    
     const session = await QuizSession.create({
       quizId,
       studentId,
       courseId: quiz.courseId,
       attemptNumber: attemptCount + 1,
-      selectedQuestions,
+      selectedQuestions: processedQuestions,
       answers: [],
       startedAt,
       expiresAt,

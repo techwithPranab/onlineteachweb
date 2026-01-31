@@ -8,14 +8,8 @@ const answerSchema = new mongoose.Schema({
     required: true
   },
   questionSnapshot: {
-    text: String,
     type: String,
-    options: [{
-      _id: mongoose.Schema.Types.ObjectId,
-      text: String
-    }],
-    marks: Number,
-    negativeMarks: Number
+    required: false // Make optional since it might not always be available
   },
   answer: {
     type: mongoose.Schema.Types.Mixed, // Can be string, array, number
@@ -94,18 +88,8 @@ const quizSessionSchema = new mongoose.Schema({
     displayOrder: Number, // After shuffling
     // Snapshot of question data at time of quiz start
     snapshot: {
-      text: String,
       type: String,
-      caseStudy: String,
-      options: [{
-        _id: mongoose.Schema.Types.ObjectId,
-        text: String,
-        displayOrder: Number // After option shuffling
-      }],
-      marks: Number,
-      negativeMarks: Number,
-      topic: String,
-      difficultyLevel: String
+      required: true
     }
   }],
   // Student answers
@@ -255,7 +239,7 @@ quizSessionSchema.methods.saveAnswer = async function(questionId, answer, timeSp
     if (question) {
       this.answers.push({
         questionId,
-        questionSnapshot: question.snapshot,
+        questionSnapshot: JSON.parse(question.snapshot),
         answer,
         timeSpent,
         isVisited: true
@@ -341,6 +325,40 @@ quizSessionSchema.methods.calculateAutoScore = async function() {
   return this;
 };
 
+// Pre-save hook to ensure data consistency
+quizSessionSchema.pre('save', function(next) {
+  // Ensure percentage is calculated
+  if (this.totalMarks > 0) {
+    if (!this.percentage || this.percentage === 0) {
+      this.percentage = (this.totalScore / this.totalMarks) * 100;
+    }
+  }
+  
+  // Ensure accuracy is set (same as percentage for most cases)
+  if (!this.accuracy && this.percentage !== undefined) {
+    this.accuracy = this.percentage;
+  }
+  
+  // Ensure passed status is set
+  if (this.percentage !== undefined && this.passingPercentage !== undefined) {
+    this.passed = this.percentage >= this.passingPercentage;
+  }
+  
+  // Update status to completed if submitted and not pending manual evaluation
+  if (this.submittedAt && this.status === 'in-progress' && !this.pendingManualEvaluation) {
+    this.status = 'completed';
+  }
+  
+  // Ensure totalQuestions matches selectedQuestions length
+  if (this.selectedQuestions && this.selectedQuestions.length > 0) {
+    if (!this.totalQuestions || this.totalQuestions === 0) {
+      this.totalQuestions = this.selectedQuestions.length;
+    }
+  }
+  
+  next();
+});
+
 // Static method to get active session
 quizSessionSchema.statics.getActiveSession = async function(quizId, studentId) {
   return this.findOne({
@@ -361,3 +379,4 @@ quizSessionSchema.statics.getAttemptCount = async function(quizId, studentId) {
 };
 
 module.exports = mongoose.model('QuizSession', quizSessionSchema);
+

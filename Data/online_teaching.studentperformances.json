@@ -1,0 +1,119 @@
+[{
+  "_id": {
+    "$oid": "697e57730ebe009ec717cbd8"
+  },
+  "studentId": {
+    "$oid": "696d8e8098d47cbd00770ac4"
+  },
+  "totalQuizzesTaken": 1,
+  "totalQuestionsAttempted": 0,
+  "totalCorrectAnswers": 0,
+  "overallAccuracy": 0,
+  "averageScore": 0,
+  "totalTimeSpent": 0,
+  "topicMastery": {
+    "Mathematics_2D and 3D Shapes": {
+      "topic": "2D and 3D Shapes",
+      "subject": "Mathematics",
+      "attempts": 1,
+      "successRate": 0,
+      "totalTime": 0,
+      "avgTimeSpent": 0,
+      "lastAttempt": {
+        "$date": "2026-01-31T19:26:43.777Z"
+      },
+      "questionsAttempted": 1,
+      "questionsCorrect": 0,
+      "difficultyBreakdown": {
+        "easy": {
+          "attempted": 0,
+          "correct": 0
+        },
+        "medium": {
+          "attempted": 0,
+          "correct": 0
+        },
+        "hard": {
+          "attempted": 0,
+          "correct": 0
+        }
+      }
+    },
+    "Mathematics_Symmetry and patterns": {
+      "topic": "Symmetry and patterns",
+      "subject": "Mathematics",
+      "attempts": 1,
+      "successRate": 0,
+      "totalTime": 0,
+      "avgTimeSpent": 0,
+      "lastAttempt": {
+        "$date": "2026-01-31T19:26:43.776Z"
+      },
+      "questionsAttempted": 2,
+      "questionsCorrect": 0,
+      "difficultyBreakdown": {
+        "easy": {
+          "attempted": 0,
+          "correct": 0
+        },
+        "medium": {
+          "attempted": 0,
+          "correct": 0
+        },
+        "hard": {
+          "attempted": 0,
+          "correct": 0
+        }
+      }
+    },
+    "Mathematics_Tessellations and tiling patterns": {
+      "topic": "Tessellations and tiling patterns",
+      "subject": "Mathematics",
+      "attempts": 1,
+      "successRate": 0,
+      "totalTime": 0,
+      "avgTimeSpent": 0,
+      "lastAttempt": {
+        "$date": "2026-01-31T19:26:43.777Z"
+      },
+      "questionsAttempted": 2,
+      "questionsCorrect": 0,
+      "difficultyBreakdown": {
+        "easy": {
+          "attempted": 0,
+          "correct": 0
+        },
+        "medium": {
+          "attempted": 0,
+          "correct": 0
+        },
+        "hard": {
+          "attempted": 0,
+          "correct": 0
+        }
+      }
+    }
+  },
+  "subjectPerformance": {},
+  "trends": {
+    "accuracyTrend": "stable",
+    "activityLevel": "low"
+  },
+  "weakAreas": [],
+  "strongAreas": [],
+  "recommendations": [],
+  "createdAt": {
+    "$date": "2026-01-31T19:26:43.774Z"
+  },
+  "updatedAt": {
+    "$date": "2026-01-31T19:26:43.780Z"
+  },
+  "__v": 0,
+  "lastQuizInfo": {
+    "score": 0,
+    "accuracy": 80,
+    "completedAt": {
+      "$date": "2026-01-31T19:26:43.778Z"
+    }
+  }
+}]
