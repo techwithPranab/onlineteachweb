@@ -2,6 +2,8 @@ const User = require('../models/User.model');
 const Course = require('../models/Course.model');
 const Notification = require('../models/Notification.model');
 const { SubscriptionPlan } = require('../models/Subscription.model');
+const StudentPerformance = require('../models/StudentPerformance.model');
+const QuizEvaluationResult = require('../models/QuizEvaluationResult.model');
 
 // @desc    Get all users
 // @route   GET /api/admin/users
@@ -357,3 +359,579 @@ exports.getCourseStats = async (req, res, next) => {
     next(error);
   }
 };
+
+// @desc    Get list of students with performance summary (paginated with filters)
+// @route   GET /api/admin/students
+// @access  Private (Admin)
+exports.getStudentsWithPerformance = async (req, res, next) => {
+  try {
+    const { 
+      page = 1, 
+      limit = 20, 
+      search,
+      grade,
+      subject,
+      dateFrom,
+      dateTo,
+      minAccuracy,
+      maxAccuracy,
+      sortBy = 'createdAt',
+      sortOrder = 'desc'
+    } = req.query;
+
+    const match = { role: 'student' };
+    if (search) {
+      match.$or = [
+        { name: new RegExp(search, 'i') },
+        { email: new RegExp(search, 'i') }
+      ];
+    }
+    
+    if (grade) {
+      match.grade = grade;
+    }
+
+    const skip = (parseInt(page) - 1) * parseInt(limit);
+
+    const pipeline = [
+      { $match: match },
+      {
+        $lookup: {
+          from: 'studentperformances',
+          localField: '_id',
+          foreignField: 'studentId',
+          as: 'performance'
+        }
+      },
+      { $unwind: { path: '$performance', preserveNullAndEmptyArrays: true } }
+    ];
+
+    // Apply performance filters
+    const performanceMatch = {};
+    
+    if (subject) {
+      performanceMatch[`performance.subjectPerformance.${subject}`] = { $exists: true };
+    }
+    
+    if (dateFrom || dateTo) {
+      performanceMatch['performance.updatedAt'] = {};
+      if (dateFrom) {
+        performanceMatch['performance.updatedAt'].$gte = new Date(dateFrom);
+      }
+      if (dateTo) {
+        performanceMatch['performance.updatedAt'].$lte = new Date(dateTo);
+      }
+    }
+    
+    if (minAccuracy !== undefined || maxAccuracy !== undefined) {
+      performanceMatch['performance.overallAccuracy'] = {};
+      if (minAccuracy !== undefined) {
+        performanceMatch['performance.overallAccuracy'].$gte = parseFloat(minAccuracy);
+      }
+      if (maxAccuracy !== undefined) {
+        performanceMatch['performance.overallAccuracy'].$lte = parseFloat(maxAccuracy);
+      }
+    }
+
+    if (Object.keys(performanceMatch).length > 0) {
+      pipeline.push({ $match: performanceMatch });
+    }
+
+    // Add ranking field based on overall accuracy
+    pipeline.push({
+      $addFields: {
+        rank: {
+          $cond: {
+            if: { $ifNull: ['$performance.overallAccuracy', false] },
+            then: '$performance.overallAccuracy',
+            else: 0
+          }
+        }
+      }
+    });
+
+    pipeline.push({
+      $project: {
+        password: 0,
+        refreshTokens: 0,
+        'performance.topicMastery': 0,
+        'performance.recommendations': 0,
+        'performance.trends': 0
+      }
+    });
+
+    // Sorting
+    const sortField = sortBy === 'accuracy' ? 'performance.overallAccuracy' : 
+                     sortBy === 'quizzes' ? 'performance.totalQuizzesTaken' :
+                     sortBy === 'name' ? 'name' : 'createdAt';
+    const sortDirection = sortOrder === 'asc' ? 1 : -1;
+    
+    pipeline.push({ $sort: { [sortField]: sortDirection } });
+    
+    // Get total count before pagination
+    const countPipeline = [...pipeline];
+    countPipeline.push({ $count: 'total' });
+    const countResult = await User.aggregate(countPipeline);
+    const total = countResult.length > 0 ? countResult[0].total : 0;
+
+    // Apply pagination
+    pipeline.push({ $skip: skip });
+    pipeline.push({ $limit: parseInt(limit) });
+
+    const studentsWithPerformance = await User.aggregate(pipeline);
+
+    res.json({
+      success: true,
+      students: studentsWithPerformance,
+      total,
+      page: parseInt(page),
+      pages: Math.ceil(total / parseInt(limit))
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// @desc    Get detailed performance for a student
+// @route   GET /api/admin/students/:id/performance
+// @access  Private (Admin)
+exports.getStudentPerformance = async (req, res, next) => {
+  try {
+    const studentId = req.params.id;
+
+    const student = await User.findById(studentId).select('-password -refreshTokens');
+    if (!student) {
+      return res.status(404).json({ success: false, message: 'Student not found' });
+    }
+
+    const performance = await StudentPerformance.findOne({ studentId });
+
+    // Fetch recent quiz evaluation results (limit 20) and populate quiz/course titles
+    const recentQuizzes = await QuizEvaluationResult.find({ studentId })
+      .sort({ createdAt: -1 })
+      .limit(20)
+      .populate('quizId', 'title')
+      .populate('courseId', 'title')
+      .lean();
+
+    // Process subject performance data
+    let bySubject = [];
+    if (performance && performance.subjectPerformance) {
+      bySubject = Array.from(performance.subjectPerformance.entries()).map(([subject, data]) => ({
+        subject,
+        quizzesTaken: data.totalQuizzes || 0,
+        questionsAttempted: data.totalQuestions || 0,
+        correctAnswers: data.correctAnswers || 0,
+        accuracy: data.averageAccuracy || 0,
+        averageScore: data.averageScore || 0
+      }));
+    }
+
+    // Calculate improvement areas
+    const weakAreas = bySubject.filter(subject => (subject.accuracy || 0) < 70);
+    const strongAreas = bySubject.filter(subject => (subject.accuracy || 0) >= 80);
+
+    // Calculate performance metrics
+    const totalQuizzes = performance?.totalQuizzesTaken || 0;
+    const totalQuestions = performance?.totalQuestionsAttempted || 0;
+    const overallAccuracy = performance?.overallAccuracy || 0;
+    const averageScore = performance?.averageScore || 0;
+
+    // Mock weekly data (in real app, this would be calculated from actual quiz data)
+    const weeklyData = [
+      { week: 'Week 1', accuracy: 75, quizzes: 3 },
+      { week: 'Week 2', accuracy: 78, quizzes: 4 },
+      { week: 'Week 3', accuracy: 72, quizzes: 2 },
+      { week: 'Week 4', accuracy: 82, quizzes: 5 }
+    ];
+
+    res.json({
+      success: true,
+      student,
+      performance: {
+        ...performance?.toObject(),
+        bySubject,
+        weakAreas,
+        strongAreas,
+        metrics: {
+          totalQuizzes,
+          totalQuestions,
+          overallAccuracy,
+          averageScore,
+          averageTimePerQuestion: totalQuestions > 0 && performance?.totalTimeSpent ? 
+            Math.round((performance.totalTimeSpent / totalQuestions)) : 0,
+          totalStudyTime: performance?.totalTimeSpent || 0
+        },
+        weeklyData
+      },
+      recentQuizzes
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// @desc    Get student performance analytics and statistics
+// @route   GET /api/admin/performance/analytics
+// @access  Private (Admin)
+exports.getPerformanceAnalytics = async (req, res, next) => {
+  try {
+    const { grade, subject, dateFrom, dateTo } = req.query;
+
+    // Build match criteria
+    const userMatch = { role: 'student' };
+    if (grade) userMatch.grade = grade;
+
+    const performanceMatch = {};
+    if (dateFrom || dateTo) {
+      performanceMatch.updatedAt = {};
+      if (dateFrom) performanceMatch.updatedAt.$gte = new Date(dateFrom);
+      if (dateTo) performanceMatch.updatedAt.$lte = new Date(dateTo);
+    }
+
+    // Get overall statistics
+    const overallStats = await StudentPerformance.aggregate([
+      ...(Object.keys(performanceMatch).length > 0 ? [{ $match: performanceMatch }] : []),
+      {
+        $group: {
+          _id: null,
+          totalStudents: { $sum: 1 },
+          avgAccuracy: { $avg: '$overallAccuracy' },
+          avgScore: { $avg: '$averageScore' },
+          totalQuizzes: { $sum: '$totalQuizzesTaken' },
+          totalQuestions: { $sum: '$totalQuestionsAttempted' },
+          totalCorrect: { $sum: '$totalCorrectAnswers' }
+        }
+      }
+    ]);
+
+    // Get subject-wise statistics
+    const subjectStats = await StudentPerformance.aggregate([
+      ...(Object.keys(performanceMatch).length > 0 ? [{ $match: performanceMatch }] : []),
+      { $project: { subjectPerformance: { $objectToArray: '$subjectPerformance' } } },
+      { $unwind: '$subjectPerformance' },
+      {
+        $group: {
+          _id: '$subjectPerformance.k',
+          avgAccuracy: { $avg: '$subjectPerformance.v.averageAccuracy' },
+          avgScore: { $avg: '$subjectPerformance.v.averageScore' },
+          totalQuizzes: { $sum: '$subjectPerformance.v.totalQuizzes' },
+          totalQuestions: { $sum: '$subjectPerformance.v.totalQuestions' },
+          studentCount: { $sum: 1 }
+        }
+      },
+      { $sort: { totalQuizzes: -1 } }
+    ]);
+
+    // Get grade-wise distribution
+    const gradeDistribution = await User.aggregate([
+      { $match: userMatch },
+      {
+        $lookup: {
+          from: 'studentperformances',
+          localField: '_id',
+          foreignField: 'studentId',
+          as: 'performance'
+        }
+      },
+      { $unwind: { path: '$performance', preserveNullAndEmptyArrays: true } },
+      {
+        $group: {
+          _id: '$grade',
+          studentCount: { $sum: 1 },
+          avgAccuracy: { $avg: '$performance.overallAccuracy' },
+          totalQuizzes: { $sum: '$performance.totalQuizzesTaken' }
+        }
+      },
+      { $sort: { _id: 1 } }
+    ]);
+
+    // Get accuracy distribution
+    const accuracyDistribution = await StudentPerformance.aggregate([
+      ...(Object.keys(performanceMatch).length > 0 ? [{ $match: performanceMatch }] : []),
+      {
+        $bucket: {
+          groupBy: '$overallAccuracy',
+          boundaries: [0, 20, 40, 60, 80, 100],
+          default: 'Other',
+          output: {
+            count: { $sum: 1 },
+            students: { $push: '$studentId' }
+          }
+        }
+      }
+    ]);
+
+    // Get top performers (top 10)
+    const topPerformers = await StudentPerformance.aggregate([
+      ...(Object.keys(performanceMatch).length > 0 ? [{ $match: performanceMatch }] : []),
+      { $sort: { overallAccuracy: -1 } },
+      { $limit: 10 },
+      {
+        $lookup: {
+          from: 'users',
+          localField: 'studentId',
+          foreignField: '_id',
+          as: 'student'
+        }
+      },
+      { $unwind: '$student' },
+      {
+        $project: {
+          studentId: 1,
+          studentName: '$student.name',
+          studentEmail: '$student.email',
+          grade: '$student.grade',
+          overallAccuracy: 1,
+          averageScore: 1,
+          totalQuizzesTaken: 1
+        }
+      }
+    ]);
+
+    // Get recent activity (last 7 days)
+    const sevenDaysAgo = new Date();
+    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+
+    const recentActivity = await QuizEvaluationResult.aggregate([
+      { $match: { createdAt: { $gte: sevenDaysAgo } } },
+      {
+        $group: {
+          _id: {
+            $dateToString: { format: '%Y-%m-%d', date: '$createdAt' }
+          },
+          quizCount: { $sum: 1 },
+          avgScore: { $avg: '$score' },
+          uniqueStudents: { $addToSet: '$studentId' }
+        }
+      },
+      {
+        $project: {
+          date: '$_id',
+          quizCount: 1,
+          avgScore: 1,
+          studentCount: { $size: '$uniqueStudents' }
+        }
+      },
+      { $sort: { date: 1 } }
+    ]);
+
+    res.json({
+      success: true,
+      analytics: {
+        overall: overallStats[0] || {},
+        bySubject: subjectStats,
+        byGrade: gradeDistribution,
+        accuracyDistribution,
+        topPerformers,
+        recentActivity
+      }
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// @desc    Get student performance leaderboard
+// @route   GET /api/admin/performance/leaderboard
+// @access  Private (Admin)
+exports.getPerformanceLeaderboard = async (req, res, next) => {
+  try {
+    const { grade, subject, limit = 50, metric = 'accuracy' } = req.query;
+
+    const userMatch = { role: 'student' };
+    if (grade) userMatch.grade = grade;
+
+    let sortField = 'overallAccuracy';
+    if (metric === 'quizzes') sortField = 'totalQuizzesTaken';
+    if (metric === 'score') sortField = 'averageScore';
+
+    const pipeline = [
+      {
+        $lookup: {
+          from: 'users',
+          localField: 'studentId',
+          foreignField: '_id',
+          as: 'student'
+        }
+      },
+      { $unwind: '$student' },
+      { $match: { 'student.role': 'student' } }
+    ];
+
+    if (grade) {
+      pipeline.push({ $match: { 'student.grade': grade } });
+    }
+
+    if (subject) {
+      pipeline.push({
+        $match: { [`subjectPerformance.${subject}`]: { $exists: true } }
+      });
+      // If filtering by subject, sort by subject-specific accuracy
+      pipeline.push({
+        $addFields: {
+          subjectAccuracy: `$subjectPerformance.${subject}.averageAccuracy`
+        }
+      });
+      sortField = 'subjectAccuracy';
+    }
+
+    pipeline.push(
+      { $sort: { [sortField]: -1 } },
+      { $limit: parseInt(limit) },
+      {
+        $project: {
+          rank: { $add: [{ $indexOfArray: [[], null] }, 1] },
+          studentId: 1,
+          studentName: '$student.name',
+          studentEmail: '$student.email',
+          grade: '$student.grade',
+          overallAccuracy: 1,
+          averageScore: 1,
+          totalQuizzesTaken: 1,
+          totalQuestionsAttempted: 1,
+          totalCorrectAnswers: 1,
+          subjectAccuracy: 1
+        }
+      }
+    );
+
+    const leaderboard = await StudentPerformance.aggregate(pipeline);
+
+    // Add rank to each entry
+    leaderboard.forEach((entry, index) => {
+      entry.rank = index + 1;
+    });
+
+    res.json({
+      success: true,
+      leaderboard,
+      filters: { grade, subject, metric }
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// @desc    Export student performance data
+// @route   GET /api/admin/performance/export
+// @access  Private (Admin)
+exports.exportPerformanceData = async (req, res, next) => {
+  try {
+    const { 
+      grade, 
+      subject, 
+      dateFrom, 
+      dateTo,
+      format = 'json' 
+    } = req.query;
+
+    const userMatch = { role: 'student' };
+    if (grade) userMatch.grade = grade;
+
+    const performanceMatch = {};
+    if (dateFrom || dateTo) {
+      performanceMatch.updatedAt = {};
+      if (dateFrom) performanceMatch.updatedAt.$gte = new Date(dateFrom);
+      if (dateTo) performanceMatch.updatedAt.$lte = new Date(dateTo);
+    }
+
+    const pipeline = [
+      ...(Object.keys(performanceMatch).length > 0 ? [{ $match: performanceMatch }] : []),
+      {
+        $lookup: {
+          from: 'users',
+          localField: 'studentId',
+          foreignField: '_id',
+          as: 'student'
+        }
+      },
+      { $unwind: '$student' },
+      { $match: userMatch }
+    ];
+
+    if (subject) {
+      pipeline.push({
+        $match: { [`subjectPerformance.${subject}`]: { $exists: true } }
+      });
+    }
+
+    pipeline.push({
+      $project: {
+        studentName: '$student.name',
+        studentEmail: '$student.email',
+        grade: '$student.grade',
+        totalQuizzesTaken: 1,
+        totalQuestionsAttempted: 1,
+        totalCorrectAnswers: 1,
+        overallAccuracy: 1,
+        averageScore: 1,
+        totalTimeSpent: 1,
+        subjectPerformance: 1,
+        weakAreas: 1,
+        strongAreas: 1,
+        lastActivity: '$updatedAt'
+      }
+    });
+
+    const performanceData = await StudentPerformance.aggregate(pipeline);
+
+    if (format === 'csv') {
+      // Convert to CSV format
+      const csv = convertToCSV(performanceData);
+      res.setHeader('Content-Type', 'text/csv');
+      res.setHeader('Content-Disposition', `attachment; filename=student-performance-${Date.now()}.csv`);
+      res.send(csv);
+    } else {
+      // Return as JSON
+      res.json({
+        success: true,
+        data: performanceData,
+        count: performanceData.length,
+        exportedAt: new Date(),
+        filters: { grade, subject, dateFrom, dateTo }
+      });
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
+// Helper function to convert JSON to CSV
+function convertToCSV(data) {
+  if (data.length === 0) return '';
+
+  const headers = [
+    'Student Name',
+    'Email',
+    'Grade',
+    'Quizzes Taken',
+    'Questions Attempted',
+    'Correct Answers',
+    'Accuracy (%)',
+    'Average Score',
+    'Time Spent (min)',
+    'Last Activity'
+  ];
+
+  const rows = data.map(student => [
+    student.studentName || '',
+    student.studentEmail || '',
+    student.grade || '',
+    student.totalQuizzesTaken || 0,
+    student.totalQuestionsAttempted || 0,
+    student.totalCorrectAnswers || 0,
+    student.overallAccuracy?.toFixed(2) || 0,
+    student.averageScore?.toFixed(2) || 0,
+    student.totalTimeSpent ? (student.totalTimeSpent / 60).toFixed(2) : 0,
+    student.lastActivity ? new Date(student.lastActivity).toISOString() : ''
+  ]);
+
+  const csvContent = [
+    headers.join(','),
+    ...rows.map(row => row.map(cell => `"${cell}"`).join(','))
+  ].join('\n');
+
+  return csvContent;
+}
+

@@ -112,6 +112,7 @@ const adminLinks = [
     label: 'Analytics & Monitoring',
     items: [
       { to: '/admin/analytics', icon: BarChart3, label: 'Analytics' },
+      { to: '/admin/student-performance', icon: TrendingUp, label: 'Student Performance' },
       { to: '/admin/quiz-analytics', icon: TrendingUp, label: 'Quiz Analytics' },
       { to: '/admin/sessions', icon: Monitor, label: 'Sessions' },
     ]

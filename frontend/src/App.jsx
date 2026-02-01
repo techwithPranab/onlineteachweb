@@ -71,6 +71,7 @@ import GenerateOfflinePrompts from './pages/admin/GenerateOfflinePrompts'
 import AdminQuestionBank from './pages/admin/QuestionBank'
 import AdminQuestionImportExport from './pages/admin/QuestionImportExport'
 import ContactMessages from './pages/admin/ContactMessages'
+import StudentPerformanceDashboard from './pages/admin/StudentPerformanceDashboard'
 
 // Shared
 import ProfileSettings from './pages/shared/ProfileSettings'
@@ -200,6 +201,7 @@ function App() {
             <Route path="sessions" element={<SessionManagement />} />
             <Route path="subscriptions" element={<AdminSubscriptionManagement />} />
             <Route path="analytics" element={<RevenueAnalytics />} />
+            <Route path="student-performance" element={<StudentPerformanceDashboard />} />
             <Route path="offline-prompts" element={<GenerateOfflinePrompts />} />
             <Route path="profile" element={<ProfileSettings />} />
             <Route path="notifications" element={<NotificationsPage />} />

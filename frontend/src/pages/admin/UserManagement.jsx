@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from 'react-query'
-import { Search, Filter, UserCheck, UserX, Edit, Trash2 } from 'lucide-react'
+import { Search, Filter, UserCheck, UserX, Edit, Trash2, BarChart2 } from 'lucide-react'
 import { adminService } from '@/services/apiServices'
 import LoadingSpinner from '@/components/common/LoadingSpinner'
 import ErrorMessage from '@/components/common/ErrorMessage'
@@ -33,6 +33,8 @@ export default function UserManagement() {
       push: true
     }
   })
+  const [showPerfModal, setShowPerfModal] = useState(false)
+  const [selectedPerfUser, setSelectedPerfUser] = useState(null)
 
   const { data: usersData, isLoading, error } = useQuery(
     ['users', { search: searchQuery, role: roleFilter, status: statusFilter }],
@@ -41,6 +43,16 @@ export default function UserManagement() {
       role: roleFilter,
       status: statusFilter,
     })
+  )
+
+  const {
+    data: perfData,
+    isLoading: isPerfLoading,
+    error: perfError
+  } = useQuery(
+    ['studentPerformance', selectedPerfUser?._id],
+    () => adminService.getStudentPerformance(selectedPerfUser._id),
+    { enabled: !!selectedPerfUser }
   )
 
   const updateStatusMutation = useMutation(
@@ -155,6 +167,16 @@ export default function UserManagement() {
         push: true
       }
     })
+  }
+
+  const handleViewPerformance = (user) => {
+    setSelectedPerfUser(user)
+    setShowPerfModal(true)
+  }
+
+  const handleClosePerfModal = () => {
+    setShowPerfModal(false)
+    setSelectedPerfUser(null)
   }
 
   if (isLoading) return <LoadingSpinner fullScreen />
@@ -336,6 +358,17 @@ export default function UserManagement() {
                           >
                             <Trash2 className="w-5 h-5 sm:w-4 sm:h-4" />
                           </button>
+
+                          {/* View Performance Button (students only) */}
+                          {user.role === 'student' && (
+                            <button
+                              onClick={() => handleViewPerformance(user)}
+                              className="p-2 sm:p-1.5 text-purple-600 hover:bg-purple-50 rounded-lg transition-colors min-h-[44px] sm:min-h-0 min-w-[44px] sm:min-w-0"
+                              title="View Performance"
+                            >
+                              <BarChart2 className="w-5 h-5 sm:w-4 sm:h-4" />
+                            </button>
+                          )}
                         </div>
                       </td>
                     </tr>
@@ -599,6 +632,116 @@ export default function UserManagement() {
           >
             {updateUserMutation.isLoading ? 'Saving...' : 'Save Changes'}
           </button>
+        </div>
+      </Modal>
+
+      {/* Performance Modal */}
+      <Modal
+        isOpen={showPerfModal}
+        onClose={handleClosePerfModal}
+        title={`Performance - ${selectedPerfUser?.name || ''}`}
+        size="xl"
+      >
+        <div className="space-y-4">
+          {isPerfLoading ? (
+            <LoadingSpinner />
+          ) : perfError ? (
+            <ErrorMessage message={perfError.message || 'Failed to load performance'} />
+          ) : (
+            <>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="p-3 bg-gray-50 rounded">
+                  <p className="text-xs text-gray-500">Total Quizzes Taken</p>
+                  <p className="text-2xl font-bold text-gray-900">{perfData?.performance?.totalQuizzesTaken || 0}</p>
+                </div>
+                <div className="p-3 bg-gray-50 rounded">
+                  <p className="text-xs text-gray-500">Average Score</p>
+                  <p className="text-2xl font-bold text-gray-900">{(perfData?.performance?.averageScore || 0).toFixed(2)}%</p>
+                </div>
+              </div>
+
+              <div className="mt-4">
+                <h3 className="text-sm font-semibold text-gray-900 mb-2">Subject Performance</h3>
+                <div className="overflow-x-auto">
+                  <table className="min-w-full divide-y divide-gray-200 text-sm">
+                    <thead>
+                      <tr>
+                        <th className="py-2 text-left text-xs text-gray-500">Subject</th>
+                        <th className="py-2 text-left text-xs text-gray-500">Quizzes</th>
+                        <th className="py-2 text-left text-xs text-gray-500">Avg Score</th>
+                        <th className="py-2 text-left text-xs text-gray-500">Accuracy</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-gray-100">
+                      {(perfData?.performance?.subjectPerformance && Object.values(perfData.performance.subjectPerformance).length > 0) ? (
+                        Object.values(perfData.performance.subjectPerformance).map((sp) => (
+                          <tr key={sp.subject} className="hover:bg-white">
+                            <td className="py-2 text-gray-900">{sp.subject}</td>
+                            <td className="py-2">{sp.totalQuizzes}</td>
+                            <td className="py-2">{(sp.averageScore || 0).toFixed(2)}%</td>
+                            <td className="py-2">{(sp.averageAccuracy || 0).toFixed(2)}%</td>
+                          </tr>
+                        ))
+                      ) : (
+                        <tr>
+                          <td colSpan="4" className="py-6 text-center text-gray-500">No subject performance data available</td>
+                        </tr>
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <div className="mt-4">
+                <h3 className="text-sm font-semibold text-gray-900 mb-2">Recent Quizzes</h3>
+                <div className="overflow-x-auto">
+                  <table className="min-w-full divide-y divide-gray-200 text-sm">
+                    <thead>
+                      <tr>
+                        <th className="py-2 text-left text-xs text-gray-500">Quiz</th>
+                        <th className="py-2 text-left text-xs text-gray-500">Course</th>
+                        <th className="py-2 text-left text-xs text-gray-500">Date</th>
+                        <th className="py-2 text-left text-xs text-gray-500">Score</th>
+                        <th className="py-2 text-left text-xs text-gray-500">Grade</th>
+                        <th className="py-2 text-left text-xs text-gray-500">Result</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-gray-100">
+                      {(perfData?.recentQuizzes && perfData.recentQuizzes.length > 0) ? (
+                        perfData.recentQuizzes.map((q) => (
+                          <tr key={q._id} className="hover:bg-white">
+                            <td className="py-2 text-gray-900">{q.quizId?.title || 'Quiz'}</td>
+                            <td className="py-2">{q.courseId?.title || '-'}</td>
+                            <td className="py-2">{new Date(q.createdAt).toLocaleString()}</td>
+                            <td className="py-2">{q.finalScore || q.percentage || 0}</td>
+                            <td className="py-2">{q.grade || '-'}</td>
+                            <td className="py-2 capitalize">{q.passFail}</td>
+                          </tr>
+                        ))
+                      ) : (
+                        <tr>
+                          <td colSpan="6" className="py-6 text-center text-gray-500">No recent quizzes available</td>
+                        </tr>
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <div className="mt-4">
+                <h3 className="text-sm font-semibold text-gray-900 mb-2">Weak Areas</h3>
+                {perfData?.performance?.weakAreas && perfData.performance.weakAreas.length > 0 ? (
+                  <ul className="list-disc pl-5 text-sm text-gray-700">
+                    {perfData.performance.weakAreas.map((w, idx) => (
+                      <li key={`${w.topic}-${idx}`}>{w.topic} - {w.accuracy?.toFixed(2)}% accuracy</li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p className="text-sm text-gray-500">No weak areas identified.</p>
+                )}
+              </div>
+            </>
+          )}
         </div>
       </Modal>
     </div>

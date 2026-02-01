@@ -69,4 +69,11 @@ router.get('/subscriptions/stats', paymentController.getSubscriptionStats);
 // Analytics
 router.get('/analytics', reportController.getAdminAnalytics);
 
+// Student performance
+router.get('/students', adminController.getStudentsWithPerformance);
+router.get('/students/:id/performance', adminController.getStudentPerformance);
+router.get('/performance/analytics', adminController.getPerformanceAnalytics);
+router.get('/performance/leaderboard', adminController.getPerformanceLeaderboard);
+router.get('/performance/export', adminController.exportPerformanceData);
+
 module.exports = router;

@@ -378,6 +378,12 @@ export const adminService = {
     const { data } = await api.get('/admin/courses/stats')
     return data
   },
+
+  // New: Get detailed performance for a student
+  getStudentPerformance: async (studentId) => {
+    const { data } = await api.get(`/admin/students/${studentId}/performance`)
+    return data
+  },
 }
 
 export const userService = {

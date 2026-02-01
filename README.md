@@ -288,6 +288,12 @@ GET    /api/admin/tutors/pending      - Pending tutor approvals
 PUT    /api/admin/tutors/:id/approve  - Approve/reject tutor
 ```
 
+### Admin - Students
+```
+GET    /api/admin/students                 - List students with performance summary (page, limit, search)
+GET    /api/admin/students/:id/performance - Get detailed performance and recent quizzes for a specific student
+```
+
 ## 🎮 WebSocket Events
 
 ### Connection
