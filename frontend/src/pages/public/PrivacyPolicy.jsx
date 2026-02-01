@@ -1,12 +1,19 @@
+import { useEffect } from 'react'
+
 export default function PrivacyPolicy() {
   const lastUpdated = "January 15, 2024"
+
+  // Scroll to top when component mounts
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
 
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-gray-800 to-gray-900 text-white py-16">
+      <section className="bg-gradient-to-br from-teal-500 to-teal-700 text-white py-16">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="text-5xl font-bold mb-4">Privacy Policy</h1>
+          <h1 className="text-4xl font-bold mb-4">Privacy Policy</h1>
           <p className="text-xl text-gray-300">
             Last Updated: {lastUpdated}
           </p>
@@ -41,7 +48,7 @@ export default function PrivacyPolicy() {
                   <ul className="list-disc pl-6 mt-2 space-y-1">
                     <li>Create an account (name, email, password, profile photo)</li>
                     <li>Complete your profile (education, expertise, qualifications)</li>
-                    <li>Enroll in courses or create courses as a tutor</li>
+                    <li>Enroll in courses</li>
                     <li>Participate in live classes (video, audio, chat messages)</li>
                     <li>Upload course materials or assignments</li>
                     <li>Make payments or process transactions</li>

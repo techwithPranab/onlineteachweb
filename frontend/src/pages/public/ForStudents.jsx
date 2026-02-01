@@ -1,18 +1,24 @@
+import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { BookOpen, Video, Award, TrendingUp, Clock, Users, CheckCircle, ArrowRight } from 'lucide-react'
 
 export default function ForStudents() {
+  // Scroll to top when component mounts
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section (MeritAI primary theme) */}
       <section className="bg-gradient-to-br from-primary-600 to-primary-800 text-white py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
-            <h1 className="text-5xl md:text-6xl font-bold mb-6">
-              Learn Smarter, Not Harder
+            <h1 className="text-4xl md:text-5xl font-bold mb-6">
+              Master Your Subjects Through Quiz-Based Evaluation
             </h1>
-            <p className="text-xl md:text-2xl mb-8 text-primary-100">
-              Connect with expert tutors and accelerate your learning journey
+            <p className="text-lg md:text-xl mb-8 text-primary-100">
+              Take personalized quizzes, track your progress, and achieve academic excellence with AI-powered learning
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
@@ -37,44 +43,44 @@ export default function ForStudents() {
       <section className="py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">
-              Why Students Love Our Platform
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">
+              Why Students Excel with Our Quiz-Based Learning
             </h2>
-            <p className="text-xl text-gray-600">
-              Everything you need to excel in your studies
+            <p className="text-lg text-gray-600">
+              Comprehensive evaluation system designed to maximize your learning potential
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             <BenefitCard
-              icon={<Users className="h-12 w-12 text-primary-600" />}
-              title="Expert Tutors"
-              description="Learn from qualified and experienced tutors across all subjects and grade levels."
-            />
-            <BenefitCard
-              icon={<Video className="h-12 w-12 text-primary-600" />}
-              title="Live Interactive Classes"
-              description="Join real-time video sessions with screen sharing, whiteboard, and chat features."
-            />
-            <BenefitCard
-              icon={<BookOpen className="h-12 w-12 text-primary-600" />}
-              title="Comprehensive Materials"
-              description="Access PDFs, videos, presentations, and study materials anytime, anywhere."
+              icon={<Award className="h-12 w-12 text-primary-600" />}
+              title="Adaptive Quizzes"
+              description="AI-powered quizzes that adjust difficulty based on your performance and learning pace."
             />
             <BenefitCard
               icon={<TrendingUp className="h-12 w-12 text-primary-600" />}
-              title="Track Your Progress"
-              description="Monitor your learning journey with detailed reports and performance analytics."
+              title="Performance Analytics"
+              description="Detailed insights into your strengths, weaknesses, and progress across all subjects."
+            />
+            <BenefitCard
+              icon={<BookOpen className="h-12 w-12 text-primary-600" />}
+              title="Comprehensive Question Bank"
+              description="Thousands of questions covering all grades, subjects, and difficulty levels."
+            />
+            <BenefitCard
+              icon={<CheckCircle className="h-12 w-12 text-primary-600" />}
+              title="Instant Feedback"
+              description="Get immediate results and explanations for every question to reinforce learning."
             />
             <BenefitCard
               icon={<Clock className="h-12 w-12 text-primary-600" />}
-              title="Flexible Scheduling"
-              description="Book sessions at times that work for you. Study at your own pace."
+              title="Flexible Practice"
+              description="Take quizzes anytime, anywhere with customizable time limits and question counts."
             />
             <BenefitCard
-              icon={<Award className="h-12 w-12 text-primary-600" />}
-              title="Achievements & Badges"
-              description="Earn recognition for your progress and stay motivated to reach your goals."
+              icon={<Users className="h-12 w-12 text-primary-600" />}
+              title="Expert Tutor Support"
+              description="Connect with qualified tutors for personalized guidance and doubt clearing."
             />
           </div>
         </div>
@@ -84,29 +90,29 @@ export default function ForStudents() {
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">
-              How It Works
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">
+              How Quiz-Based Evaluation Works
             </h2>
-            <p className="text-xl text-gray-600">
-              Get started in 3 simple steps
+            <p className="text-lg text-gray-600">
+              Master subjects through intelligent assessment and personalized learning
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <StepCard
               number="1"
-              title="Create Your Account"
-              description="Sign up for free and complete your student profile with your grade level and subjects of interest."
+              title="Take Adaptive Quizzes"
+              description="Start with AI-powered quizzes that assess your current knowledge level and adapt to your learning needs."
             />
             <StepCard
               number="2"
-              title="Browse & Enroll"
-              description="Explore courses, check tutor profiles and ratings, then enroll in courses that match your needs."
+              title="Get Instant Results"
+              description="Receive immediate feedback, detailed explanations, and performance analytics for every quiz attempt."
             />
             <StepCard
               number="3"
-              title="Start Learning"
-              description="Join live classes, access materials, complete assignments, and track your progress."
+              title="Track & Improve"
+              description="Monitor your progress, identify weak areas, and focus on targeted practice to achieve mastery."
             />
           </div>
         </div>
@@ -117,33 +123,44 @@ export default function ForStudents() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
-              <h2 className="text-4xl font-bold text-gray-900 mb-6">
-                Everything You Need to Succeed
+              <h2 className="text-3xl font-bold text-gray-900 mb-6">
+                Comprehensive Quiz-Based Learning System
               </h2>
               <div className="space-y-4">
-                <FeatureItem text="Access to thousands of courses across all subjects" />
-                <FeatureItem text="Live video classes with interactive whiteboard" />
-                <FeatureItem text="Downloadable study materials and resources" />
-                <FeatureItem text="Real-time chat with tutors and classmates" />
-                <FeatureItem text="Progress tracking and performance reports" />
-                <FeatureItem text="Regular evaluations and personalized feedback" />
-                <FeatureItem text="Mobile-friendly platform - learn anywhere" />
-                <FeatureItem text="24/7 support to help you succeed" />
+                <FeatureItem text="AI-powered adaptive quizzes that adjust to your skill level" />
+                <FeatureItem text="Extensive question bank covering all grades and subjects" />
+                <FeatureItem text="Instant feedback and detailed explanations for every question" />
+                <FeatureItem text="Performance analytics and progress tracking" />
+                <FeatureItem text="Weak topic identification and targeted practice recommendations" />
+                <FeatureItem text="Custom quiz creation with flexible parameters" />
+                <FeatureItem text="Mobile-friendly platform for learning on-the-go" />
+                <FeatureItem text="Expert tutor support for doubt clearing and guidance" />
               </div>
             </div>
             <div className="bg-gradient-to-br from-primary-50 to-primary-100 rounded-2xl p-8 text-center">
-              <div className="text-6xl font-bold text-primary-600 mb-4">10,000+</div>
-              <p className="text-xl text-gray-700 mb-2">Active Students</p>
-              <p className="text-gray-600">Join thousands of students already learning with us</p>
-              <div className="mt-8 grid grid-cols-2 gap-4 text-center">
-                <div>
-                  <div className="text-3xl font-bold text-primary-600">98%</div>
-                  <div className="text-sm text-gray-600">Satisfaction Rate</div>
-                </div>
-                <div>
-                  <div className="text-3xl font-bold text-primary-600">500+</div>
-                  <div className="text-sm text-gray-600">Expert Tutors</div>
-                </div>
+              <div className="text-6xl font-bold text-primary-600 mb-4">🎯</div>
+              <p className="text-xl text-gray-700 mb-2">Quiz-Based Mastery</p>
+              <p className="text-gray-600">Learn through intelligent evaluation and achieve academic excellence</p>
+              <div className="mt-8 text-left">
+                <h3 className="text-lg font-semibold text-gray-800 mb-4">Key Evaluation Features:</h3>
+                <ul className="space-y-2 text-gray-600">
+                  <li className="flex items-center gap-2">
+                    <CheckCircle className="h-4 w-4 text-primary-600" />
+                    Adaptive difficulty adjustment
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle className="h-4 w-4 text-primary-600" />
+                    Real-time performance tracking
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle className="h-4 w-4 text-primary-600" />
+                    Comprehensive progress reports
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle className="h-4 w-4 text-primary-600" />
+                    Personalized learning paths
+                  </li>
+                </ul>
               </div>
             </div>
           </div>
@@ -153,18 +170,18 @@ export default function ForStudents() {
       {/* CTA Section */}
       <section className="py-20 bg-gradient-to-br from-primary-600 to-primary-800 text-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-4xl font-bold mb-4">Ready to Start Your Learning Journey?</h2>
-          <p className="text-xl mb-8 text-primary-100">
-            Join thousands of students already learning with expert tutors
+          <h2 className="text-3xl font-bold mb-4">Ready to Master Subjects Through Quiz-Based Evaluation?</h2>
+          <p className="text-lg mb-8 text-primary-100">
+            Join thousands of students achieving academic excellence with our intelligent evaluation system
           </p>
           <Link
             to="/signup"
             className="inline-flex items-center gap-2 bg-white text-primary-600 px-8 py-4 rounded-lg font-semibold hover:bg-gray-100 transition text-lg"
           >
-            <span>Get Started Free</span>
+            <span>Start Your Quiz Journey</span>
             <ArrowRight className="h-5 w-5" />
           </Link>
-          <p className="mt-4 text-blue-200">No credit card required • Start learning in minutes</p>
+          <p className="mt-4 text-blue-200">No credit card required • Start evaluating your knowledge today</p>
         </div>
       </section>
     </div>

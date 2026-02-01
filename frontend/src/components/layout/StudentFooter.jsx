@@ -7,8 +7,7 @@ import {
   Zap, 
   Trophy, 
   Sparkles,
-  Mail,
-  MessageCircle
+  Mail
 } from 'lucide-react'
 
 /**
@@ -33,7 +32,6 @@ export default function StudentFooter() {
   ]
 
   const supportLinks = [
-    { name: 'Help Center', path: '/help-center', icon: MessageCircle },
     { name: 'Contact Us', path: '/contact', icon: Mail },
     { name: 'FAQs', path: '/faqs', icon: Sparkles }
   ]

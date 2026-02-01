@@ -1,12 +1,30 @@
+import { useState, useEffect } from 'react'
+import { contactService } from '@/services/apiServices'
+
 export default function TermsOfService() {
+  const [contactInfo, setContactInfo] = useState(null)
   const lastUpdated = "January 15, 2024"
+
+  useEffect(() => {
+    // Fetch contact information from backend model
+    let mounted = true
+    ;(async () => {
+      try {
+        const res = await contactService.getContactInfo()
+        if (mounted) setContactInfo(res.data || res)
+      } catch (err) {
+        console.error('Failed to load contact info', err)
+      }
+    })()
+    return () => { mounted = false }
+  }, [])
 
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-gray-800 to-gray-900 text-white py-16">
+      <section className="bg-gradient-to-br from-teal-500 to-teal-700 text-white py-16">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="text-5xl font-bold mb-4">Terms of Service</h1>
+          <h1 className="text-4xl font-bold mb-4">Terms of Service</h1>
           <p className="text-xl text-gray-300">
             Last Updated: {lastUpdated}
           </p>
@@ -44,9 +62,6 @@ export default function TermsOfService() {
                     <li>Provide accurate and complete registration information</li>
                     <li>Maintain the security of your account credentials</li>
                   </ul>
-                  <p className="mt-4">
-                    Additional requirements apply for tutors, including proof of qualifications and teaching experience.
-                  </p>
                 </>
               }
             />
@@ -66,11 +81,7 @@ export default function TermsOfService() {
                   </ul>
 
                   <h4 className="font-semibold text-gray-900 mb-2 mt-6">3.2 Account Types</h4>
-                  <p>We offer two types of accounts:</p>
-                  <ul className="list-disc pl-6 mt-2 space-y-1">
-                    <li><strong>Student Accounts:</strong> Access courses, attend classes, and access materials</li>
-                    <li><strong>Tutor Accounts:</strong> Create courses, teach classes, and earn revenue (subject to approval)</li>
-                  </ul>
+                  <p>We offer student accounts for accessing courses, attending classes, and accessing materials.</p>
 
                   <h4 className="font-semibold text-gray-900 mb-2 mt-6">3.3 Account Termination</h4>
                   <p>We may suspend or terminate your account if you:</p>
@@ -111,11 +122,6 @@ export default function TermsOfService() {
                   <p>
                     You may cancel your subscription at any time. Access continues until the end of your billing period. No refunds for partial months.
                   </p>
-
-                  <h4 className="font-semibold text-gray-900 mb-2 mt-4">4.5 Tutor Payments</h4>
-                  <p>
-                    Tutors earn 80% of course revenue. Payments are processed weekly with a minimum withdrawal of ₹50. We reserve the right to withhold payments for policy violations.
-                  </p>
                 </>
               }
             />
@@ -135,7 +141,6 @@ export default function TermsOfService() {
                     <li>Spam or send unsolicited communications</li>
                     <li>Share account credentials with others</li>
                     <li>Record classes without permission</li>
-                    <li>Use the platform for commercial purposes outside approved tutor activities</li>
                   </ul>
                 </>
               }
@@ -157,7 +162,7 @@ export default function TermsOfService() {
 
                   <h4 className="font-semibold text-gray-900 mb-2 mt-4">6.3 Course Materials</h4>
                   <p>
-                    Tutors retain copyright to their course materials. Students may access materials for personal educational use only and may not redistribute or resell them.
+                    Course content creators retain copyright to their materials. Students may access materials for personal educational use only and may not redistribute or resell them.
                   </p>
 
                   <h4 className="font-semibold text-gray-900 mb-2 mt-4">6.4 DMCA Policy</h4>
@@ -169,40 +174,7 @@ export default function TermsOfService() {
             />
 
             <Section
-              title="7. Tutor-Specific Terms"
-              content={
-                <>
-                  <h4 className="font-semibold text-gray-900 mb-2">7.1 Tutor Approval</h4>
-                  <p>
-                    All tutors must complete an application and approval process. We reserve the right to reject or revoke tutor status at our discretion.
-                  </p>
-
-                  <h4 className="font-semibold text-gray-900 mb-2 mt-4">7.2 Tutor Responsibilities</h4>
-                  <p>Tutors agree to:</p>
-                  <ul className="list-disc pl-6 mt-2 space-y-1">
-                    <li>Provide accurate qualifications and credentials</li>
-                    <li>Deliver quality education and maintain professionalism</li>
-                    <li>Attend scheduled classes punctually</li>
-                    <li>Respond to student inquiries in a timely manner</li>
-                    <li>Create original or properly licensed course content</li>
-                    <li>Comply with applicable education laws and regulations</li>
-                  </ul>
-
-                  <h4 className="font-semibold text-gray-900 mb-2 mt-4">7.3 Revenue Sharing</h4>
-                  <p>
-                    Tutors receive 80% of gross course revenue. We retain 20% as a platform fee. Revenue is calculated after refunds and chargebacks.
-                  </p>
-
-                  <h4 className="font-semibold text-gray-900 mb-2 mt-4">7.4 Independent Contractor</h4>
-                  <p>
-                    Tutors are independent contractors, not employees. You are responsible for your own taxes and insurance.
-                  </p>
-                </>
-              }
-            />
-
-            <Section
-              title="8. Privacy and Data Protection"
+              title="7. Privacy and Data Protection"
               content={
                 <>
                   <p>
@@ -216,7 +188,7 @@ export default function TermsOfService() {
             />
 
             <Section
-              title="9. Disclaimers and Limitations"
+              title="8. Disclaimers and Limitations"
               content={
                 <>
                   <h4 className="font-semibold text-gray-900 mb-2">9.1 Service "As Is"</h4>
@@ -226,7 +198,7 @@ export default function TermsOfService() {
 
                   <h4 className="font-semibold text-gray-900 mb-2 mt-4">9.2 Educational Content</h4>
                   <p>
-                    We do not guarantee educational outcomes or course quality. Tutors are solely responsible for their course content and teaching methods.
+                    We do not guarantee educational outcomes or course quality. Course content creators are solely responsible for their materials and teaching methods.
                   </p>
 
                   <h4 className="font-semibold text-gray-900 mb-2 mt-4">9.3 Third-Party Services</h4>
@@ -243,7 +215,7 @@ export default function TermsOfService() {
             />
 
             <Section
-              title="10. Indemnification"
+              title="9. Indemnification"
               content={
                 <>
                   <p>
@@ -260,7 +232,7 @@ export default function TermsOfService() {
             />
 
             <Section
-              title="11. Dispute Resolution"
+              title="10. Dispute Resolution"
               content={
                 <>
                   <h4 className="font-semibold text-gray-900 mb-2">11.1 Informal Resolution</h4>
@@ -282,7 +254,7 @@ export default function TermsOfService() {
             />
 
             <Section
-              title="12. General Provisions"
+              title="11. General Provisions"
               content={
                 <>
                   <h4 className="font-semibold text-gray-900 mb-2">12.1 Governing Law</h4>
@@ -314,16 +286,16 @@ export default function TermsOfService() {
             />
 
             <Section
-              title="13. Contact Information"
+              title="12. Contact Information"
               content={
                 <>
                   <p>
                     For questions about these Terms, please contact us:
                   </p>
                   <div className="mt-4 bg-gray-50 p-4 rounded-lg">
-                    <p><strong>Email:</strong> <a href="mailto:legal@meritai.in" className="text-blue-600 hover:underline">legal@meritai.in</a></p>
-                    <p className="mt-2"><strong>Address:</strong> 123 Education Street, New York, NY 10001, USA</p>
-                    <p className="mt-2"><strong>Phone:</strong> +1 (555) 123-4567</p>
+                    <p><strong>Email:</strong> <a href={`mailto:${contactInfo?.email || 'legal@meritai.in'}`} className="text-blue-600 hover:underline">{contactInfo?.email || 'legal@meritai.in'}</a></p>
+                    <p className="mt-2"><strong>Address:</strong> {contactInfo?.address || '123 Education Street, New York, NY 10001, USA'}</p>
+                    <p className="mt-2"><strong>Phone:</strong> {contactInfo?.phone || '+1 (555) 123-4567'}</p>
                   </div>
                 </>
               }

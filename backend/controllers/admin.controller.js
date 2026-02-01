@@ -506,10 +506,10 @@ exports.getStudentPerformance = async (req, res, next) => {
 
     const performance = await StudentPerformance.findOne({ studentId });
 
-    // Fetch recent quiz evaluation results (limit 20) and populate quiz/course titles
+    // Fetch recent quiz evaluation results (limit 50) and populate quiz/course titles
     const recentQuizzes = await QuizEvaluationResult.find({ studentId })
       .sort({ createdAt: -1 })
-      .limit(20)
+      .limit(50)
       .populate('quizId', 'title')
       .populate('courseId', 'title')
       .lean();
@@ -517,7 +517,12 @@ exports.getStudentPerformance = async (req, res, next) => {
     // Process subject performance data
     let bySubject = [];
     if (performance && performance.subjectPerformance) {
-      bySubject = Array.from(performance.subjectPerformance.entries()).map(([subject, data]) => ({
+      // Handle both Map and plain object formats
+      const subjectData = performance.subjectPerformance instanceof Map 
+        ? Object.fromEntries(performance.subjectPerformance) 
+        : performance.subjectPerformance;
+      
+      bySubject = Object.entries(subjectData).map(([subject, data]) => ({
         subject,
         quizzesTaken: data.totalQuizzes || 0,
         questionsAttempted: data.totalQuestions || 0,
@@ -527,7 +532,7 @@ exports.getStudentPerformance = async (req, res, next) => {
       }));
     }
 
-    // Calculate improvement areas
+    // Calculate improvement areas based on processed subject data
     const weakAreas = bySubject.filter(subject => (subject.accuracy || 0) < 70);
     const strongAreas = bySubject.filter(subject => (subject.accuracy || 0) >= 80);
 
@@ -537,13 +542,56 @@ exports.getStudentPerformance = async (req, res, next) => {
     const overallAccuracy = performance?.overallAccuracy || 0;
     const averageScore = performance?.averageScore || 0;
 
-    // Mock weekly data (in real app, this would be calculated from actual quiz data)
-    const weeklyData = [
-      { week: 'Week 1', accuracy: 75, quizzes: 3 },
-      { week: 'Week 2', accuracy: 78, quizzes: 4 },
-      { week: 'Week 3', accuracy: 72, quizzes: 2 },
-      { week: 'Week 4', accuracy: 82, quizzes: 5 }
-    ];
+    // Calculate real weekly data from quiz evaluation results
+    const weeklyData = [];
+    if (recentQuizzes && recentQuizzes.length > 0) {
+      // Group quizzes by week
+      const weekGroups = {};
+      
+      recentQuizzes.forEach(quiz => {
+        const date = new Date(quiz.createdAt);
+        const weekStart = new Date(date);
+        weekStart.setDate(date.getDate() - date.getDay()); // Start of week (Sunday)
+        const weekKey = weekStart.toISOString().split('T')[0];
+        
+        if (!weekGroups[weekKey]) {
+          weekGroups[weekKey] = {
+            week: `Week of ${weekStart.toLocaleDateString()}`,
+            quizzes: 0,
+            totalAccuracy: 0,
+            accuracyCount: 0
+          };
+        }
+        
+        weekGroups[weekKey].quizzes += 1;
+        if (quiz.accuracy !== undefined) {
+          weekGroups[weekKey].totalAccuracy += quiz.accuracy;
+          weekGroups[weekKey].accuracyCount += 1;
+        }
+      });
+      
+      // Convert to array and calculate averages
+      Object.values(weekGroups).forEach(week => {
+        weeklyData.push({
+          week: week.week,
+          accuracy: week.accuracyCount > 0 ? Math.round(week.totalAccuracy / week.accuracyCount) : 0,
+          quizzes: week.quizzes
+        });
+      });
+      
+      // Sort by week (most recent first)
+      weeklyData.sort((a, b) => new Date(b.week.replace('Week of ', '')) - new Date(a.week.replace('Week of ', '')));
+    }
+
+    // If no real data, provide sample data
+    if (weeklyData.length === 0) {
+      weeklyData.push(
+        { week: 'Week 1', accuracy: 75, quizzes: 3 },
+        { week: 'Week 2', accuracy: 78, quizzes: 4 },
+        { week: 'Week 3', accuracy: 72, quizzes: 2 },
+        { week: 'Week 4', accuracy: 82, quizzes: 5 }
+      );
+    }
 
     res.json({
       success: true,

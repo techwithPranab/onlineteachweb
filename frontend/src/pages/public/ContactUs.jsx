@@ -16,6 +16,9 @@ export default function ContactUs() {
   const [error, setError] = useState('')
 
   useEffect(() => {
+    // Scroll to top when component mounts
+    window.scrollTo(0, 0)
+
     // Fetch contact information from backend model
     let mounted = true
     ;(async () => {
@@ -70,11 +73,11 @@ export default function ContactUs() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-primary-600 to-primary-800 text-white py-16">
+      <section className="bg-gradient-to-br from-teal-500 to-teal-700 text-white py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
-            <h1 className="text-5xl font-bold mb-4">Get in Touch</h1>
-            <p className="text-xl text-primary-100">
+            <h1 className="text-4xl font-bold mb-4">Get in Touch</h1>
+            <p className="text-xl text-teal-100">
               We'd love to hear from you. Send us a message and we'll respond as soon as possible.
             </p>
           </div>
@@ -132,10 +135,6 @@ export default function ContactUs() {
                   <div className="flex justify-between">
                     <span>Phone Support:</span>
                     <span className="font-semibold">{contactInfo?.responseTimes?.phone || 'Immediate'}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>Live Chat:</span>
-                    <span className="font-semibold">{contactInfo?.responseTimes?.chat || '5 minutes'}</span>
                   </div>
                 </div>
               </div>
@@ -210,8 +209,6 @@ export default function ContactUs() {
                         <option value="technical">Technical Support</option>
                         <option value="billing">Billing & Payments</option>
                         <option value="courses">Course Related</option>
-                        <option value="tutor">Tutor Application</option>
-                        <option value="partnership">Partnership</option>
                         <option value="other">Other</option>
                       </select>
                     </div>
@@ -270,54 +267,6 @@ export default function ContactUs() {
           </div>
         </div>
       </section>
-
-      {/* Alternative Contact Methods */}
-      <section className="py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Other Ways to Reach Us</h2>
-            <p className="text-xl text-gray-600">Choose the method that works best for you</p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <AlternativeContact
-              title="Live Chat"
-              description="Chat with our support team in real-time"
-              availability="Available 24/7"
-              buttonText="Start Chat"
-              buttonColor="bg-green-600 hover:bg-green-700"
-            />
-            <AlternativeContact
-              title="Help Center"
-              description="Browse our comprehensive knowledge base"
-              availability="Always available"
-              buttonText="Visit Help Center"
-              buttonColor="bg-primary-600 hover:bg-primary-700"
-              link="/help-center"
-            />
-            <AlternativeContact
-              title="FAQs"
-              description="Quick answers to common questions"
-              availability="Instant answers"
-              buttonText="View FAQs"
-              buttonColor="bg-purple-600 hover:bg-purple-700"
-              link="/faqs"
-            />
-          </div>
-        </div>
-      </section>
-
-      {/* Map Section (Placeholder) */}
-      <section className="py-16 bg-gray-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-gray-300 rounded-lg h-96 flex items-center justify-center">
-            <div className="text-center">
-              <MapPin className="h-16 w-16 text-gray-500 mx-auto mb-4" />
-              <p className="text-gray-600 text-lg">Map integration coming soon</p>
-            </div>
-          </div>
-        </div>
-      </section>
     </div>
   )
 }
@@ -331,31 +280,6 @@ function ContactInfoItem({ icon, title, value, subtitle }) {
         <p className="text-gray-700">{value}</p>
         <p className="text-sm text-gray-500">{subtitle}</p>
       </div>
-    </div>
-  )
-}
-
-function AlternativeContact({ title, description, availability, buttonText, buttonColor, link }) {
-  return (
-    <div className="bg-gray-50 rounded-lg p-8 text-center border border-gray-200">
-      <h3 className="text-xl font-bold text-gray-900 mb-3">{title}</h3>
-      <p className="text-gray-600 mb-2">{description}</p>
-      <p className="text-sm text-gray-500 mb-6">{availability}</p>
-      {link ? (
-        <a
-          href={link}
-          className={`${buttonColor} text-white px-6 py-3 rounded-lg font-semibold transition inline-block`}
-        >
-          {buttonText}
-        </a>
-      ) : (
-        <button
-          onClick={() => alert('Feature coming soon!')}
-          className={`${buttonColor} text-white px-6 py-3 rounded-lg font-semibold transition`}
-        >
-          {buttonText}
-        </button>
-      )}
     </div>
   )
 }

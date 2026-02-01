@@ -375,11 +375,11 @@ export default function FAQs() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-purple-600 to-purple-800 text-white py-20">
+      <section className="bg-gradient-to-br from-teal-500 to-teal-700 text-white py-20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-8">
-            <h1 className="text-5xl font-bold mb-4">Frequently Asked Questions</h1>
-            <p className="text-xl text-purple-100">
+            <h1 className="text-4xl font-bold mb-4">Frequently Asked Questions</h1>
+            <p className="text-xl text-teal-100">
               Find quick answers to common questions about our platform
             </p>
           </div>
@@ -392,7 +392,7 @@ export default function FAQs() {
               placeholder="Search FAQs..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-14 pr-4 py-4 rounded-lg text-gray-900 text-lg focus:outline-none focus:ring-2 focus:ring-purple-400"
+              className="w-full pl-14 pr-4 py-4 rounded-lg text-gray-900 text-lg focus:outline-none focus:ring-2 focus:ring-teal-400"
             />
           </div>
         </div>
@@ -408,7 +408,7 @@ export default function FAQs() {
                 onClick={() => setActiveCategory(category.id)}
                 className={`px-6 py-2 rounded-full font-semibold transition ${
                   activeCategory === category.id
-                    ? 'bg-purple-600 text-white'
+                    ? 'bg-teal-600 text-white'
                     : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                 }`}
               >
@@ -430,7 +430,7 @@ export default function FAQs() {
                   setSearchQuery('')
                   setActiveCategory('all')
                 }}
-                className="mt-4 text-purple-600 hover:text-purple-700 font-semibold"
+                className="mt-4 text-teal-600 hover:text-teal-700 font-semibold"
               >
                 Clear filters
               </button>
@@ -448,7 +448,7 @@ export default function FAQs() {
                   >
                     <span className="font-semibold text-left text-gray-900">{faq.question}</span>
                     {openIndex === index ? (
-                      <ChevronUp className="h-5 w-5 text-purple-600 flex-shrink-0 ml-4" />
+                      <ChevronUp className="h-5 w-5 text-teal-600 flex-shrink-0 ml-4" />
                     ) : (
                       <ChevronDown className="h-5 w-5 text-gray-400 flex-shrink-0 ml-4" />
                     )}
@@ -475,7 +475,7 @@ export default function FAQs() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
               href="/contact"
-              className="bg-purple-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-purple-700 transition"
+              className="bg-teal-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-teal-700 transition"
             >
               Contact Support
             </a>
