@@ -30,4 +30,22 @@ router.post('/refresh', [
 // Logout
 router.post('/logout', authenticate, authController.logout);
 
+// Forgot password - Send reset email
+router.post('/forgot-password', [
+  body('email').isEmail().withMessage('Valid email is required'),
+  validate
+], authController.forgotPassword);
+
+// Reset password with token
+router.post('/reset-password/:token', [
+  body('password').isLength({ min: 6 }).withMessage('Password must be at least 6 characters'),
+  body('confirmPassword').custom((value, { req }) => {
+    if (value !== req.body.password) {
+      throw new Error('Passwords do not match');
+    }
+    return true;
+  }),
+  validate
+], authController.resetPassword);
+
 module.exports = router;

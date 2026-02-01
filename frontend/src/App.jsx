@@ -11,6 +11,8 @@ import LandingPage from './pages/public/LandingPage'
 import Login from './pages/public/Login'
 import Signup from './pages/public/Signup'
 import SignupSuccess from './pages/public/SignupSuccess'
+import ForgotPassword from './pages/public/ForgotPassword'
+import ResetPassword from './pages/public/ResetPassword'
 import PricingPage from './pages/public/PricingPage'
 import Courses from './pages/public/Courses'
 import CourseList from './pages/public/CourseList'
@@ -103,6 +105,8 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/signup-success" element={<SignupSuccess />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/reset-password/:token" element={<ResetPassword />} />
             <Route path="/pricing" element={<PricingPage />} />
             <Route path="/courses" element={<Courses />} />
             <Route path="/courses/:grade/:subject" element={<CourseList />} />
