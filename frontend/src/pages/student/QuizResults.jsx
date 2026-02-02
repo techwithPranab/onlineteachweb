@@ -40,6 +40,7 @@ export default function QuizResults() {
   const submissionResult = location.state?.result
   const isAutoSubmit = location.state?.isAutoSubmit
   const quizData = location.state?.quiz
+  const newBadges = location.state?.newBadges || []
 
   useEffect(() => {
     console.log('🔍 QuizResults useEffect triggered:', {
@@ -763,6 +764,47 @@ export default function QuizResults() {
             }`}>
               {evaluation?.timeAnalysis?.timeManagementRating || 'N/A'}
             </p>
+          </div>
+        </div>
+      )}
+
+      {/* New Achievements Section */}
+      {newBadges && newBadges.length > 0 && (
+        <div className="bg-gradient-to-r from-yellow-50 to-orange-50 rounded-lg border-2 border-yellow-200 p-6 mt-6">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="text-2xl">🏆</div>
+            <div>
+              <h3 className="text-lg font-bold text-gray-900">Congratulations! New Achievements Unlocked</h3>
+              <p className="text-sm text-gray-600">You've earned {newBadges.length} new badge{newBadges.length > 1 ? 's' : ''} for this quiz!</p>
+            </div>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+            {newBadges.map((badge, index) => (
+              <div
+                key={index}
+                className="bg-white rounded-lg border-2 border-yellow-300 p-4 shadow-sm hover:shadow-md transition"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="text-2xl">{badge.badgeIcon}</div>
+                  <div className="flex-1">
+                    <h4 className="font-bold text-gray-900 text-sm">{badge.badgeName}</h4>
+                    <p className="text-xs text-gray-600">{badge.badgeDescription}</p>
+                    <div className="flex items-center gap-2 mt-1">
+                      <span className={`px-2 py-0.5 text-xs font-semibold rounded-full ${
+                        badge.level === 'bronze' ? 'text-amber-700 bg-amber-100' :
+                        badge.level === 'silver' ? 'text-gray-600 bg-gray-200' :
+                        badge.level === 'gold' ? 'text-yellow-600 bg-yellow-100' :
+                        badge.level === 'platinum' ? 'text-purple-600 bg-purple-100' :
+                        'text-blue-600 bg-blue-100'
+                      }`}>
+                        {badge.level.toUpperCase()}
+                      </span>
+                      <span className="text-xs font-bold text-primary-600">+{badge.points} pts</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       )}

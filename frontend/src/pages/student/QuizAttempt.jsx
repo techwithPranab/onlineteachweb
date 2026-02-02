@@ -469,7 +469,11 @@ export default function QuizAttempt() {
         
         // Navigate to results
         navigate(`/student/quiz/${quizId}/results`, {
-          state: { result: response.result, isAutoSubmit }
+          state: { 
+            result: response.result, 
+            isAutoSubmit,
+            newBadges: response.newBadges 
+          }
         })
       }
     } catch (err) {

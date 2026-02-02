@@ -852,3 +852,31 @@ export const contactService = {
     return data
   }
 }
+
+// Achievement service for badge management
+export const achievementService = {
+  getBadgeRules: async () => {
+    const { data } = await api.get('/achievements/badges/rules')
+    return data
+  },
+
+  getStudentAchievements: async () => {
+    const { data } = await api.get('/achievements/my-achievements')
+    return data
+  },
+
+  getAchievementStats: async () => {
+    const { data } = await api.get('/achievements/stats')
+    return data
+  },
+
+  getRecentAchievements: async () => {
+    const { data } = await api.get('/achievements/recent')
+    return data
+  },
+
+  markAsNotified: async (achievementId) => {
+    const { data } = await api.put(`/achievements/${achievementId}/notified`)
+    return data
+  }
+}

@@ -1,5 +1,6 @@
 const QuestionSelectionStrategy = require('./QuestionSelectionStrategy');
 const Question = require('../models/Question.model');
+const logger = require('../utils/logger');
 
 /**
  * Default Question Selection Strategy
@@ -37,32 +38,37 @@ class DefaultQuestionSelectionStrategy extends QuestionSelectionStrategy {
     
     const { totalQuestions, topicWeightage, typeDistribution, difficultyDistribution } = questionConfig;
     
+    logger.info('[QuestionSelection] Starting question selection...');
+    logger.info(`[QuestionSelection] Course: ${courseId}`);
+    logger.info(`[QuestionSelection] Difficulty: ${difficultyLevel}`);
+    logger.info(`[QuestionSelection] Total questions needed: ${totalQuestions}`);
+    logger.info(`[QuestionSelection] Questions to exclude: ${excludeQuestionIds.length}`);
+    
     // Build base query
     const baseQuery = {
       courseId,
       isActive: true
     };
     
-    // Exclude questions from past attempts
+    // Exclude questions from past attempts - ALWAYS apply this filter
     if (excludeQuestionIds.length > 0) {
       baseQuery._id = { $nin: excludeQuestionIds };
     }
     
-    // Get all available questions
+    logger.info(`[QuestionSelection] Base query: ${JSON.stringify(baseQuery)}`);
+    
+    // Get all available questions (NEVER remove the exclusion filter)
     let availableQuestions = await Question.find(baseQuery).lean();
     
+    logger.info(`[QuestionSelection] Available questions after exclusion: ${availableQuestions.length}`);
+    
     if (availableQuestions.length === 0) {
-      throw new Error('No questions available for this quiz configuration');
+      throw new Error(`No questions available for this quiz configuration. All ${excludeQuestionIds.length} questions from previous attempts have been exhausted. Please add more questions or reset the quiz.`);
     }
     
-    // If not enough questions even without filters, relax constraints
+    // Warn if we don't have enough unique questions
     if (availableQuestions.length < totalQuestions) {
-      // Try including excluded questions if we don't have enough
-      if (excludeQuestionIds.length > 0) {
-        const additionalQuery = { ...baseQuery };
-        delete additionalQuery._id;
-        availableQuestions = await Question.find(additionalQuery).lean();
-      }
+      logger.warn(`[QuestionSelection] WARNING: Only ${availableQuestions.length} unique questions available, but ${totalQuestions} requested. Will use what's available.`);
     }
     
     const selectedQuestions = [];
@@ -160,7 +166,7 @@ class DefaultQuestionSelectionStrategy extends QuestionSelectionStrategy {
     }
     
     // Step 6: Prepare final output with order
-    return orderedQuestions.map((q, index) => ({
+    const finalQuestions = orderedQuestions.map((q, index) => ({
       questionId: q._id,
       originalOrder: selectedQuestions.findIndex(sq => sq._id.toString() === q._id.toString()),
       displayOrder: index,
@@ -179,6 +185,27 @@ class DefaultQuestionSelectionStrategy extends QuestionSelectionStrategy {
         difficultyLevel: q.difficultyLevel
       }
     }));
+    
+    logger.info(`[QuestionSelection] ✅ Selected ${finalQuestions.length} questions`);
+    logger.info(`[QuestionSelection] Question IDs: ${finalQuestions.map(q => q.questionId.toString()).join(', ')}`);
+    
+    // Verify no duplicates in selection
+    const selectedIds = finalQuestions.map(q => q.questionId.toString());
+    const uniqueIds = new Set(selectedIds);
+    if (selectedIds.length !== uniqueIds.size) {
+      logger.error('[QuestionSelection] ❌ ERROR: Duplicate questions detected in selection!');
+      const duplicates = selectedIds.filter((id, index) => selectedIds.indexOf(id) !== index);
+      logger.error(`[QuestionSelection] Duplicate IDs: ${duplicates.join(', ')}`);
+    }
+    
+    // Verify none of the selected questions are in excluded list
+    const intersection = selectedIds.filter(id => excludeQuestionIds.includes(id));
+    if (intersection.length > 0) {
+      logger.error('[QuestionSelection] ❌ ERROR: Selected questions are in excluded list!');
+      logger.error(`[QuestionSelection] Conflicting IDs: ${intersection.join(', ')}`);
+    }
+    
+    return finalQuestions;
   }
   
   /**

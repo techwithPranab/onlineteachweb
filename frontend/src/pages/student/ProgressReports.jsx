@@ -2,14 +2,16 @@ import { useState } from 'react'
 import { useQuery } from 'react-query'
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, LineChart, Line } from 'recharts'
 import { TrendingUp, Award, Target, Calendar, Clock, BarChart3 } from 'lucide-react'
-import { reportService, evaluationService, algorithmQuizService } from '@/services/apiServices'
+import { reportService, evaluationService, algorithmQuizService, achievementService } from '@/services/apiServices'
 import { useAuthStore } from '@/store/authStore'
 import LoadingSpinner from '@/components/common/LoadingSpinner'
 import ErrorMessage from '@/components/common/ErrorMessage'
+import AchievementBadgeModal from '@/components/common/AchievementBadgeModal'
 
 export default function ProgressReports() {
   const { user } = useAuthStore()
   const [selectedPeriod, setSelectedPeriod] = useState('month')
+  const [showBadgeModal, setShowBadgeModal] = useState(false)
 
   const { data: reportData, isLoading, error } = useQuery(
     ['studentReport', user?._id, selectedPeriod],
@@ -26,12 +28,22 @@ export default function ProgressReports() {
     () => algorithmQuizService.getQuizHistory({ limit: 1000 }) // Get all quiz history for statistics
   )
 
+  const { data: achievementsData } = useQuery(
+    ['achievements', user?._id],
+    () => achievementService.getStudentAchievements(),
+    {
+      refetchOnWindowFocus: true,
+      refetchOnMount: true
+    }
+  )
+
   if (isLoading) return <LoadingSpinner fullScreen />
   if (error) return <ErrorMessage message={error.message || 'Failed to load reports'} />
 
   const report = reportData?.data || {}
   const evaluations = Array.isArray(evaluationsData?.data) ? evaluationsData.data : []
   const quizHistory = Array.isArray(quizHistoryData?.data) ? quizHistoryData.data : []
+  const achievements = Array.isArray(achievementsData?.achievements) ? achievementsData.achievements : []
 
   // Calculate quiz statistics
   const quizStats = Array.isArray(quizHistory) && quizHistory.length > 0 ? {
@@ -569,46 +581,64 @@ export default function ProgressReports() {
       <div className="genz-card relative overflow-hidden mt-4 sm:mt-6">
         <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-yellow-500 via-orange-500 to-red-500"></div>
         <div className="p-4 sm:p-5 lg:p-6">
-          <h3 className="text-lg sm:text-xl font-bold bg-gradient-to-r from-yellow-600 to-orange-600 bg-clip-text text-transparent mb-3 sm:mb-4 flex items-center gap-2">
-            🏆 Achievements & Badges
-          </h3>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2 sm:gap-3 md:gap-4">
-            {[
-              { name: 'Perfect Attendance', icon: '🎯', earned: true },
-              { name: 'Top Performer', icon: '⭐', earned: true },
-              { name: 'Quick Learner', icon: '🚀', earned: true },
-              { name: 'Team Player', icon: '🤝', earned: false },
-              { name: 'Problem Solver', icon: '🧩', earned: true },
-              { name: 'Excellence Award', icon: '🏆', earned: false },
-            ].map((badge, index) => (
-              <div
-                key={index}
-                className={`text-center p-2 sm:p-3 md:p-4 rounded-lg sm:rounded-xl border-2 transition-all hover:scale-105 ${
-                  badge.earned
-                    ? 'genz-card border-yellow-300 bg-gradient-to-br from-yellow-50 to-orange-50 shadow-lg'
-                    : 'bg-gray-50 border-gray-200 opacity-60'
-                }`}
-              >
-                <div className={`text-xl sm:text-2xl md:text-3xl mb-1 sm:mb-2 ${badge.earned ? 'animate-bounce-slow' : ''}`}>
-                  {badge.icon}
-                </div>
-                <p className={`text-xs sm:text-sm font-bold break-words leading-tight ${
-                  badge.earned ? 'text-gray-800' : 'text-gray-500'
-                }`}>
-                  {badge.name}
-                </p>
-                {badge.earned && (
-                  <div className="mt-1">
-                    <span className="text-xs bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-1 sm:px-2 py-0.5 sm:py-1 rounded-full font-bold">
-                      ✅ Earned
-                    </span>
-                  </div>
-                )}
-              </div>
-            ))}
+          <div className="flex items-center justify-between mb-3 sm:mb-4">
+            <h3 className="text-lg sm:text-xl font-bold bg-gradient-to-r from-yellow-600 to-orange-600 bg-clip-text text-transparent flex items-center gap-2">
+              🏆 Achievements & Badges
+            </h3>
+            <button
+              onClick={() => setShowBadgeModal(true)}
+              className="genz-button-secondary text-sm px-3 py-1.5 rounded-lg hover:scale-105 transition-all flex items-center gap-1"
+            >
+              📋 View Rules
+            </button>
           </div>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2 sm:gap-3 md:gap-4">
+            {achievements.length > 0 ? achievements.slice(0, 12).map((badge, index) => (
+              <div
+                key={badge._id || index}
+                className="text-center p-2 sm:p-3 md:p-4 rounded-lg sm:rounded-xl border-2 transition-all hover:scale-105 genz-card border-yellow-300 bg-gradient-to-br from-yellow-50 to-orange-50 shadow-lg"
+              >
+                <div className="text-xl sm:text-2xl md:text-3xl mb-1 sm:mb-2 animate-bounce-slow">
+                  {badge.badgeIcon}
+                </div>
+                <p className="text-xs sm:text-sm font-bold break-words leading-tight text-gray-800">
+                  {badge.badgeName}
+                </p>
+                <div className="mt-1 space-y-1">
+                  <span className="text-xs bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-1 sm:px-2 py-0.5 sm:py-1 rounded-full font-bold">
+                    ✅ Earned
+                  </span>
+                  <div className="text-xs text-gray-600 font-medium">
+                    {badge.points} pts
+                  </div>
+                </div>
+              </div>
+            )) : (
+              <div className="col-span-full text-center py-8">
+                <div className="text-4xl mb-2">🏆</div>
+                <p className="text-gray-600 mb-2">No achievements yet</p>
+                <p className="text-sm text-gray-500">Complete quizzes to earn your first badge!</p>
+              </div>
+            )}
+          </div>
+          {achievements.length > 12 && (
+            <div className="text-center mt-4">
+              <button
+                onClick={() => setShowBadgeModal(true)}
+                className="genz-button-primary text-sm"
+              >
+                View All {achievements.length} Achievements
+              </button>
+            </div>
+          )}
         </div>
       </div>
+
+      {/* Achievement Badge Modal */}
+      <AchievementBadgeModal
+        isOpen={showBadgeModal}
+        onClose={() => setShowBadgeModal(false)}
+      />
     </div>
   )
 }

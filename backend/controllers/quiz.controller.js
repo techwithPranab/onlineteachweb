@@ -4,6 +4,7 @@ const QuizSession = require('../models/QuizSession.model');
 const QuizEvaluationResult = require('../models/QuizEvaluationResult.model');
 const User = require('../models/User.model');
 const QuestionSelectionFactory = require('../algorithms/QuestionSelectionFactory');
+const achievementService = require('../services/achievement.service');
 const logger = require('../utils/logger');
 
 // =====================
@@ -474,16 +475,24 @@ exports.startQuiz = async (req, res, next) => {
       });
     }
     
-    // Get questions from previous attempts to exclude
+    // Get questions from previous attempts to exclude (including in-progress)
+    // This prevents same questions appearing in same difficulty level
     const previousSessions = await QuizSession.find({
       quizId,
       studentId,
-      status: { $in: ['completed', 'submitted', 'auto-submitted'] }
+      status: { $in: ['in-progress', 'completed', 'submitted', 'auto-submitted'] }
     }).select('selectedQuestions');
     
-    const excludeQuestionIds = previousSessions.flatMap(
-      session => session.selectedQuestions.map(q => q.questionId)
-    );
+    // Create a Set to ensure unique question IDs
+    const excludeQuestionIds = [...new Set(
+      previousSessions.flatMap(
+        session => session.selectedQuestions.map(q => q.questionId.toString())
+      )
+    )];
+    
+    logger.info(`[QuizStart] Student ${studentId} starting quiz ${quizId}`);
+    logger.info(`[QuizStart] Found ${previousSessions.length} previous sessions with ${excludeQuestionIds.length} unique questions to exclude`);
+    logger.info(`[QuizStart] Excluded question IDs: ${excludeQuestionIds.slice(0, 10).join(', ')}${excludeQuestionIds.length > 10 ? '...' : ''}`);
     
     // Select questions using the algorithm
     const strategy = QuestionSelectionFactory.getStrategy(strategyName || 'default');
@@ -728,6 +737,17 @@ exports.submitQuiz = async (req, res, next) => {
     const quiz = await Quiz.findById(quizId);
     await quiz.updateStats(session.totalScore, session.timeSpent / 60, session.passed);
     
+    // Check and award achievements
+    let newBadges = [];
+    try {
+      logger.info(`Checking achievements for student ${studentId} after quiz ${quizId}`);
+      newBadges = await achievementService.checkAndAwardAchievements(studentId, session);
+      logger.info(`Awarded ${newBadges.length} new badges for student ${studentId}`);
+    } catch (error) {
+      logger.error('Error checking achievements:', error);
+      // Don't fail the submission if achievement check fails
+    }
+    
     logger.info(`Quiz submitted: Session ${sessionId} for quiz ${quizId} by student ${studentId}`);
     
     res.json({
@@ -741,7 +761,16 @@ exports.submitQuiz = async (req, res, next) => {
         passed: session.passed,
         pendingManualEvaluation: session.pendingManualEvaluation,
         evaluationId: evaluationResult._id
-      }
+      },
+      newBadges: newBadges.map(badge => ({
+        badgeType: badge.badgeType,
+        badgeName: badge.badgeName,
+        badgeDescription: badge.badgeDescription,
+        badgeIcon: badge.badgeIcon,
+        badgeColor: badge.badgeColor,
+        points: badge.points,
+        level: badge.level
+      }))
     });
   } catch (error) {
     next(error);
