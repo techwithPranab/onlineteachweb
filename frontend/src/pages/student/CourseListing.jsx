@@ -9,6 +9,7 @@ import SEOHead from '@/components/SEO/SEOHead';
 import ErrorMessage from '@/components/common/ErrorMessage'
 import EmptyState from '@/components/common/EmptyState'
 import MeritaiButton from '@/components/ui/MeritaiButton'
+import Pagination from '@/components/common/Pagination'
 
 export default function CourseListing() {
   const navigate = useNavigate()
@@ -17,6 +18,8 @@ export default function CourseListing() {
   const [selectedGrade, setSelectedGrade] = useState('')
   const [selectedSubject, setSelectedSubject] = useState('')
   const [showFilters, setShowFilters] = useState(false)
+  const [currentPage, setCurrentPage] = useState(1)
+  const [itemsPerPage] = useState(12) // Show 12 courses per page
 
   // Set default grade to student's grade on mount
   useEffect(() => {
@@ -25,18 +28,31 @@ export default function CourseListing() {
     }
   }, [user, selectedGrade])
 
+  // Reset to page 1 when filters change
+  useEffect(() => {
+    setCurrentPage(1)
+  }, [searchQuery, selectedGrade, selectedSubject])
+
   const { data: coursesData, isLoading, error, refetch } = useQuery(
-    ['courses', { search: searchQuery, grade: selectedGrade, subject: selectedSubject }],
-    () => courseService.getCourses({ 
-      search: searchQuery, 
-      grade: selectedGrade, 
-      subject: selectedSubject 
+    ['courses', {
+      search: searchQuery,
+      grade: selectedGrade,
+      subject: selectedSubject,
+      page: currentPage,
+      limit: itemsPerPage
+    }],
+    () => courseService.getCourses({
+      search: searchQuery,
+      grade: selectedGrade,
+      subject: selectedSubject,
+      page: currentPage,
+      limit: itemsPerPage
     }),
     { keepPreviousData: true }
   )
 
   const subjects = [
-    'Mathematics', 'Science', 'English', 'Social Studies', 
+    'Mathematics', 'Science', 'English', 'Social Studies',
     'Physics', 'Chemistry', 'Biology', 'Computer Science'
   ]
 
@@ -46,6 +62,7 @@ export default function CourseListing() {
     setSearchQuery('')
     setSelectedGrade('')
     setSelectedSubject('')
+    setCurrentPage(1)
   }
 
   const hasActiveFilters = searchQuery || selectedGrade || selectedSubject
@@ -82,10 +99,13 @@ export default function CourseListing() {
           </div>
 
           {/* Filter Toggle Button */}
-          <MeritaiButton onClick={() => setShowFilters(!showFilters)} className="flex items-center justify-center gap-2 whitespace-nowrap min-h-[44px] px-6">
+          <button
+            onClick={() => setShowFilters(!showFilters)}
+            className="px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white font-semibold rounded-xl shadow-lg transition-all duration-300 transform hover:scale-105 hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none text-sm sm:text-base min-h-[44px] flex items-center justify-center gap-2 whitespace-nowrap"
+          >
             <Filter className="w-4 h-4" />
             Filters ✨
-          </MeritaiButton>
+          </button>
         </div>
 
         {/* Expandable Filters */}
@@ -227,8 +247,18 @@ export default function CourseListing() {
       {/* Results Count */}
       {coursesData?.courses?.length > 0 && (
         <div className="mt-6 sm:mt-8 text-center text-xs sm:text-sm text-gray-600">
-          Showing {coursesData.courses.length} course{coursesData.courses.length !== 1 ? 's' : ''}
+          Showing {((currentPage - 1) * itemsPerPage) + 1} to {Math.min(currentPage * itemsPerPage, coursesData.total || coursesData.courses.length)} of {coursesData.total || coursesData.courses.length} course{coursesData.total !== 1 ? 's' : ''}
         </div>
+      )}
+
+      {/* Pagination */}
+      {coursesData?.pages > 1 && (
+        <Pagination
+          currentPage={currentPage}
+          totalPages={coursesData.pages}
+          onPageChange={setCurrentPage}
+          className="mt-6 sm:mt-8"
+        />
       )}
     </div>
 
