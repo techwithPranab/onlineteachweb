@@ -82,71 +82,71 @@ console.log('materialsData: ', materialsData);
       noFollow={true} 
     />
 
-    <div className="min-h-screen bg-gray-50 pb-4">
-      <div className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8 py-3 sm:py-4 lg:py-6">
+    <div className="min-h-screen bg-gray-50">
+      <div className="w-full max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 py-3 sm:py-4 md:py-6">
         {/* Back Button */}
         <button
           onClick={() => navigate('/student/courses')}
-          className="genz-btn-secondary inline-flex items-center gap-2 mb-3 sm:mb-4 lg:mb-6 min-h-[44px] px-3 sm:px-4 py-2 rounded-lg transition-all active:scale-95 sm:hover:scale-105 w-full sm:w-auto justify-center sm:justify-start text-sm sm:text-base"
+          className="genz-btn-secondary inline-flex items-center justify-center sm:justify-start gap-2 mb-3 sm:mb-4 md:mb-6 min-h-[44px] px-4 py-2.5 rounded-lg transition-all active:scale-95 sm:hover:scale-105 w-full sm:w-auto text-sm sm:text-base font-medium"
         >
-          <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5" />
+          <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" />
           <span>Back to Courses 📚</span>
         </button>
 
       {/* Course Header */}
-      <div className="genz-card mb-3 sm:mb-4 lg:mb-6 relative overflow-hidden">
+      <div className="genz-card mb-3 sm:mb-4 md:mb-6 relative overflow-hidden shadow-sm">
         <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-emerald-500 to-teal-500"></div>
-        <div className="p-3 sm:p-4 lg:p-6">
-          <div className="flex flex-col gap-3 sm:gap-4 lg:gap-6">
+        <div className="p-4 sm:p-5 md:p-6 lg:p-8">
+          <div className="flex flex-col gap-4 sm:gap-5 md:gap-6">
             {/* Course Title and Basic Info */}
-            <div className="text-center sm:text-left">
-              <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent mb-2 break-words animate-shimmer leading-tight px-1 sm:px-0">
+            <div className="text-center sm:text-left space-y-2 sm:space-y-3">
+              <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent break-words animate-shimmer leading-tight px-1">
                 {course.title} ✨
               </h1>
-              <p className="text-gray-600 text-xs sm:text-sm lg:text-base mb-2 sm:mb-3 px-1 sm:px-0">
+              <p className="text-gray-600 text-sm sm:text-base md:text-lg font-medium">
                 Grade {course.grade} • {course.subject} • {course.level || 'Intermediate'} Level 🎯
               </p>
-              <p className="text-gray-700 text-xs sm:text-sm lg:text-base leading-relaxed max-w-4xl mx-auto sm:mx-0 px-1 sm:px-0">{course.description}</p>
+              <p className="text-gray-700 text-sm sm:text-base md:text-lg leading-relaxed max-w-4xl mx-auto sm:mx-0">{course.description}</p>
             </div>
 
             {/* Stats Grid - Mobile Optimized */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-3 md:gap-4">
-              <div className="genz-card p-2 sm:p-3 md:p-4 active:scale-95 sm:hover:scale-105 transition-all text-center sm:text-left">
-                <div className="flex flex-col items-center sm:flex-row sm:items-center gap-1 sm:gap-2">
-                  <Star className="w-5 h-5 sm:w-6 sm:h-6 text-yellow-400 fill-current animate-pulse flex-shrink-0" />
-                  <div className="min-w-0">
-                    <div className="font-bold text-sm sm:text-base md:text-lg text-emerald-600">{course.averageRating?.toFixed(1) || 'N/A'}</div>
-                    <div className="text-xs text-gray-600">Rating</div>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5 sm:gap-3 md:gap-4">
+              <div className="genz-card p-3 sm:p-4 md:p-5 active:scale-[0.98] sm:hover:scale-105 transition-all">
+                <div className="flex flex-col items-center sm:flex-row sm:items-center gap-2">
+                  <Star className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-yellow-400 fill-current animate-pulse flex-shrink-0" />
+                  <div className="text-center sm:text-left min-w-0">
+                    <div className="font-bold text-base sm:text-lg md:text-xl text-emerald-600">{course.averageRating?.toFixed(1) || 'N/A'}</div>
+                    <div className="text-xs sm:text-sm text-gray-600 font-medium">Rating</div>
                   </div>
                 </div>
               </div>
 
-              <div className="genz-card p-2 sm:p-3 md:p-4 active:scale-95 sm:hover:scale-105 transition-all text-center sm:text-left">
-                <div className="flex flex-col items-center sm:flex-row sm:items-center gap-1 sm:gap-2">
-                  <Clock className="w-5 h-5 sm:w-6 sm:h-6 text-blue-500 flex-shrink-0" />
-                  <div className="min-w-0">
-                    <div className="font-bold text-sm sm:text-base md:text-lg text-gray-900">{course.duration || '12'} weeks</div>
-                    <div className="text-xs text-gray-600">Duration</div>
+              <div className="genz-card p-3 sm:p-4 md:p-5 active:scale-[0.98] sm:hover:scale-105 transition-all">
+                <div className="flex flex-col items-center sm:flex-row sm:items-center gap-2">
+                  <Clock className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-blue-500 flex-shrink-0" />
+                  <div className="text-center sm:text-left min-w-0">
+                    <div className="font-bold text-base sm:text-lg md:text-xl text-gray-900">{course.duration || '12'} weeks</div>
+                    <div className="text-xs sm:text-sm text-gray-600 font-medium">Duration</div>
                   </div>
                 </div>
               </div>
 
-              <div className="genz-card p-2 sm:p-3 md:p-4 active:scale-95 sm:hover:scale-105 transition-all text-center sm:text-left">
-                <div className="flex flex-col items-center sm:flex-row sm:items-center gap-1 sm:gap-2">
-                  <BookOpen className="w-5 h-5 sm:w-6 sm:h-6 text-green-500 flex-shrink-0" />
-                  <div className="min-w-0">
-                    <div className="font-bold text-sm sm:text-base md:text-lg text-gray-900">{course.questionCount || 0}</div>
-                    <div className="text-xs text-gray-600">Questions</div>
+              <div className="genz-card p-3 sm:p-4 md:p-5 active:scale-[0.98] sm:hover:scale-105 transition-all">
+                <div className="flex flex-col items-center sm:flex-row sm:items-center gap-2">
+                  <BookOpen className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-green-500 flex-shrink-0" />
+                  <div className="text-center sm:text-left min-w-0">
+                    <div className="font-bold text-base sm:text-lg md:text-xl text-gray-900">{course.questionCount || 0}</div>
+                    <div className="text-xs sm:text-sm text-gray-600 font-medium">Questions</div>
                   </div>
                 </div>
               </div>
 
-              <div className="genz-card p-2 sm:p-3 md:p-4 active:scale-95 sm:hover:scale-105 transition-all text-center sm:text-left">
-                <div className="flex flex-col items-center sm:flex-row sm:items-center gap-1 sm:gap-2">
-                  <FileText className="w-5 h-5 sm:w-6 sm:h-6 text-pink-500 flex-shrink-0" />
-                  <div className="min-w-0">
-                    <div className="font-bold text-sm sm:text-base md:text-lg text-gray-900 capitalize">{course.level || 'Intermediate'}</div>
-                    <div className="text-xs text-gray-600">Level</div>
+              <div className="genz-card p-3 sm:p-4 md:p-5 active:scale-[0.98] sm:hover:scale-105 transition-all">
+                <div className="flex flex-col items-center sm:flex-row sm:items-center gap-2">
+                  <FileText className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-pink-500 flex-shrink-0" />
+                  <div className="text-center sm:text-left min-w-0">
+                    <div className="font-bold text-base sm:text-lg md:text-xl text-gray-900 capitalize">{course.level || 'Intermediate'}</div>
+                    <div className="text-xs sm:text-sm text-gray-600 font-medium">Level</div>
                   </div>
                 </div>
               </div>
@@ -156,14 +156,14 @@ console.log('materialsData: ', materialsData);
       </div>
 
       {/* Tabs */}
-      <div className="genz-card mb-3 sm:mb-4 lg:mb-6">
-        <div className="border-b border-gray-200 overflow-x-auto">
-          <nav className="flex scrollbar-hide min-w-max sm:min-w-0 px-1 sm:px-2 lg:px-6">
+      <div className="genz-card mb-3 sm:mb-4 md:mb-6 shadow-sm">
+        <div className="border-b border-gray-200 -mb-px">
+          <nav className="flex overflow-x-auto scrollbar-hide touch-pan-x" style={{WebkitOverflowScrolling: 'touch'}}>
             {tabs.map((tab) => (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`flex items-center gap-1 sm:gap-2 px-2 sm:px-3 lg:px-6 py-2 sm:py-3 border-b-2 transition-all whitespace-nowrap min-h-[44px] text-xs sm:text-sm lg:text-base flex-shrink-0 active:scale-95 sm:hover:scale-105 rounded-t-lg ${
+                className={`flex items-center justify-center gap-1.5 sm:gap-2 px-4 sm:px-5 md:px-6 lg:px-8 py-3 sm:py-3.5 border-b-2 transition-all whitespace-nowrap min-h-[48px] sm:min-h-[52px] text-sm sm:text-base flex-shrink-0 active:scale-95 sm:hover:scale-105 rounded-t-lg font-medium ${
                   activeTab === tab.id
                     ? 'border-emerald-500 text-emerald-600 bg-gradient-to-r from-emerald-50 to-teal-50 font-semibold'
                     : 'border-transparent text-gray-600 hover:text-emerald-600 hover:bg-emerald-50'
@@ -176,7 +176,7 @@ console.log('materialsData: ', materialsData);
           </nav>
         </div>
 
-        <div className="p-2 sm:p-3 lg:p-6">
+        <div className="p-4 sm:p-5 md:p-6 lg:p-8">
           {activeTab === 'overview' && (
             <div className="space-y-3 sm:space-y-4 lg:space-y-6">
               <div>
@@ -285,30 +285,30 @@ console.log('materialsData: ', materialsData);
 
           {activeTab === 'materials' && (
             <div>
-              <h3 className="text-base sm:text-lg lg:text-xl font-semibold mb-3 sm:mb-4 text-gray-900 flex items-center gap-2">
+              <h3 className="text-base sm:text-lg md:text-xl lg:text-2xl font-semibold mb-3 sm:mb-4 text-gray-900 flex items-center gap-2">
                 📚 Course Materials
               </h3>
               {materialsData?.data?.length > 0 ? (
                 <div className="space-y-3 sm:space-y-4">
                   {materialsData.data.map((material) => (
-                    <div key={material._id} className="genz-card p-3 sm:p-4 hover:scale-105 transition-all">
+                    <div key={material._id} className="genz-card p-3 sm:p-4 md:p-5 active:scale-[0.98] sm:hover:scale-105 transition-all">
                       <div className="flex items-center gap-3 sm:gap-4">
-                        <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg">
-                          {material.type === 'video' ? <Video className="w-4 h-4 sm:w-5 sm:h-5 text-white" /> : <FileText className="w-4 h-4 sm:w-5 sm:h-5 text-white" />}
+                        <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg">
+                          {material.type === 'video' ? <Video className="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 text-white" /> : <FileText className="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 text-white" />}
                         </div>
                         <div className="flex-1 min-w-0">
-                          <h4 className="font-semibold text-gray-900 text-sm sm:text-base mb-1">{material.title}</h4>
+                          <h4 className="font-semibold text-gray-900 text-sm sm:text-base md:text-lg mb-1 truncate">{material.title}</h4>
                           <p className="text-xs sm:text-sm text-gray-600 capitalize mb-2">{material.type} 📄</p>
                           <div className="flex flex-wrap gap-2">
                             {material.isFree ? (
                               <button 
                                 onClick={() => openMaterialModal(material)}
-                                className="genz-btn-secondary text-xs sm:text-sm min-h-[36px] px-3 sm:px-4 py-1.5 sm:py-2"
+                                className="genz-btn-secondary text-xs sm:text-sm md:text-base min-h-[40px] sm:min-h-[44px] px-4 sm:px-5 py-2 sm:py-2.5 font-medium active:scale-95 sm:hover:scale-105"
                               >
                                 View Material 👁️
                               </button>
                             ) : (
-                              <span className="bg-gray-100 text-gray-600 px-2 py-1 rounded-full text-xs font-medium">
+                              <span className="bg-gray-100 text-gray-600 px-3 py-1.5 rounded-full text-xs sm:text-sm font-medium">
                                 🔒 Locked
                               </span>
                             )}
@@ -320,10 +320,10 @@ console.log('materialsData: ', materialsData);
                 </div>
               ) : (
                 <div className="text-center py-8 sm:py-12">
-                  <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-gray-400 to-gray-500 rounded-full flex items-center justify-center mx-auto mb-3 text-2xl sm:text-3xl">
+                  <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-gray-400 to-gray-500 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl sm:text-4xl">
                     📚
                   </div>
-                  <p className="text-gray-600 text-sm sm:text-base font-medium">No materials available yet.</p>
+                  <p className="text-gray-600 text-sm sm:text-base md:text-lg font-medium">No materials available yet.</p>
                 </div>
               )}
             </div>
