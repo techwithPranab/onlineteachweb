@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import aiQuestionService from '../../services/aiQuestionService'
 import { courseService } from '../../services/apiServices'
 import LoadingSpinner from '../../components/common/LoadingSpinner'
+import SEOHead from '../../components/SEO/SEOHead';
 import ErrorMessage from '../../components/common/ErrorMessage'
 
 export default function AdminAIQuestionsDashboard() {
@@ -53,6 +54,10 @@ export default function AdminAIQuestionsDashboard() {
   if (loading) return <LoadingSpinner />
 
   return (
+    <>
+
+    <SEOHead title="A I Questions Dashboard - Admin" noIndex={true} noFollow={true} />
+
     <div className="p-6 max-w-7xl mx-auto">
       {/* Header */}
       <div className="mb-8">
@@ -215,7 +220,9 @@ export default function AdminAIQuestionsDashboard() {
         </button>
       </div>
     </div>
-  )
+
+
+    </>)
 }
 
 function StatCard({ title, value, icon, color }) {

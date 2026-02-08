@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { quizService, questionService, courseService } from '../../services/apiServices'
 import LoadingSpinner from '../../components/common/LoadingSpinner'
+import SEOHead from '../../components/SEO/SEOHead';
 import ErrorMessage from '../../components/common/ErrorMessage'
 
 export default function QuizCreate() {
@@ -468,6 +469,10 @@ export default function QuizCreate() {
   )
 
   return (
+    <>
+
+    <SEOHead title="Quiz Create - Tutor" noIndex={true} noFollow={true} />
+
     <div className="w-full">
       <button
         onClick={() => navigate('/tutor/quizzes')}
@@ -543,5 +548,7 @@ export default function QuizCreate() {
         )}
       </div>
     </div>
-  )
+
+
+    </>)
 }

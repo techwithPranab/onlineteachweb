@@ -5,6 +5,7 @@ import { ArrowLeft, Edit, Calendar, Users, IndianRupee, BookOpen, Clock, Globe, 
 import { courseService } from '@/services/apiServices'
 import { useAuthStore } from '@/store/authStore'
 import LoadingSpinner from '@/components/common/LoadingSpinner'
+import SEOHead from '@/components/SEO/SEOHead';
 import ErrorMessage from '@/components/common/ErrorMessage'
 import Modal from '@/components/common/Modal'
 
@@ -174,6 +175,10 @@ export default function AdminCourseView() {
   }
 
   return (
+    <>
+
+    <SEOHead title="Admin Course View - Admin" noIndex={true} noFollow={true} />
+
     <div className="p-4">
       {/* Header */}
       <div className="mb-6">
@@ -663,5 +668,7 @@ export default function AdminCourseView() {
         </Modal>
       )}
     </div>
-  )
+
+
+    </>)
 }

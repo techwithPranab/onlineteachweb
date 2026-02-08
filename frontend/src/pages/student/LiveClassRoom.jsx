@@ -21,6 +21,7 @@ import {
 import { useAuthStore } from '@/store/authStore'
 import { liveService } from '@/services/apiServices'
 import Whiteboard from '../../components/whiteboard/TldrawWhiteboard'
+import SEOHead from '@/components/SEO/SEOHead'
 
 export default function LiveClassRoom() {
   const { id: sessionId } = useParams()
@@ -222,6 +223,8 @@ export default function LiveClassRoom() {
   }
 
   return (
+    <>
+    <SEOHead title="Live Class Room - Student" noIndex={true} noFollow={true} />
     <div className="fixed inset-0 bg-gray-900 flex flex-col">
       {/* Header */}
       <div className="bg-gray-800 px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between">
@@ -448,5 +451,6 @@ export default function LiveClassRoom() {
         </div>
       </div>
     </div>
+    </>
   )
 }

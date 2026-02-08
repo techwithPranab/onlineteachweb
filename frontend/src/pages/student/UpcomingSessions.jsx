@@ -5,6 +5,7 @@ import { Calendar, Clock, Video, Users, BookOpen, Filter, Search } from 'lucide-
 import { sessionService } from '@/services/apiServices'
 import { useAuthStore } from '@/store/authStore'
 import LoadingSpinner from '@/components/common/LoadingSpinner'
+import SEOHead from '@/components/SEO/SEOHead';
 import ErrorMessage from '@/components/common/ErrorMessage'
 import MeritaiCard from '@/components/ui/MeritaiCard'
 
@@ -38,6 +39,10 @@ export default function UpcomingSessions() {
   if (error) return <ErrorMessage message={error.message || 'Failed to load sessions'} />
 
   return (
+    <>
+
+    <SEOHead title="Upcoming Sessions - Student" noIndex={true} noFollow={true} />
+
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
       {/* Header */}
       <MeritaiCard className="mb-6 relative overflow-hidden">
@@ -94,7 +99,9 @@ export default function UpcomingSessions() {
         </div>
       )}
     </div>
-  )
+
+
+    </>)
 }
 
 function SessionCard({ session, onClick }) {

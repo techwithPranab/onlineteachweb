@@ -1,8 +1,23 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Search, Book, Video, CreditCard, Settings, MessageCircle, FileText, ChevronRight, HelpCircle, Mail } from 'lucide-react'
+import SEOHead from '../../components/SEO/SEOHead'
+import Breadcrumb from '../../components/common/Breadcrumb'
 
 export default function HelpCenter() {
+  const seoData = {
+    title: 'Help Center - MeritAI Support | FAQs & Knowledge Base',
+    description: 'Find answers to common questions about MeritAI online learning platform. Browse our comprehensive help center for guides on courses, payments, live classes, and more.',
+    keywords: 'help center, support articles, knowledge base, FAQs, how-to guides, online learning help, course help, payment help, technical support',
+    ogType: 'website',
+    canonical: '/help'
+  };
+
+  const breadcrumbItems = [
+    { label: 'Home', path: '/' },
+    { label: 'Help Center', path: '/help' }
+  ];
+
   const [searchQuery, setSearchQuery] = useState('')
 
   const categories = [
@@ -94,16 +109,21 @@ export default function HelpCenter() {
   ]
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Hero Section */}
-      <section className="bg-gradient-to-br from-blue-600 to-blue-800 text-white py-20">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-8">
-            <h1 className="text-5xl font-bold mb-4">How can we help you?</h1>
-            <p className="text-xl text-blue-100">
-              Search our knowledge base or browse categories below
-            </p>
-          </div>
+    <>
+      <SEOHead {...seoData} />
+      
+      <div className="min-h-screen bg-gray-50">
+        <Breadcrumb items={breadcrumbItems} />
+        
+        {/* Hero Section */}
+        <section className="bg-gradient-to-br from-blue-600 to-blue-800 text-white py-20">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-8">
+              <h1 className="text-5xl font-bold mb-4">How can we help you?</h1>
+              <p className="text-xl text-blue-100">
+                Search our knowledge base or browse categories below
+              </p>
+            </div>
 
           {/* Search Bar */}
           <div className="relative">
@@ -224,6 +244,7 @@ export default function HelpCenter() {
         </div>
       </section>
     </div>
+    </>
   )
 }
 

@@ -5,6 +5,7 @@ import { analyzeQuizResults } from '@/utils/quiz/quizAnalysis'
 import { updateStudentPerformance } from '@/utils/quizAlgorithm'
 import { useAuthStore } from '@/store/authStore'
 import LoadingSpinner from '../../components/common/LoadingSpinner'
+import SEOHead from '../../components/SEO/SEOHead';
 import ConfirmDialog from '../../components/common/ConfirmDialog'
 import { QuizTimer, QuizProgressBar, QuestionCard } from '../../components/quiz'
 import MeritaiCard from '../../components/ui/MeritaiCard'
@@ -595,6 +596,8 @@ export default function QuizAttempt() {
   if (!session) return null
 
   return (
+    <>
+    <SEOHead title="Quiz Attempt - Student" noIndex={true} noFollow={true} />
     <div className="min-h-screen bg-white">
       {/* Header with Timer */}
       <MeritaiCard className="border-b sticky top-0 z-10 shadow-md">
@@ -806,5 +809,6 @@ export default function QuizAttempt() {
         disabled={submitting}
       />
     </div>
+    </>
   )
 }

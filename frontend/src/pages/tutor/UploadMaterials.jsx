@@ -4,6 +4,7 @@ import { Upload, File, Video, FileText, Image, X, Check, Edit, Trash2, Download,
 import { materialService, courseService } from '@/services/apiServices'
 import { useAuthStore } from '@/store/authStore'
 import LoadingSpinner from '@/components/common/LoadingSpinner'
+import SEOHead from '@/components/SEO/SEOHead';
 import ErrorMessage from '@/components/common/ErrorMessage'
 import Modal from '@/components/common/Modal'
 import ConfirmDialog from '@/components/common/ConfirmDialog'
@@ -198,6 +199,10 @@ export default function UploadMaterials() {
   if (error) return <ErrorMessage message={error.message || 'Failed to load materials'} onRetry={refetch} />
 
   return (
+    <>
+
+    <SEOHead title="Upload Materials - Tutor" noIndex={true} noFollow={true} />
+
     <div className="max-w-7xl mx-auto">
       {/* Header */}
       <div className="mb-8">
@@ -595,5 +600,7 @@ export default function UploadMaterials() {
         variant="danger"
       />
     </div>
-  )
+
+
+    </>)
 }

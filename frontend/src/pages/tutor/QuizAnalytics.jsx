@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { quizService, quizEvaluationService, courseService } from '../../services/apiServices'
 import LoadingSpinner from '../../components/common/LoadingSpinner'
+import SEOHead from '../../components/SEO/SEOHead';
 import ErrorMessage from '../../components/common/ErrorMessage'
 
 export default function QuizAnalytics() {
@@ -85,6 +86,10 @@ function OverallAnalytics() {
   if (loading) return <LoadingSpinner />
 
   return (
+    <>
+
+    <SEOHead title="Quiz Analytics - Tutor" noIndex={true} noFollow={true} />
+
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       {/* Header */}
       <div className="flex items-center justify-between mb-8">
@@ -236,6 +241,7 @@ function OverallAnalytics() {
         </div>
       </div>
     </div>
+    </>
   )
 }
 

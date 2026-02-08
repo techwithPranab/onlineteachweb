@@ -1,5 +1,8 @@
 import { useState, useEffect } from 'react'
 import { ChevronDown, ChevronUp, Search } from 'lucide-react'
+import SEOHead from '../../components/SEO/SEOHead'
+import Breadcrumb from '../../components/common/Breadcrumb'
+import { FAQSchema } from '../../components/Schema'
 
 export default function FAQs() {
   const [searchQuery, setSearchQuery] = useState('')
@@ -372,9 +375,34 @@ export default function FAQs() {
     setOpenIndex(openIndex === index ? null : index)
   }
 
+  const seoData = {
+    title: 'Frequently Asked Questions (FAQs)',
+    description: 'Find answers to common questions about MeritAI - our courses, pricing, quizzes, live classes, and more. Get help with student and tutor queries.',
+    keywords: 'FAQs, frequently asked questions, help, support, online learning help, quiz help, course help'
+  };
+
+  const breadcrumbItems = [
+    { label: 'FAQs', path: '/faqs' }
+  ];
+
+  // Prepare FAQ data for schema (all FAQs for better SEO)
+  const faqSchemaData = faqs.map(faq => ({
+    question: faq.question,
+    answer: faq.answer
+  }));
+
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Hero Section */}
+    <>
+      <SEOHead {...seoData} />
+      <FAQSchema faqs={faqSchemaData} />
+      
+      <div className="min-h-screen bg-gray-50">
+        {/* Breadcrumb */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
+          <Breadcrumb items={breadcrumbItems} />
+        </div>
+        
+        {/* Hero Section */}
       <section className="bg-gradient-to-br from-teal-500 to-teal-700 text-white py-20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-8">
@@ -482,6 +510,7 @@ export default function FAQs() {
           </div>
         </div>
       </section>
-    </div>
+      </div>
+    </>
   )
 }

@@ -17,31 +17,47 @@ import {
   BookMarked,
   Trophy
 } from 'lucide-react'
+import SEOHead from '../../components/SEO/SEOHead'
+import { OrganizationSchema, WebsiteSchema } from '../../components/Schema'
 
 export default function LandingPage() {
+  const seoData = {
+    title: 'AI-Powered Personalized Learning & Gap Analysis',
+    description: 'Find your learning gaps with AI precision. Get personalized assessments, expert mentorship, and master every concept with our adaptive learning platform for CBSE & ICSE students.',
+    keywords: 'AI learning platform, personalized education, learning gap analysis, online tutoring, CBSE courses, ICSE courses, adaptive learning, online classes for students, AI tutor',
+    ogType: 'website',
+    canonical: typeof window !== 'undefined' ? window.location.href : 'https://meritai.com'
+  };
+
   return (
-    <div className="min-h-screen">
-      {/* Hero Section - AI-Powered Gap Identification */}
-      <HeroSection />
+    <>
+      <SEOHead {...seoData} />
+      <OrganizationSchema />
+      <WebsiteSchema searchUrl={typeof window !== 'undefined' ? `${window.location.origin}/courses` : undefined} />
       
-      {/* How It Works - 4-Step Flow */}
-      <HowItWorksSection />
-      
-      {/* Key Features Section */}
-      <KeyFeaturesSection />
-      
-      {/* Learning Journey Section */}
-      <LearningJourneySection />
-      
-      {/* Audience Section */}
-      <AudienceSection />
-      
-      {/* Trust & Value Section */}
-      <TrustValueSection />
-      
-      {/* Final Call to Action */}
-      <FinalCTASection />
-    </div>
+      <div className="min-h-screen">
+        {/* Hero Section - AI-Powered Gap Identification */}
+        <HeroSection />
+        
+        {/* How It Works - 4-Step Flow */}
+        <HowItWorksSection />
+        
+        {/* Key Features Section */}
+        <KeyFeaturesSection />
+        
+        {/* Learning Journey Section */}
+        <LearningJourneySection />
+        
+        {/* Audience Section */}
+        <AudienceSection />
+        
+        {/* Trust & Value Section */}
+        <TrustValueSection />
+        
+        {/* Final Call to Action */}
+        <FinalCTASection />
+      </div>
+    </>
   )
 }
 

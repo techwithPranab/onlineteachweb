@@ -1,6 +1,8 @@
 import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { BookOpen, Video, Award, TrendingUp, Clock, Users, CheckCircle, ArrowRight } from 'lucide-react'
+import SEOHead from '../../components/SEO/SEOHead'
+import Breadcrumb from '../../components/common/Breadcrumb'
 
 export default function ForStudents() {
   // Scroll to top when component mounts
@@ -8,9 +10,27 @@ export default function ForStudents() {
     window.scrollTo(0, 0)
   }, [])
 
+  const seoData = {
+    title: 'For Students - AI-Powered Learning Platform',
+    description: 'Master concepts with AI-driven gap analysis, personalized quizzes, and expert mentorship. Track your progress and achieve academic excellence with MeritAI.',
+    keywords: 'online learning for students, personalized learning, AI quizzes, exam preparation, CBSE study, ICSE study, student dashboard, progress tracking'
+  };
+
+  const breadcrumbItems = [
+    { label: 'For Students', path: '/for-students' }
+  ];
+
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Hero Section (MeritAI primary theme) */}
+    <>
+      <SEOHead {...seoData} />
+      
+      <div className="min-h-screen bg-gray-50">
+        {/* Breadcrumb */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
+          <Breadcrumb items={breadcrumbItems} />
+        </div>
+        
+        {/* Hero Section (MeritAI primary theme) */}
       <section className="bg-gradient-to-br from-primary-600 to-primary-800 text-white py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
@@ -184,7 +204,8 @@ export default function ForStudents() {
           <p className="mt-4 text-blue-200">No credit card required • Start evaluating your knowledge today</p>
         </div>
       </section>
-    </div>
+      </div>
+    </>
   )
 }
 

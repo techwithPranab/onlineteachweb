@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { quizService, courseService, algorithmQuizService, questionService } from '@/services/apiServices'
 import { useAuthStore } from '@/store/authStore'
 import LoadingSpinner from '@/components/common/LoadingSpinner'
+import SEOHead from '@/components/SEO/SEOHead';
 import ErrorMessage from '@/components/common/ErrorMessage'
 import { selectQuestionsAlgorithm } from '@/utils/quizAlgorithm'
 import { BookOpen, Clock, Target, AlertCircle, CheckCircle, ArrowRight, Layers } from 'lucide-react'
@@ -337,6 +338,10 @@ export default function QuizSetup() {
   if (error && !quiz) return <ErrorMessage message={error} />
 
   return (
+    <>
+
+    <SEOHead title="Quiz Setup - Student" noIndex={true} noFollow={true} />
+
     <div className="min-h-screen bg-white">
       <div className="w-full px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
         
@@ -661,5 +666,7 @@ export default function QuizSetup() {
         )}
       </div>
     </div>
-  )
+
+
+    </>)
 }

@@ -3,6 +3,7 @@ import { useQuery, useMutation, useQueryClient } from 'react-query'
 import { CreditCard, CheckCircle, Clock, XCircle, Download } from 'lucide-react'
 import { subscriptionService, paymentService } from '@/services/apiServices'
 import LoadingSpinner from '@/components/common/LoadingSpinner'
+import SEOHead from '@/components/SEO/SEOHead';
 import ErrorMessage from '@/components/common/ErrorMessage'
 import Modal from '@/components/common/Modal'
 import ConfirmDialog from '@/components/common/ConfirmDialog'
@@ -125,6 +126,10 @@ export default function SubscriptionManagement() {
   if (error) return <ErrorMessage message={(error && error.message) || 'Failed to load subscription'} />
 
   return (
+    <>
+
+    <SEOHead title="Subscription Management - Student" noIndex={true} noFollow={true} />
+
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
       {/* Header */}
@@ -516,5 +521,6 @@ export default function SubscriptionManagement() {
       />
     </div>
     </div>
+    </>
   )
 }

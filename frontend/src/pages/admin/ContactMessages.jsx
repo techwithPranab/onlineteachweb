@@ -3,6 +3,7 @@ import { useQuery, useMutation, useQueryClient } from 'react-query'
 import { Trash2, CheckCircle, Clock, Mail } from 'lucide-react'
 import { adminService } from '@/services/apiServices'
 import LoadingSpinner from '@/components/common/LoadingSpinner'
+import SEOHead from '@/components/SEO/SEOHead';
 import ErrorMessage from '@/components/common/ErrorMessage'
 
 export default function ContactMessages() {
@@ -36,6 +37,10 @@ export default function ContactMessages() {
   if (error) return <ErrorMessage message={error.message || 'Failed to load messages'} />
 
   return (
+    <>
+
+    <SEOHead title="Contact Messages - Admin" noIndex={true} noFollow={true} />
+
     <div className="max-w-7xl mx-auto">
       <div className="mb-4">
         <h1 className="text-2xl font-bold text-gray-900 mb-1">Contact Messages</h1>
@@ -112,5 +117,7 @@ export default function ContactMessages() {
         )}
       </div>
     </div>
-  )
+
+
+    </>)
 }

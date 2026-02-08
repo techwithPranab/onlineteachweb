@@ -5,6 +5,15 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
+  
+  // Image optimization
+  images: {
+    formats: ['image/webp', 'image/avif'],
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
+    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+    minimumCacheTTL: 60,
+  },
+  
   async rewrites() {
     return [
       {
@@ -13,19 +22,58 @@ const nextConfig = {
       },
     ];
   },
+  
   async headers() {
     return [
       {
+        // Apply these headers to all routes
+        source: '/:path*',
+        headers: [
+          {
+            key: 'X-DNS-Prefetch-Control',
+            value: 'on'
+          },
+          {
+            key: 'X-Frame-Options',
+            value: 'SAMEORIGIN'
+          },
+          {
+            key: 'X-Content-Type-Options',
+            value: 'nosniff'
+          },
+          {
+            key: 'Referrer-Policy',
+            value: 'origin-when-cross-origin'
+          },
+          {
+            key: 'Permissions-Policy',
+            value: 'camera=(), microphone=(), geolocation=()'
+          }
+        ],
+      },
+      {
+        // Cache static assets
+        source: '/:all*(svg|jpg|jpeg|png|gif|ico|webp|avif|woff|woff2|ttf|eot)',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          }
+        ],
+      },
+      {
+        // Cache HTML pages
         source: '/:path*',
         headers: [
           {
             key: 'Cache-Control',
-            value: 'no-store, must-revalidate',
-          },
+            value: 'public, max-age=3600, must-revalidate',
+          }
         ],
-      },
+      }
     ];
   },
+  
   webpack: (config) => {
     // Handle fabric.js which has some compatibility issues
     config.externals = config.externals || {};
@@ -33,7 +81,17 @@ const nextConfig = {
     
     return config;
   },
+  
   transpilePackages: ['fabric'],
+  
+  // Compression
+  compress: true,
+  
+  // Production source maps (disable for better performance)
+  productionBrowserSourceMaps: false,
+  
+  // Power trade-off for better performance
+  poweredByHeader: false,
 };
 
 module.exports = nextConfig;

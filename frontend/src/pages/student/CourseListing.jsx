@@ -5,6 +5,7 @@ import { Search, BookOpen, Star, Filter, X } from 'lucide-react'
 import { courseService } from '@/services/apiServices'
 import { useAuthStore } from '@/store/authStore'
 import LoadingSpinner from '@/components/common/LoadingSpinner'
+import SEOHead from '@/components/SEO/SEOHead';
 import ErrorMessage from '@/components/common/ErrorMessage'
 import EmptyState from '@/components/common/EmptyState'
 import MeritaiButton from '@/components/ui/MeritaiButton'
@@ -50,6 +51,10 @@ export default function CourseListing() {
   const hasActiveFilters = searchQuery || selectedGrade || selectedSubject
 
   return (
+    <>
+
+    <SEOHead title="Course Listing - Student" noIndex={true} noFollow={true} />
+
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
       {/* Gen-Z Header */}
       <div className="mb-8 text-center">
@@ -226,5 +231,7 @@ export default function CourseListing() {
         </div>
       )}
     </div>
-  )
+
+
+    </>)
 }

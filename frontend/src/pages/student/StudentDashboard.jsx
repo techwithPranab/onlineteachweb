@@ -4,6 +4,7 @@ import { courseService, sessionService, materialService, reportService, algorith
 import { useAuthStore } from '@/store/authStore'
 import { Link } from 'react-router-dom'
 import LoadingSpinner from '@/components/common/LoadingSpinner'
+import SEOHead from '@/components/SEO/SEOHead';
 import ErrorMessage from '@/components/common/ErrorMessage'
 import { UpcomingQuizzesWidget } from '@/components/dashboard'
 
@@ -97,6 +98,10 @@ export default function StudentDashboard() {
   const availableCoursesCount = courses.length
 
   return (
+    <>
+
+    <SEOHead title="Student Dashboard - Student" noIndex={true} noFollow={true} />
+
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 space-y-6 sm:space-y-8">
       {/* Welcome Header with MeriTai Style */}
       <div className="bg-gradient-to-r from-emerald-600 to-teal-600 p-6 sm:p-8 rounded-2xl text-center text-white shadow-lg">
@@ -202,7 +207,9 @@ export default function StudentDashboard() {
         )}
       </div>
     </div>
-  )
+
+
+    </>)
 }
 
 function StatCard({ icon, label, value, emoji, gradient }) {

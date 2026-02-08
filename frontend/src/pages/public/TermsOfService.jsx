@@ -1,7 +1,22 @@
 import { useState, useEffect } from 'react'
 import { contactService } from '@/services/apiServices'
+import SEOHead from '../../components/SEO/SEOHead'
+import Breadcrumb from '../../components/common/Breadcrumb'
 
 export default function TermsOfService() {
+  const seoData = {
+    title: 'Terms of Service - MeritAI | User Agreement & Legal Terms',
+    description: 'Read MeritAI\'s terms of service to understand user rights, responsibilities, and legal agreements for using our online learning platform. Updated January 2024.',
+    keywords: 'terms of service, user agreement, legal terms, terms and conditions, platform rules, user responsibilities, service agreement',
+    ogType: 'article',
+    canonical: '/terms-of-service'
+  };
+
+  const breadcrumbItems = [
+    { label: 'Home', path: '/' },
+    { label: 'Terms of Service', path: '/terms-of-service' }
+  ];
+
   const [contactInfo, setContactInfo] = useState(null)
   const lastUpdated = "January 15, 2024"
 
@@ -20,16 +35,21 @@ export default function TermsOfService() {
   }, [])
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Hero Section */}
-      <section className="bg-gradient-to-br from-teal-500 to-teal-700 text-white py-16">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="text-4xl font-bold mb-4">Terms of Service</h1>
-          <p className="text-xl text-gray-300">
-            Last Updated: {lastUpdated}
-          </p>
-        </div>
-      </section>
+    <>
+      <SEOHead {...seoData} />
+      
+      <div className="min-h-screen bg-gray-50">
+        <Breadcrumb items={breadcrumbItems} />
+        
+        {/* Hero Section */}
+        <section className="bg-gradient-to-br from-teal-500 to-teal-700 text-white py-16">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h1 className="text-4xl font-bold mb-4">Terms of Service</h1>
+            <p className="text-xl text-gray-300">
+              Last Updated: {lastUpdated}
+            </p>
+          </div>
+        </section>
 
       {/* Content */}
       <section className="py-16">
@@ -312,6 +332,7 @@ export default function TermsOfService() {
         </div>
       </section>
     </div>
+    </>
   )
 }
 

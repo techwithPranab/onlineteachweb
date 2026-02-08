@@ -3,6 +3,7 @@ import { useQuery, useMutation, useQueryClient } from 'react-query'
 import { Link } from 'react-router-dom'
 import { Plus, Search, Filter, Edit, Trash2, Eye, BookOpen } from 'lucide-react'
 import LoadingSpinner from '@/components/common/LoadingSpinner'
+import SEOHead from '@/components/SEO/SEOHead';
 import ErrorMessage from '@/components/common/ErrorMessage'
 import { adminService, courseService } from '@/services/apiServices'
 
@@ -66,6 +67,10 @@ export default function AdminCourseManagement() {
   const stats = statsData?.stats || {}
 
   return (
+    <>
+
+    <SEOHead title="Admin Course Management - Admin" noIndex={true} noFollow={true} />
+
     <div className="p-4">
       <div className="mb-4">
         <div className="flex justify-between items-center mb-3">
@@ -306,5 +311,7 @@ export default function AdminCourseManagement() {
         )}
       </div>
     </div>
-  )
+
+
+    </>)
 }

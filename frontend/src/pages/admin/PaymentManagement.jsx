@@ -4,6 +4,7 @@ import { CreditCard, DollarSign, TrendingUp, Download, Filter, Calendar, User, R
 import { paymentService } from '@/services/apiServices'
 import { useAuthStore } from '@/store/authStore'
 import LoadingSpinner from '@/components/common/LoadingSpinner'
+import SEOHead from '@/components/SEO/SEOHead';
 import ErrorMessage from '@/components/common/ErrorMessage'
 import { format } from 'date-fns'
 
@@ -70,6 +71,10 @@ export default function PaymentManagement() {
   }
 
   return (
+    <>
+
+    <SEOHead title="Payment Management - Admin" noIndex={true} noFollow={true} />
+
     <div className="space-y-4">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
@@ -374,5 +379,7 @@ export default function PaymentManagement() {
         </div>
       )}
     </div>
-  )
+
+
+    </>)
 }

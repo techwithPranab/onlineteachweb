@@ -2,8 +2,16 @@ import { useState, useEffect } from 'react'
 import { useNavigate, Link, useLocation } from 'react-router-dom'
 import { useAuthStore } from '../../store/authStore'
 import { User, Mail, Lock, GraduationCap, Check } from 'lucide-react'
+import SEOHead from '../../components/SEO/SEOHead'
 
 export default function Signup() {
+  const seoData = {
+    title: 'Sign Up - MeritAI',
+    description: 'Create your MeritAI account to start your personalized online learning journey.',
+    noindex: true,
+    nofollow: true
+  };
+
   const navigate = useNavigate()
   const { register } = useAuthStore()
   const location = useLocation()
@@ -79,12 +87,15 @@ export default function Signup() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4">
-      <div className="max-w-4xl w-full">
-        <div className="text-center mb-8">
-          <h2 className="text-3xl font-bold text-gray-900">Create an account</h2>
-          <p className="mt-2 text-gray-600">Join our learning community and discover your learning gaps with AI</p>
-        </div>
+    <>
+      <SEOHead {...seoData} />
+      
+      <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4">
+        <div className="max-w-4xl w-full">
+          <div className="text-center mb-8">
+            <h2 className="text-3xl font-bold text-gray-900">Create an account</h2>
+            <p className="mt-2 text-gray-600">Join our learning community and discover your learning gaps with AI</p>
+          </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
           {/* Left: Signup Form */}
@@ -222,5 +233,6 @@ export default function Signup() {
          </div>
        </div>
      </div>
+     </>
    )
  }

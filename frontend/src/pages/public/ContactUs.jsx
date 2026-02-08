@@ -1,8 +1,23 @@
 import { useState, useEffect } from 'react'
 import { Mail, Phone, MapPin, Clock, Send, CheckCircle } from 'lucide-react'
 import { contactService } from '@/services/apiServices'
+import SEOHead from '../../components/SEO/SEOHead'
+import Breadcrumb from '../../components/common/Breadcrumb'
 
 export default function ContactUs() {
+  const seoData = {
+    title: 'Contact Us - MeritAI Support | Get Help & Send Inquiries',
+    description: 'Contact MeritAI support team for assistance with online learning, course inquiries, technical support, or general questions. We\'re here to help students and tutors.',
+    keywords: 'contact MeritAI, customer support, help desk, student support, tutor support, online learning help, technical support, course inquiries',
+    ogType: 'website',
+    canonical: '/contact'
+  };
+
+  const breadcrumbItems = [
+    { label: 'Home', path: '/' },
+    { label: 'Contact Us', path: '/contact' }
+  ];
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -71,18 +86,23 @@ export default function ContactUs() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Hero Section */}
-      <section className="bg-gradient-to-br from-teal-500 to-teal-700 text-white py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center">
-            <h1 className="text-4xl font-bold mb-4">Get in Touch</h1>
-            <p className="text-xl text-teal-100">
-              We'd love to hear from you. Send us a message and we'll respond as soon as possible.
-            </p>
+    <>
+      <SEOHead {...seoData} />
+      
+      <div className="min-h-screen bg-gray-50">
+        <Breadcrumb items={breadcrumbItems} />
+        
+        {/* Hero Section */}
+        <section className="bg-gradient-to-br from-teal-500 to-teal-700 text-white py-16">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center">
+              <h1 className="text-4xl font-bold mb-4">Get in Touch</h1>
+              <p className="text-xl text-teal-100">
+                We'd love to hear from you. Send us a message and we'll respond as soon as possible.
+              </p>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
 
       {/* Contact Info & Form */}
       <section className="py-16">
@@ -268,6 +288,7 @@ export default function ContactUs() {
         </div>
       </section>
     </div>
+    </>
   )
 }
 

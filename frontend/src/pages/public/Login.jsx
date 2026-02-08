@@ -2,8 +2,16 @@ import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { useAuthStore } from '../../store/authStore'
 import { Mail, Lock, AlertCircle } from 'lucide-react'
+import SEOHead from '../../components/SEO/SEOHead'
 
 export default function Login() {
+  const seoData = {
+    title: 'Login - MeritAI',
+    description: 'Sign in to your MeritAI account to access personalized online learning.',
+    noindex: true,
+    nofollow: true
+  };
+
   const navigate = useNavigate()
   const { login } = useAuthStore()
   const [formData, setFormData] = useState({
@@ -37,12 +45,15 @@ export default function Login() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full mx-2 sm:mx-auto">
-        <div className="text-center mb-8">
-          <h2 className="text-xl sm:text-2xl font-bold text-gray-900">Welcome back</h2>
-          <p className="mt-2 text-gray-600">Sign in to your account</p>
-        </div>
+    <>
+      <SEOHead {...seoData} />
+      
+      <div className="min-h-screen flex items-center justify-center bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-md w-full mx-2 sm:mx-auto">
+          <div className="text-center mb-8">
+            <h2 className="text-xl sm:text-2xl font-bold text-gray-900">Welcome back</h2>
+            <p className="mt-2 text-gray-600">Sign in to your account</p>
+          </div>
 
         <div className="card">
           {error && (
@@ -121,5 +132,6 @@ export default function Login() {
         </div>
       </div>
     </div>
+    </>
   )
 }

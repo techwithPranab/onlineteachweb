@@ -5,6 +5,7 @@ import { ArrowLeft, Save, Plus, X, Edit, Trash2, BookOpen } from 'lucide-react'
 import { courseService } from '@/services/apiServices'
 import { useAuthStore } from '@/store/authStore'
 import LoadingSpinner from '@/components/common/LoadingSpinner'
+import SEOHead from '@/components/SEO/SEOHead';
 import ErrorMessage from '@/components/common/ErrorMessage'
 import Modal from '@/components/common/Modal'
 
@@ -217,6 +218,10 @@ export default function AdminCourseCreation() {
   }
 
   return (
+    <>
+
+    <SEOHead title="Admin Course Creation - Admin" noIndex={true} noFollow={true} />
+
     <div className="p-4">
       <div className="mb-4">
         <button
@@ -696,5 +701,7 @@ export default function AdminCourseCreation() {
         </Modal>
       )}
     </div>
-  )
+
+
+    </>)
 }

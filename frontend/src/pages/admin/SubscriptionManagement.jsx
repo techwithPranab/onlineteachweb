@@ -4,6 +4,7 @@ import { CreditCard, Plus, Edit3, Trash2, Users, Star, DollarSign } from 'lucide
 import { subscriptionService } from '@/services/apiServices'
 import { useAuthStore } from '@/store/authStore'
 import LoadingSpinner from '@/components/common/LoadingSpinner'
+import SEOHead from '@/components/SEO/SEOHead';
 import ErrorMessage from '@/components/common/ErrorMessage'
 
 export default function SubscriptionManagement() {
@@ -150,6 +151,10 @@ export default function SubscriptionManagement() {
   if (error) return <ErrorMessage message={error.message || 'Failed to load subscription plans'} />
 
   return (
+    <>
+
+    <SEOHead title="Subscription Management - Admin" noIndex={true} noFollow={true} />
+
     <div className="space-y-4">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
@@ -493,5 +498,7 @@ export default function SubscriptionManagement() {
         </div>
       )}
     </div>
-  )
+
+
+    </>)
 }

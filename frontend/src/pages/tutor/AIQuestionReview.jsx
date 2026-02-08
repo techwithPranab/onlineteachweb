@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import aiQuestionService from '../../services/aiQuestionService'
 import { courseService, questionService } from '../../services/apiServices'
 import LoadingSpinner from '../../components/common/LoadingSpinner'
+import SEOHead from '../../components/SEO/SEOHead';
 import ErrorMessage from '../../components/common/ErrorMessage'
 import EmptyState from '../../components/common/EmptyState'
 import Modal from '../../components/common/Modal'
@@ -244,6 +245,10 @@ export default function AIQuestionReview() {
   }
 
   return (
+    <>
+
+    <SEOHead title="A I Question Review - Tutor" noIndex={true} noFollow={true} />
+
     <div className="p-6">
       {/* Header */}
       <div className="mb-6">
@@ -625,7 +630,9 @@ export default function AIQuestionReview() {
         </Modal>
       )}
     </div>
-  )
+
+
+    </>)
 }
 
 // Question Preview Component

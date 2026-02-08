@@ -15,6 +15,7 @@ import {
 } from 'lucide-react';
 import { courseService } from '@/services/apiServices';
 import questionExportService from '@/services/questionExportService';
+import SEOHead from '@/components/SEO/SEOHead';
 
 export default function QuestionImportExport() {
   const [activeTab, setActiveTab] = useState('export');
@@ -180,6 +181,8 @@ export default function QuestionImportExport() {
   };
   
   return (
+    <>
+    <SEOHead title="Question Import Export - Admin" noIndex={true} noFollow={true} />
     <div className="max-w-4xl mx-auto">
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-gray-900">Import / Export Questions</h1>
@@ -603,5 +606,6 @@ export default function QuestionImportExport() {
         </div>
       )}
     </div>
+    </>
   );
 }

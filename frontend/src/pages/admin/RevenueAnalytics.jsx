@@ -25,6 +25,7 @@ import {
 } from 'lucide-react'
 import { adminService } from '@/services/apiServices'
 import LoadingSpinner from '@/components/common/LoadingSpinner'
+import SEOHead from '@/components/SEO/SEOHead';
 import ErrorMessage from '@/components/common/ErrorMessage'
 
 export default function RevenueAnalytics() {
@@ -114,6 +115,10 @@ export default function RevenueAnalytics() {
   ]
 
   return (
+    <>
+
+    <SEOHead title="Revenue Analytics - Admin" noIndex={true} noFollow={true} />
+
     <div className="max-w-7xl mx-auto">
       <div className="flex items-center justify-between mb-4">
         <div>
@@ -359,5 +364,7 @@ export default function RevenueAnalytics() {
         </div>
       </div>
     </div>
-  )
+
+
+    </>)
 }

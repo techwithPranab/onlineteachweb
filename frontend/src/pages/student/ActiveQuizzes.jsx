@@ -5,6 +5,7 @@ import QuizTable from '@/components/quiz/QuizTable'
 import FilterBar from '@/components/quiz/FilterBar'
 import StatusBadge from '@/components/quiz/StatusBadge'
 import LoadingSpinner from '@/components/common/LoadingSpinner'
+import SEOHead from '@/components/SEO/SEOHead';
 import ErrorMessage from '@/components/common/ErrorMessage'
 import { algorithmQuizService } from '@/services/apiServices'
 import { Play, RotateCcw, Clock, Target, BookOpen, Trash2, AlertCircle } from 'lucide-react'
@@ -380,6 +381,10 @@ export default function ActiveQuizzes() {
   if (error) return <ErrorMessage message={error} />
 
   return (
+    <>
+
+    <SEOHead title="Active Quizzes - Student" noIndex={true} noFollow={true} />
+
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8">
         {/* Header with MeriTai styling */}
@@ -435,7 +440,9 @@ export default function ActiveQuizzes() {
         />
       </div>
     </div>
-  )
+
+
+    </>)
 }
 
 /**

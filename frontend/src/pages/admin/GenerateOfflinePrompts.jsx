@@ -3,6 +3,7 @@ import { useQuery, useMutation, useQueryClient } from 'react-query';
 import offlinePromptService from '../../services/offlinePromptService';
 import { courseService, questionService } from '../../services/apiServices';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
+import SEOHead from '../../components/SEO/SEOHead';
 import ErrorMessage from '../../components/common/ErrorMessage';
 import Modal from '../../components/common/Modal';
 import { 
@@ -321,6 +322,10 @@ export default function GenerateOfflinePrompts() {
   ];
 
   return (
+    <>
+
+    <SEOHead title="Generate Offline Prompts - Admin" noIndex={true} noFollow={true} />
+
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       {/* Header */}
       <div className="mb-8">
@@ -916,5 +921,7 @@ export default function GenerateOfflinePrompts() {
         )}
       </Modal>
     </div>
-  );
+
+
+    </>);
 }

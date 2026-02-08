@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { questionService, courseService } from '../../services/apiServices'
 import LoadingSpinner from '../../components/common/LoadingSpinner'
+import SEOHead from '../../components/SEO/SEOHead';
 import ErrorMessage from '../../components/common/ErrorMessage'
 import EmptyState from '../../components/common/EmptyState'
 import Modal from '../../components/common/Modal'
@@ -155,6 +156,10 @@ export default function QuestionBank() {
   }
 
   return (
+    <>
+
+    <SEOHead title="Question Bank - Admin" noIndex={true} noFollow={true} />
+
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       {/* Header */}
       <div className="flex items-center justify-between mb-8">
@@ -410,7 +415,9 @@ export default function QuestionBank() {
         confirmButtonClass="bg-red-600 hover:bg-red-700"
       />
     </div>
-  )
+
+
+    </>)
 }
 
 

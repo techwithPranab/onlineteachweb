@@ -1,6 +1,21 @@
 import { useEffect } from 'react'
+import SEOHead from '../../components/SEO/SEOHead'
+import Breadcrumb from '../../components/common/Breadcrumb'
 
 export default function PrivacyPolicy() {
+  const seoData = {
+    title: 'Privacy Policy - MeritAI | Data Protection & Privacy',
+    description: 'Read MeritAI\'s privacy policy to understand how we collect, use, and protect your personal information. Learn about data security, cookies, and your privacy rights.',
+    keywords: 'privacy policy, data protection, GDPR, privacy rights, data security, personal information, cookies policy',
+    ogType: 'article',
+    canonical: '/privacy-policy'
+  };
+
+  const breadcrumbItems = [
+    { label: 'Home', path: '/' },
+    { label: 'Privacy Policy', path: '/privacy-policy' }
+  ];
+
   const lastUpdated = "January 15, 2024"
 
   // Scroll to top when component mounts
@@ -9,16 +24,21 @@ export default function PrivacyPolicy() {
   }, [])
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Hero Section */}
-      <section className="bg-gradient-to-br from-teal-500 to-teal-700 text-white py-16">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="text-4xl font-bold mb-4">Privacy Policy</h1>
-          <p className="text-xl text-gray-300">
-            Last Updated: {lastUpdated}
-          </p>
-        </div>
-      </section>
+    <>
+      <SEOHead {...seoData} />
+      
+      <div className="min-h-screen bg-gray-50">
+        <Breadcrumb items={breadcrumbItems} />
+        
+        {/* Hero Section */}
+        <section className="bg-gradient-to-br from-teal-500 to-teal-700 text-white py-16">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h1 className="text-4xl font-bold mb-4">Privacy Policy</h1>
+            <p className="text-xl text-gray-300">
+              Last Updated: {lastUpdated}
+            </p>
+          </div>
+        </section>
 
       {/* Content */}
       <section className="py-16">
@@ -289,6 +309,7 @@ export default function PrivacyPolicy() {
         </div>
       </section>
     </div>
+    </>
   )
 }
 

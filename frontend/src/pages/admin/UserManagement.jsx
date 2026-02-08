@@ -3,6 +3,7 @@ import { useQuery, useMutation, useQueryClient } from 'react-query'
 import { Search, Filter, UserCheck, UserX, Edit, Trash2, BarChart2 } from 'lucide-react'
 import { adminService } from '@/services/apiServices'
 import LoadingSpinner from '@/components/common/LoadingSpinner'
+import SEOHead from '@/components/SEO/SEOHead';
 import ErrorMessage from '@/components/common/ErrorMessage'
 import ConfirmDialog from '@/components/common/ConfirmDialog'
 import Modal from '@/components/common/Modal'
@@ -183,6 +184,10 @@ export default function UserManagement() {
   if (error) return <ErrorMessage message={error.message || 'Failed to load users'} />
 
   return (
+    <>
+
+    <SEOHead title="User Management - Admin" noIndex={true} noFollow={true} />
+
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
       <div className="mb-6 sm:mb-8">
         <h1 className="text-xl sm:text-2xl font-bold text-gray-900 mb-1 sm:mb-2">User Management</h1>
@@ -745,5 +750,7 @@ export default function UserManagement() {
         </div>
       </Modal>
     </div>
-  )
+
+
+    </>)
 }

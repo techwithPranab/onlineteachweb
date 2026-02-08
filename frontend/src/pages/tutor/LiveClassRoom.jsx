@@ -21,6 +21,7 @@ import { sessionService } from '../../services/apiServices'
 import { useAuthStore } from '../../store/authStore'
 import Whiteboard from '../../components/whiteboard/TldrawWhiteboard'
 import LoadingSpinner from '../../components/common/LoadingSpinner'
+import SEOHead from '../../components/SEO/SEOHead';
 import ErrorMessage from '../../components/common/ErrorMessage'
 
 const SOCKET_URL = process.env.NEXT_PUBLIC_WS_URL || 'http://localhost:5000'
@@ -316,6 +317,10 @@ export default function LiveClassRoom() {
   if (error) return <ErrorMessage message="Failed to load session" />
 
   return (
+    <>
+
+    <SEOHead title="Live Class Room - Tutor" noIndex={true} noFollow={true} />
+
     <div className="fixed inset-0 bg-gray-900 flex flex-col">
       {/* Header */}
       <div className="bg-gray-800 px-6 py-4 flex items-center justify-between">

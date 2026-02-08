@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { quizService, questionService } from '../../services/apiServices'
 import LoadingSpinner from '../../components/common/LoadingSpinner'
+import SEOHead from '../../components/SEO/SEOHead';
 import ErrorMessage from '../../components/common/ErrorMessage'
 import Modal from '../../components/common/Modal'
 
@@ -76,6 +77,10 @@ export default function QuizPreview() {
   const currentQuestion = sampleQuestions[currentQuestionIndex]
 
   return (
+    <>
+
+    <SEOHead title="Quiz Preview - Tutor" noIndex={true} noFollow={true} />
+
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       {/* Header */}
       <div className="mb-6">
@@ -429,5 +434,7 @@ export default function QuizPreview() {
         </div>
       )}
     </div>
-  )
+
+
+    </>)
 }

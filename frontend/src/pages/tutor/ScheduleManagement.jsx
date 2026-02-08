@@ -4,6 +4,7 @@ import { Calendar as CalendarIcon, Plus, Edit, Trash2, Clock, Users, Video, Chev
 import { sessionService, courseService } from '@/services/apiServices'
 import { useAuthStore } from '@/store/authStore'
 import LoadingSpinner from '@/components/common/LoadingSpinner'
+import SEOHead from '@/components/SEO/SEOHead';
 import ErrorMessage from '@/components/common/ErrorMessage'
 import Modal from '@/components/common/Modal'
 import ConfirmDialog from '@/components/common/ConfirmDialog'
@@ -527,6 +528,10 @@ export default function ScheduleManagement() {
   if (error) return <ErrorMessage message={error.message || 'Failed to load schedule'} onRetry={refetch} />
 
   return (
+    <>
+
+    <SEOHead title="Schedule Management - Tutor" noIndex={true} noFollow={true} />
+
     <div className="max-w-7xl mx-auto">
       {/* Header */}
       <div className="mb-8">
@@ -791,5 +796,7 @@ export default function ScheduleManagement() {
         variant="danger"
       />
     </div>
-  )
+
+
+    </>)
 }

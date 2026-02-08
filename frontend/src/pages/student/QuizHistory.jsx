@@ -6,6 +6,7 @@ import QuizTable from '@/components/quiz/QuizTable'
 import FilterBar from '@/components/quiz/FilterBar'
 import StatusBadge from '@/components/quiz/StatusBadge'
 import LoadingSpinner from '@/components/common/LoadingSpinner'
+import SEOHead from '@/components/SEO/SEOHead';
 import ErrorMessage from '@/components/common/ErrorMessage'
 import MeritaiButton from '@/components/ui/MeritaiButton'
 import { 
@@ -483,6 +484,8 @@ export default function QuizHistory() {
       render: (entry) => {
         const accuracy = entry.accuracy || 0;
         return (
+          <>
+          <SEOHead title="Quiz History - Student" noIndex={true} noFollow={true} />
           <div className="text-center">
             <div className={`font-bold ${
               accuracy >= 80 ? 'text-green-600' :
@@ -499,7 +502,8 @@ export default function QuizHistory() {
               )}
             </div>
           </div>
-        );
+
+          </>);
       }
     },
     {

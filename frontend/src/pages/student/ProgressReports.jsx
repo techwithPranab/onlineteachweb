@@ -5,6 +5,7 @@ import { TrendingUp, Award, Target, Calendar, Clock, BarChart3 } from 'lucide-re
 import { reportService, evaluationService, algorithmQuizService, achievementService } from '@/services/apiServices'
 import { useAuthStore } from '@/store/authStore'
 import LoadingSpinner from '@/components/common/LoadingSpinner'
+import SEOHead from '@/components/SEO/SEOHead';
 import ErrorMessage from '@/components/common/ErrorMessage'
 import AchievementBadgeModal from '@/components/common/AchievementBadgeModal'
 
@@ -144,6 +145,10 @@ export default function ProgressReports() {
   const attendanceData = report.progress || []
 
   return (
+    <>
+
+    <SEOHead title="Progress Reports - Student" noIndex={true} noFollow={true} />
+
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
       {/* Header */}
       <div className="genz-card mb-4 sm:mb-6 relative overflow-hidden">
@@ -640,5 +645,7 @@ export default function ProgressReports() {
         onClose={() => setShowBadgeModal(false)}
       />
     </div>
-  )
+
+
+    </>)
 }

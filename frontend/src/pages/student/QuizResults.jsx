@@ -3,6 +3,7 @@ import { useParams, useNavigate, useLocation } from 'react-router-dom'
 import { quizService, quizEvaluationService, algorithmQuizService } from '../../services/apiServices'
 import { useAuthStore } from '../../store/authStore'
 import LoadingSpinner from '../../components/common/LoadingSpinner'
+import SEOHead from '../../components/SEO/SEOHead';
 import ErrorMessage from '../../components/common/ErrorMessage'
 import {
   calculateQuizScore,
@@ -616,6 +617,10 @@ export default function QuizResults() {
   const { session, evaluation, detailedAnswers, quiz } = result
 
   return (
+    <>
+
+    <SEOHead title="Quiz Results - Student" noIndex={true} noFollow={true} />
+
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
       {/* Header */}
       <div className="mb-6 sm:mb-8">
@@ -1181,5 +1186,6 @@ export default function QuizResults() {
         </div>
       )}
     </div>
+    </>
   )
 }

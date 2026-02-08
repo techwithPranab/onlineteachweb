@@ -1,0 +1,48 @@
+# Robots.txt for MeritAI - AI-Powered Learning Platform
+# Allow search engines to crawl public content
+
+User-agent: *
+Allow: /
+Disallow: /student/
+Disallow: /tutor/
+Disallow: /admin/
+Disallow: /api/
+Disallow: /login
+Disallow: /signup
+Disallow: /reset-password
+Disallow: /forgot-password
+Disallow: /*?*utm_
+Disallow: /*.json$
+Disallow: /*.xml$
+
+# Allow important pages
+Allow: /courses
+Allow: /for-students
+Allow: /for-tutors
+Allow: /pricing
+Allow: /help-center
+Allow: /faqs
+Allow: /contact
+Allow: /privacy-policy
+Allow: /terms-of-service
+
+# Crawl-delay (optional, adjust based on server capacity)
+Crawl-delay: 1
+
+# Sitemap location
+Sitemap: https://meritai.com/sitemap.xml
+Sitemap: https://meritai.com/sitemap-courses.xml
+Sitemap: https://meritai.com/sitemap-pages.xml
+
+# Block bad bots
+User-agent: AhrefsBot
+Crawl-delay: 10
+
+User-agent: SemrushBot
+Crawl-delay: 10
+
+User-agent: MJ12bot
+Disallow: /
+
+User-agent: DotBot
+Disallow: /

@@ -3,6 +3,7 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsive
 import { Users, BookOpen, DollarSign, TrendingUp, UserCheck, AlertCircle, HelpCircle, ClipboardList } from 'lucide-react'
 import { adminService, sessionService } from '@/services/apiServices'
 import LoadingSpinner from '@/components/common/LoadingSpinner'
+import SEOHead from '@/components/SEO/SEOHead';
 import ErrorMessage from '@/components/common/ErrorMessage'
 
 export default function AdminDashboard() {
@@ -92,6 +93,10 @@ export default function AdminDashboard() {
   const subscriptionData = analytics.subscriptionData || []
 
   return (
+    <>
+
+    <SEOHead title="Admin Dashboard - Admin" noIndex={true} noFollow={true} />
+
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
       <div className="mb-6 sm:mb-8">
         <h1 className="text-xl sm:text-2xl font-bold text-gray-900 mb-1 sm:mb-2">Admin Dashboard</h1>
@@ -273,5 +278,7 @@ export default function AdminDashboard() {
         </div>
       </div>
     </div>
-  )
+
+
+    </>)
 }

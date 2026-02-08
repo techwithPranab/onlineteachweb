@@ -3,6 +3,7 @@ import { useQuery, useMutation, useQueryClient } from 'react-query'
 import { UserCheck, UserX, Eye, Search, Filter, CheckCircle2, XCircle, Clock, FileText, Award } from 'lucide-react'
 import { adminService } from '@/services/apiServices'
 import LoadingSpinner from '@/components/common/LoadingSpinner'
+import SEOHead from '@/components/SEO/SEOHead';
 import ErrorMessage from '@/components/common/ErrorMessage'
 import Modal from '@/components/common/Modal'
 import ConfirmDialog from '@/components/common/ConfirmDialog'
@@ -189,6 +190,10 @@ export default function TutorApproval() {
   if (error) return <ErrorMessage message={error.message || 'Failed to load tutors'} onRetry={refetch} />
 
   return (
+    <>
+
+    <SEOHead title="Tutor Approval - Admin" noIndex={true} noFollow={true} />
+
     <div className="max-w-7xl mx-auto">
       {/* Header */}
       <div className="mb-4">
@@ -616,5 +621,7 @@ export default function TutorApproval() {
         </div>
       </Modal>
     </div>
-  )
+
+
+    </>)
 }

@@ -1,10 +1,30 @@
 import { Link } from 'react-router-dom'
 import { DollarSign, Users, Calendar, TrendingUp, Star, Globe, CheckCircle, ArrowRight, BarChart } from 'lucide-react'
+import SEOHead from '../../components/SEO/SEOHead'
+import Breadcrumb from '../../components/common/Breadcrumb'
 
 export default function ForTutors() {
+  const seoData = {
+    title: 'Become a Tutor - Teach & Earn Online',
+    description: 'Join MeritAI as an online tutor. Use AI tools for quiz generation, student evaluation, and live interactive teaching. Flexible hours, competitive earnings.',
+    keywords: 'become a tutor, online teaching jobs, tutor jobs, teach online, online tutoring, earn money teaching, remote teaching'
+  };
+
+  const breadcrumbItems = [
+    { label: 'For Tutors', path: '/for-tutors' }
+  ];
+
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Hero Section */}
+    <>
+      <SEOHead {...seoData} />
+      
+      <div className="min-h-screen bg-gray-50">
+        {/* Breadcrumb */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
+          <Breadcrumb items={breadcrumbItems} />
+        </div>
+        
+        {/* Hero Section */}
       <section className="bg-gradient-to-br from-purple-600 to-purple-800 text-white py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
@@ -233,7 +253,8 @@ export default function ForTutors() {
           <p className="mt-4 text-purple-200">Free to join • Fast approval • Start earning this week</p>
         </div>
       </section>
-    </div>
+      </div>
+    </>
   )
 }
 

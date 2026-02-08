@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { quizService, courseService } from '../../services/apiServices'
 import { useAuthStore } from '../../store/authStore'
 import LoadingSpinner from '../../components/common/LoadingSpinner'
+import SEOHead from '../../components/SEO/SEOHead';
 import ErrorMessage from '../../components/common/ErrorMessage'
 import EmptyState from '../../components/common/EmptyState'
 import ConfirmDialog from '../../components/common/ConfirmDialog'
@@ -113,6 +114,10 @@ export default function QuizManagement() {
   if (error) return <ErrorMessage message={error} />
 
   return (
+    <>
+
+    <SEOHead title="Quiz Management - Tutor" noIndex={true} noFollow={true} />
+
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       {/* Header */}
       <div className="flex items-center justify-between mb-8">
@@ -345,5 +350,7 @@ export default function QuizManagement() {
         confirmButtonClass="bg-red-600 hover:bg-red-700"
       />
     </div>
-  )
+
+
+    </>)
 }

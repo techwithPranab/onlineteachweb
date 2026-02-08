@@ -4,6 +4,7 @@ import { useQuery } from 'react-query'
 import aiQuestionService from '../../services/aiQuestionService'
 import { courseService, questionService } from '../../services/apiServices'
 import LoadingSpinner from '../../components/common/LoadingSpinner'
+import SEOHead from '../../components/SEO/SEOHead';
 import ErrorMessage from '../../components/common/ErrorMessage'
 import Modal from '../../components/common/Modal'
 
@@ -239,6 +240,10 @@ export default function AIQuestionGenerator() {
   if (loadingCourses && courses.length === 0) return <LoadingSpinner />
 
   return (
+    <>
+
+    <SEOHead title="A I Question Generator - Tutor" noIndex={true} noFollow={true} />
+
     <div className="p-6 w-full">
       {/* Header */}
       <div className="mb-8">
@@ -642,5 +647,7 @@ export default function AIQuestionGenerator() {
         </Modal>
       )}
     </div>
-  )
+
+
+    </>)
 }

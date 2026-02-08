@@ -30,6 +30,7 @@ import {
 } from 'lucide-react';
 import api from '@/services/api';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
+import SEOHead from '@/components/SEO/SEOHead';
 import ErrorMessage from '@/components/common/ErrorMessage';
 
 const COLORS = ['#ef4444', '#f59e0b', '#eab308', '#84cc16', '#22c55e'];
@@ -372,6 +373,10 @@ export default function StudentPerformanceDashboard() {
     const strongAreas = studentPerformanceData.performance?.strongAreas || [];
     
     return (
+      <>
+    
+      <SEOHead title="Student Performance Dashboard - Admin" noIndex={true} noFollow={true} />
+    
       <div className="space-y-6">
         <div className="bg-red-50 border border-red-200 rounded-lg p-4">
           <h4 className="font-semibold text-red-900 mb-2">Areas Needing Improvement</h4>
@@ -426,7 +431,9 @@ export default function StudentPerformanceDashboard() {
           )}
         </div>
       </div>
-    );
+
+    
+      </>);
   };
 
   const renderWeeklyTab = () => {

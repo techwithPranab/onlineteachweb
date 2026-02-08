@@ -14,6 +14,7 @@ import {
 import { courseService, sessionService, reportService } from '@/services/apiServices'
 import { useAuthStore } from '@/store/authStore'
 import LoadingSpinner from '@/components/common/LoadingSpinner'
+import SEOHead from '@/components/SEO/SEOHead';
 import ErrorMessage from '@/components/common/ErrorMessage'
 import { AIQuestionsDashboardWidget, QuizStatsDashboardWidget } from '@/components/dashboard'
 
@@ -74,6 +75,10 @@ export default function TutorDashboard() {
   ]
 
   return (
+    <>
+
+    <SEOHead title="Tutor Dashboard - Tutor" noIndex={true} noFollow={true} />
+
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6 sm:mb-8">
         <div>
@@ -256,5 +261,7 @@ export default function TutorDashboard() {
         </button>
       </div>
     </div>
-  )
+
+
+    </>)
 }

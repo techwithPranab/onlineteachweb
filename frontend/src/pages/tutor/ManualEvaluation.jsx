@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { quizEvaluationService, quizService } from '../../services/apiServices'
 import LoadingSpinner from '../../components/common/LoadingSpinner'
+import SEOHead from '../../components/SEO/SEOHead';
 import ErrorMessage from '../../components/common/ErrorMessage'
 import EmptyState from '../../components/common/EmptyState'
 
@@ -51,6 +52,10 @@ function PendingEvaluations() {
   if (loading) return <LoadingSpinner />
 
   return (
+    <>
+
+    <SEOHead title="Manual Evaluation - Tutor" noIndex={true} noFollow={true} />
+
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="flex items-center justify-between mb-8">
         <div>
@@ -166,9 +171,9 @@ function PendingEvaluations() {
         </div>
       )}
     </div>
+    </>
   )
 }
-
 // Evaluation Form
 function EvaluationForm({ sessionId }) {
   const navigate = useNavigate()

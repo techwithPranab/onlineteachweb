@@ -13,6 +13,7 @@ import {
 } from 'lucide-react'
 import { courseService, materialService, sessionService } from '@/services/apiServices'
 import LoadingSpinner from '@/components/common/LoadingSpinner'
+import SEOHead from '@/components/SEO/SEOHead';
 import ErrorMessage from '@/components/common/ErrorMessage'
 
 export default function CourseDetail() {
@@ -57,6 +58,10 @@ export default function CourseDetail() {
   ]
 
   return (
+    <>
+
+    <SEOHead title="Course Detail - Student" noIndex={true} noFollow={true} />
+
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
         {/* Back Button */}
@@ -360,5 +365,7 @@ export default function CourseDetail() {
       </div>
     </div>
     </div>
-  )
+
+
+    </>)
 }

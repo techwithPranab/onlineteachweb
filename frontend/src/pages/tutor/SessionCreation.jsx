@@ -3,6 +3,7 @@ import { useQuery, useMutation } from 'react-query'
 import { useNavigate, Link } from 'react-router-dom'
 import { Plus, Calendar, Users, BookOpen, Clock } from 'lucide-react'
 import LoadingSpinner from '@/components/common/LoadingSpinner'
+import SEOHead from '@/components/SEO/SEOHead';
 import ErrorMessage from '@/components/common/ErrorMessage'
 import { courseService, sessionService } from '@/services/apiServices'
 
@@ -100,6 +101,8 @@ export default function TutorSessionCreation() {
   // Generate grade options (1-12)
   const gradeOptions = Array.from({ length: 12 }, (_, i) => i + 1)
   return (
+    <>
+    <SEOHead title="Session Creation - Tutor" noIndex={true} noFollow={true} />
     <div className="max-w-4xl mx-auto p-6">
       <div className="mb-8">
         <h1 className="text-xl sm:text-2xl font-bold text-gray-900">Create Session</h1>
@@ -309,5 +312,6 @@ export default function TutorSessionCreation() {
         </form>
       </div>
     </div>
-  )
+
+    </>)
 }

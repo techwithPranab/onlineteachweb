@@ -7,6 +7,7 @@ import {
 import { sessionService, materialService } from '@/services/apiServices'
 import { useAuthStore } from '@/store/authStore'
 import LoadingSpinner from '@/components/common/LoadingSpinner'
+import SEOHead from '@/components/SEO/SEOHead';
 import ErrorMessage from '@/components/common/ErrorMessage'
 import MeritaiCard from '@/components/ui/MeritaiCard'
 import MeritaiButton from '@/components/ui/MeritaiButton'
@@ -84,6 +85,10 @@ export default function SessionDetail() {
   }
 
   return (
+    <>
+
+    <SEOHead title="Session Detail - Student" noIndex={true} noFollow={true} />
+
     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
       {/* Back Button */}
       <button
@@ -278,5 +283,7 @@ export default function SessionDetail() {
           )}
       </div>
     </div>
-  )
+
+
+    </>)
 }

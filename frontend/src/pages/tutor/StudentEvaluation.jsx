@@ -4,6 +4,7 @@ import { Award, TrendingUp, Star, Search, Filter, Send, Save, Clock, CheckCircle
 import { evaluationService, courseService, sessionService } from '@/services/apiServices'
 import { useAuthStore } from '@/store/authStore'
 import LoadingSpinner from '@/components/common/LoadingSpinner'
+import SEOHead from '@/components/SEO/SEOHead';
 import ErrorMessage from '@/components/common/ErrorMessage'
 import Modal from '@/components/common/Modal'
 
@@ -320,6 +321,8 @@ export default function StudentEvaluation() {
 
   if (!selectedCourse) {
     return (
+      <>
+      <SEOHead title="Student Evaluation - Tutor" noIndex={true} noFollow={true} />
       <div className="max-w-7xl mx-auto">
         <div className="mb-8">
           <h1 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">Student Evaluation</h1>
@@ -349,7 +352,8 @@ export default function StudentEvaluation() {
           </div>
         </div>
       </div>
-    )
+
+      </>)
   }
 
   if (isLoading) return <LoadingSpinner fullScreen />
