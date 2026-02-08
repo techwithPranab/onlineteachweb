@@ -8,6 +8,7 @@
     "dev": "nodemon server.js",
     "seed": "node scripts/seed.js",
     "seed:contact-info": "node scripts/seed-contact-info.js",
+    "seed:grade4-materials": "node scripts/seed-grade4-materials.js",
     "test": "jest"
   },
   "keywords": [

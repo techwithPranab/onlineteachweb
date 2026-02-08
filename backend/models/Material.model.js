@@ -23,16 +23,44 @@ const materialSchema = new mongoose.Schema({
   },
   type: {
     type: String,
-    enum: ['pdf', 'video', 'ppt', 'document', 'image', 'link'],
+    enum: ['pdf', 'video', 'ppt', 'document', 'image', 'link', 'article'],
     required: true
   },
+  // File URL (if uploaded) - optional for text/article materials
   fileUrl: {
-    type: String,
-    required: [true, 'File URL is required']
+    type: String
   },
   fileName: String,
   fileSize: Number, // in bytes
   mimeType: String,
+  // Rich text content (markdown/html) for articles or inline materials
+  content: {
+    type: String,
+    default: ''
+  },
+  // Preview content shown to non-enrolled users
+  previewContent: {
+    type: String,
+    default: ''
+  },
+  // The format in which the content is stored - used by the renderer
+  contentFormat: {
+    type: String,
+    enum: ['markdown', 'html', 'plaintext'],
+    default: 'markdown'
+  },
+  // Difficulty level for progression
+  difficulty: {
+    type: String,
+    enum: ['basic', 'intermediate', 'advanced'],
+    default: 'basic'
+  },
+  // Material category for organization
+  category: {
+    type: String,
+    enum: ['lesson', 'worked-example', 'worksheet', 'practice-quiz', 'reference', 'interactive'],
+    default: 'lesson'
+  },
   isFree: {
     type: Boolean,
     default: false

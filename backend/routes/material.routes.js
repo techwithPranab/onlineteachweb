@@ -36,10 +36,10 @@ const upload = multer({
   }
 });
 
-// Get all materials for tutor
+// Get all materials for tutor (or admin)
 router.get('/',
   authenticate,
-  authorize('tutor'),
+  authorize('tutor', 'admin'),
   materialController.getMaterialsByTutor
 );
 
@@ -50,38 +50,41 @@ router.get('/student/recent',
   materialController.getRecentMaterialsForStudent
 );
 
-// Upload material
+// Upload material (tutor or admin)
 router.post('/',
   authenticate,
-  authorize('tutor'),
+  authorize('tutor', 'admin'),
   upload.single('file'),
   [
     body('courseId').notEmpty().withMessage('Course ID is required'),
     body('title').trim().notEmpty().withMessage('Title is required'),
-    body('type').isIn(['pdf', 'video', 'ppt', 'document', 'image', 'link']).withMessage('Invalid type'),
+    body('type').isIn(['pdf', 'video', 'ppt', 'document', 'image', 'link', 'article']).withMessage('Invalid type'),
     validate
   ],
   materialController.uploadMaterial
 );
 
-// Update material
+// Update material (tutor or admin)
 router.put('/:id',
   authenticate,
-  authorize('tutor'),
+  authorize('tutor', 'admin'),
   [
     body('title').optional().trim().notEmpty().withMessage('Title cannot be empty'),
-    body('type').optional().isIn(['pdf', 'video', 'ppt', 'document', 'image', 'link']).withMessage('Invalid type'),
+    body('type').optional().isIn(['pdf', 'video', 'ppt', 'document', 'image', 'link', 'article']).withMessage('Invalid type'),
     validate
   ],
   materialController.updateMaterial
 );
 
-// Delete material
+// Delete material (tutor or admin)
 router.delete('/:id',
   authenticate,
-  authorize('tutor'),
+  authorize('tutor', 'admin'),
   materialController.deleteMaterial
 );
+
+// Get material previews by course (public)
+router.get('/previews/:courseId', materialController.getMaterialPreviewsByCourse);
 
 // Get materials by course
 router.get('/:courseId', authenticate, materialController.getMaterialsByCourse);

@@ -1,11 +1,12 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useQuery, useMutation, useQueryClient } from 'react-query'
 import { ArrowLeft } from 'lucide-react'
-import { courseService } from '../../services/apiServices'
+import { courseService, materialService } from '../../services/apiServices'
 import { useAuthStore } from '../../store/authStore'
 import LoadingSpinner from '../../components/common/LoadingSpinner'
 import ErrorMessage from '../../components/common/ErrorMessage'
+import MaterialList from '@/components/course/MaterialList'
 
 export default function CourseDetails() {
   const { id } = useParams()
@@ -17,6 +18,10 @@ export default function CourseDetails() {
   const [hoverRating, setHoverRating] = useState(0)
   const [comment, setComment] = useState('')
   const [showReviewForm, setShowReviewForm] = useState(false)
+  const [fullMaterials, setFullMaterials] = useState(null)
+  const [previewMaterials, setPreviewMaterials] = useState(null)
+  const [isFetchingMaterials, setIsFetchingMaterials] = useState(false)
+  const [isFetchingPreviews, setIsFetchingPreviews] = useState(false)
 
   // Fetch course details
   const { data: courseData, isLoading, error } = useQuery(
@@ -25,6 +30,17 @@ export default function CourseDetails() {
   )
 
   const course = courseData?.course
+
+  // Fetch material previews on component mount
+  useEffect(() => {
+    if (course) {
+      fetchMaterialPreviews()
+      // Also fetch full materials for authenticated users
+      if (isAuthenticated) {
+        fetchFullMaterials()
+      }
+    }
+  }, [course, isAuthenticated])
 
   // Submit review mutation
   const submitReviewMutation = useMutation(
@@ -55,6 +71,35 @@ export default function CourseDetails() {
       return
     }
     submitReviewMutation.mutate({ rating, comment })
+  }
+
+  const fetchMaterialPreviews = async () => {
+    setIsFetchingPreviews(true)
+    try {
+      const res = await materialService.getMaterialPreviewsByCourse(id)
+      setPreviewMaterials(res.materials || res.data || [])
+    } catch (err) {
+      console.error('Failed to load material previews:', err)
+      // Don't show error to user for previews
+    } finally {
+      setIsFetchingPreviews(false)
+    }
+  }
+
+  const fetchFullMaterials = async () => {
+    if (!isAuthenticated) {
+      alert('Please login to access all materials')
+      return
+    }
+    setIsFetchingMaterials(true)
+    try {
+      const res = await materialService.getMaterialsByCourse(id)
+      setFullMaterials(res.materials || res.data || [])
+    } catch (err) {
+      alert(err.response?.data?.message || 'Failed to load materials')
+    } finally {
+      setIsFetchingMaterials(false)
+    }
   }
 
   if (isLoading) return <LoadingSpinner />
@@ -231,6 +276,45 @@ export default function CourseDetails() {
                 </div>
               </div>
             )}
+
+            {/* Materials */}
+            <div className="bg-white rounded-lg shadow p-4">
+              <div className="flex items-center justify-between mb-3">
+                <h2 className="text-xl font-bold text-gray-900 mb-3">Materials</h2>
+                <div>
+                  {isAuthenticated && fullMaterials && (
+                    <button onClick={fetchFullMaterials} disabled={isFetchingMaterials} className="text-sm bg-gray-600 text-white px-3 py-1 rounded">
+                      {isFetchingMaterials ? 'Refreshing...' : 'Refresh materials'}
+                    </button>
+                  )}
+                </div>
+              </div>
+
+              {isAuthenticated ? (
+                fullMaterials ? (
+                  fullMaterials.length > 0 ? (
+                    <MaterialList materials={fullMaterials} />
+                  ) : (
+                    <p className="text-gray-500">No materials available for this course.</p>
+                  )
+                ) : (
+                  <p className="text-gray-500">Loading materials...</p>
+                )
+              ) : (
+                previewMaterials ? (
+                  previewMaterials.length > 0 ? (
+                    <div>
+                      <p className="text-sm text-gray-600 mb-4">Preview available materials. Login for full access to all content.</p>
+                      <MaterialList materials={previewMaterials} showPreview={true} />
+                    </div>
+                  ) : (
+                    <p className="text-gray-500">No preview materials available. Please login to view materials.</p>
+                  )
+                ) : (
+                  <p className="text-gray-500">Loading material previews...</p>
+                )
+              )}
+            </div>
 
             {/* Learning Outcomes */}
             {course.learningOutcomes && course.learningOutcomes.length > 0 && (

@@ -4,7 +4,7 @@ const User = require('../models/User.model');
 
 // @desc    Get all materials for tutor
 // @route   GET /api/materials
-// @access  Private (Tutor)
+// @access  Private (Tutor or Admin)
 exports.getMaterialsByTutor = async (req, res, next) => {
   try {
     const { courseId, type } = req.query;
@@ -32,16 +32,19 @@ exports.getMaterialsByTutor = async (req, res, next) => {
 
 // @desc    Upload material
 // @route   POST /api/materials
-// @access  Private (Tutor)
+// @access  Private (Tutor or Admin)
 exports.uploadMaterial = async (req, res, next) => {
   try {
-    const { courseId, title, description, type, accessLevel } = req.body;
+    const { courseId, title, description, type, accessLevel, content, contentFormat, previewContent, difficulty, category } = req.body;
     
-    // Check if file was uploaded
-    if (!req.file) {
+    // Allow articles/content without a file
+    const hasFile = !!req.file;
+    const hasContent = typeof content === 'string' && content.trim().length > 0;
+
+    if (!hasFile && !hasContent && type !== 'link') {
       return res.status(400).json({
         success: false,
-        message: 'File is required'
+        message: 'Either a file upload or content is required for this material type'
       });
     }
     
@@ -55,16 +58,43 @@ exports.uploadMaterial = async (req, res, next) => {
       });
     }
     
-    if (course.tutor.toString() !== req.user._id.toString()) {
-      return res.status(403).json({
-        success: false,
-        message: 'Not authorized'
-      });
+    // Note: Course model doesn't currently have an assigned "tutor" field.
+    // Allow both tutors and admins to upload materials. Ownership checks are
+    // enforced during update/delete for tutors.
+
+    // Create file URL if uploaded
+    let fileUrl;
+    let fileName;
+    let fileSize;
+    let mimeType;
+
+    if (hasFile) {
+      fileUrl = `/uploads/materials/${req.file.filename}`;
+      fileName = req.file.originalname;
+      fileSize = req.file.size;
+      mimeType = req.file.mimetype;
     }
-    
-    // Create file URL
-    const fileUrl = `/uploads/materials/${req.file.filename}`;
-    
+
+    // Parse tags if provided (can be JSON string or comma-separated string)
+    let tags = undefined;
+    if (req.body.tags) {
+      try {
+        if (typeof req.body.tags === 'string') {
+          // Try JSON parse
+          try {
+            tags = JSON.parse(req.body.tags);
+          } catch (e) {
+            // Fallback to comma-separated
+            tags = req.body.tags.split(',').map(t => t.trim()).filter(Boolean);
+          }
+        } else if (Array.isArray(req.body.tags)) {
+          tags = req.body.tags;
+        }
+      } catch (err) {
+        tags = undefined;
+      }
+    }
+
     const material = await Material.create({
       course: courseId,
       tutor: req.user._id,
@@ -72,7 +102,16 @@ exports.uploadMaterial = async (req, res, next) => {
       description,
       type,
       fileUrl,
-      isFree: accessLevel === 'free'
+      fileName,
+      fileSize,
+      mimeType,
+      content: hasContent ? content : undefined,
+      contentFormat: contentFormat || (hasContent ? 'markdown' : undefined),
+      previewContent: previewContent || undefined,
+      difficulty: difficulty || 'basic',
+      category: category || 'lesson',
+      isFree: accessLevel === 'free',
+      tags
     });
     
     res.status(201).json({
@@ -86,10 +125,10 @@ exports.uploadMaterial = async (req, res, next) => {
 
 // @desc    Update material
 // @route   PUT /api/materials/:id
-// @access  Private (Tutor)
+// @access  Private (Tutor or Admin)
 exports.updateMaterial = async (req, res, next) => {
   try {
-    const { title, description, type, fileUrl, isFree } = req.body;
+    const { title, description, type, fileUrl, isFree, content, contentFormat, previewContent, difficulty, category } = req.body;
     
     const material = await Material.findById(req.params.id);
     
@@ -100,16 +139,41 @@ exports.updateMaterial = async (req, res, next) => {
       });
     }
     
-    if (material.tutor.toString() !== req.user._id.toString()) {
+    // Tutors can only modify their own materials; admins can modify any
+    if (req.user.role === 'tutor' && material.tutor.toString() !== req.user._id.toString()) {
       return res.status(403).json({
         success: false,
         message: 'Not authorized'
       });
     }
-    
+
+    const updatePayload = {};
+    if (title !== undefined) updatePayload.title = title;
+    if (description !== undefined) updatePayload.description = description;
+    if (type !== undefined) updatePayload.type = type;
+    if (fileUrl !== undefined) updatePayload.fileUrl = fileUrl;
+    if (isFree !== undefined) updatePayload.isFree = isFree;
+    if (content !== undefined) updatePayload.content = content;
+    if (contentFormat !== undefined) updatePayload.contentFormat = contentFormat;
+    if (previewContent !== undefined) updatePayload.previewContent = previewContent;
+    if (difficulty !== undefined) updatePayload.difficulty = difficulty;
+    if (category !== undefined) updatePayload.category = category;
+    if (req.body.tags !== undefined) {
+      // normalize tags
+      if (typeof req.body.tags === 'string') {
+        try {
+          updatePayload.tags = JSON.parse(req.body.tags);
+        } catch (e) {
+          updatePayload.tags = req.body.tags.split(',').map(t => t.trim()).filter(Boolean);
+        }
+      } else {
+        updatePayload.tags = req.body.tags;
+      }
+    }
+
     const updatedMaterial = await Material.findByIdAndUpdate(
       req.params.id,
-      { title, description, type, fileUrl, isFree },
+      updatePayload,
       { new: true, runValidators: true }
     );
     
@@ -124,7 +188,7 @@ exports.updateMaterial = async (req, res, next) => {
 
 // @desc    Delete material
 // @route   DELETE /api/materials/:id
-// @access  Private (Tutor)
+// @access  Private (Tutor or Admin)
 exports.deleteMaterial = async (req, res, next) => {
   try {
     const material = await Material.findById(req.params.id);
@@ -136,7 +200,7 @@ exports.deleteMaterial = async (req, res, next) => {
       });
     }
     
-    if (material.tutor.toString() !== req.user._id.toString()) {
+    if (req.user.role === 'tutor' && material.tutor.toString() !== req.user._id.toString()) {
       return res.status(403).json({
         success: false,
         message: 'Not authorized'
@@ -193,22 +257,49 @@ exports.getMaterialsByCourse = async (req, res, next) => {
     if (type) query.type = type;
     if (isFree !== undefined) query.isFree = isFree === 'true';
     
-    // Students can only access materials if enrolled or if material is free
+    // Students can access all materials for course details viewing
+    // Enrollment check is handled at the application level for actual access
     if (req.user.role === 'student') {
-      const course = await Course.findById(req.params.courseId);
-      const isEnrolled = course && course.enrolledStudents && 
-                        course.enrolledStudents.some(s => s.toString() === req.user._id.toString());
-      
-      if (!isEnrolled) {
-        // If not enrolled, only show free materials
-        query.isFree = true;
-      }
+      // Allow students to see all materials for course browsing
+      // Individual material access can be controlled by enrollment status
     }
     
     const materials = await Material.find(query)
       .populate('course', 'title grade')
       .sort('order');
     
+    res.json({
+      success: true,
+      data: materials
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// @desc    Get material previews by course (public access)
+// @route   GET /api/materials/previews/:courseId
+// @access  Public
+exports.getMaterialPreviewsByCourse = async (req, res, next) => {
+  try {
+    const { type, difficulty, category } = req.query;
+
+    const query = {
+      course: req.params.courseId,
+      isActive: true,
+      previewContent: { $exists: true, $ne: '' } // Only materials with preview content
+    };
+
+    if (type) query.type = type;
+    if (difficulty) query.difficulty = difficulty;
+    if (category) query.category = category;
+
+    const materials = await Material.find(query)
+      .populate('course', 'title grade')
+      .select('title description type difficulty category tags previewContent contentFormat fileUrl fileName mimeType order viewCount')
+      .sort('order')
+      .limit(10); // Limit preview materials
+
     res.json({
       success: true,
       materials

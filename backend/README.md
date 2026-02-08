@@ -251,3 +251,23 @@ Winston logger with file rotation for production environments.
 ## License
 
 MIT
+
+## Seeding Grade 4 Mathematics Materials
+
+A convenience seed script is provided to add starter materials (articles) for Grade 4 mathematics courses (e.g., Number System, Addition, Multiplication, Fractions, Geometry) aligned to CBSE/ICSE where applicable.
+
+This script will:
+- Find existing courses whose titles match Grade 4 topics (e.g. 'Number System and Place Value', 'Addition and Subtraction', etc.)
+- Create article-type materials (Markdown content with KaTeX-friendly LaTeX snippets where needed)
+- Tag materials using the course `board` (CBSE/ICSE) when available
+
+Run it with:
+
+```bash
+cd backend
+npm run seed:grade4-materials
+```
+
+Make sure `MONGODB_URI` is set in `.env` and that a user with role `tutor` or `admin` exists (the script assigns the found user as the tutor/owner of the created materials).
+
+You can delete or adjust materials after running the script from the Admin UI (Edit Course → Materials).

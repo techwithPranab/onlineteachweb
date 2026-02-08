@@ -256,13 +256,12 @@ exports.getCourseById = async (req, res, next) => {
     const Material = require('../models/Material.model');
     const Session = require('../models/Session.model');
     const Question = require('../models/Question.model');
-    
-    const [materials, sessions, questionCount] = await Promise.all([
-      Material.find({ course: course._id, isActive: true }).sort('order'),
+
+    const [sessions, questionCount] = await Promise.all([
       Session.find({ course: course._id }).sort('scheduledAt'),
       Question.countDocuments({ courseId: course._id })
     ]);
-    
+
     res.json({
       success: true,
       course: {
@@ -270,7 +269,7 @@ exports.getCourseById = async (req, res, next) => {
         questionCount,
         createdBy: course.createdBy || null // Handle missing createdBy
       },
-      materials,
+      materials: [],
       sessions
     });
   } catch (error) {

@@ -2,12 +2,13 @@ import { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
 import { ArrowLeft, Save, Plus, X, Edit, Trash2, BookOpen } from 'lucide-react'
-import { courseService } from '@/services/apiServices'
+import { courseService, materialService } from '@/services/apiServices'
 import { useAuthStore } from '@/store/authStore'
 import LoadingSpinner from '@/components/common/LoadingSpinner'
 import SEOHead from '@/components/SEO/SEOHead';
 import ErrorMessage from '@/components/common/ErrorMessage'
 import Modal from '@/components/common/Modal'
+import AdminMaterialForm from '@/components/admin/AdminMaterialForm'
 
 export default function AdminCourseEdit() {
   const navigate = useNavigate()
@@ -47,6 +48,10 @@ export default function AdminCourseEdit() {
     learningObjectives: [''],
     estimatedHours: 0
   })
+
+  // Materials modal state
+  const [isMaterialModalOpen, setIsMaterialModalOpen] = useState(false)
+  const [editingMaterial, setEditingMaterial] = useState(null)
 
   // Fetch course data
   const { data: courseData, isLoading: isLoadingCourse, error: courseError } = useQuery(
@@ -88,6 +93,17 @@ export default function AdminCourseEdit() {
       },
     }
   )
+
+  const handleDeleteMaterial = async (materialId) => {
+    if (!window.confirm('Delete this material?')) return
+    try {
+      await materialService.deleteMaterial(materialId)
+      // Refresh course data
+      queryClient.invalidateQueries(['course', id])
+    } catch (err) {
+      alert(err.response?.data?.message || 'Failed to delete material')
+    }
+  }
 
   const subjects = [
     'Mathematics',
@@ -699,6 +715,37 @@ export default function AdminCourseEdit() {
           </div>
         </div>
       </Modal>
+
+      {/* Materials Management (Admin) */}
+      <div className="bg-white rounded-lg shadow p-4">
+        <div className="flex items-center justify-between mb-3">
+          <h2 className="text-lg font-semibold">Materials</h2>
+          <div>
+            <button onClick={() => { setEditingMaterial(null); setIsMaterialModalOpen(true) }} className="bg-primary-600 text-white px-4 py-2 rounded-md">Add Material</button>
+          </div>
+        </div>
+
+        {courseData?.materials && courseData.materials.length > 0 ? (
+          <div className="space-y-3">
+            {courseData.materials.map(mat => (
+              <div key={mat._id} className="flex items-center justify-between border rounded p-3">
+                <div>
+                  <div className="font-semibold">{mat.title}</div>
+                  <div className="text-sm text-gray-500">{mat.description}</div>
+                </div>
+                <div className="flex items-center gap-2">
+                  <button onClick={() => { setEditingMaterial(mat); setIsMaterialModalOpen(true) }} className="text-sm bg-yellow-500 text-white px-3 py-1 rounded">Edit</button>
+                  <button onClick={() => handleDeleteMaterial(mat._id)} className="text-sm bg-red-500 text-white px-3 py-1 rounded">Delete</button>
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p className="text-gray-500">No materials yet. Use "Add Material" to upload or create materials for this course.</p>
+        )}
+      </div>
+
+      <AdminMaterialForm isOpen={isMaterialModalOpen} onClose={() => setIsMaterialModalOpen(false)} courseId={id} initialData={editingMaterial} />
     </div>
 
 

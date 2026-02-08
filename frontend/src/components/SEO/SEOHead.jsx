@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
  */
 const SEOHead = ({
   title,
-  description,
+  description = 'Learn and excel in your studies with our comprehensive online courses',
   keywords,
   author = 'MeritAI',
   ogType = 'website',
@@ -93,7 +93,7 @@ const SEOHead = ({
 
 SEOHead.propTypes = {
   title: PropTypes.string,
-  description: PropTypes.string.isRequired,
+  description: PropTypes.string,
   keywords: PropTypes.string,
   author: PropTypes.string,
   ogType: PropTypes.string,

@@ -172,8 +172,14 @@ export const sessionService = {
 }
 
 export const materialService = {
+  getMaterialPreviewsByCourse: async (courseId, params = {}) => {
+    const { data } = await api.get(`/materials/previews/${courseId}`, { params })
+    return data
+  },
+
   getMaterialsByCourse: async (courseId, params = {}) => {
     const { data } = await api.get(`/materials/${courseId}`, { params })
+    console.log('Materials data:', data);
     return data
   },
 
@@ -188,11 +194,26 @@ export const materialService = {
   },
 
   uploadMaterial: async (materialData) => {
+    // If a File object is present, caller should send a FormData instance
+    if (materialData instanceof FormData) {
+      const { data } = await api.post('/materials', materialData, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      })
+      return data
+    }
+
     const { data } = await api.post('/materials', materialData)
     return data
   },
 
   updateMaterial: async (id, materialData) => {
+    if (materialData instanceof FormData) {
+      const { data } = await api.put(`/materials/${id}`, materialData, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      })
+      return data
+    }
+
     const { data } = await api.put(`/materials/${id}`, materialData)
     return data
   },
