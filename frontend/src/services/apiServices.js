@@ -178,6 +178,7 @@ export const materialService = {
   },
 
   getMaterialsByCourse: async (courseId, params = {}) => {
+    
     const { data } = await api.get(`/materials/${courseId}`, { params })
     console.log('Materials data:', data);
     return data
