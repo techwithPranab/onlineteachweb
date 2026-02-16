@@ -291,9 +291,11 @@ export default function QuestionCard({
               <span className={`inline-block px-2 py-1 rounded text-xs sm:text-sm font-medium capitalize ${
                 question.difficulty === 'easy' ? 'bg-green-100 text-green-700' :
                 question.difficulty === 'medium' ? 'bg-yellow-100 text-yellow-700' :
-                'bg-red-100 text-red-700'
+                question.difficulty === 'hard' ? 'bg-red-100 text-red-700' :
+                question.difficulty === 'olympiad' ? 'bg-purple-100 text-purple-700' :
+                'bg-gray-100 text-gray-700'
               }`}>
-                {question.difficulty}
+                {question.difficulty === 'olympiad' ? '🏆 Olympiad' : question.difficulty}
               </span>
             )}
             

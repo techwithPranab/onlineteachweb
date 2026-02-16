@@ -329,7 +329,8 @@ export default function QuizSetup() {
     const colors = {
       easy: 'bg-green-100 text-green-800',
       medium: 'bg-yellow-100 text-yellow-800',
-      hard: 'bg-red-100 text-red-800'
+      hard: 'bg-red-100 text-red-800',
+      olympiad: 'bg-purple-100 text-purple-800'
     }
     return colors[level] || colors.medium
   }
@@ -481,8 +482,8 @@ export default function QuizSetup() {
                   </div>
                 </div>
                 
-                <div className="grid grid-cols-3 gap-3">
-                  {['easy', 'medium', 'hard'].map(level => (
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                  {['easy', 'medium', 'hard', 'olympiad'].map(level => (
                     <button
                       key={level}
                       onClick={() => handleConfigChange('difficulty', level)}
@@ -497,6 +498,12 @@ export default function QuizSetup() {
                     </button>
                   ))}
                 </div>
+                <p className="text-xs text-gray-500 mt-2">
+                  {config.difficulty === 'easy' && 'Basic concepts and direct recall questions'}
+                  {config.difficulty === 'medium' && 'Conceptual understanding and application'}
+                  {config.difficulty === 'hard' && 'Complex problem-solving and critical thinking'}
+                  {config.difficulty === 'olympiad' && '🏆 Competition-level advanced problem-solving'}
+                </p>
               </div>
 
               {/* Question Configuration */}

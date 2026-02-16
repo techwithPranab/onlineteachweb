@@ -98,8 +98,8 @@ export default function QuizManagement() {
     }
   }
 
-  const getDifficultyBadge = (level) => {
-    switch (level) {
+  const getDifficultyBadge = (difficulty) => {
+    switch (difficulty) {
       case 'easy':
         return 'bg-green-100 text-green-800'
       case 'medium':
@@ -273,6 +273,14 @@ export default function QuizManagement() {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                     <div className="flex items-center justify-end space-x-2">
+                      {quiz.status === 'published' && (
+                        <button
+                          onClick={() => navigate(`${getBasePath()}/quizzes/${quiz._id}/assign`)}
+                          className="text-purple-600 hover:text-purple-900 font-medium"
+                        >
+                          Assign
+                        </button>
+                      )}
                       {quiz.status === 'draft' && (
                         <button
                           onClick={() => handlePublish(quiz._id)}

@@ -16,11 +16,27 @@ import {
   checkAnswer
 } from '../../utils/quiz'
 
+// Import tab components
+import OverviewTab from './QuizResults/OverviewTab'
+import DetailedTab from './QuizResults/DetailedTab'
+import AnalysisTab from './QuizResults/AnalysisTab'
+import SuggestionsTab from './QuizResults/SuggestionsTab'
+
 export default function QuizResults() {
   const { quizId } = useParams()
   const navigate = useNavigate()
   const location = useLocation()
   const { user } = useAuthStore()
+  
+  // Version check - if you see this log, the latest code is loaded
+  console.log('🆕 QuizResults component loaded - VERSION: 2.0 with triple fallback')
+  console.log('🔧 CODE VERSION CHECK: If you see this message, new code is active!')
+  
+  // Force a visible indicator that new code is loaded
+  if (typeof window !== 'undefined') {
+    window.QUIZ_RESULTS_VERSION = '2.0-TRIPLE-FALLBACK'
+    console.log('✅ Set window.QUIZ_RESULTS_VERSION =', window.QUIZ_RESULTS_VERSION)
+  }
   
   console.log('🎯 QuizResults component mounted:', {
     urlParams: useParams(),
@@ -186,7 +202,9 @@ export default function QuizResults() {
       case 'true-false':
         // Find the option that matches the user's answer ID
         const selectedOption = question.options?.find(opt => 
-          opt.id === userAnswer || opt._id === userAnswer
+          String(opt.id) === String(userAnswer) || 
+          String(opt._id) === String(userAnswer) ||
+          String(opt.value) === String(userAnswer)
         )
         return selectedOption ? selectedOption.text : userAnswer
       
@@ -196,12 +214,16 @@ export default function QuizResults() {
         
         // Find all options that match the user's answer IDs
         const selectedOptions = question.options?.filter(opt => 
-          userAnswer.includes(opt.id) || userAnswer.includes(opt._id)
+          userAnswer.some(ans => 
+            String(opt.id) === String(ans) || 
+            String(opt._id) === String(ans) ||
+            String(opt.value) === String(ans)
+          )
         )
         
         return selectedOptions && selectedOptions.length > 0
           ? selectedOptions.map(opt => opt.text).join(', ')
-          : userAnswer.join(', ')
+          : Array.isArray(userAnswer) ? userAnswer.join(', ') : userAnswer
       
       case 'numerical':
       case 'short-answer':
@@ -267,25 +289,40 @@ export default function QuizResults() {
       // Calculate comprehensive score
       const scoreAnalysis = calculateQuizScore(questions, answers, result.evaluation)
       
-      // Use pre-calculated analysis from history if available, otherwise calculate
+      // ✅ PRIORITY: Use pre-calculated analysis from backend if available
       let topicAnalysis, difficultyAnalysis;
       
-      if (result.evaluation && result.evaluation.topicAnalysis && result.evaluation.topicAnalysis.length > 0) {
-        // Use pre-calculated topic analysis from quiz history
+      console.log('🔍 Checking for pre-calculated analysis:', {
+        hasEvaluation: !!result.evaluation,
+        hasTopicAnalysis: !!result.evaluation?.topicAnalysis,
+        topicAnalysisLength: result.evaluation?.topicAnalysis?.length || 0,
+        hasDifficultyAnalysis: !!result.evaluation?.difficultyAnalysis,
+        difficultyAnalysisKeys: Object.keys(result.evaluation?.difficultyAnalysis || {}),
+        difficultyAnalysisLength: result.evaluation?.difficultyAnalysis ? Object.keys(result.evaluation.difficultyAnalysis).length : 0,
+        topicAnalysisData: result.evaluation?.topicAnalysis,
+        difficultyAnalysisData: result.evaluation?.difficultyAnalysis
+      });
+      
+      if (result.evaluation?.topicAnalysis && Array.isArray(result.evaluation.topicAnalysis) && result.evaluation.topicAnalysis.length > 0) {
+        // Use pre-calculated topic analysis from backend
         topicAnalysis = result.evaluation.topicAnalysis;
-        console.log('Using pre-calculated topic analysis from history:', topicAnalysis);
+        console.log('✅ Using pre-calculated topic analysis from backend:', topicAnalysis.length, 'topics', topicAnalysis);
       } else {
         // Calculate topic analysis from questions
+        console.log('⚠️ No backend topic analysis, calculating from questions');
         topicAnalysis = analyzeByTopic(questions, answers);
+        console.log('📊 Calculated topic analysis:', topicAnalysis);
       }
       
-      if (result.evaluation && result.evaluation.difficultyAnalysis && Object.keys(result.evaluation.difficultyAnalysis).length > 0) {
-        // Use pre-calculated difficulty analysis from quiz history
+      if (result.evaluation?.difficultyAnalysis && Object.keys(result.evaluation.difficultyAnalysis).length > 0) {
+        // Use pre-calculated difficulty analysis from backend
         difficultyAnalysis = result.evaluation.difficultyAnalysis;
-        console.log('Using pre-calculated difficulty analysis from history:', difficultyAnalysis);
+        console.log('✅ Using pre-calculated difficulty analysis from backend:', difficultyAnalysis);
       } else {
         // Calculate difficulty analysis from questions
+        console.log('⚠️ No backend difficulty analysis, calculating from questions');
         difficultyAnalysis = analyzeByDifficulty(questions, answers);
+        console.log('📊 Calculated difficulty analysis:', difficultyAnalysis);
       }
       
       // ✅ PHASE 2 FIX: Build timeSpentPerQuestion object from answers
@@ -320,6 +357,8 @@ export default function QuizResults() {
         scoreAnalysis,
         topicsCount: topicAnalysis.length,
         difficultyLevels: Object.keys(difficultyAnalysis).length,
+        difficultyAnalysisKeys: Object.keys(difficultyAnalysis),
+        difficultyAnalysisData: JSON.stringify(difficultyAnalysis).substring(0, 500),
         timeAnalysis
       })
       
@@ -362,12 +401,45 @@ export default function QuizResults() {
   const fetchResults = async () => {
     try {
       setLoading(true)
-      const response = await quizService.getQuizResult(quizId)
-      setResult(response.result)
+      setError(null) // Clear any previous errors
+      
+      // Try ActiveQuiz endpoint first (for algorithm-generated quizzes)
+      try {
+        console.log('🔍 Trying ActiveQuiz result endpoint:', quizId)
+        const response = await algorithmQuizService.getQuizResult(quizId)
+        console.log('✅ Got ActiveQuiz result:', response)
+        setResult(response.result)
+        setLoading(false)
+        return
+      } catch (activeQuizError) {
+        // If 404, it might be a regular quiz or from history
+        if (activeQuizError.response?.status === 404) {
+          console.log('⚠️ Not an ActiveQuiz, trying regular quiz endpoint')
+          
+          // Try regular quiz endpoint
+          try {
+            const response = await quizService.getQuizResult(quizId)
+            setResult(response.result)
+            setLoading(false)
+            return
+          } catch (regularQuizError) {
+            // If still 404, try fetching from history
+            if (regularQuizError.response?.status === 404) {
+              console.log('⚠️ Not a regular quiz either, trying quiz history')
+              await fetchResultsFromHistory()
+              // fetchResultsFromHistory handles its own loading state
+              return
+            } else {
+              throw regularQuizError
+            }
+          }
+        } else {
+          throw activeQuizError
+        }
+      }
     } catch (err) {
       setError(err.response?.data?.message || 'Failed to load results')
-      console.error(err)
-    } finally {
+      console.error('❌ Error fetching results:', err)
       setLoading(false)
     }
   }
@@ -402,6 +474,8 @@ export default function QuizResults() {
       
       console.log('📦 History data received:', {
         totalRecords: historyData.length,
+        searchId,
+        searchIdType: typeof searchId,
         firstRecord: historyData[0] ? {
           id: historyData[0].id,
           quizId: historyData[0].quizId,
@@ -410,12 +484,23 @@ export default function QuizResults() {
         } : null
       });
       
-      // Try to find session by matching quizId (convert both to strings for comparison)
-      const sessionData = historyData.find(h => 
-        String(h.quizId) === String(searchId) || 
-        String(h.id) === String(searchId) ||
-        String(h._id) === String(searchId)
-      )
+      // ✅ Try to find session by matching quizId (convert both to strings for comparison)
+      const sessionData = historyData.find(h => {
+        const matchById = String(h.quizId) === String(searchId);
+        const matchByQuizId = String(h.id) === String(searchId);
+        const matchByMongoId = String(h._id) === String(searchId);
+        
+        console.log('🔍 Matching attempt:', {
+          recordId: h.id,
+          recordQuizId: h.quizId,
+          searchId,
+          matchById,
+          matchByQuizId,
+          matchByMongoId
+        });
+        
+        return matchById || matchByQuizId || matchByMongoId;
+      })
       
       if (!sessionData) {
         console.error('❌ Quiz session not found in history for searchId:', searchId);
@@ -437,6 +522,11 @@ export default function QuizResults() {
         questionsCount: sessionData.questions?.length || 0,
         hasAnswers: !!sessionData.answers,
         answersCount: sessionData.answers?.length || 0,
+        hasPerformanceByDifficulty: !!sessionData.performanceByDifficulty,
+        performanceByDifficultyType: typeof sessionData.performanceByDifficulty,
+        performanceByDifficultyIsArray: Array.isArray(sessionData.performanceByDifficulty),
+        performanceByDifficultyLength: sessionData.performanceByDifficulty?.length || 0,
+        performanceByDifficultyData: sessionData.performanceByDifficulty,
         sampleQuestion: sessionData.questions?.[0],
         sampleAnswer: sessionData.answers?.[0],
         questionsType: typeof sessionData.questions,
@@ -480,13 +570,65 @@ export default function QuizResults() {
             unattempted: 0,
             accuracy: sessionData.accuracy || 0
           },
-          topicAnalysis: sessionData.performanceByTopic || [],
-          difficultyAnalysis: sessionData.performanceByDifficulty || {},
+          // ✅ Use backend performance data when available
+          topicAnalysis: Array.isArray(sessionData.performanceByTopic) && sessionData.performanceByTopic.length > 0
+            ? sessionData.performanceByTopic.map(topic => ({
+                topic: topic.topic,
+                total: parseInt(topic.total) || 0,
+                correct: parseInt(topic.correct) || 0,
+                wrong: (parseInt(topic.total) || 0) - (parseInt(topic.correct) || 0),
+                unattempted: 0,
+                accuracy: parseFloat(topic.accuracy) || 0
+              }))
+            : [],
+          difficultyAnalysis: (() => {
+            console.log('🔄 Transforming difficulty analysis:', {
+              isArray: Array.isArray(sessionData.performanceByDifficulty),
+              length: sessionData.performanceByDifficulty?.length || 0,
+              data: sessionData.performanceByDifficulty
+            });
+            
+            if (Array.isArray(sessionData.performanceByDifficulty) && sessionData.performanceByDifficulty.length > 0) {
+              const transformed = Object.fromEntries(
+                sessionData.performanceByDifficulty.map((perf) => [
+                  perf.difficulty,
+                  {
+                    total: parseInt(perf.total) || 0,
+                    correct: parseInt(perf.correct) || 0,
+                    wrong: (parseInt(perf.total) || 0) - (parseInt(perf.correct) || 0),
+                    accuracy: parseFloat(perf.accuracy) || 0
+                  }
+                ])
+              );
+              console.log('✅ Transformed difficulty analysis:', transformed);
+              return transformed;
+            } else if (sessionData.performanceByDifficulty && typeof sessionData.performanceByDifficulty === 'object' && !Array.isArray(sessionData.performanceByDifficulty)) {
+              const transformed = Object.fromEntries(
+                Object.entries(sessionData.performanceByDifficulty).map(([difficulty, perf]) => [
+                  difficulty,
+                  {
+                    total: parseInt(perf.total) || 0,
+                    correct: parseInt(perf.correct) || 0,
+                    wrong: (parseInt(perf.total) || 0) - (parseInt(perf.correct) || 0),
+                    accuracy: parseFloat(perf.accuracy) || 0
+                  }
+                ])
+              );
+              console.log('✅ Transformed legacy difficulty analysis:', transformed);
+              return transformed;
+            } else {
+              console.log('❌ No difficulty analysis data');
+              return {};
+            }
+          })(),
           timeAnalysis: {
             totalTimeUsed: sessionData.timeTaken || 0,
             totalTimeAllowed: (sessionData.duration || 0) * 60,
             timeUtilization: sessionData.timeUtilization || 0
-          }
+          },
+          // ✅ Include backend recommendations and weak topics
+          weakTopics: sessionData.weakTopics || [],
+          recommendations: sessionData.recommendations || []
         },
         detailedAnswers: sessionData.questions?.map((q, index) => {
           console.log('🔧 Processing question:', {
@@ -495,49 +637,91 @@ export default function QuizResults() {
             questionIdType: typeof q.questionId,
             hasSnapshot: !!q.snapshot,
             snapshotType: typeof q.snapshot,
-            answersCount: sessionData.answers?.length || 0
+            answersCount: sessionData.answers?.length || 0,
+            questionFields: Object.keys(q)
           });
           
+          // ✅ Find answer by matching questionId (try both string and object comparison)
           const answer = sessionData.answers?.find(a => {
-            const match = a.questionId?.toString() === q.questionId?.toString();
+            const matchByString = String(a.questionId) === String(q.questionId);
+            const matchByIndex = sessionData.answers.indexOf(a) === index; // Fallback: match by index
+            const match = matchByString || matchByIndex;
+            
             console.log('🔧 Answer matching:', {
               answerQuestionId: a.questionId,
               questionQuestionId: q.questionId,
-              match,
-              answerQuestionIdType: typeof a.questionId
+              matchByString,
+              matchByIndex,
+              finalMatch: match,
+              index
             });
             return match;
           });
           
-          // ✅ Snapshots are now already parsed by backend
-          const questionData = q.snapshot || q;
+          // ✅ Backend already parsed snapshots and exposed fields at top level
+          // Use fields directly from q (backend already flattened them)
+          const questionData = {
+            text: q.text,
+            type: q.type,
+            options: q.options,
+            correctAnswer: q.correctAnswer,
+            expectedAnswer: q.expectedAnswer,
+            numericalAnswer: q.numericalAnswer,
+            marks: q.marks,
+            negativeMarks: q.negativeMarks,
+            topic: q.topic,
+            difficultyLevel: q.difficultyLevel || q.difficulty,
+            explanation: q.explanation
+          };
           
-          // ✅ PHASE 2: Add debug logging
+          // ✅ Log processed data
           console.log('Processing question for analysis:', {
             index,
             questionId: q.questionId,
             hasAnswer: !!answer,
             topic: questionData.topic,
-            difficulty: questionData.difficulty,
-            snapshotType: typeof q.snapshot
+            difficulty: questionData.difficultyLevel,
+            correctAnswer: questionData.correctAnswer,
+            yourAnswer: answer?.answer,
+            isCorrect: answer?.isCorrect,
+            timeSpent: answer?.timeSpent,
+            options: questionData.options,
+            questionType: questionData.type
+          });
+          
+          // ✅ Convert answer ID to text for display
+          const rawAnswer = answer?.answer;
+          console.log('🔄 Converting answer:', {
+            rawAnswer,
+            questionType: questionData.type,
+            hasOptions: !!questionData.options,
+            optionsCount: questionData.options?.length || 0,
+            firstOption: questionData.options?.[0]
+          });
+          
+          const displayAnswer = rawAnswer ? getUserAnswerDisplay(questionData, rawAnswer) : rawAnswer;
+          
+          console.log('✅ Answer converted:', {
+            rawAnswer,
+            displayAnswer
           });
           
           return {
             questionId: q.questionId,
-            questionText: questionData.text || q.text,
+            questionText: questionData.text,
             type: questionData.type || 'mcq-single',
             options: questionData.options || [],
-            correctAnswer: questionData.correctAnswer,      // ✅ Now available
-            expectedAnswer: questionData.expectedAnswer,    // ✅ Now available
-            numericalAnswer: questionData.numericalAnswer,  // ✅ Now available
-            yourAnswer: answer?.answer,
-            isCorrect: answer?.isCorrect,                   // ✅ Now evaluated
+            correctAnswer: questionData.correctAnswer,
+            expectedAnswer: questionData.expectedAnswer,
+            numericalAnswer: questionData.numericalAnswer,
+            yourAnswer: displayAnswer, // Use converted text instead of raw ID
+            isCorrect: answer?.isCorrect,
             marks: questionData.marks || 1,
-            marksAwarded: answer?.marksAwarded || 0,        // ✅ Now calculated
-            timeSpent: answer?.timeSpent || 0,              // ✅ PHASE 2 FIX: Include time spent
+            marksAwarded: answer?.marksAwarded || 0,
+            timeSpent: answer?.timeSpent || 0,
             topic: questionData.topic,
-            difficulty: questionData.difficultyLevel || questionData.difficulty,
-            explanation: questionData.explanation || ''     // ✅ Now available
+            difficulty: questionData.difficultyLevel,
+            explanation: questionData.explanation || ''
           }
         }) || []
       }
@@ -561,12 +745,20 @@ export default function QuizResults() {
         detailedAnswersPreview: transformedResult.detailedAnswers?.slice(0, 2),
         hasTopicAnalysis: !!transformedResult.evaluation?.topicAnalysis,
         topicAnalysisLength: transformedResult.evaluation?.topicAnalysis?.length || 0,
+        topicAnalysisData: transformedResult.evaluation?.topicAnalysis,
         hasDifficultyAnalysis: !!transformedResult.evaluation?.difficultyAnalysis,
-        difficultyAnalysisKeys: Object.keys(transformedResult.evaluation?.difficultyAnalysis || {})
+        difficultyAnalysisKeys: Object.keys(transformedResult.evaluation?.difficultyAnalysis || {}),
+        difficultyAnalysisData: transformedResult.evaluation?.difficultyAnalysis,
+        hasWeakTopics: !!transformedResult.evaluation?.weakTopics,
+        weakTopicsCount: transformedResult.evaluation?.weakTopics?.length || 0,
+        weakTopicsData: transformedResult.evaluation?.weakTopics,
+        hasRecommendations: !!transformedResult.evaluation?.recommendations,
+        recommendationsCount: transformedResult.evaluation?.recommendations?.length || 0,
+        recommendationsData: transformedResult.evaluation?.recommendations
       });
 
       setResult(transformedResult)
-      console.log('✅ Result state set successfully');
+      console.log('✅ Result state set successfully with backend data');
       setLoading(false)
     } catch (err) {
       console.error('❌ Failed to load results from history:', err)
@@ -709,68 +901,11 @@ export default function QuizResults() {
 
       {/* Tab Content */}
       {activeTab === 'overview' && (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <div className="bg-white rounded-lg shadow-sm p-6">
-            <h3 className="text-sm font-medium text-gray-500">Total Questions</h3>
-            <p className="mt-2 text-3xl font-bold text-gray-900">
-              {evaluation?.overallAnalysis?.totalQuestions || 0}
-            </p>
-          </div>
-          
-          <div className="bg-white rounded-lg shadow-sm p-6">
-            <h3 className="text-sm font-medium text-gray-500">Correct Answers</h3>
-            <p className="mt-2 text-3xl font-bold text-green-600">
-              {evaluation?.overallAnalysis?.correct || 0}
-            </p>
-          </div>
-          
-          <div className="bg-white rounded-lg shadow-sm p-6">
-            <h3 className="text-sm font-medium text-gray-500">Wrong Answers</h3>
-            <p className="mt-2 text-3xl font-bold text-red-600">
-              {evaluation?.overallAnalysis?.wrong || 0}
-            </p>
-          </div>
-          
-          <div className="bg-white rounded-lg shadow-sm p-6">
-            <h3 className="text-sm font-medium text-gray-500">Unattempted</h3>
-            <p className="mt-2 text-3xl font-bold text-gray-400">
-              {evaluation?.overallAnalysis?.unattempted || 0}
-            </p>
-          </div>
-          
-          <div className="bg-white rounded-lg shadow-sm p-6">
-            <h3 className="text-sm font-medium text-gray-500">Accuracy</h3>
-            <p className="mt-2 text-3xl font-bold text-indigo-600">
-              {Math.round(evaluation?.overallAnalysis?.accuracy || 0)}%
-            </p>
-          </div>
-          
-          <div className="bg-white rounded-lg shadow-sm p-6">
-            <h3 className="text-sm font-medium text-gray-500">Time Taken</h3>
-            <p className="mt-2 text-3xl font-bold text-gray-900">
-              {formatTime(session.timeSpent)}
-            </p>
-          </div>
-          
-          <div className="bg-white rounded-lg shadow-sm p-6">
-            <h3 className="text-sm font-medium text-gray-500">Attempt Number</h3>
-            <p className="mt-2 text-3xl font-bold text-gray-900">
-              {session.attemptNumber}
-            </p>
-          </div>
-          
-          <div className="bg-white rounded-lg shadow-sm p-6">
-            <h3 className="text-sm font-medium text-gray-500">Time Management</h3>
-            <p className={`mt-2 text-xl font-bold capitalize ${
-              evaluation?.timeAnalysis?.timeManagementRating === 'excellent' ? 'text-green-600' :
-              evaluation?.timeAnalysis?.timeManagementRating === 'good' ? 'text-blue-600' :
-              evaluation?.timeAnalysis?.timeManagementRating === 'average' ? 'text-yellow-600' :
-              'text-red-600'
-            }`}>
-              {evaluation?.timeAnalysis?.timeManagementRating || 'N/A'}
-            </p>
-          </div>
-        </div>
+        <OverviewTab 
+          session={session} 
+          evaluation={evaluation} 
+          formatTime={formatTime} 
+        />
       )}
 
       {/* New Achievements Section */}
@@ -814,376 +949,14 @@ export default function QuizResults() {
         </div>
       )}
 
-      {activeTab === 'detailed' && detailedAnswers && (
-        <div className="space-y-4">
-          {detailedAnswers.map((answer, index) => (
-            <div 
-              key={answer.questionId}
-              className={`bg-white rounded-lg shadow-sm p-6 border-l-4 ${
-                answer.isCorrect === true ? 'border-green-500' :
-                answer.isCorrect === false ? 'border-red-500' :
-                'border-gray-300'
-              }`}
-            >
-              <div className="flex items-start justify-between">
-                <div className="flex-1">
-                  <div className="flex items-center space-x-3 mb-2">
-                    <span className="font-medium text-gray-900">Q{index + 1}.</span>
-                    <span className={`px-2 py-0.5 text-xs font-medium rounded-full ${
-                      answer.isCorrect === true ? 'bg-green-100 text-green-800' :
-                      answer.isCorrect === false ? 'bg-red-100 text-red-800' :
-                      'bg-gray-100 text-gray-800'
-                    }`}>
-                      {answer.isCorrect === true ? 'Correct' : answer.isCorrect === false ? 'Wrong' : 'Pending'}
-                    </span>
-                  </div>
-                  
-                  <p className="text-gray-900 font-medium mb-3">{answer.questionText}</p>
-                  
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                      <h4 className="text-sm font-medium text-gray-500 mb-1">Your Answer:</h4>
-                      <p className="text-gray-900">
-                        {getUserAnswerDisplay(
-                          { type: answer.type, options: answer.options },
-                          answer.yourAnswer
-                        )}
-                      </p>
-                    </div>
-                    
-                    {answer.correctAnswer && (
-                      <div>
-                        <h4 className="text-sm font-medium text-gray-500 mb-1">Correct Answer:</h4>
-                        <p className="text-green-600">
-                          {typeof answer.correctAnswer === 'string' 
-                            ? answer.correctAnswer
-                            : (answer.correctAnswer.options?.map(o => o.text).join(', ') ||
-                               answer.correctAnswer.numericalAnswer?.value ||
-                               answer.correctAnswer.expectedAnswer ||
-                               'N/A')}
-                        </p>
-                      </div>
-                    )}
-                  </div>
-                  
-                  {answer.explanation && (
-                    <div className="mt-3 p-3 bg-blue-50 rounded-lg">
-                      <h4 className="text-sm font-medium text-blue-800 mb-1">Explanation:</h4>
-                      <p className="text-blue-700 text-sm">{answer.explanation}</p>
-                    </div>
-                  )}
-                  
-                  {answer.feedback && (
-                    <div className="mt-3 p-3 bg-yellow-50 rounded-lg">
-                      <h4 className="text-sm font-medium text-yellow-800 mb-1">Tutor Feedback:</h4>
-                      <p className="text-yellow-700 text-sm">{answer.feedback}</p>
-                    </div>
-                  )}
-                </div>
-                
-                <div className="ml-4 text-right">
-                  <span className="text-lg font-bold text-gray-900">
-                    {answer.marksAwarded || 0}
-                  </span>
-                  <span className="text-gray-500">
-                    /{answer.questionSnapshot?.marks || 0}
-                  </span>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
+      {activeTab === 'detailed' && <DetailedTab detailedAnswers={detailedAnswers} />}
 
       {activeTab === 'analysis' && (
-        <div className="space-y-8">
-          {/* Topic Analysis - Using Enhanced Analysis */}
-          {enhancedAnalysis?.topicAnalysis && enhancedAnalysis.topicAnalysis.length > 0 && (
-            <div className="bg-white rounded-lg shadow-sm p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Topic-wise Performance</h3>
-              <div className="space-y-4">
-                {enhancedAnalysis.topicAnalysis.map((topic) => (
-                  <div key={topic.topic} className="border-b pb-4 last:border-0">
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="font-medium text-gray-900">{topic.topic}</span>
-                      <span className={`font-bold ${
-                        topic.accuracy >= 70 ? 'text-green-600' :
-                        topic.accuracy >= 40 ? 'text-yellow-600' :
-                        'text-red-600'
-                      }`}>
-                        {Math.round(topic.accuracy)}%
-                      </span>
-                    </div>
-                    <div className="w-full bg-gray-200 rounded-full h-2.5">
-                      <div 
-                        className={`h-2.5 rounded-full ${
-                          topic.accuracy >= 70 ? 'bg-green-500' :
-                          topic.accuracy >= 40 ? 'bg-yellow-500' :
-                          'bg-red-500'
-                        }`}
-                        style={{ width: `${Math.min(100, topic.accuracy)}%` }}
-                      ></div>
-                    </div>
-                    <div className="flex text-sm text-gray-500 mt-1">
-                      <span className="mr-4">Correct: {topic.correct}</span>
-                      <span className="mr-4">Wrong: {topic.wrong}</span>
-                      <span>Unattempted: {topic.unattempted}</span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Difficulty Analysis - Using Enhanced Analysis */}
-          {enhancedAnalysis?.difficultyAnalysis && (
-            <div className="bg-white rounded-lg shadow-sm p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Difficulty-wise Performance</h3>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {['easy', 'medium', 'hard'].map((level) => {
-                  const data = enhancedAnalysis.difficultyAnalysis[level]
-                  return (
-                    <div key={level} className="text-center p-4 bg-gray-50 rounded-lg">
-                      <h4 className="font-medium text-gray-900 capitalize mb-2">{level}</h4>
-                      <div className="text-3xl font-bold mb-1" style={{
-                        color: level === 'easy' ? '#22c55e' : level === 'medium' ? '#eab308' : '#ef4444'
-                      }}>
-                        {Math.round(data.accuracy)}%
-                      </div>
-                      <p className="text-sm text-gray-500">
-                        {data.correct} / {data.total} correct
-                      </p>
-                    </div>
-                  )
-                })}
-              </div>
-            </div>
-          )}
-
-          {/* Time Management Analysis - NEW */}
-          {enhancedAnalysis?.timeAnalysis && (
-            <div className="bg-white rounded-lg shadow-sm p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">⏱️ Time Management</h3>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-4">
-                <div className="text-center p-4 bg-gray-50 rounded-lg">
-                  <h4 className="text-sm font-medium text-gray-500 mb-2">Total Time</h4>
-                  <div className="text-2xl font-bold text-gray-900">
-                    {Math.floor(enhancedAnalysis.timeAnalysis.totalTimeSpent / 60)}m {enhancedAnalysis.timeAnalysis.totalTimeSpent % 60}s
-                  </div>
-                </div>
-                <div className="text-center p-4 bg-gray-50 rounded-lg">
-                  <h4 className="text-sm font-medium text-gray-500 mb-2">Avg per Question</h4>
-                  <div className="text-2xl font-bold text-gray-900">
-                    {Math.round(enhancedAnalysis.timeAnalysis.avgTimePerQuestion)}s
-                  </div>
-                </div>
-                <div className="text-center p-4 bg-gray-50 rounded-lg">
-                  <h4 className="text-sm font-medium text-gray-500 mb-2">Time Utilization</h4>
-                  <div className="text-2xl font-bold text-indigo-600">
-                    {Math.round(Number(enhancedAnalysis.timeAnalysis.timeUtilization || 0))}%
-                  </div>
-                </div>
-              </div>
-              <div className={`p-4 rounded-lg ${
-                enhancedAnalysis.timeAnalysis.rating === 'excellent' ? 'bg-green-50' :
-                enhancedAnalysis.timeAnalysis.rating === 'good' ? 'bg-blue-50' :
-                enhancedAnalysis.timeAnalysis.rating === 'rushed' ? 'bg-red-50' :
-                'bg-yellow-50'
-              }`}>
-                <p className={`font-medium capitalize ${
-                  enhancedAnalysis.timeAnalysis.rating === 'excellent' ? 'text-green-800' :
-                  enhancedAnalysis.timeAnalysis.rating === 'good' ? 'text-blue-800' :
-                  enhancedAnalysis.timeAnalysis.rating === 'rushed' ? 'text-red-800' :
-                  'text-yellow-800'
-                }`}>
-                  {enhancedAnalysis.timeAnalysis.rating} Time Management
-                </p>
-                {enhancedAnalysis.timeAnalysis.recommendations && enhancedAnalysis.timeAnalysis.recommendations.length > 0 && (
-                  <ul className="mt-2 space-y-1">
-                    {enhancedAnalysis.timeAnalysis.recommendations.map((rec, i) => (
-                      <li key={i} className="text-sm text-gray-700">• {rec}</li>
-                    ))}
-                  </ul>
-                )}
-              </div>
-            </div>
-          )}
-
-          {/* Comparison with Previous Attempts */}
-          {evaluation?.comparison && evaluation.comparison.previousAttempts > 0 && (
-            <div className="bg-white rounded-lg shadow-sm p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Progress</h3>
-              <div className="flex items-center space-x-8">
-                <div className="flex items-center">
-                  <span className={`text-3xl font-bold ${
-                    evaluation.comparison.scoreImprovement > 0 ? 'text-green-600' :
-                    evaluation.comparison.scoreImprovement < 0 ? 'text-red-600' :
-                    'text-gray-600'
-                  }`}>
-                    {evaluation.comparison.scoreImprovement > 0 ? '+' : ''}
-                    {evaluation.comparison.scoreImprovement}
-                  </span>
-                  <span className="ml-2 text-gray-500">marks vs last attempt</span>
-                </div>
-                <div className="flex items-center">
-                  <span className={`px-3 py-1 rounded-full text-sm font-medium ${
-                    evaluation.comparison.trend === 'improving' ? 'bg-green-100 text-green-800' :
-                    evaluation.comparison.trend === 'declining' ? 'bg-red-100 text-red-800' :
-                    'bg-gray-100 text-gray-800'
-                  }`}>
-                    {evaluation.comparison.trend}
-                  </span>
-                </div>
-              </div>
-            </div>
-          )}
-        </div>
+        <AnalysisTab enhancedAnalysis={enhancedAnalysis} evaluation={evaluation} />
       )}
 
       {activeTab === 'suggestions' && (
-        <div className="space-y-6">
-          {/* Weak Areas - Using Enhanced Analysis */}
-          {enhancedAnalysis?.improvementAreas?.weakAreas?.length > 0 && (
-            <div className="bg-red-50 rounded-lg p-6">
-              <h3 className="text-lg font-semibold text-red-800 mb-4">🎯 Areas to Improve</h3>
-              <div className="space-y-3">
-                {enhancedAnalysis.improvementAreas.weakAreas.map((area, index) => (
-                  <div key={index} className="flex items-center justify-between p-3 bg-white rounded-lg">
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-1">
-                        <span className="font-medium text-gray-900">{area.area}</span>
-                        <span className={`px-2 py-0.5 text-xs font-medium rounded-full ${
-                          area.priority === 'high' ? 'bg-red-100 text-red-800' :
-                          area.priority === 'medium' ? 'bg-yellow-100 text-yellow-800' :
-                          'bg-blue-100 text-blue-800'
-                        }`}>
-                          {area.priority}
-                        </span>
-                      </div>
-                      <p className="text-sm text-gray-600">{area.reason}</p>
-                      {area.suggestions?.length > 0 && (
-                        <ul className="mt-2 space-y-1">
-                          {area.suggestions.map((suggestion, i) => (
-                            <li key={i} className="text-sm text-gray-500 flex items-start">
-                              <span className="mr-2">•</span>
-                              <span>{suggestion}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      )}
-                    </div>
-                    {area.accuracy !== undefined && (
-                      <span className="text-red-600 font-bold ml-4">{Math.round(area.accuracy)}%</span>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Strong Areas - Using Enhanced Analysis */}
-          {enhancedAnalysis?.improvementAreas?.strongAreas?.length > 0 && (
-            <div className="bg-green-50 rounded-lg p-6">
-              <h3 className="text-lg font-semibold text-green-800 mb-4">💪 Your Strengths</h3>
-              <div className="flex flex-wrap gap-2">
-                {enhancedAnalysis.improvementAreas.strongAreas.map((area, index) => (
-                  <span key={index} className="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm font-medium">
-                    {area.area} ({Math.round(area.accuracy)}%)
-                  </span>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Next Actions - Using Enhanced Analysis */}
-          {enhancedAnalysis?.nextActions?.length > 0 && (
-            <div className="bg-white rounded-lg shadow-sm p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">📚 Recommended Next Steps</h3>
-              <div className="space-y-4">
-                {enhancedAnalysis.nextActions.map((action, index) => (
-                  <div 
-                    key={index}
-                    className={`p-4 rounded-lg border-l-4 ${
-                      action.priority === 'high' ? 'bg-red-50 border-red-500' :
-                      action.priority === 'medium' ? 'bg-yellow-50 border-yellow-500' :
-                      'bg-blue-50 border-blue-500'
-                    }`}
-                  >
-                    <div className="flex items-start justify-between mb-2">
-                      <div className="flex items-center gap-2">
-                        <span className="text-2xl">{action.icon}</span>
-                        <span className="font-medium text-gray-900">{action.title}</span>
-                      </div>
-                      <span className={`text-xs font-medium px-2 py-0.5 rounded ${
-                        action.priority === 'high' ? 'bg-red-100 text-red-800' :
-                        action.priority === 'medium' ? 'bg-yellow-100 text-yellow-800' :
-                        'bg-blue-100 text-blue-800'
-                      }`}>
-                        {action.priority}
-                      </span>
-                    </div>
-                    <p className="text-gray-700">{action.description}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Quick Actions */}
-          <div className="bg-indigo-50 rounded-lg p-6">
-            <h3 className="text-lg font-semibold text-indigo-800 mb-4">🚀 Quick Actions</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-              <button
-                onClick={() => navigate('/student/quizzes')}
-                className="p-4 bg-white border border-indigo-200 rounded-lg text-left hover:bg-indigo-50 transition-colors group"
-              >
-                <div className="flex items-center gap-3">
-                  <span className="text-2xl group-hover:scale-110 transition-transform">📝</span>
-                  <div>
-                    <span className="font-medium text-indigo-900 block">Take Another Quiz</span>
-                    <p className="text-sm text-indigo-600">Practice makes perfect!</p>
-                  </div>
-                </div>
-              </button>
-              <button
-                onClick={() => navigate('/student/quiz-history')}
-                className="p-4 bg-white border border-indigo-200 rounded-lg text-left hover:bg-indigo-50 transition-colors group"
-              >
-                <div className="flex items-center gap-3">
-                  <span className="text-2xl group-hover:scale-110 transition-transform">📊</span>
-                  <div>
-                    <span className="font-medium text-indigo-900 block">View Quiz History</span>
-                    <p className="text-sm text-indigo-600">Track your progress</p>
-                  </div>
-                </div>
-              </button>
-              <button
-                onClick={() => navigate('/student/courses')}
-                className="p-4 bg-white border border-indigo-200 rounded-lg text-left hover:bg-indigo-50 transition-colors group"
-              >
-                <div className="flex items-center gap-3">
-                  <span className="text-2xl group-hover:scale-110 transition-transform">📚</span>
-                  <div>
-                    <span className="font-medium text-indigo-900 block">Review Materials</span>
-                    <p className="text-sm text-indigo-600">Strengthen understanding</p>
-                  </div>
-                </div>
-              </button>
-              <button
-                onClick={() => navigate('/student/progress')}
-                className="p-4 bg-white border border-indigo-200 rounded-lg text-left hover:bg-indigo-50 transition-colors group"
-              >
-                <div className="flex items-center gap-3">
-                  <span className="text-2xl group-hover:scale-110 transition-transform">📈</span>
-                  <div>
-                    <span className="font-medium text-indigo-900 block">Progress Reports</span>
-                    <p className="text-sm text-indigo-600">See overall performance</p>
-                  </div>
-                </div>
-              </button>
-            </div>
-          </div>
-        </div>
+        <SuggestionsTab result={result} enhancedAnalysis={enhancedAnalysis} />
       )}
     </div>
     </>

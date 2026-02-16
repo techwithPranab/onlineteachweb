@@ -782,6 +782,12 @@ export const algorithmQuizService = {
   getQuizStats: async () => {
     const { data } = await api.get('/active-quizzes/stats/summary')
     return data
+  },
+
+  // Get quiz result for a completed ActiveQuiz
+  getQuizResult: async (quizId) => {
+    const { data } = await api.get(`/active-quizzes/${quizId}/result`)
+    return data
   }
 }
 

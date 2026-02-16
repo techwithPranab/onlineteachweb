@@ -55,22 +55,52 @@ function evaluateAnswer(question, userAnswer) {
  */
 function evaluateSingleChoice(question, userAnswer) {
   if (!question.correctAnswer || !question.options) {
+    console.warn('Missing correctAnswer or options:', { 
+      hasCorrectAnswer: !!question.correctAnswer, 
+      hasOptions: !!question.options 
+    });
     return false;
   }
   
-  // Find the option that matches the correct answer text
+  // First, check if correctAnswer is already an option ID
+  const directMatch = question.options.find(opt => 
+    (opt._id || opt.id)?.toString() === question.correctAnswer?.toString()
+  );
+  
+  if (directMatch) {
+    const correctId = directMatch._id || directMatch.id;
+    const isCorrect = correctId?.toString() === userAnswer?.toString();
+    console.log('Direct ID match evaluation:', { 
+      correctId, 
+      userAnswer, 
+      isCorrect 
+    });
+    return isCorrect;
+  }
+  
+  // If not, try to match by text (original behavior)
   const correctOption = question.options.find(opt => 
     opt.text === question.correctAnswer || 
     opt.text?.trim().toLowerCase() === question.correctAnswer?.trim().toLowerCase()
   );
   
   if (!correctOption) {
-    console.warn('Correct option not found:', question.correctAnswer);
+    console.warn('Correct option not found by text match:', { 
+      correctAnswer: question.correctAnswer,
+      availableOptions: question.options.map(o => ({ id: o._id || o.id, text: o.text }))
+    });
     return false;
   }
   
   const correctId = correctOption._id || correctOption.id;
-  return correctId?.toString() === userAnswer?.toString();
+  const isCorrect = correctId?.toString() === userAnswer?.toString();
+  console.log('Text match evaluation:', { 
+    correctText: question.correctAnswer,
+    correctId, 
+    userAnswer, 
+    isCorrect 
+  });
+  return isCorrect;
 }
 
 /**

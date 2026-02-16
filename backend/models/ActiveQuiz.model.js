@@ -17,11 +17,34 @@ const activeQuizSchema = new mongoose.Schema({
     index: true
   },
 
-  // Student who created this active quiz
-  userId: {
+  // Creator of this quiz (student/tutor/admin)
+  createdBy: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required: true,
+    index: true
+  },
+
+  // Role of creator
+  creatorRole: {
+    type: String,
+    enum: ['student', 'tutor', 'admin'],
+    required: true
+  },
+
+  // Students to whom this quiz is distributed/available
+  // For student-created: contains only their own userId
+  // For tutor/admin-created: contains array of student userIds
+  distributedStudents: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    index: true
+  }],
+
+  // Legacy field for backward compatibility (deprecated)
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
     index: true
   },
 
@@ -130,45 +153,9 @@ const activeQuizSchema = new mongoose.Schema({
     }
   }],
 
-  // User answers with detailed tracking
-  answers: [{
-    questionId: {
-      type: String,
-      required: true
-    },
-    answer: {
-      type: mongoose.Schema.Types.Mixed // Can be string, array, number, etc.
-    },
-    isCorrect: {
-      type: Boolean
-    },
-    markedForReview: {
-      type: Boolean,
-      default: false
-    },
-    skipped: {
-      type: Boolean,
-      default: false
-    },
-    timeSpent: {
-      type: Number, // Time spent on this question in seconds
-      default: 0
-    },
-    attempts: {
-      type: Number, // Number of times answer was changed
-      default: 0
-    },
-    firstAnsweredAt: {
-      type: Date
-    },
-    lastUpdatedAt: {
-      type: Date
-    },
-    visitCount: {
-      type: Number, // How many times user visited this question
-      default: 0
-    }
-  }],
+  // NOTE: Answers are NO LONGER stored in ActiveQuiz
+  // All answers are now stored in QuizSession model
+  // This field is removed to prevent data duplication
 
   // Quiz timing
   startedAt: {
@@ -236,124 +223,23 @@ const activeQuizSchema = new mongoose.Schema({
 });
 
 // Indexes for performance
-activeQuizSchema.index({ userId: 1, status: 1 });
-activeQuizSchema.index({ userId: 1, createdAt: -1 });
+activeQuizSchema.index({ createdBy: 1, status: 1 });
+activeQuizSchema.index({ createdBy: 1, createdAt: -1 });
+activeQuizSchema.index({ distributedStudents: 1, status: 1 });
 activeQuizSchema.index({ status: 1, createdAt: -1 });
 activeQuizSchema.index({ isDeleted: 1, createdAt: -1 });
 
-// Virtual for time remaining (if in progress)
-activeQuizSchema.virtual('timeRemaining').get(function() {
-  if (this.status !== 'in-progress' || !this.startedAt) return null;
+// Legacy indexes for backward compatibility
+activeQuizSchema.index({ userId: 1, status: 1 });
+activeQuizSchema.index({ userId: 1, createdAt: -1 });
 
-  const elapsed = Math.floor((Date.now() - this.startedAt) / 1000); // seconds
-  const totalTime = this.duration * 60; // convert to seconds
-  const remaining = totalTime - elapsed;
-
-  return Math.max(0, remaining);
-});
-
-// Virtual for progress percentage
+// Virtual for progress percentage (now based on QuizSession)
 activeQuizSchema.virtual('progressPercentage').get(function() {
-  if (!this.questions || this.questions.length === 0) return 0;
-
-  const answeredCount = this.answers ? this.answers.filter(a => a.answer !== null && a.answer !== undefined && !a.skipped).length : 0;
-  return Math.round((answeredCount / this.questions.length) * 100);
+  // This should be calculated from QuizSession, not from ActiveQuiz
+  return 0;
 });
 
-// Instance method to save individual answer
-activeQuizSchema.methods.saveAnswer = function(questionId, answerData) {
-  const { answer, markedForReview = false, timeSpent = 0 } = answerData;
-  
-  // Find existing answer
-  const existingAnswerIndex = this.answers.findIndex(a => a.questionId === questionId);
-  
-  if (existingAnswerIndex >= 0) {
-    // Update existing answer
-    const existingAnswer = this.answers[existingAnswerIndex];
-    existingAnswer.answer = answer;
-    existingAnswer.markedForReview = markedForReview;
-    existingAnswer.timeSpent = (existingAnswer.timeSpent || 0) + timeSpent;
-    existingAnswer.attempts = (existingAnswer.attempts || 0) + 1;
-    existingAnswer.lastUpdatedAt = new Date();
-    existingAnswer.visitCount = (existingAnswer.visitCount || 0) + 1;
-    
-    if (!existingAnswer.firstAnsweredAt) {
-      existingAnswer.firstAnsweredAt = new Date();
-    }
-    
-    // Clear skipped status if answer is provided
-    if (answer !== null && answer !== undefined) {
-      existingAnswer.skipped = false;
-    }
-  } else {
-    // Create new answer entry
-    this.answers.push({
-      questionId,
-      answer,
-      markedForReview,
-      skipped: answer === null || answer === undefined,
-      timeSpent,
-      attempts: 1,
-      firstAnsweredAt: new Date(),
-      lastUpdatedAt: new Date(),
-      visitCount: 1
-    });
-  }
-  
-  this.lastUpdated = new Date();
-  return this.save();
-};
-
-// Instance method to mark question for review
-activeQuizSchema.methods.toggleReviewMark = function(questionId) {
-  const answer = this.answers.find(a => a.questionId === questionId);
-  
-  if (answer) {
-    answer.markedForReview = !answer.markedForReview;
-    answer.lastUpdatedAt = new Date();
-  } else {
-    // Create placeholder if doesn't exist
-    this.answers.push({
-      questionId,
-      answer: null,
-      markedForReview: true,
-      skipped: false,
-      timeSpent: 0,
-      attempts: 0,
-      visitCount: 1
-    });
-  }
-  
-  this.lastUpdated = new Date();
-  return this.save();
-};
-
-// Instance method to skip question
-activeQuizSchema.methods.skipQuestion = function(questionId, timeSpent = 0) {
-  const answer = this.answers.find(a => a.questionId === questionId);
-  
-  if (answer) {
-    answer.skipped = true;
-    answer.timeSpent = (answer.timeSpent || 0) + timeSpent;
-    answer.visitCount = (answer.visitCount || 0) + 1;
-    answer.lastUpdatedAt = new Date();
-  } else {
-    this.answers.push({
-      questionId,
-      answer: null,
-      markedForReview: false,
-      skipped: true,
-      timeSpent,
-      attempts: 0,
-      visitCount: 1
-    });
-  }
-  
-  this.lastUpdated = new Date();
-  return this.save();
-};
-
-// Instance method to start quiz
+// Instance method to start quiz (updates status only)
 activeQuizSchema.methods.startQuiz = function() {
   this.status = 'in-progress';
   this.startedAt = new Date();
@@ -380,19 +266,35 @@ activeQuizSchema.methods.abandonQuiz = function() {
   return this.save();
 };
 
-// Static method to get active quizzes for a user
-activeQuizSchema.statics.getActiveQuizzes = function(userId) {
+// Static method to get active quizzes for a student
+// Now considers distributedStudents field
+activeQuizSchema.statics.getActiveQuizzes = function(studentId) {
   return this.find({
-    userId,
+    distributedStudents: studentId,
+    status: { $in: ['active', 'in-progress'] },
+    isDeleted: false
+  }).sort({ createdAt: -1 });
+};
+
+// Legacy method for backward compatibility
+activeQuizSchema.statics.getActiveQuizzesByUserId = function(userId) {
+  return this.find({
+    $or: [
+      { distributedStudents: userId },
+      { userId: userId } // Legacy field
+    ],
     status: { $in: ['active', 'in-progress'] },
     isDeleted: false
   }).sort({ createdAt: -1 });
 };
 
 // Static method to get completed quizzes for a user
-activeQuizSchema.statics.getCompletedQuizzes = function(userId, limit = 50) {
+activeQuizSchema.statics.getCompletedQuizzes = function(studentId, limit = 50) {
   return this.find({
-    userId,
+    $or: [
+      { distributedStudents: studentId },
+      { userId: studentId } // Legacy field
+    ],
     status: 'completed',
     isDeleted: false
   })
@@ -401,9 +303,12 @@ activeQuizSchema.statics.getCompletedQuizzes = function(userId, limit = 50) {
 };
 
 // Static method to check if user has quiz in progress
-activeQuizSchema.statics.hasQuizInProgress = function(userId) {
+activeQuizSchema.statics.hasQuizInProgress = function(studentId) {
   return this.findOne({
-    userId,
+    $or: [
+      { distributedStudents: studentId },
+      { userId: studentId } // Legacy field
+    ],
     status: 'in-progress',
     isDeleted: false
   });

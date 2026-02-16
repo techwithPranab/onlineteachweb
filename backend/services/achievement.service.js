@@ -256,7 +256,8 @@ class AchievementService {
     const difficultyStats = {
       easy: [],
       medium: [],
-      hard: []
+      hard: [],
+      olympiad: []
     };
     
     // Categorize sessions by difficulty
@@ -303,15 +304,26 @@ class AchievementService {
       }
     }
     
-    // Check Difficulty Champion (earned all three)
+    // Check Olympiad Champion (>70% avg in 5 olympiad quizzes)
+    if (difficultyStats.olympiad.length >= 5) {
+      const avg = difficultyStats.olympiad.slice(0, 5).reduce((a, b) => a + b, 0) / 5;
+      if (avg > 70) {
+        const badge = await this._awardBadge(studentId, 'olympiad_champion', {
+          metric: `${avg.toFixed(1)}% average in olympiad quizzes`
+        });
+        if (badge) newBadges.push(badge);
+      }
+    }
+    
+    // Check Difficulty Master (earned all four including olympiad)
     const earnedBadges = await Achievement.find({ 
       studentId, 
-      badgeType: { $in: ['easy_master', 'medium_conqueror', 'hard_hero'] }
+      badgeType: { $in: ['easy_master', 'medium_conqueror', 'hard_hero', 'olympiad_champion'] }
     });
     
-    if (earnedBadges.length === 3) {
-      const badge = await this._awardBadge(studentId, 'difficulty_champion', {
-        metric: 'Mastered all difficulty levels'
+    if (earnedBadges.length === 4) {
+      const badge = await this._awardBadge(studentId, 'difficulty_master', {
+        metric: 'Mastered all difficulty levels including Olympiad'
       });
       if (badge) newBadges.push(badge);
     }

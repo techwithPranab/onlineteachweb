@@ -30,7 +30,8 @@ export default function QuizCreate() {
       difficultyDistribution: {
         easy: 0,
         medium: 0,
-        hard: 0
+        hard: 0,
+        olympiad: 0
       }
     },
     settings: {
@@ -234,8 +235,8 @@ export default function QuizCreate() {
 
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-1">Difficulty Level *</label>
-        <div className="flex flex-col sm:flex-row sm:space-x-4 space-y-2 sm:space-y-0">
-          {['easy', 'medium', 'hard'].map(level => (
+        <div className="flex flex-col sm:flex-row sm:flex-wrap sm:gap-4 space-y-2 sm:space-y-0">
+          {['easy', 'medium', 'hard', 'olympiad'].map(level => (
             <label key={level} className="flex items-center">
               <input
                 type="radio"
@@ -245,7 +246,7 @@ export default function QuizCreate() {
                 onChange={(e) => handleChange('difficultyLevel', e.target.value)}
                 className="h-4 w-4 text-indigo-600"
               />
-              <span className="ml-2 capitalize">{level}</span>
+              <span className="ml-2 capitalize">{level === 'olympiad' ? '🏆 Olympiad' : level}</span>
             </label>
           ))}
         </div>
@@ -261,7 +262,7 @@ export default function QuizCreate() {
       {questionStats && (
         <div className="bg-blue-50 p-4 rounded-lg">
           <h3 className="font-medium text-blue-800 mb-2">Available Questions</h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 text-sm">
             <div>
               <span className="text-blue-600">Total: </span>
               <span className="font-bold">{questionStats.totalQuestions}</span>
@@ -277,6 +278,10 @@ export default function QuizCreate() {
             <div>
               <span className="text-red-600">Hard: </span>
               <span className="font-bold">{questionStats.byDifficulty?.hard || 0}</span>
+            </div>
+            <div>
+              <span className="text-purple-600">🏆 Olympiad: </span>
+              <span className="font-bold">{questionStats.byDifficulty?.olympiad || 0}</span>
             </div>
           </div>
         </div>

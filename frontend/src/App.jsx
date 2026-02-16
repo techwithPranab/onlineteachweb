@@ -50,6 +50,7 @@ import StudentEvaluation from './pages/tutor/StudentEvaluation'
 import QuizManagement from './pages/tutor/QuizManagement'
 import QuizCreate from './pages/tutor/QuizCreate'
 import QuizPreview from './pages/tutor/QuizPreview'
+import QuizAssignment from './pages/tutor/QuizAssignment'
 import ManualEvaluation from './pages/tutor/ManualEvaluation'
 import QuizAnalytics from './pages/tutor/QuizAnalytics'
 import AIQuestionGenerator from './pages/tutor/AIQuestionGenerator'
@@ -172,6 +173,7 @@ function App() {
             <Route path="quizzes/new" element={<QuizCreate />} />
             <Route path="quizzes/:quizId/edit" element={<QuizCreate />} />
             <Route path="quizzes/:quizId/preview" element={<QuizPreview />} />
+            <Route path="quizzes/:id/assign" element={<QuizAssignment />} />
             <Route path="ai-questions" element={<AIQuestionReview />} />
             <Route path="ai-questions/generate" element={<AIQuestionGenerator />} />
             <Route path="ai-questions/review" element={<AIQuestionReview />} />
@@ -210,6 +212,7 @@ function App() {
             <Route path="quizzes/new" element={<QuizCreate />} />
             <Route path="quizzes/:quizId/edit" element={<QuizCreate />} />
             <Route path="quizzes/:quizId/preview" element={<QuizPreview />} />
+            <Route path="quizzes/:id/assign" element={<QuizAssignment />} />
             <Route path="questions" element={<AdminQuestionBank />} />
             <Route path="questions/import-export" element={<AdminQuestionImportExport />} />
             <Route path="contact-messages" element={<ContactMessages />} />

@@ -26,6 +26,12 @@ const DIFFICULTY_DEFINITIONS = {
     cognitiveLevel: 'Synthesis and Evaluation',
     complexity: 'Complex scenarios, requires critical thinking',
     examples: 'Analyze scenarios, evaluate solutions, solve complex problems with multiple variables'
+  },
+  olympiad: {
+    description: 'Advanced problem-solving, multi-concept integration, competition-level questions requiring creative thinking',
+    cognitiveLevel: 'Advanced Application, Synthesis, and Critical Analysis',
+    complexity: 'Highly complex, requires deep conceptual understanding, creative problem-solving, and cross-topic integration',
+    examples: 'Competition-style problems, proof-based questions, advanced logical reasoning, real-world complex scenarios, multi-step mathematical olympiad problems'
   }
 };
 
@@ -179,9 +185,9 @@ Return a JSON object with a "questions" array. Each question MUST have this exac
       "correctAnswer": "The correct answer for the case-based question",` : ''}
       "explanation": "DETAILED explanation of WHY the correct answer is correct, including the concept being tested",
       "hint": "A helpful hint for students who are struggling",
-      "marks": ${difficultyLevel === 'easy' ? 1 : difficultyLevel === 'medium' ? 2 : 3},
-      "negativeMarks": ${difficultyLevel === 'easy' ? 0 : difficultyLevel === 'medium' ? 0.5 : 1},
-      "recommendedTime": ${difficultyLevel === 'easy' ? 60 : difficultyLevel === 'medium' ? 120 : 180},
+      "marks": ${difficultyLevel === 'easy' ? 1 : difficultyLevel === 'medium' ? 2 : difficultyLevel === 'hard' ? 3 : 5},
+      "negativeMarks": ${difficultyLevel === 'easy' ? 0 : difficultyLevel === 'medium' ? 0.5 : difficultyLevel === 'hard' ? 1 : 1.5},
+      "recommendedTime": ${difficultyLevel === 'easy' ? 60 : difficultyLevel === 'medium' ? 120 : difficultyLevel === 'hard' ? 180 : 300},
       "tags": ["relevant", "topic", "tags"]
     }
   ]

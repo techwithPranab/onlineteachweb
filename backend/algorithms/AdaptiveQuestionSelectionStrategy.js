@@ -129,18 +129,26 @@ class AdaptiveQuestionSelectionStrategy extends QuestionSelectionStrategy {
       originalOrder: selectedQuestions.findIndex(sq => sq._id.toString() === q._id.toString()),
       displayOrder: index,
       snapshot: {
+        question: q.text,
         text: q.text,
         type: q.type,
         caseStudy: q.caseStudy,
         options: q.options ? q.options.map((opt, optIndex) => ({
           _id: opt._id,
+          id: opt.id,
           text: opt.text,
           displayOrder: optIndex
         })) : [],
+        correctAnswer: q.correctAnswer,
+        expectedAnswer: q.expectedAnswer,
+        numericalAnswer: q.numericalAnswer,
         marks: q.marks,
         negativeMarks: q.negativeMarks,
         topic: q.topic,
-        difficultyLevel: q.difficultyLevel
+        subject: q.subject,
+        difficulty: q.difficultyLevel,
+        difficultyLevel: q.difficultyLevel,
+        explanation: q.explanation
       }
     }));
   }
@@ -156,7 +164,7 @@ class AdaptiveQuestionSelectionStrategy extends QuestionSelectionStrategy {
     if (question.difficultyLevel === targetDifficulty) {
       score += 25;
     } else {
-      const difficultyOrder = ['easy', 'medium', 'hard'];
+      const difficultyOrder = ['easy', 'medium', 'hard', 'olympiad'];
       const targetIndex = difficultyOrder.indexOf(targetDifficulty);
       const questionIndex = difficultyOrder.indexOf(question.difficultyLevel);
       score += 25 - (Math.abs(targetIndex - questionIndex) * 10);

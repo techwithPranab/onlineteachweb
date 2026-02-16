@@ -8,7 +8,7 @@ import LoadingSpinner from '@/components/common/LoadingSpinner'
 import SEOHead from '@/components/SEO/SEOHead';
 import ErrorMessage from '@/components/common/ErrorMessage'
 import { algorithmQuizService } from '@/services/apiServices'
-import { Play, RotateCcw, Clock, Target, BookOpen, Trash2, AlertCircle } from 'lucide-react'
+import { Play, RotateCcw, Clock, Target, BookOpen, Trash2, AlertCircle, UserCheck } from 'lucide-react'
 import MeritaiCard from '@/components/ui/MeritaiCard'
 
 /**
@@ -232,6 +232,12 @@ export default function ActiveQuizzes() {
             <span className="font-medium text-gray-900 text-sm">{quiz.subject}</span>
           </div>
           <div className="text-xs text-gray-600 truncate">{quiz.courseName}</div>
+          {quiz.creatorRole && quiz.creatorRole !== 'student' && (
+            <div className="flex items-center gap-1 text-xs text-purple-600">
+              <UserCheck className="w-3 h-3" />
+              <span>Assigned by {quiz.creatorRole}</span>
+            </div>
+          )}
           <div className="flex items-center gap-2 text-xs">
             <span className={`
               inline-flex items-center px-1.5 py-0.5 rounded text-xs font-medium
@@ -260,9 +266,17 @@ export default function ActiveQuizzes() {
       width: '15%',
       className: 'hidden sm:table-cell',
       render: (quiz) => (
-        <div className="flex items-center gap-2">
-          <BookOpen className="w-4 h-4 text-gray-400" />
-          <span className="font-medium text-gray-900">{quiz.subject}</span>
+        <div>
+          <div className="flex items-center gap-2">
+            <BookOpen className="w-4 h-4 text-gray-400" />
+            <span className="font-medium text-gray-900">{quiz.subject}</span>
+          </div>
+          {quiz.creatorRole && quiz.creatorRole !== 'student' && (
+            <div className="flex items-center gap-1 mt-1 text-xs text-purple-600">
+              <UserCheck className="w-3 h-3" />
+              <span>Assigned</span>
+            </div>
+          )}
         </div>
       )
     },

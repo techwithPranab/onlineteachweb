@@ -27,7 +27,7 @@ export default function AIQuestionGenerator() {
     chapterName: '',
     topic: '',
     topics: [],
-    difficultyLevels: ['easy', 'medium', 'hard'],
+    difficultyLevels: ['easy', 'medium', 'hard', 'olympiad'],
     questionTypes: ['mcq-single'],
     questionsPerTopic: 5,
     sources: ['syllabus']

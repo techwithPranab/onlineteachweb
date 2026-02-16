@@ -63,6 +63,10 @@ const topicMasterySchema = new mongoose.Schema({
     hard: {
       attempted: { type: Number, default: 0 },
       correct: { type: Number, default: 0 }
+    },
+    olympiad: {
+      attempted: { type: Number, default: 0 },
+      correct: { type: Number, default: 0 }
     }
   }
 }, { _id: false });

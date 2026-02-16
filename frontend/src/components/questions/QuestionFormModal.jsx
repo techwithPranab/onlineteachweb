@@ -16,7 +16,8 @@ const QUESTION_TYPES = [
 const DIFFICULTY_LEVELS = [
   { value: 'easy', label: 'Easy', color: 'bg-green-100 text-green-800' },
   { value: 'medium', label: 'Medium', color: 'bg-yellow-100 text-yellow-800' },
-  { value: 'hard', label: 'Hard', color: 'bg-red-100 text-red-800' }
+  { value: 'hard', label: 'Hard', color: 'bg-red-100 text-red-800' },
+  { value: 'olympiad', label: 'Olympiad 🏆', color: 'bg-purple-100 text-purple-800' }
 ]
 
 export default function QuestionFormModal({

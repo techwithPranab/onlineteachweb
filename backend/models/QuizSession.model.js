@@ -54,6 +54,12 @@ const answerSchema = new mongoose.Schema({
 }, { _id: true });
 
 const quizSessionSchema = new mongoose.Schema({
+  // Reference to ActiveQuiz (for algorithm-generated quizzes)
+  activeQuizId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'ActiveQuiz',
+    index: true
+  },
   quizId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Quiz',
@@ -77,7 +83,7 @@ const quizSessionSchema = new mongoose.Schema({
     required: true,
     min: 1
   },
-  // Snapshot of selected questions (persisted at start time)
+  // Complete question details with options and correct answers (persisted at start time)
   selectedQuestions: [{
     questionId: {
       type: mongoose.Schema.Types.ObjectId,
@@ -86,11 +92,47 @@ const quizSessionSchema = new mongoose.Schema({
     },
     originalOrder: Number,
     displayOrder: Number, // After shuffling
-    // Snapshot of question data at time of quiz start
-    snapshot: {
+    // Complete question data at time of quiz start
+    question: {
       type: String,
-      required: true
-    }
+      required: false // Made optional to handle missing data
+    },
+    type: {
+      type: String,
+      enum: ['mcq-single', 'mcq-multiple', 'true-false', 'numerical', 'short-answer', 'long-answer', 'case-based'],
+      required: false // Made optional to handle missing data
+    },
+    options: [{
+      _id: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: false
+      },
+      text: {
+        type: String,
+        required: false // Made optional
+      },
+      id: String // Legacy support
+    }],
+    correctAnswer: mongoose.Schema.Types.Mixed, // Can be string, array, number, boolean
+    expectedAnswer: String, // For text-based questions
+    numericalAnswer: mongoose.Schema.Types.Mixed, // Changed from Number to Mixed to support objects like { tolerance: 0 }
+    marks: {
+      type: Number,
+      default: 1
+    },
+    negativeMarks: {
+      type: Number,
+      default: 0
+    },
+    topic: String,
+    subject: String,
+    difficulty: {
+      type: String,
+      enum: ['easy', 'medium', 'hard'],
+      default: 'medium'
+    },
+    explanation: String,
+    metadata: mongoose.Schema.Types.Mixed // Additional metadata
   }],
   // Student answers
   answers: [answerSchema],
@@ -120,7 +162,11 @@ const quizSessionSchema = new mongoose.Schema({
     default: 0
   },
   timeSpent: {
-    type: Number, // in seconds
+    type: Number, // in seconds - total time spent on quiz
+    default: 0
+  },
+  totalTimeSpent: {
+    type: Number, // in seconds - sum of time spent on all questions
     default: 0
   },
   lastActiveAt: {
@@ -198,12 +244,90 @@ const quizSessionSchema = new mongoose.Schema({
   focusLostEvents: [{
     timestamp: Date,
     duration: Number // in seconds
-  }]
+  }],
+  
+  // Quiz Analysis and Suggestions (stored after submission)
+  analysis: {
+    score: Number,
+    totalScore: Number,
+    accuracy: Number,
+    timeTaken: Number,
+    totalTime: Number,
+    timeUtilization: Number,
+    performanceByTopic: [{
+      topic: String,
+      accuracy: Number,
+      correct: Number,
+      total: Number
+    }],
+    performanceByDifficulty: [{
+      difficulty: {
+        type: String,
+        enum: ['easy', 'medium', 'hard']
+      },
+      accuracy: Number,
+      correct: Number,
+      total: Number
+    }],
+    weakTopics: [String],
+    strongTopics: [String]
+  },
+  
+  // Recommendations/Suggestions (stored after submission)
+  recommendations: [{
+    recommendationType: {
+      type: String,
+      enum: ['topic_focus', 'difficulty_adjustment', 'time_management', 'practice_more', 'general', 'study', 'mentor', 'reattempt', 'review', 'challenge', 'practice']
+    },
+    message: String,
+    priority: {
+      type: String,
+      enum: ['high', 'medium', 'low'],
+      default: 'medium'
+    }
+  }],
+  
+  // Improvement Areas (detailed breakdown)
+  improvementAreas: {
+    weakAreas: [{
+      type: {
+        type: String,
+        enum: ['topic', 'difficulty', 'time-management', 'overall', 'completion']
+      },
+      area: String,
+      accuracy: Number,
+      priority: {
+        type: String,
+        enum: ['high', 'medium', 'low']
+      },
+      recommendation: String
+    }],
+    strongAreas: [{
+      type: {
+        type: String,
+        enum: ['topic', 'difficulty', 'overall']
+      },
+      area: String,
+      accuracy: Number
+    }],
+    recommendations: [{
+      type: {
+        type: String,
+        enum: ['time-management', 'overall', 'completion', 'topic', 'difficulty']
+      },
+      priority: {
+        type: String,
+        enum: ['high', 'medium', 'low']
+      },
+      message: String
+    }]
+  }
 }, {
   timestamps: true
 });
 
 // Indexes
+quizSessionSchema.index({ activeQuizId: 1 });
 quizSessionSchema.index({ quizId: 1, studentId: 1 });
 quizSessionSchema.index({ studentId: 1, status: 1 });
 quizSessionSchema.index({ status: 1, expiresAt: 1 });
@@ -237,9 +361,23 @@ quizSessionSchema.methods.saveAnswer = async function(questionId, answer, timeSp
     );
     
     if (question) {
+      // Create questionSnapshot from the complete question details
+      const questionSnapshot = {
+        text: question.question,
+        question: question.question,
+        type: question.type,
+        options: question.options,
+        correctAnswer: question.correctAnswer,
+        marks: question.marks,
+        negativeMarks: question.negativeMarks,
+        topic: question.topic,
+        subject: question.subject,
+        difficulty: question.difficulty
+      };
+      
       this.answers.push({
         questionId,
-        questionSnapshot: JSON.parse(question.snapshot),
+        questionSnapshot: JSON.stringify(questionSnapshot),
         answer,
         timeSpent,
         isVisited: true
@@ -354,6 +492,13 @@ quizSessionSchema.pre('save', function(next) {
     if (!this.totalQuestions || this.totalQuestions === 0) {
       this.totalQuestions = this.selectedQuestions.length;
     }
+  }
+  
+  // Calculate totalTimeSpent as sum of all answer timeSpent values
+  if (this.answers && this.answers.length > 0) {
+    this.totalTimeSpent = this.answers.reduce((sum, answer) => sum + (answer.timeSpent || 0), 0);
+  } else {
+    this.totalTimeSpent = 0;
   }
   
   next();

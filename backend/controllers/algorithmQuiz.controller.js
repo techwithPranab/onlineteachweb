@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const Quiz = require('../models/Quiz.model');
 const QuizSession = require('../models/QuizSession.model');
 const Question = require('../models/Question.model');
@@ -52,8 +53,42 @@ exports.createAlgorithmQuiz = async (req, res, next) => {
       });
     }
     
-    // Create quiz session
+    // First create an ActiveQuiz record
+    const ActiveQuiz = require('../models/ActiveQuiz.model');
+    const activeQuiz = await ActiveQuiz.create({
+      quizId: new mongoose.Types.ObjectId().toString(), // Generate temporary quizId
+      sessionId: new mongoose.Types.ObjectId().toString(), // Will be updated with session ID
+      userId, // Keep for backward compatibility
+      createdBy: userId,
+      creatorRole: req.user.role || 'student',
+      distributedStudents: [userId], // Student creates quiz for themselves
+      subject,
+      courseName: 'Algorithm Generated Quiz', // Will be populated from course
+      courseId,
+      difficulty,
+      questionCount,
+      duration: duration * 60,
+      status: 'active',
+      questions: questions.map(q => ({
+        id: q._id.toString(),
+        question: q.questionText,
+        type: q.type || 'mcq-single',
+        options: q.options,
+        correctAnswer: q.correctAnswer,
+        expectedAnswer: q.expectedAnswer,
+        numericalAnswer: q.numericalAnswer,
+        topic: q.topic,
+        difficulty: q.difficulty,
+        marks: q.marks || 1
+      })),
+      totalMarks: questions.reduce((sum, q) => sum + (q.marks || 1), 0),
+      algorithmUsed: 'algorithm',
+      performanceData: {}
+    });
+    
+    // Create quiz session linked to ActiveQuiz
     const session = await QuizSession.create({
+      activeQuizId: activeQuiz._id, // Link to ActiveQuiz
       studentId: userId,
       quizId: null, // Dynamic quiz, no fixed quiz
       courseId,
@@ -78,35 +113,10 @@ exports.createAlgorithmQuiz = async (req, res, next) => {
       }
     });
     
-    // Also create an ActiveQuiz record for consistency with the completion API
-    const ActiveQuiz = require('../models/ActiveQuiz.model');
-    const activeQuiz = await ActiveQuiz.create({
-      quizId: session._id.toString(), // Use session ID as quizId
-      sessionId: session._id.toString(),
-      userId,
-      subject,
-      courseName: 'Algorithm Generated Quiz', // Will be populated from course
-      courseId,
-      difficulty,
-      questionCount,
-      duration: duration * 60,
-      status: 'active',
-      questions: questions.map(q => ({
-        questionId: q._id,
-        questionText: q.questionText,
-        options: q.options,
-        correctAnswer: q.correctAnswer,
-        expectedAnswer: q.expectedAnswer,
-        numericalAnswer: q.numericalAnswer,
-        topic: q.topic,
-        difficulty: q.difficulty,
-        marks: q.marks || 1,
-        type: q.type || 'mcq-single'
-      })),
-      totalMarks: questions.reduce((sum, q) => sum + (q.marks || 1), 0),
-      algorithmUsed: 'algorithm',
-      performanceData: {}
-    });
+    // Update ActiveQuiz with session ID
+    activeQuiz.sessionId = session._id.toString();
+    activeQuiz.quizId = session._id.toString();
+    await activeQuiz.save();
     
     logger.info(`Algorithm quiz created: ${session._id} for user ${userId}`);
     
@@ -146,32 +156,56 @@ exports.getActiveQuizzes = async (req, res, next) => {
   try {
     const userId = req.user._id;
     
-    // Get all active and in-progress quiz sessions
-    const sessions = await QuizSession.find({
-      studentId: userId,
-      status: { $in: ['active', 'in-progress'] }
+    // Get all ActiveQuiz records where student is in distributedStudents
+    const ActiveQuiz = require('../models/ActiveQuiz.model');
+    const activeQuizzes = await ActiveQuiz.find({
+      distributedStudents: userId,
+      status: { $in: ['active', 'in-progress'] },
+      isDeleted: false
     })
     .populate('courseId', 'title subject grade')
     .sort({ createdAt: -1 });
     
-    const activeQuizzes = sessions.map(session => ({
-      id: session._id,
-      quizId: session._id.toString(), // ActiveQuiz uses session._id as quizId
-      sessionId: session._id,
-      subject: (typeof session.metadata?.subject === 'object' ? session.metadata?.subject?.name : session.metadata?.subject) || session.courseId?.subject,
-      courseName: session.courseId?.title,
-      courseId: session.courseId?._id,
-      difficulty: session.difficulty,
-      questionCount: session.totalQuestions,
-      duration: Math.floor(session.duration / 60),
-      status: session.status,
-      createdAt: session.createdAt,
-      lastUpdated: session.updatedAt
-    }));
+    // Filter out quizzes that have been completed (check QuizSession)
+    const quizzesWithStatus = await Promise.all(
+      activeQuizzes.map(async (quiz) => {
+        // Check if there's a completed session for this quiz
+        const completedSession = await QuizSession.findOne({
+          activeQuizId: quiz._id,
+          studentId: userId,
+          status: { $in: ['completed', 'submitted', 'auto-submitted'] }
+        });
+        
+        return {
+          quiz,
+          isCompleted: !!completedSession
+        };
+      })
+    );
+    
+    // Filter out completed quizzes
+    const filteredQuizzes = quizzesWithStatus
+      .filter(item => !item.isCompleted)
+      .map(item => ({
+        id: item.quiz._id,
+        quizId: item.quiz.quizId,
+        sessionId: item.quiz.sessionId,
+        subject: item.quiz.subject,
+        courseName: item.quiz.courseName || item.quiz.courseId?.title,
+        courseId: item.quiz.courseId?._id,
+        difficulty: item.quiz.difficulty,
+        questionCount: item.quiz.questionCount,
+        duration: Math.floor(item.quiz.duration / 60),
+        status: item.quiz.status,
+        createdAt: item.quiz.createdAt,
+        lastUpdated: item.quiz.lastUpdated || item.quiz.updatedAt,
+        createdBy: item.quiz.createdBy,
+        creatorRole: item.quiz.creatorRole
+      }));
     
     res.json({
       success: true,
-      quizzes: activeQuizzes
+      quizzes: filteredQuizzes
     });
   } catch (error) {
     logger.error(`Get active quizzes error: ${error.message}`);
@@ -356,17 +390,58 @@ exports.analyzeQuizResults = async (req, res, next) => {
       weakTopics
     };
     
-    console.log('💾 Saving performance data to session metadata:', {
+    // Generate recommendations before saving
+    const recommendations = generateRecommendations(weakTopics, performanceByDifficulty);
+    
+    // Save full analysis to session
+    session.analysis = {
+      score: totalScore,
+      totalScore: totalPossibleScore,
+      accuracy: parseFloat(accuracy.toFixed(1)),
+      timeTaken,
+      totalTime: session.duration,
+      timeUtilization: parseFloat(timeUtilization.toFixed(1)),
+      performanceByTopic: Object.entries(performanceByTopic).map(([topic, perf]) => ({
+        topic,
+        accuracy: parseFloat(((perf.correct / perf.total) * 100).toFixed(1)),
+        correct: perf.correct,
+        total: perf.total
+      })),
+      performanceByDifficulty: Object.entries(performanceByDifficulty).map(([difficulty, perf]) => ({
+        difficulty,
+        accuracy: parseFloat(((perf.correct / perf.total) * 100).toFixed(1)),
+        correct: perf.correct,
+        total: perf.total
+      })),
+      weakTopics,
+      strongTopics: Object.entries(performanceByTopic)
+        .filter(([_, perf]) => (perf.correct / perf.total) >= 0.8)
+        .map(([topic, _]) => topic)
+    };
+    
+    // Save recommendations to session
+    session.recommendations = recommendations;
+    
+    console.log('💾 Saving analysis and recommendations to session:', {
       sessionId: session._id,
-      hasPerformanceData: !!session.metadata.performanceData,
+      hasAnalysis: !!session.analysis,
+      hasRecommendations: !!session.recommendations,
+      recommendationCount: recommendations.length,
       topicCount: Object.keys(performanceByTopic).length,
       difficultyCount: Object.keys(performanceByDifficulty).length,
       weakTopicsCount: weakTopics.length,
-      sampleTopic: Object.keys(performanceByTopic)[0],
-      sampleDifficulty: Object.keys(performanceByDifficulty)[0]
+      strongTopicsCount: session.analysis.strongTopics.length
     });
     
-    await session.save();
+    // Save session with error handling
+    try {
+      await session.save();
+      console.log('✅ Session saved successfully with analysis and recommendations');
+    } catch (saveError) {
+      console.error('❌ Error saving session:', saveError.message);
+      console.error('Full error:', saveError);
+      throw saveError;
+    }
     
     // Update ActiveQuiz status to completed
     try {
@@ -396,27 +471,19 @@ exports.analyzeQuizResults = async (req, res, next) => {
       weakTopics
     });
     
+    // Return the saved analysis
     const analysis = {
-      score: totalScore,
-      totalScore: totalPossibleScore,
-      accuracy: accuracy.toFixed(1),
-      timeTaken,
-      totalTime: session.duration,
-      timeUtilization: timeUtilization.toFixed(1),
-      performanceByTopic: Object.entries(performanceByTopic).map(([topic, perf]) => ({
-        topic,
-        accuracy: ((perf.correct / perf.total) * 100).toFixed(1),
-        correct: perf.correct,
-        total: perf.total
-      })),
-      performanceByDifficulty: Object.entries(performanceByDifficulty).map(([difficulty, perf]) => ({
-        difficulty,
-        accuracy: ((perf.correct / perf.total) * 100).toFixed(1),
-        correct: perf.correct,
-        total: perf.total
-      })),
-      weakTopics,
-      recommendations: generateRecommendations(weakTopics, performanceByDifficulty)
+      score: session.analysis.score,
+      totalScore: session.analysis.totalScore,
+      accuracy: session.analysis.accuracy,
+      timeTaken: session.analysis.timeTaken,
+      totalTime: session.analysis.totalTime,
+      timeUtilization: session.analysis.timeUtilization,
+      performanceByTopic: session.analysis.performanceByTopic,
+      performanceByDifficulty: session.analysis.performanceByDifficulty,
+      weakTopics: session.analysis.weakTopics,
+      strongTopics: session.analysis.strongTopics,
+      recommendations: session.recommendations
     };
     
     res.json({
@@ -494,31 +561,26 @@ exports.getQuizHistory = async (req, res, next) => {
       completedAt: session.submittedAt, // Use submittedAt instead of completedAt
       status: 'completed',
       
-      // ✅ Parse snapshots before returning
+      // ✅ Use complete question details from selectedQuestions
       questions: session.selectedQuestions?.map(q => {
-        let parsedSnapshot = {};
-        try {
-          parsedSnapshot = JSON.parse(q.snapshot);
-        } catch (e) {
-          console.error('Failed to parse question snapshot:', e);
-        }
-        
         return {
           questionId: q.questionId,
-          snapshot: parsedSnapshot,  // Return as parsed object
-          // Spread for direct access
-          text: parsedSnapshot.text,
-          type: parsedSnapshot.type,
-          options: parsedSnapshot.options,
-          correctAnswer: parsedSnapshot.correctAnswer,
-          expectedAnswer: parsedSnapshot.expectedAnswer,
-          numericalAnswer: parsedSnapshot.numericalAnswer,
-          marks: parsedSnapshot.marks,
-          negativeMarks: parsedSnapshot.negativeMarks,
-          topic: parsedSnapshot.topic,
-          difficultyLevel: parsedSnapshot.difficultyLevel,
-          difficulty: parsedSnapshot.difficultyLevel,
-          explanation: parsedSnapshot.explanation
+          // Direct access to question properties (no parsing needed)
+          text: q.question,
+          question: q.question,
+          type: q.type,
+          options: q.options,
+          correctAnswer: q.correctAnswer,
+          expectedAnswer: q.expectedAnswer,
+          numericalAnswer: q.numericalAnswer,
+          marks: q.marks,
+          negativeMarks: q.negativeMarks,
+          topic: q.topic,
+          subject: q.subject,
+          difficultyLevel: q.difficulty,
+          difficulty: q.difficulty,
+          explanation: q.explanation,
+          metadata: q.metadata
         };
       }) || [],
       
@@ -545,11 +607,12 @@ exports.getQuizHistory = async (req, res, next) => {
         };
       }) || [],
       
-      // Include performance data
-      performanceByTopic: session.metadata?.performanceData?.performanceByTopic || [],
-      performanceByDifficulty: session.metadata?.performanceData?.performanceByDifficulty || {},
-      weakTopics: session.metadata?.performanceData?.weakTopics || [],
-      recommendations: session.metadata?.performanceData?.recommendations || []
+      // Include performance data - data is stored in session.analysis, not metadata
+      performanceByTopic: session.analysis?.performanceByTopic || [],
+      performanceByDifficulty: session.analysis?.performanceByDifficulty || [],
+      weakTopics: session.analysis?.weakTopics || [],
+      recommendations: session.recommendations || [],
+      analysis: session.analysis || {}  // Also return full analysis object
     }));
     
     console.log('Returning quiz history:', history.length, 'records');
@@ -873,8 +936,9 @@ function generateRecommendations(weakTopics, performanceByDifficulty) {
   
   if (weakTopics.length > 0) {
     recommendations.push({
-      type: 'topic_focus',
-      message: `Focus on improving: ${weakTopics.join(', ')}`
+      recommendationType: 'topic_focus',
+      message: `Focus on improving: ${weakTopics.join(', ')}`,
+      priority: 'high'
     });
   }
   
@@ -882,8 +946,9 @@ function generateRecommendations(weakTopics, performanceByDifficulty) {
     const accuracy = (perf.correct / perf.total) * 100;
     if (accuracy < 50) {
       recommendations.push({
-        type: 'difficulty_adjustment',
-        message: `Consider practicing more ${difficulty} questions`
+        recommendationType: 'difficulty_adjustment',
+        message: `Consider practicing more ${difficulty} questions`,
+        priority: accuracy < 30 ? 'high' : 'medium'
       });
     }
   });

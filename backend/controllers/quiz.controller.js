@@ -3,6 +3,7 @@ const Question = require('../models/Question.model');
 const QuizSession = require('../models/QuizSession.model');
 const QuizEvaluationResult = require('../models/QuizEvaluationResult.model');
 const User = require('../models/User.model');
+const ActiveQuiz = require('../models/ActiveQuiz.model');
 const QuestionSelectionFactory = require('../algorithms/QuestionSelectionFactory');
 const achievementService = require('../services/achievement.service');
 const logger = require('../utils/logger');
@@ -441,6 +442,33 @@ exports.startQuiz = async (req, res, next) => {
     
     // All courses are now available to all students - no enrollment check needed
     
+    // Check if student has access to this quiz via ActiveQuiz (if assigned by tutor/admin)
+    let activeQuizAssignment = null;
+    const assignedActiveQuiz = await ActiveQuiz.findOne({
+      quizId: quizId,
+      distributedStudents: studentId,
+      isDeleted: false,
+      status: { $in: ['active', 'in-progress'] }
+    });
+    
+    if (assignedActiveQuiz) {
+      // Check if already completed this assignment
+      const completedSession = await QuizSession.findOne({
+        activeQuizId: assignedActiveQuiz._id,
+        studentId: studentId,
+        status: { $in: ['completed', 'submitted', 'auto-submitted'] }
+      });
+      
+      if (completedSession) {
+        return res.status(400).json({
+          success: false,
+          message: 'You have already completed this assigned quiz'
+        });
+      }
+      
+      activeQuizAssignment = assignedActiveQuiz;
+    }
+    
     // Check for existing active session
     const activeSession = await QuizSession.getActiveSession(quizId, studentId);
     if (activeSession) {
@@ -454,7 +482,13 @@ exports.startQuiz = async (req, res, next) => {
           questions: activeSession.selectedQuestions.map(q => ({
             questionId: q.questionId,
             displayOrder: q.displayOrder,
-            ...JSON.parse(q.snapshot)
+            question: q.question,
+            type: q.type,
+            options: q.options,
+            marks: q.marks,
+            topic: q.topic,
+            subject: q.subject,
+            difficulty: q.difficulty
           })),
           answers: activeSession.answers,
           currentQuestionIndex: activeSession.currentQuestionIndex,
@@ -519,13 +553,33 @@ exports.startQuiz = async (req, res, next) => {
     const startedAt = new Date();
     const expiresAt = new Date(startedAt.getTime() + quiz.duration * 60 * 1000);
     
-    // Stringify snapshots for storage
+    // Process questions with complete details instead of stringified snapshots
     const processedQuestions = selectedQuestions.map(q => ({
-      ...q,
-      snapshot: JSON.stringify(q.snapshot)
+      questionId: q.questionId,
+      originalOrder: q.originalOrder,
+      displayOrder: q.displayOrder,
+      question: q.snapshot.question || q.snapshot.text || '',
+      type: q.snapshot.type || 'mcq-single',
+      options: (q.snapshot.options || []).map(opt => ({
+        _id: opt._id || opt.id,
+        id: opt.id,
+        text: opt.text || ''
+      })),
+      correctAnswer: q.snapshot.correctAnswer,
+      expectedAnswer: q.snapshot.expectedAnswer,
+      // Handle numericalAnswer - it might be an object or a number
+      numericalAnswer: q.snapshot.numericalAnswer,
+      marks: q.snapshot.marks || 1,
+      negativeMarks: q.snapshot.negativeMarks || 0,
+      topic: q.snapshot.topic || 'General',
+      subject: q.snapshot.subject || 'General',
+      difficulty: q.snapshot.difficulty || q.snapshot.difficultyLevel || 'medium',
+      explanation: q.snapshot.explanation || '',
+      metadata: q.snapshot.metadata || {}
     }));
     
     const session = await QuizSession.create({
+      activeQuizId: activeQuizAssignment?._id || null, // Link to ActiveQuiz if assigned
       quizId,
       studentId,
       courseId: quiz.courseId,
@@ -545,6 +599,14 @@ exports.startQuiz = async (req, res, next) => {
       }
     });
     
+    // Update ActiveQuiz status to in-progress if this is an assigned quiz
+    if (activeQuizAssignment) {
+      activeQuizAssignment.status = 'in-progress';
+      activeQuizAssignment.startedAt = new Date();
+      await activeQuizAssignment.save();
+      logger.info(`Updated ActiveQuiz ${activeQuizAssignment._id} status to in-progress`);
+    }
+    
     // Update question usage counts
     const questionIds = selectedQuestions.map(q => q.questionId);
     await Question.updateMany(
@@ -563,7 +625,13 @@ exports.startQuiz = async (req, res, next) => {
         questions: selectedQuestions.map(q => ({
           questionId: q.questionId,
           displayOrder: q.displayOrder,
-          ...q.snapshot
+          question: q.question,
+          type: q.type,
+          options: q.options,
+          marks: q.marks,
+          topic: q.topic,
+          subject: q.subject,
+          difficulty: q.difficulty
         })),
         answers: [],
         currentQuestionIndex: 0,
@@ -746,6 +814,25 @@ exports.submitQuiz = async (req, res, next) => {
     } catch (error) {
       logger.error('Error checking achievements:', error);
       // Don't fail the submission if achievement check fails
+    }
+    
+    // Update ActiveQuiz status to completed if this was an assigned quiz
+    if (session.activeQuizId) {
+      try {
+        const activeQuiz = await ActiveQuiz.findById(session.activeQuizId);
+        if (activeQuiz) {
+          activeQuiz.status = 'completed';
+          activeQuiz.completedAt = new Date();
+          activeQuiz.score = session.totalScore;
+          activeQuiz.totalMarks = session.totalMarks;
+          activeQuiz.timeSpent = session.timeSpent;
+          await activeQuiz.save();
+          logger.info(`Marked ActiveQuiz ${session.activeQuizId} as completed for student ${studentId}`);
+        }
+      } catch (error) {
+        logger.error(`Error updating ActiveQuiz status: ${error.message}`);
+        // Don't fail the submission if ActiveQuiz update fails
+      }
     }
     
     logger.info(`Quiz submitted: Session ${sessionId} for quiz ${quizId} by student ${studentId}`);

@@ -23,6 +23,7 @@ const reportRoutes = require('./routes/report.routes');
 const adminRoutes = require('./routes/admin.routes');
 const questionRoutes = require('./routes/question.routes');
 const quizRoutes = require('./routes/quiz.routes');
+const quizAssignmentRoutes = require('./routes/quizAssignment.routes');
 const quizEvaluationRoutes = require('./routes/quizEvaluation.routes');
 const algorithmQuizRoutes = require('./routes/algorithmQuiz.routes');
 const aiQuestionRoutes = require('./routes/aiQuestion.routes');
@@ -92,6 +93,7 @@ app.use('/api/reports', reportRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/questions', questionRoutes);
 app.use('/api/quizzes', quizRoutes);
+app.use('/api/quizzes', quizAssignmentRoutes); // Quiz assignment routes (merged with quiz routes)
 app.use('/api/quiz-evaluations', quizEvaluationRoutes);
 app.use('/api/algorithm-quiz', algorithmQuizRoutes);
 app.use('/api/active-quizzes', activeQuizRoutes);

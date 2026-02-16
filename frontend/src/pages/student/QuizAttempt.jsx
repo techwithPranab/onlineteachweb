@@ -98,18 +98,51 @@ export default function QuizAttempt() {
           if (fullQuizResponse.success && fullQuizResponse.data) {
             const fullQuiz = fullQuizResponse.data
             
+            console.log('📥 Frontend received quiz data:', {
+              quizId: fullQuiz.quizId,
+              questionCount: fullQuiz.questions?.length,
+              sampleQuestion: fullQuiz.questions?.[0] ? {
+                id: fullQuiz.questions[0].id,
+                question: fullQuiz.questions[0].question?.substring(0, 50),
+                options: fullQuiz.questions[0].options?.map(o => ({
+                  _id: o._id,
+                  id: o.id,
+                  text: o.text?.substring(0, 30)
+                }))
+              } : null
+            })
+            
             // Transform questions to match expected format for QuestionCard
-            const transformedQuestions = fullQuiz.questions.map(q => ({
-              ...q,
-              questionId: q.questionId || q.id, // Preserve existing questionId or use id
-              text: q.question, // Map question field to text for QuestionCard
-              type: q.type || 'mcq-single', // Explicitly preserve type with fallback
-              options: q.options.map((option, index) => ({
-                _id: option.id || `option_${index}`,
-                text: option.text,
-                id: option.id || `option_${index}`
-              }))
-            }))
+            const transformedQuestions = fullQuiz.questions.map(q => {
+              console.log('🔍 Transforming question:', {
+                questionId: q.questionId || q.id,
+                originalOptions: q.options,
+                hasCorrectAnswer: !!q.correctAnswer
+              })
+              
+              return {
+                ...q,
+                questionId: q.questionId || q.id, // Preserve existing questionId or use id
+                text: q.question, // Map question field to text for QuestionCard
+                type: q.type || 'mcq-single', // Explicitly preserve type with fallback
+                options: q.options.map((option, index) => {
+                  const optionId = option._id?.toString() || option.id?.toString() || `option_${index}`
+                  console.log('🔍 Transforming option:', {
+                    index,
+                    originalOption: option,
+                    has_id: !!option._id,
+                    has_id_field: !!option.id,
+                    transformedId: optionId,
+                    text: option.text
+                  })
+                  return {
+                    _id: optionId,
+                    text: option.text,
+                    id: optionId
+                  }
+                })
+              }
+            })
             
             // Restore saved answers from backend
             const restoredAnswers = {}
@@ -143,9 +176,10 @@ export default function QuizAttempt() {
               quizId: fullQuiz.quizId,
               questions: transformedQuestions,
               duration: fullQuiz.duration,
-              remainingTime: fullQuiz.duration * 60
+              remainingTime: fullQuiz.remainingTime || fullQuiz.duration * 60
             })
-            setRemainingTime(fullQuiz.duration * 60)
+            // Use remainingTime from backend instead of calculating from duration
+            setRemainingTime(fullQuiz.remainingTime || fullQuiz.duration * 60)
             quizStartTime.current = Date.now()
             
             // Only try to start the quiz if it's not already in progress
@@ -171,11 +205,14 @@ export default function QuizAttempt() {
           const transformedQuestions = quiz.questions.map(q => ({
             ...q,
             questionId: q.id || q.questionId, // Ensure questionId exists
-            options: q.options.map((option, index) => ({
-              _id: `option_${index}`,
-              text: option,
-              id: `option_${index}`
-            }))
+            options: q.options.map((option, index) => {
+              const optionId = option._id?.toString() || option.id?.toString() || `option_${index}`
+              return {
+                _id: optionId,
+                text: option.text || option,
+                id: optionId
+              }
+            })
           }))
           
           setQuizData({
@@ -187,9 +224,9 @@ export default function QuizAttempt() {
             quizId: quiz.id,
             questions: transformedQuestions,
             duration: quiz.duration,
-            remainingTime: quiz.duration * 60
+            remainingTime: quiz.remainingTime || quiz.duration * 60
           })
-          setRemainingTime(quiz.duration * 60)
+          setRemainingTime(quiz.remainingTime || quiz.duration * 60)
           quizStartTime.current = Date.now()
         }
       } else if (locationState?.sessionId) {
@@ -217,7 +254,7 @@ export default function QuizAttempt() {
         }
       } else {
         // Start new quiz session via API
-        const response = await quizService.startQuiz(quizId)
+        const response = await algorithmQuizService.startQuiz(quizId)
         setSession(response.session)
         setRemainingTime(response.session.remainingTime)
         quizStartTime.current = Date.now()
@@ -273,44 +310,71 @@ export default function QuizAttempt() {
   //   }
   // }
 
-  const handleAnswerChange = async (questionId, answer) => {
+  const handleAnswerChange = (questionId, answer) => {
     if (!questionId) {
       console.error('handleAnswerChange called with undefined questionId')
       return
     }
     
+    // Only update local state, don't save to backend yet
     setAnswers(prev => ({
       ...prev,
       [questionId]: answer
     }))
+  }
+
+  // New function to save answer to backend
+  const saveAnswerToBackend = async (questionId) => {
+    if (!quizData || !quizData.quizId || !questionId) {
+      console.log('⚠️ Cannot save answer - missing data:', { 
+        hasQuizData: !!quizData, 
+        quizId: quizData?.quizId, 
+        questionId 
+      })
+      return
+    }
+
+    const answer = answers[questionId]
+    if (answer === undefined || answer === null) {
+      console.log('⚠️ No answer to save for question:', questionId)
+      return
+    }
+
+    setSavingAnswer(true)
+    setAutoSaveStatus('saving')
     
-    // Auto-save answer to backend with debouncing
-    if (quizData && quizData.quizId) {
-      setSavingAnswer(true)
-      setAutoSaveStatus('saving')
+    try {
+      const timeSpent = Math.floor((Date.now() - questionStartTime.current) / 1000)
+      console.log('💾 Saving answer:', { 
+        questionId, 
+        answer, 
+        timeSpent, 
+        markedForReview: markedForReview[questionId] || false,
+        questionStartTime: questionStartTime.current,
+        currentTime: Date.now()
+      })
       
-      try {
-        const timeSpent = Math.floor((Date.now() - questionStartTime.current) / 1000)
-        await algorithmQuizService.saveAnswer(
-          quizData.quizId,
-          questionId,
-          answer,
-          markedForReview[questionId] || false,
-          timeSpent
-        )
-        setAutoSaveStatus('saved')
-        
-        // Update time tracking
-        setQuestionTimeTracking(prev => ({
-          ...prev,
-          [questionId]: (prev[questionId] || 0) + timeSpent
-        }))
-      } catch (err) {
-        console.error('Failed to save answer:', err)
-        setAutoSaveStatus('error')
-      } finally {
-        setSavingAnswer(false)
-      }
+      const response = await algorithmQuizService.saveAnswer(
+        quizData.quizId,
+        questionId,
+        answer,
+        markedForReview[questionId] || false,
+        timeSpent
+      )
+      
+      console.log('✅ Answer saved successfully:', response)
+      setAutoSaveStatus('saved')
+      
+      // Update time tracking
+      setQuestionTimeTracking(prev => ({
+        ...prev,
+        [questionId]: (prev[questionId] || 0) + timeSpent
+      }))
+    } catch (err) {
+      console.error('❌ Failed to save answer:', err)
+      setAutoSaveStatus('error')
+    } finally {
+      setSavingAnswer(false)
     }
   }
 
@@ -369,27 +433,41 @@ export default function QuizAttempt() {
       }
     }
     
-    // Move to next question
-    navigateToQuestion(currentQuestionIndex + 1)
+    // Move to next question (skip saving since we already saved via skipQuestion)
+    navigateToQuestion(currentQuestionIndex + 1, false)
   }
 
-  const navigateToQuestion = (index) => {
-    // Save current answer first - DISABLED: Auto-save not supported
-    // autoSaveAnswers()
-    questionStartTime.current = Date.now()
+  const navigateToQuestion = async (index, shouldSaveCurrentAnswer = true) => {
+    // Save current answer before navigating (unless already saved by caller)
+    if (shouldSaveCurrentAnswer && session && session.questions[currentQuestionIndex]) {
+      const currentQuestion = session.questions[currentQuestionIndex]
+      await saveAnswerToBackend(currentQuestion.questionId)
+    }
+    
     setCurrentQuestionIndex(index)
     setShowNavigator(false)
+    // Note: questionStartTime.current is reset via useEffect when currentQuestionIndex changes
   }
 
-  const handleNext = () => {
+  const handleNext = async () => {
+    // Save current answer before moving to next question
+    const currentQuestion = session.questions[currentQuestionIndex]
+    await saveAnswerToBackend(currentQuestion.questionId)
+    
     if (currentQuestionIndex < session.questions.length - 1) {
-      navigateToQuestion(currentQuestionIndex + 1)
+      // Don't save again in navigateToQuestion since we just saved
+      navigateToQuestion(currentQuestionIndex + 1, false)
     }
   }
 
-  const handlePrevious = () => {
+  const handlePrevious = async () => {
+    // Save current answer before moving to previous question
+    const currentQuestion = session.questions[currentQuestionIndex]
+    await saveAnswerToBackend(currentQuestion.questionId)
+    
     if (currentQuestionIndex > 0) {
-      navigateToQuestion(currentQuestionIndex - 1)
+      // Don't save again in navigateToQuestion since we just saved
+      navigateToQuestion(currentQuestionIndex - 1, false)
     }
   }
 
@@ -400,6 +478,12 @@ export default function QuizAttempt() {
   const handleSubmit = async (isAutoSubmit = false) => {
     try {
       setSubmitting(true)
+      
+      // Save the current question's answer before submitting (especially important for the last question)
+      if (session?.questions?.[currentQuestionIndex]) {
+        const currentQuestion = session.questions[currentQuestionIndex]
+        await saveAnswerToBackend(currentQuestion.questionId)
+      }
       
       // Calculate time taken
       const timeTaken = Math.floor((Date.now() - quizStartTime.current) / 1000)
