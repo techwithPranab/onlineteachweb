@@ -95,6 +95,7 @@ exports.assignQuizToStudents = async (req, res, next) => {
       })),
       totalMarks: quiz.totalMarks,
       algorithmUsed: 'tutor-assigned',
+      questionSelectionStrategy: quiz.questionSelectionStrategy || 'adaptive',
       performanceData: {
         assignedBy: req.user._id,
         assignedAt: new Date(),

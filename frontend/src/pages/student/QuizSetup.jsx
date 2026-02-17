@@ -5,7 +5,6 @@ import { useAuthStore } from '@/store/authStore'
 import LoadingSpinner from '@/components/common/LoadingSpinner'
 import SEOHead from '@/components/SEO/SEOHead';
 import ErrorMessage from '@/components/common/ErrorMessage'
-import { selectQuestionsAlgorithm } from '@/utils/quizAlgorithm'
 import { BookOpen, Clock, Target, AlertCircle, CheckCircle, ArrowRight, Layers } from 'lucide-react'
 
 /**
@@ -43,7 +42,8 @@ export default function QuizSetup() {
     questionCount: 10,
     duration: 30, // minutes
     timePerQuestion: null, // optional alternative to total duration
-    strategyName: 'algorithm' // Use our custom algorithm
+    strategyName: 'algorithm', // Use our custom algorithm
+    questionSelectionStrategy: 'adaptive' // Default to adaptive strategy
   })
   
   const [acceptedRules, setAcceptedRules] = useState(false)
@@ -209,97 +209,66 @@ export default function QuizSetup() {
         // Continue without performance data
       }
 
-      // Use intelligent algorithm to select questions based on difficulty and performance
-      console.log('[QuizSetup] Using algorithm to select questions...')
-      const selectedQuestions = await selectQuestionsAlgorithm(
-        pastPerformance,
-        {
-          courseId: config.courseId,
+      // Call backend to select questions using configured strategy
+      console.log('[QuizSetup] Requesting questions from backend with strategy:', config.questionSelectionStrategy)
+
+      try {
+        // Create active quiz via API - backend will handle question selection
+        const quizData = {
           subject: subjectName,
+          courseName,
+          courseId: config.courseId,
           difficulty: config.difficulty,
           questionCount: config.questionCount,
-          duration: config.duration
-        },
-        questionsResponse.questions // Pass the fetched questions directly
-      )
+          duration: config.duration,
+          algorithmUsed: 'algorithm',
+          questionSelectionStrategy: config.questionSelectionStrategy
+        }
 
-      console.log('[QuizSetup] Algorithm selected questions:', selectedQuestions.length)
+        console.log('[QuizSetup] Sending quiz data to backend:', quizData)
+        const response = await algorithmQuizService.createActiveQuiz(quizData)
 
-      if (!selectedQuestions || selectedQuestions.length === 0) {
-        setError('Failed to select questions using the algorithm. Please try again.')
-        setLoading(false)
-        return
-      }
+        console.log('[QuizSetup] Active quiz created successfully:', response.data.quizId)
 
-      if (selectedQuestions.length < config.questionCount) {
-        setError(`Algorithm could only select ${selectedQuestions.length} questions. Required: ${config.questionCount}. Please adjust difficulty or reduce question count.`)
-        setLoading(false)
-        return
-      }
+        // Store configuration in session storage for quiz page
+        sessionStorage.setItem('quizConfig', JSON.stringify({
+          ...config,
+          sessionId: response.data.sessionId,
+          quizId: response.data.quizId,
+          startTime: Date.now()
+        }))
 
-      // Get full question data for selected question IDs
-      const fullQuestions = selectedQuestions.map(selected => {
-        const question = questionsResponse.questions.find(q => q._id === selected.questionId)
-        if (!question) {
-          console.warn('[QuizSetup] Question not found for ID:', selected.questionId)
-          return null
+        // Navigate to active quiz list
+        navigate('/student/active-quizzes', {
+          state: {
+            message: 'Quiz created successfully! Click Start to begin.',
+            newQuizId: response.data.quizId
+          }
+        })
+
+      } catch (backendError) {
+        console.error('[QuizSetup] Error creating quiz:', backendError)
+        console.error('[QuizSetup] Error response:', backendError.response?.data)
+        console.error('[QuizSetup] Error status:', backendError.response?.status)
+        console.error('[QuizSetup] Error message:', backendError.message)
+        
+        let errorMsg = 'Failed to create quiz'
+        
+        // Check for validation errors
+        if (backendError.response?.data?.errors && Array.isArray(backendError.response.data.errors)) {
+          errorMsg = backendError.response.data.errors.map(e => e.msg).join(', ')
+        } else if (backendError.response?.data?.message) {
+          errorMsg = backendError.response.data.message
+        } else if (backendError.response?.data?.error) {
+          errorMsg = backendError.response.data.error
+        } else if (backendError.message) {
+          errorMsg = backendError.message
         }
         
-        return {
-          id: question._id,
-          question: question.text,
-          type: question.type, // Keep original type from Question model
-          options: (question.options || []).map(option => ({
-            id: option._id,
-            text: option.text
-          })),
-          correctAnswer: question.correctAnswer,
-          expectedAnswer: question.expectedAnswer,
-          numericalAnswer: question.numericalAnswer,
-          topic: question.topic,
-          difficulty: question.difficultyLevel,
-          marks: question.marks || 1
-        }
-      }).filter(Boolean) // Remove any null values
-
-      console.log('[QuizSetup] Full questions prepared:', fullQuestions.length)
-      console.log('[QuizSetup] Sample question:', fullQuestions[0])
-
-      if (fullQuestions.length < config.questionCount) {
-        setError(`Could not load all selected questions. Loaded: ${fullQuestions.length}, Required: ${config.questionCount}`)
+        setError(errorMsg)
         setLoading(false)
         return
       }
-
-      // Create active quiz via API
-      const quizData = {
-        subject: subjectName,
-        courseName,
-        courseId: config.courseId,
-        difficulty: config.difficulty,
-        questionCount: config.questionCount,
-        duration: config.duration,
-        questions: fullQuestions,
-        algorithmUsed: 'algorithm'
-      }
-
-      const response = await algorithmQuizService.createActiveQuiz(quizData)
-
-      // Store configuration in session storage for quiz page
-      sessionStorage.setItem('quizConfig', JSON.stringify({
-        ...config,
-        sessionId: response.data.sessionId,
-        quizId: response.data.quizId,
-        startTime: Date.now()
-      }))
-
-      // Navigate to active quiz list
-      navigate('/student/active-quizzes', {
-        state: {
-          message: 'Quiz created successfully! Click Start to begin.',
-          newQuizId: response.data.quizId
-        }
-      })
 
     } catch (err) {
       setError(err.message || 'Failed to create quiz')
@@ -552,6 +521,27 @@ export default function QuizSetup() {
                   </div>
                 </div>
 
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Question Selection Strategy
+                    </label>
+                    <select
+                      value={config.questionSelectionStrategy}
+                      onChange={(e) => handleConfigChange('questionSelectionStrategy', e.target.value)}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                    >
+                      <option value="adaptive">Adaptive (Personalized) 🎯</option>
+                      <option value="default">Default (Balanced) ⚖️</option>
+                    </select>
+                    <p className="text-xs text-gray-500 mt-1">
+                      {config.questionSelectionStrategy === 'adaptive'
+                        ? 'Questions personalized based on your performance'
+                        : 'Questions balanced across all topics'}
+                    </p>
+                  </div>
+                </div>
+
                 {config.timePerQuestion && (
                   <div className="mt-4 p-3 bg-gray-50 rounded-lg">
                     <p className="text-sm text-gray-600">
@@ -635,6 +625,13 @@ export default function QuizSetup() {
                   <div>
                     <p className="text-xs sm:text-sm text-gray-500 mb-1">Duration</p>
                     <p className="text-sm sm:text-base font-medium text-gray-900">{config.duration} minutes</p>
+                  </div>
+                  
+                  <div>
+                    <p className="text-xs sm:text-sm text-gray-500 mb-1">Selection Strategy</p>
+                    <p className="text-sm sm:text-base font-medium text-gray-900 capitalize">
+                      {config.questionSelectionStrategy === 'adaptive' ? '🎯 Adaptive' : '⚖️ Default'}
+                    </p>
                   </div>
                   
                   {quiz && quiz.totalMarks && (

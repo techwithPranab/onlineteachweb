@@ -23,6 +23,7 @@ export default function QuizCreate() {
     totalMarks: 100,
     passingPercentage: 40,
     attemptsAllowed: 1,
+    questionSelectionStrategy: 'default', // Add strategy selection
     questionConfig: {
       totalQuestions: 20,
       topicWeightage: {},
@@ -251,6 +252,44 @@ export default function QuizCreate() {
           ))}
         </div>
       </div>
+
+      {/* Question Selection Strategy */}
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-2">Question Selection Strategy *</label>
+        <div className="bg-white rounded-lg border border-gray-200 p-4 space-y-3">
+          <label className="flex items-start cursor-pointer hover:bg-gray-50 p-2 rounded">
+            <input
+              type="radio"
+              name="questionSelectionStrategy"
+              value="default"
+              checked={formData.questionSelectionStrategy === 'default'}
+              onChange={(e) => handleChange('questionSelectionStrategy', e.target.value)}
+              className="h-4 w-4 text-indigo-600 mt-1"
+            />
+            <div className="ml-3">
+              <span className="font-medium text-gray-900">Default Strategy (Balanced Distribution)</span>
+              <p className="text-sm text-gray-600 mt-1">Questions distributed evenly across all topics for balanced learning coverage</p>
+            </div>
+          </label>
+
+          <label className="flex items-start cursor-pointer hover:bg-gray-50 p-2 rounded">
+            <input
+              type="radio"
+              name="questionSelectionStrategy"
+              value="adaptive"
+              checked={formData.questionSelectionStrategy === 'adaptive'}
+              onChange={(e) => handleChange('questionSelectionStrategy', e.target.value)}
+              className="h-4 w-4 text-indigo-600 mt-1"
+            />
+            <div className="ml-3">
+              <span className="font-medium text-gray-900">Adaptive Strategy (Personalized) ⭐</span>
+              <p className="text-sm text-gray-600 mt-1">
+                Intelligently selects questions based on student's past performance. Prioritizes weak topics and adjusts difficulty accordingly for optimal learning.
+              </p>
+            </div>
+          </label>
+        </div>
+      </div>
     </div>
   )
 
@@ -463,6 +502,11 @@ export default function QuizCreate() {
           <div><span className="text-gray-500">Title:</span> {formData.title}</div>
           <div><span className="text-gray-500">Course:</span> {courses.find(c => c._id === formData.courseId)?.title}</div>
           <div><span className="text-gray-500">Difficulty:</span> {formData.difficultyLevel}</div>
+          <div><span className="text-gray-500">Strategy:</span> 
+            <span className={`ml-1 font-medium ${formData.questionSelectionStrategy === 'adaptive' ? 'text-blue-600' : 'text-gray-700'}`}>
+              {formData.questionSelectionStrategy === 'adaptive' ? '🧠 Adaptive' : '⚖️ Default'}
+            </span>
+          </div>
           <div><span className="text-gray-500">Questions:</span> {formData.questionConfig.totalQuestions}</div>
           <div><span className="text-gray-500">Duration:</span> {formData.duration} minutes</div>
           <div><span className="text-gray-500">Total Marks:</span> {formData.totalMarks}</div>

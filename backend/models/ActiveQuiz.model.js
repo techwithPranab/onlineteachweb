@@ -193,6 +193,14 @@ const activeQuizSchema = new mongoose.Schema({
     default: 'algorithm'
   },
 
+  // Question selection strategy used for this quiz
+  questionSelectionStrategy: {
+    type: String,
+    enum: ['default', 'adaptive'],
+    default: 'adaptive',
+    required: true
+  },
+
   performanceData: {
     type: mongoose.Schema.Types.Mixed, // Allow any structure for flexibility
     default: {}

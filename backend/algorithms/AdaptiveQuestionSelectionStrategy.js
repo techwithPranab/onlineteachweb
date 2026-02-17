@@ -1,9 +1,16 @@
 const QuestionSelectionStrategy = require('./QuestionSelectionStrategy');
 const Question = require('../models/Question.model');
+const logger = require('../utils/logger');
 
 /**
- * Adaptive Question Selection Strategy
+ * Adaptive Question Selection Strategy (v2.0)
  * Selects questions based on student's past performance to optimize learning
+ * 
+ * Features:
+ * - Prioritizes weak topics for focused learning
+ * - Adjusts difficulty based on performance
+ * - Maintains question diversity across topics
+ * - Intelligent question scoring combining multiple factors
  */
 class AdaptiveQuestionSelectionStrategy extends QuestionSelectionStrategy {
   constructor() {
@@ -28,6 +35,10 @@ class AdaptiveQuestionSelectionStrategy extends QuestionSelectionStrategy {
    * @returns {Promise<Array>} Selected questions with order
    */
   async select(criteria) {
+    // DEBUG: Log entry point
+    console.log('[DEBUG] AdaptiveQuestionSelectionStrategy.select() called');
+    logger.info('[AdaptiveSelection] ===== ADAPTIVE SELECTION STARTED =====');
+    
     const {
       courseId,
       difficultyLevel,
@@ -37,6 +48,10 @@ class AdaptiveQuestionSelectionStrategy extends QuestionSelectionStrategy {
       studentId,
       studentPerformance = {}
     } = criteria;
+    
+    logger.info(`[AdaptiveSelection] courseId: ${courseId}`);
+    logger.info(`[AdaptiveSelection] difficultyLevel: ${difficultyLevel}`);
+    logger.info(`[AdaptiveSelection] excludeQuestionIds count: ${excludeQuestionIds.length}`);
     
     const { totalQuestions, topicWeightage } = questionConfig;
     
@@ -52,7 +67,11 @@ class AdaptiveQuestionSelectionStrategy extends QuestionSelectionStrategy {
     
     const availableQuestions = await Question.find(baseQuery).lean();
     
+    logger.info(`[AdaptiveSelection] Found ${availableQuestions.length} available questions`);
+    console.log('[DEBUG] Available questions count:', availableQuestions.length);
+    
     if (availableQuestions.length === 0) {
+      logger.warn('[AdaptiveSelection] No questions available for this quiz configuration');
       throw new Error('No questions available for this quiz configuration');
     }
     
@@ -62,14 +81,23 @@ class AdaptiveQuestionSelectionStrategy extends QuestionSelectionStrategy {
       adaptiveScore: this._calculateAdaptiveScore(q, studentPerformance, difficultyLevel)
     }));
     
+    logger.info(`[AdaptiveSelection] Scoring complete`);
+    console.log('[DEBUG] Scoring complete for', scoredQuestions.length, 'questions');
+    
     // Sort by adaptive score (higher is better for learning)
     scoredQuestions.sort((a, b) => b.adaptiveScore - a.adaptiveScore);
+    
+    logger.info(`[AdaptiveSelection] Sorted questions by adaptive score`);
+    logger.info(`[AdaptiveSelection] Scored ${scoredQuestions.length} questions`);
+    logger.info(`[AdaptiveSelection] Top 5 scored questions: ${scoredQuestions.slice(0, 5).map(q => `${q.topic}(${q.adaptiveScore.toFixed(1)})`).join(', ')}`);
     
     // Select questions considering topic distribution
     const selectedQuestions = [];
     const topicCounts = new Map();
     
     if (topicWeightage && topicWeightage.size > 0) {
+      logger.info('[AdaptiveSelection] Using specified topic weightage');
+      
       const topicWeights = Object.fromEntries(topicWeightage);
       const totalWeight = Object.values(topicWeights).reduce((a, b) => a + b, 0);
       
@@ -80,7 +108,7 @@ class AdaptiveQuestionSelectionStrategy extends QuestionSelectionStrategy {
         topicCounts.set(topic, 0);
       }
       
-      // Select questions respecting topic targets
+      // Select highest-scoring questions while respecting topic targets
       for (const question of scoredQuestions) {
         if (selectedQuestions.length >= totalQuestions) break;
         
@@ -91,12 +119,15 @@ class AdaptiveQuestionSelectionStrategy extends QuestionSelectionStrategy {
         if (currentCount < targetCount || !topicTargets.has(topic)) {
           selectedQuestions.push(question);
           topicCounts.set(topic, currentCount + 1);
+          logger.info(`[AdaptiveSelection] Selected adaptive question from ${topic} (score: ${question.adaptiveScore.toFixed(1)})`);
         }
       }
       
-      // Fill remaining slots
+      // Fill remaining slots with highest-scoring questions
       const remaining = totalQuestions - selectedQuestions.length;
       if (remaining > 0) {
+        logger.info(`[AdaptiveSelection] Filling ${remaining} remaining slots with highest-scoring questions`);
+        
         const selectedIds = new Set(selectedQuestions.map(q => q._id.toString()));
         const remainingQuestions = scoredQuestions.filter(
           q => !selectedIds.has(q._id.toString())
@@ -104,7 +135,82 @@ class AdaptiveQuestionSelectionStrategy extends QuestionSelectionStrategy {
         selectedQuestions.push(...remainingQuestions.slice(0, remaining));
       }
     } else {
-      selectedQuestions.push(...scoredQuestions.slice(0, totalQuestions));
+      // No topic weightage - ensure diverse topic distribution with adaptive scoring
+      logger.info('[AdaptiveSelection] No topic weightage - ensuring diverse topic selection with adaptive scoring');
+      
+      // Group questions by topic
+      const questionsByTopic = this._groupByTopic(scoredQuestions);
+      const topics = Object.keys(questionsByTopic);
+      
+      logger.info(`[AdaptiveSelection] Found ${topics.length} unique topics: ${topics.join(', ')}`);
+      
+      // Distribute adaptively: more questions from weak topics
+      const questionsPerTopic = Math.ceil(totalQuestions / topics.length);
+      
+      // First pass: Select top-scoring (most relevant) questions from each topic
+      for (const topic of topics) {
+        const topicQuestions = questionsByTopic[topic];
+        const selectCount = Math.min(questionsPerTopic, topicQuestions.length);
+        
+        // Top questions from this topic are already sorted by adaptive score
+        const selected = topicQuestions.slice(0, selectCount);
+        
+        topicCounts.set(topic, selected.length);
+        
+        selected.forEach(q => {
+          selectedQuestions.push(q);
+          logger.info(`[AdaptiveSelection] Selected adaptive question from ${topic} (score: ${q.adaptiveScore.toFixed(1)})`);
+        });
+        
+        // Stop if we have enough
+        if (selectedQuestions.length >= totalQuestions) {
+          break;
+        }
+      }
+      
+      logger.info(`[AdaptiveSelection] After first pass: ${selectedQuestions.length} questions selected`);
+      
+      // Second pass: Fill remaining with round-robin from highest-scoring available
+      if (selectedQuestions.length < totalQuestions) {
+        const remaining = totalQuestions - selectedQuestions.length;
+        logger.info(`[AdaptiveSelection] Filling ${remaining} remaining slots with round-robin adaptive selection`);
+        
+        const selectedIds = new Set(selectedQuestions.map(q => q._id.toString()));
+        let topicIndex = 0;
+        let attempts = 0;
+        const maxAttempts = topics.length * 10;
+        
+        while (selectedQuestions.length < totalQuestions && attempts < maxAttempts) {
+          const topic = topics[topicIndex % topics.length];
+          const topicQuestions = questionsByTopic[topic];
+          
+          const unusedTopicQuestions = topicQuestions.filter(
+            q => !selectedIds.has(q._id.toString())
+          );
+          
+          if (unusedTopicQuestions.length > 0) {
+            const selected = unusedTopicQuestions[0]; // Already sorted by score
+            selectedQuestions.push(selected);
+            selectedIds.add(selected._id.toString());
+            const currentCount = (topicCounts.get(topic) || 0) + 1;
+            topicCounts.set(topic, currentCount);
+            logger.info(`[AdaptiveSelection] Added adaptive question from ${topic} (score: ${selected.adaptiveScore.toFixed(1)})`);
+          }
+          
+          topicIndex++;
+          attempts++;
+        }
+        
+        logger.info(`[AdaptiveSelection] After second pass: ${selectedQuestions.length} questions selected`);
+      }
+      
+      // Log final topic distribution with scores
+      logger.info('[AdaptiveSelection] Final topic distribution with adaptive scores:');
+      Object.entries(topicCounts).forEach(([topic, count]) => {
+        const topicQuestions = selectedQuestions.filter(q => q.topic === topic);
+        const avgScore = topicQuestions.reduce((sum, q) => sum + q.adaptiveScore, 0) / count;
+        logger.info(`[AdaptiveSelection]   - ${topic}: ${count} questions (avg adaptive score: ${avgScore.toFixed(1)})`);
+      });
     }
     
     // Shuffle if required
@@ -124,7 +230,10 @@ class AdaptiveQuestionSelectionStrategy extends QuestionSelectionStrategy {
     }
     
     // Prepare final output
-    return orderedQuestions.map((q, index) => ({
+    logger.info(`[AdaptiveSelection] Preparing final output with ${orderedQuestions.length} questions`);
+    console.log('[DEBUG] Final output prepared:', orderedQuestions.length, 'questions');
+    
+    const result = orderedQuestions.map((q, index) => ({
       questionId: q._id,
       originalOrder: selectedQuestions.findIndex(sq => sq._id.toString() === q._id.toString()),
       displayOrder: index,
@@ -151,6 +260,28 @@ class AdaptiveQuestionSelectionStrategy extends QuestionSelectionStrategy {
         explanation: q.explanation
       }
     }));
+    
+    logger.info(`[AdaptiveSelection] ===== ADAPTIVE SELECTION COMPLETED ===== Returning ${result.length} questions`);
+    console.log('[DEBUG] AdaptiveSelection complete, returning', result.length, 'questions');
+    
+    return result;
+  }
+  
+  /**
+   * Group questions by topic for diverse selection
+   */
+  _groupByTopic(questions) {
+    const grouped = {};
+    
+    questions.forEach(q => {
+      const topic = q.topic || 'General';
+      if (!grouped[topic]) {
+        grouped[topic] = [];
+      }
+      grouped[topic].push(q);
+    });
+    
+    return grouped;
   }
   
   /**
@@ -172,7 +303,7 @@ class AdaptiveQuestionSelectionStrategy extends QuestionSelectionStrategy {
     
     // Factor 2: Topic weakness (30 points)
     // Prioritize topics where student is weak
-    if (performance.topicAccuracy) {
+    if (performance && performance.topicAccuracy) {
       const topicAccuracy = performance.topicAccuracy[question.topic];
       if (topicAccuracy !== undefined) {
         // Lower accuracy = higher priority
@@ -181,6 +312,9 @@ class AdaptiveQuestionSelectionStrategy extends QuestionSelectionStrategy {
         // Unknown topic - medium priority
         score += 15;
       }
+    } else {
+      // No performance data - give medium score
+      score += 15;
     }
     
     // Factor 3: Question success rate (20 points)

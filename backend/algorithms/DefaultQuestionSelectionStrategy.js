@@ -10,7 +10,7 @@ const logger = require('../utils/logger');
 class DefaultQuestionSelectionStrategy extends QuestionSelectionStrategy {
   constructor() {
     super();
-    this.version = 'v1.0';
+    this.version = 'v1.1'; // Updated: Added diverse topic selection for better question variety
   }
   
   getVersion() {
@@ -99,17 +99,94 @@ class DefaultQuestionSelectionStrategy extends QuestionSelectionStrategy {
         });
       }
     } else {
-      // No topic weightage - just filter by difficulty
+      // No topic weightage - ensure diverse topic distribution
+      logger.info('[QuestionSelection] No topic weightage specified - ensuring diverse topic selection');
+      
+      // Apply difficulty filter first
       const difficultyFiltered = this._filterByDifficulty(
         availableQuestions,
         difficultyLevel,
         difficultyDistribution
       );
       
-      const selected = this._randomSelect(difficultyFiltered, totalQuestions);
-      selected.forEach(q => {
-        selectedQuestions.push(q);
-        usedQuestionIds.add(q._id.toString());
+      // Group questions by topic for diverse selection
+      const questionsByTopic = this._groupByTopic(difficultyFiltered);
+      const topics = Object.keys(questionsByTopic);
+      
+      logger.info(`[QuestionSelection] Found ${topics.length} unique topics: ${topics.join(', ')}`);
+      
+      if (topics.length === 0) {
+        throw new Error('No questions available matching the difficulty criteria');
+      }
+      
+      // Distribute questions evenly across topics (round-robin selection)
+      const questionsPerTopic = Math.ceil(totalQuestions / topics.length);
+      const topicUsageCount = {};
+      
+      logger.info(`[QuestionSelection] Target: ~${questionsPerTopic} questions per topic`);
+      
+      // First pass: Select proportionally from each topic
+      for (const topic of topics) {
+        const topicQuestions = questionsByTopic[topic];
+        const selectCount = Math.min(questionsPerTopic, topicQuestions.length);
+        const selected = this._randomSelect(topicQuestions, selectCount);
+        
+        topicUsageCount[topic] = selected.length;
+        
+        selected.forEach(q => {
+          selectedQuestions.push(q);
+          usedQuestionIds.add(q._id.toString());
+        });
+        
+        logger.info(`[QuestionSelection] Selected ${selected.length} questions from topic: ${topic}`);
+        
+        // Stop if we have enough questions
+        if (selectedQuestions.length >= totalQuestions) {
+          break;
+        }
+      }
+      
+      logger.info(`[QuestionSelection] After first pass: ${selectedQuestions.length} questions selected`);
+      
+      // Second pass: Fill remaining slots with round-robin across topics
+      if (selectedQuestions.length < totalQuestions) {
+        const remaining = totalQuestions - selectedQuestions.length;
+        logger.info(`[QuestionSelection] Need ${remaining} more questions - filling with round-robin`);
+        
+        let topicIndex = 0;
+        let attempts = 0;
+        const maxAttempts = topics.length * 10; // Prevent infinite loop
+        
+        while (selectedQuestions.length < totalQuestions && attempts < maxAttempts) {
+          const topic = topics[topicIndex % topics.length];
+          const topicQuestions = questionsByTopic[topic];
+          
+          // Find unused questions from this topic
+          const unusedTopicQuestions = topicQuestions.filter(
+            q => !usedQuestionIds.has(q._id.toString())
+          );
+          
+          if (unusedTopicQuestions.length > 0) {
+            const selected = this._randomSelect(unusedTopicQuestions, 1);
+            if (selected.length > 0) {
+              selectedQuestions.push(selected[0]);
+              usedQuestionIds.add(selected[0]._id.toString());
+              topicUsageCount[topic] = (topicUsageCount[topic] || 0) + 1;
+              logger.info(`[QuestionSelection] Added 1 more question from topic: ${topic} (total from this topic: ${topicUsageCount[topic]})`);
+            }
+          }
+          
+          topicIndex++;
+          attempts++;
+        }
+        
+        logger.info(`[QuestionSelection] After second pass: ${selectedQuestions.length} questions selected`);
+      }
+      
+      // Log final topic distribution
+      logger.info(`[QuestionSelection] Final topic distribution:`);
+      Object.entries(topicUsageCount).forEach(([topic, count]) => {
+        logger.info(`[QuestionSelection]   - ${topic}: ${count} questions`);
       });
     }
     
@@ -215,6 +292,23 @@ class DefaultQuestionSelectionStrategy extends QuestionSelectionStrategy {
     return questions.filter(q => 
       q.topic === topic && !excludeIds.has(q._id.toString())
     );
+  }
+  
+  /**
+   * Group questions by topic for diverse selection
+   */
+  _groupByTopic(questions) {
+    const grouped = {};
+    
+    questions.forEach(q => {
+      const topic = q.topic || 'General';
+      if (!grouped[topic]) {
+        grouped[topic] = [];
+      }
+      grouped[topic].push(q);
+    });
+    
+    return grouped;
   }
   
   /**

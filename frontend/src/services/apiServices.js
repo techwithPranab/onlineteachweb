@@ -595,6 +595,16 @@ export const quizService = {
     return data
   },
 
+  // Select questions using configured strategy (student)
+  selectQuestions: async (quizId, questionCount, difficulty, questionSelectionStrategy = 'adaptive') => {
+    const { data } = await api.post(`/quizzes/${quizId}/select-questions`, {
+      questionCount,
+      difficulty,
+      questionSelectionStrategy
+    })
+    return data
+  },
+
   // Save answer
   saveAnswer: async (sessionId, questionId, answer, timeSpent = 0) => {
     const { data } = await api.post(`/quizzes/sessions/${sessionId}/answer`, {

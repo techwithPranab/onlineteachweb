@@ -31,8 +31,8 @@ import {
 const studentLinks = [
   { to: '/student', icon: LayoutDashboard, label: 'Dashboard', end: true },
   { to: '/student/courses', icon: BookOpen, label: 'Courses' },
-  { to: '/student/sessions', icon: Video, label: 'Sessions' },
-  { to: '/student/quizzes', icon: ClipboardList, label: 'Quizzes' },
+  // { to: '/student/sessions', icon: Video, label: 'Sessions' },
+  // { to: '/student/quizzes', icon: ClipboardList, label: 'Quizzes' },
   { to: '/student/quiz-setup', icon: PenTool, label: 'Quiz Setup' },
   { to: '/student/active-quizzes', icon: ArrowUpDown, label: 'Active Quizzes' },
   { to: '/student/quiz-history', icon: History, label: 'Quiz History' },

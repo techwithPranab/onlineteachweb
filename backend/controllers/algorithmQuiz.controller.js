@@ -22,7 +22,8 @@ exports.createAlgorithmQuiz = async (req, res, next) => {
       courseId,
       difficulty,
       questionCount,
-      duration
+      duration,
+      questionSelectionStrategy
     } = req.body;
     
     const userId = req.user._id;
@@ -83,6 +84,7 @@ exports.createAlgorithmQuiz = async (req, res, next) => {
       })),
       totalMarks: questions.reduce((sum, q) => sum + (q.marks || 1), 0),
       algorithmUsed: 'algorithm',
+      questionSelectionStrategy: questionSelectionStrategy || 'adaptive', // Use from request, fallback to 'adaptive'
       performanceData: {}
     });
     
@@ -342,7 +344,29 @@ exports.analyzeQuizResults = async (req, res, next) => {
     
     session.questions.forEach((question, index) => {
       const answer = answers.find(a => a.questionId === question.questionId.toString());
-      const isCorrect = answer && answer.answer === question.correctAnswer;
+      
+      // Use the same validation logic as calculateAutoScore
+      // Check both ID match (for MCQ) and text match (for other types)
+      let isCorrect = false;
+      if (answer) {
+        // For MCQ-single type: compare IDs
+        if (question.type === 'mcq-single' && question.options) {
+          const selectedOption = question.options.find(opt => 
+            opt.id?.toString() === answer.answer.toString() || 
+            opt._id?.toString() === answer.answer.toString()
+          );
+          if (selectedOption) {
+            const correctOption = question.options.find(opt => 
+              opt.text === question.correctAnswer
+            );
+            isCorrect = selectedOption._id?.toString() === correctOption?._id?.toString() ||
+                       selectedOption.id?.toString() === correctOption?.id?.toString();
+          }
+        } else {
+          // For text/numerical types: compare text directly
+          isCorrect = answer.answer === question.correctAnswer;
+        }
+      }
       
       if (isCorrect) {
         correctAnswers++;
@@ -653,14 +677,20 @@ exports.getStudentPerformance = async (req, res, next) => {
       });
     }
     
+    console.log('📊 Processing student performance for', sessions.length, 'completed sessions');
+    
     // Aggregate topic mastery
     const topicMastery = {};
     let totalScore = 0;
     let totalAccuracy = 0;
     
     sessions.forEach(session => {
-      totalScore += session.score || 0;
-      totalAccuracy += session.accuracy || 0;
+      // Use percentage or calculate from totalScore/totalMarks
+      const sessionScore = session.percentage || ((session.totalScore || 0) / (session.totalMarks || 1)) * 100;
+      const sessionAccuracy = session.accuracy || sessionScore || 0;
+      
+      totalScore += sessionScore;
+      totalAccuracy += sessionAccuracy;
       
       // Skip if session doesn't have questions array
       if (!session.questions || !Array.isArray(session.questions)) {
@@ -692,14 +722,27 @@ exports.getStudentPerformance = async (req, res, next) => {
       .filter(([_, mastery]) => parseFloat(mastery) < 60)
       .map(([topic, _]) => topic);
     
+    const averageScore = (totalScore / sessions.length).toFixed(1);
+    const averageAccuracy = (totalAccuracy / sessions.length).toFixed(1);
+    
+    console.log('📊 Calculated performance metrics:', {
+      totalQuizzesTaken: sessions.length,
+      totalScoreSum: totalScore,
+      totalAccuracySum: totalAccuracy,
+      averageScore,
+      averageAccuracy,
+      topicsCount: Object.keys(topicMasteryPercentages).length,
+      weakTopicsCount: weakTopics.length
+    });
+    
     res.json({
       success: true,
       performance: {
         topicMastery: topicMasteryPercentages,
         weakTopics,
         totalQuizzesTaken: sessions.length,
-        averageScore: (totalScore / sessions.length).toFixed(1),
-        averageAccuracy: (totalAccuracy / sessions.length).toFixed(1),
+        averageScore,
+        averageAccuracy,
         lastUpdated: new Date()
       }
     });

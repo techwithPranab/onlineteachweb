@@ -16,14 +16,15 @@ const validateQuizCreation = [
   body('difficulty').isIn(['easy', 'medium', 'hard']).withMessage('Valid difficulty level required'),
   body('questionCount').isInt({ min: 1, max: 100 }).withMessage('Question count must be between 1-100'),
   body('duration').isInt({ min: 1, max: 300 }).withMessage('Duration must be between 1-300 minutes'),
-  body('questions').isArray().withMessage('Questions array is required'),
-  body('questions.*.id').isString().notEmpty().withMessage('Question ID is required'),
-  body('questions.*.question').isString().notEmpty().withMessage('Question text is required'),
-  body('questions.*.type').isIn(['mcq-single', 'mcq-multiple', 'true-false', 'numerical', 'short-answer', 'long-answer', 'case-based']).withMessage('Valid question type required'),
-  body('questions.*.options').isArray().withMessage('Question options are required'),
-  body('questions.*.correctAnswer').exists().withMessage('Correct answer is required'),
-  body('questions.*.topic').isString().notEmpty().withMessage('Question topic is required'),
-  body('questions.*.difficulty').isIn(['easy', 'medium', 'hard']).withMessage('Valid question difficulty required')
+  body('questions').optional().isArray().withMessage('Questions array must be an array'),
+  body('questions.*.id').optional().isString().notEmpty().withMessage('Question ID is required'),
+  body('questions.*.question').optional().isString().notEmpty().withMessage('Question text is required'),
+  body('questions.*.type').optional().isIn(['mcq-single', 'mcq-multiple', 'true-false', 'numerical', 'short-answer', 'long-answer', 'case-based']).withMessage('Valid question type required'),
+  body('questions.*.options').optional().isArray().withMessage('Question options are required'),
+  body('questions.*.correctAnswer').optional().exists().withMessage('Correct answer is required'),
+  body('questions.*.topic').optional().isString().notEmpty().withMessage('Question topic is required'),
+  body('questions.*.difficulty').optional().isIn(['easy', 'medium', 'hard']).withMessage('Valid question difficulty required'),
+  body('questionSelectionStrategy').optional().isIn(['adaptive', 'default']).withMessage('Valid strategy required')
 ];
 
 const validateQuizUpdate = [
@@ -427,9 +428,13 @@ router.put('/:quizId/skip/:questionId', [
 // @access  Private (Student)
 router.post('/', validateQuizCreation, async (req, res) => {
   try {
+    console.log('[ActiveQuiz] POST request received');
+    console.log('[ActiveQuiz] Request body:', JSON.stringify(req.body, null, 2));
+    
     // Check for validation errors
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
+      console.log('[ActiveQuiz] Validation errors:', errors.array());
       return res.status(400).json({
         success: false,
         message: 'Validation failed',
@@ -446,7 +451,8 @@ router.post('/', validateQuizCreation, async (req, res) => {
       questionCount,
       duration,
       questions,
-      algorithmUsed = 'algorithm'
+      algorithmUsed = 'algorithm',
+      questionSelectionStrategy = 'adaptive'
     } = req.body;
 
     // Check if user already has a quiz in progress
@@ -461,6 +467,84 @@ router.post('/', validateQuizCreation, async (req, res) => {
           courseName: existingInProgress.courseName
         }
       });
+    }
+
+    // If questions are not provided, select them using the strategy
+    let selectedQuestions = questions;
+    if (!questions || questions.length === 0) {
+      console.log('[ActiveQuiz] No questions provided, selecting using strategy:', questionSelectionStrategy);
+      
+      // Get question selection strategy
+      const QuestionSelectionFactory = require('../algorithms/QuestionSelectionFactory');
+      const strategy = QuestionSelectionFactory.getStrategy(questionSelectionStrategy);
+      
+      // Get all questions for the course
+      const Question = require('../models/Question.model');
+      const allQuestions = await Question.find({
+        courseId,
+        isActive: true
+      });
+
+      console.log(`[ActiveQuiz] Found ${allQuestions.length} questions for course ${courseId}`);
+      console.log(`[ActiveQuiz] Sample questions:`, allQuestions.slice(0, 2).map(q => ({ id: q._id, topic: q.topic, difficulty: q.difficultyLevel })));
+
+      if (allQuestions.length < questionCount) {
+        return res.status(400).json({
+          success: false,
+          message: `Not enough questions available. Required: ${questionCount}, Available: ${allQuestions.length}`
+        });
+      }
+
+      // Get student performance for adaptive selection
+      const StudentPerformance = require('../models/StudentPerformance.model');
+      const studentPerformance = await StudentPerformance.findOne({ studentId: userId });
+
+      console.log('[ActiveQuiz] Student performance found:', !!studentPerformance);
+
+      // Prepare selection criteria
+      const criteria = {
+        courseId,
+        difficultyLevel: difficulty,
+        questionConfig: {
+          totalQuestions: questionCount,
+          topicWeightage: {},
+          typeDistribution: {}
+        },
+        studentId: userId,
+        studentPerformance,
+        allQuestions
+      };
+
+      // Select questions using strategy
+      const strategySelectedQuestions = await strategy.select(criteria);
+
+      console.log(`[ActiveQuiz] Strategy selected ${strategySelectedQuestions.length} questions`);
+
+      // Transform strategy output to expected format
+      selectedQuestions = strategySelectedQuestions.map(q => ({
+        id: (q.questionId || q._id).toString(),
+        question: q.snapshot?.question || q.snapshot?.text || q.text || '',
+        type: q.snapshot?.type || q.type || 'mcq-single',
+        options: (q.snapshot?.options || q.options || []).map(opt => ({
+          id: (opt._id || opt.id).toString(),
+          text: opt.text || ''
+        })),
+        correctAnswer: q.snapshot?.correctAnswer || q.correctAnswer,
+        expectedAnswer: q.snapshot?.expectedAnswer || q.expectedAnswer,
+        numericalAnswer: q.snapshot?.numericalAnswer || q.numericalAnswer,
+        marks: q.snapshot?.marks || q.marks || 1,
+        negativeMarks: q.snapshot?.negativeMarks || q.negativeMarks || 0,
+        topic: q.snapshot?.topic || q.topic || 'General',
+        difficulty: q.snapshot?.difficulty || q.snapshot?.difficultyLevel || q.difficulty || difficulty,
+        explanation: q.snapshot?.explanation || q.explanation || ''
+      }));
+
+      if (selectedQuestions.length < questionCount) {
+        return res.status(400).json({
+          success: false,
+          message: `Could only select ${selectedQuestions.length} questions. Required: ${questionCount}`
+        });
+      }
     }
 
     // Generate unique IDs
@@ -481,9 +565,10 @@ router.post('/', validateQuizCreation, async (req, res) => {
       difficulty,
       questionCount,
       duration,
-      questions,
+      questions: selectedQuestions,
       algorithmUsed,
-      totalMarks: questions.reduce((sum, q) => sum + (q.marks || 1), 0)
+      questionSelectionStrategy,
+      totalMarks: selectedQuestions.reduce((sum, q) => sum + (q.marks || 1), 0)
     });
 
     await activeQuiz.save();
@@ -506,6 +591,7 @@ router.post('/', validateQuizCreation, async (req, res) => {
 
   } catch (error) {
     console.error('Error creating active quiz:', error);
+    console.error('Error stack:', error.stack);
     res.status(500).json({
       success: false,
       message: 'Failed to create active quiz',

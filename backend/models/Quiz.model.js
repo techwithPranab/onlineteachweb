@@ -161,6 +161,13 @@ const quizSchema = new mongoose.Schema({
     type: String,
     default: 'v1.0'
   },
+  // Question selection strategy
+  questionSelectionStrategy: {
+    type: String,
+    enum: ['default', 'adaptive'],
+    default: 'adaptive',
+    required: true
+  },
   // Statistics
   stats: {
     totalAttempts: { type: Number, default: 0 },

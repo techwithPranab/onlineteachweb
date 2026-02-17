@@ -100,6 +100,12 @@ const subjectPerformanceSchema = new mongoose.Schema({
     type: Number,
     default: 0 // in seconds
   },
+  // Track correctly answered question IDs per subject for exclusion in future quizzes
+  correctlyAnsweredQuestionIds: {
+    type: [mongoose.Schema.Types.ObjectId],
+    default: [],
+    ref: 'Question'
+  },
   lastActivity: {
     type: Date
   }

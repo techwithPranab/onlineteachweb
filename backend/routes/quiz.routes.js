@@ -135,6 +135,19 @@ router.post('/:id/start',
   quizController.startQuiz
 );
 
+// Select questions using configured strategy
+router.post('/:id/select-questions',
+  authenticate,
+  [
+    param('id').isMongoId().withMessage('Valid quiz ID required'),
+    body('questionCount').isInt({ min: 1, max: 100 }).withMessage('Question count required'),
+    body('difficulty').isIn(['easy', 'medium', 'hard']).withMessage('Valid difficulty required'),
+    body('questionSelectionStrategy').optional().isIn(['adaptive', 'default']).withMessage('Valid strategy required'),
+    validate
+  ],
+  quizController.selectQuestions
+);
+
 // Save answer
 router.post('/sessions/:sessionId/answer',
   authenticate,

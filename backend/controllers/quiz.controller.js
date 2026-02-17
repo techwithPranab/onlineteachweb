@@ -28,7 +28,8 @@ exports.createQuiz = async (req, res, next) => {
       attemptsAllowed,
       questionConfig,
       settings,
-      instructions
+      instructions,
+      questionSelectionStrategy = 'adaptive'  // Add strategy parameter, default to adaptive
     } = req.body;
     
     // Validate question availability
@@ -46,6 +47,14 @@ exports.createQuiz = async (req, res, next) => {
     
     // Get current algorithm version
     const strategy = QuestionSelectionFactory.getStrategy();
+    
+    // Validate strategy name
+    if (!['default', 'adaptive'].includes(questionSelectionStrategy)) {
+      return res.status(400).json({
+        success: false,
+        message: `Invalid strategy: ${questionSelectionStrategy}. Must be 'default' or 'adaptive'`
+      });
+    }
     
     const quiz = await Quiz.create({
       title,
@@ -68,7 +77,8 @@ exports.createQuiz = async (req, res, next) => {
       settings: settings || {},
       instructions: instructions || [],
       createdBy: req.user._id,
-      algorithmVersion: strategy.getVersion()
+      algorithmVersion: strategy.getVersion(),
+      questionSelectionStrategy  // Save the selected strategy
     });
     
     logger.info(`Quiz created: ${quiz._id} by user ${req.user._id}`);
@@ -420,7 +430,6 @@ exports.startQuiz = async (req, res, next) => {
   try {
     const { id: quizId } = req.params;
     const studentId = req.user._id;
-    const { strategyName } = req.body; // Optional: specify selection strategy
     
     // Get the quiz
     const quiz = await Quiz.findById(quizId);
@@ -517,7 +526,7 @@ exports.startQuiz = async (req, res, next) => {
       status: { $in: ['in-progress', 'completed', 'submitted', 'auto-submitted'] }
     }).select('selectedQuestions');
     
-    // Create a Set to ensure unique question IDs
+    // Create a Set to ensure unique question IDs from previous sessions
     const excludeQuestionIds = [...new Set(
       previousSessions.flatMap(
         session => session.selectedQuestions.map(q => q.questionId.toString())
@@ -526,10 +535,61 @@ exports.startQuiz = async (req, res, next) => {
     
     logger.info(`[QuizStart] Student ${studentId} starting quiz ${quizId}`);
     logger.info(`[QuizStart] Found ${previousSessions.length} previous sessions with ${excludeQuestionIds.length} unique questions to exclude`);
-    logger.info(`[QuizStart] Excluded question IDs: ${excludeQuestionIds.slice(0, 10).join(', ')}${excludeQuestionIds.length > 10 ? '...' : ''}`);
+    logger.info(`[QuizStart] Excluded question IDs from prev sessions: ${excludeQuestionIds.slice(0, 10).join(', ')}${excludeQuestionIds.length > 10 ? '...' : ''}`);
     
-    // Select questions using the algorithm
-    const strategy = QuestionSelectionFactory.getStrategy(strategyName || 'default');
+    console.log('[TRACE] === ABOUT TO GET STUDENT PERFORMANCE ===');
+    
+    // Get student performance for adaptive selection and correctly answered questions
+    const StudentPerformance = require('../models/StudentPerformance.model');
+    const studentPerformance = await StudentPerformance.findOne({
+      studentId
+    });
+    
+    console.log('[TRACE] StudentPerformance found:', !!studentPerformance);
+    
+    // Extract topic accuracy for adaptive selection
+    const topicAccuracy = {};
+    let correctlyAnsweredQuestionIds = [];
+    
+    if (studentPerformance && studentPerformance.topicMastery) {
+      studentPerformance.topicMastery.forEach(topicData => {
+        topicAccuracy[topicData.topic] = topicData.successRate || 0;
+      });
+      
+      // Extract correctly answered question IDs from subject performance for this quiz's subject
+      if (studentPerformance.subjectPerformance && quiz.subject) {
+        const subjectKey = quiz.subject;
+        const subjectData = studentPerformance.subjectPerformance.get(subjectKey);
+        if (subjectData && subjectData.correctlyAnsweredQuestionIds && Array.isArray(subjectData.correctlyAnsweredQuestionIds)) {
+          correctlyAnsweredQuestionIds = subjectData.correctlyAnsweredQuestionIds.map(id => id.toString());
+          logger.info(`[QuizStart] Found ${correctlyAnsweredQuestionIds.length} correctly answered questions in subject ${subjectKey} to exclude`);
+        }
+      }
+    }
+    
+    console.log('[TRACE] === ABOUT TO COMBINE EXCLUDE IDS ===');
+    console.log('[TRACE] excludeQuestionIds count:', excludeQuestionIds.length);
+    console.log('[TRACE] correctlyAnsweredQuestionIds count:', correctlyAnsweredQuestionIds.length);
+    
+    // Combine all IDs to exclude: previous attempts + correctly answered questions
+    const allExcludeIds = [...new Set([...excludeQuestionIds, ...correctlyAnsweredQuestionIds])];
+    
+    logger.info(`[QuizStart] Total questions to exclude: ${allExcludeIds.length} (${excludeQuestionIds.length} from prev attempts + ${correctlyAnsweredQuestionIds.length} correctly answered)`);
+    logger.info(`[QuizStart] Student performance found for ${Object.keys(topicAccuracy).length} topics`);
+    console.log('[TRACE] About to determine strategy name...');
+    
+    // Use the quiz's configured strategy (default to 'adaptive' if not set)
+    const strategyName = quiz.questionSelectionStrategy || 'adaptive';
+    console.log('[TRACE] strategyName:', strategyName);
+    console.log('[TRACE] quiz.questionSelectionStrategy:', quiz.questionSelectionStrategy);
+    
+    logger.info(`[QuizStart] ===== STRATEGY DETERMINATION =====`);
+    logger.info(`[QuizStart] quiz.questionSelectionStrategy value: ${quiz.questionSelectionStrategy}`);
+    logger.info(`[QuizStart] Using question selection strategy: ${strategyName}`);
+    console.log('[TRACE] Strategy logging complete');
+    
+    const strategy = QuestionSelectionFactory.getStrategy(strategyName);
+    console.log('[TRACE] Got strategy instance:', strategy?.constructor?.name);
     
     const selectedQuestions = await strategy.select({
       courseId: quiz.courseId,
@@ -540,9 +600,12 @@ exports.startQuiz = async (req, res, next) => {
         typeDistribution: quiz.questionConfig.typeDistribution,
         difficultyDistribution: quiz.questionConfig.difficultyDistribution
       },
-      excludeQuestionIds,
+      excludeQuestionIds: allExcludeIds,
       settings: quiz.settings,
-      studentId
+      studentId,
+      studentPerformance: {
+        topicAccuracy
+      }
     });
     
     if (selectedQuestions.length < quiz.questionConfig.totalQuestions) {
@@ -595,7 +658,9 @@ exports.startQuiz = async (req, res, next) => {
       selectionCriteria: {
         difficultyLevel: quiz.difficultyLevel,
         totalQuestions: quiz.questionConfig.totalQuestions,
-        excludedCount: excludeQuestionIds.length
+        excludedFromPrevAttempts: excludeQuestionIds.length,
+        excludedCorrectlyAnswered: correctlyAnsweredQuestionIds.length,
+        totalExcludedCount: allExcludeIds.length
       }
     });
     
@@ -781,6 +846,15 @@ exports.submitQuiz = async (req, res, next) => {
       });
     }
     
+    // Fetch quiz details early (needed for subject information)
+    let quiz = await Quiz.findById(quizId);
+    if (!quiz) {
+      return res.status(404).json({
+        success: false,
+        message: 'Quiz not found'
+      });
+    }
+    
     // Save any final answers
     if (answers && Array.isArray(answers)) {
       for (const ans of answers) {
@@ -795,14 +869,85 @@ exports.submitQuiz = async (req, res, next) => {
     
     await session.save();
     
-    // Calculate auto score
+    // Calculate auto score (this sets isCorrect on each answer)
     await session.calculateAutoScore();
+    
+    // Save session again after calculateAutoScore to persist isCorrect values
+    await session.save();
+    
+    // Track correctly answered questions in StudentPerformance
+    try {
+      const StudentPerformance = require('../models/StudentPerformance.model');
+      
+      // Log answer details for debugging
+      logger.info(`[SubmitQuiz] Total answers: ${session.answers.length}`);
+      session.answers.forEach((ans, idx) => {
+        logger.info(`[SubmitQuiz] Answer ${idx}: questionId=${ans.questionId}, isCorrect=${ans.isCorrect}, answer=${JSON.stringify(ans.answer)}`);
+      });
+      
+      const correctlyAnsweredIds = session.answers
+        .filter(ans => ans.isCorrect === true)
+        .map(ans => ans.questionId);
+      
+      logger.info(`[SubmitQuiz] Filtered ${correctlyAnsweredIds.length} correctly answered questions from ${session.answers.length} total answers`);
+      
+      if (correctlyAnsweredIds.length > 0) {
+        logger.info(`[SubmitQuiz] Found ${correctlyAnsweredIds.length} correctly answered questions for student ${studentId}`);
+        
+        let studentPerf = await StudentPerformance.findOne({ studentId });
+        
+        if (!studentPerf) {
+          studentPerf = new StudentPerformance({ studentId });
+        }
+        
+        // Get the quiz's subject
+        const quizSubject = quiz.subject || 'General';
+        
+        // Get or create subject performance
+        if (!studentPerf.subjectPerformance.has(quizSubject)) {
+          studentPerf.subjectPerformance.set(quizSubject, {
+            subject: quizSubject,
+            totalQuizzes: 0,
+            totalQuestions: 0,
+            correctAnswers: 0,
+            averageScore: 0,
+            averageAccuracy: 0,
+            totalTimeSpent: 0,
+            correctlyAnsweredQuestionIds: [],
+            lastActivity: new Date()
+          });
+        }
+        
+        const subjectPerf = studentPerf.subjectPerformance.get(quizSubject);
+        
+        // Add correctly answered question IDs (avoid duplicates)
+        const existingIds = new Set(
+          subjectPerf.correctlyAnsweredQuestionIds.map(id => id.toString())
+        );
+        
+        for (const qId of correctlyAnsweredIds) {
+          if (!existingIds.has(qId.toString())) {
+            subjectPerf.correctlyAnsweredQuestionIds.push(qId);
+            existingIds.add(qId.toString());
+          }
+        }
+        
+        subjectPerf.lastActivity = new Date();
+        
+        logger.info(`[SubmitQuiz] Subject ${quizSubject} now has ${subjectPerf.correctlyAnsweredQuestionIds.length} total correctly answered questions tracked`);
+        
+        await studentPerf.save();
+        logger.info(`[SubmitQuiz] Updated StudentPerformance with correctly answered questions for student ${studentId}`);
+      }
+    } catch (error) {
+      logger.error(`Error tracking correctly answered questions: ${error.message}`);
+      // Don't fail submission if tracking fails
+    }
     
     // Generate evaluation result
     const evaluationResult = await QuizEvaluationResult.generateFromSession(session);
     
-    // Update quiz stats
-    const quiz = await Quiz.findById(quizId);
+    // Update quiz stats (quiz already fetched earlier)
     await quiz.updateStats(session.totalScore, session.timeSpent / 60, session.passed);
     
     // Check and award achievements
@@ -1040,5 +1185,125 @@ exports.getSessionDetails = async (req, res, next) => {
     });
   } catch (error) {
     next(error);
+  }
+};
+
+/**
+ * Select questions using the configured strategy
+ * 
+ * @route POST /api/quizzes/:id/select-questions
+ * @param req - Express request with:
+ *   - params.id: Quiz ID
+ *   - body.questionCount: Number of questions to select
+ *   - body.difficulty: Question difficulty level
+ *   - body.questionSelectionStrategy: Strategy name (adaptive, default)
+ * @param res - Express response
+ * @param next - Express next middleware
+ */
+exports.selectQuestions = async (req, res, next) => {
+  try {
+    const { id: quizId } = req.params;
+    const studentId = req.user._id;
+    const { 
+      questionCount, 
+      difficulty, 
+      questionSelectionStrategy = 'adaptive'
+    } = req.body;
+
+    console.log('[selectQuestions] API endpoint called');
+    console.log('[selectQuestions] quizId:', quizId);
+    console.log('[selectQuestions] studentId:', studentId);
+    console.log('[selectQuestions] Request body:', { questionCount, difficulty, questionSelectionStrategy });
+
+    logger.info(`[QuestionSelection] Student ${studentId} requesting ${questionCount} questions with strategy: ${questionSelectionStrategy}`);
+
+    // Fetch quiz
+    const quiz = await Quiz.findById(quizId).populate('courseId');
+    
+    console.log('[selectQuestions] Quiz found:', !!quiz);
+    
+    if (!quiz) {
+      console.log('[selectQuestions] Quiz not found for ID:', quizId);
+      return res.status(404).json({
+        success: false,
+        message: 'Quiz not found'
+      });
+    }
+
+    // Fetch all questions for the course
+    const Question = require('../models/Question.model');
+    const allQuestions = await Question.find({
+      courseId: quiz.courseId._id,
+      isDeleted: false
+    });
+
+    console.log(`[QuestionSelection] Found ${allQuestions.length} questions for course`);
+
+    if (allQuestions.length < questionCount) {
+      return res.status(400).json({
+        success: false,
+        message: `Not enough questions available. Required: ${questionCount}, Available: ${allQuestions.length}`
+      });
+    }
+
+    // Get student performance for adaptive selection
+    const StudentPerformance = require('../models/StudentPerformance.model');
+    const studentPerformance = await StudentPerformance.findOne({ studentId });
+
+    logger.info(`[QuestionSelection] Student performance found: ${!!studentPerformance}`);
+
+    // Get question selection strategy
+    const QuestionSelectionFactory = require('../algorithms/QuestionSelectionFactory');
+    const strategy = QuestionSelectionFactory.getStrategy(questionSelectionStrategy);
+
+    console.log(`[QuestionSelection] Using strategy: ${strategy.constructor.name}`);
+
+    // Prepare selection criteria
+    const criteria = {
+      courseId: quiz.courseId._id,
+      difficultyLevel: difficulty,
+      questionConfig: {
+        totalQuestions: questionCount,
+        topicWeightage: quiz.questionConfig?.topicWeightage || {},
+        typeDistribution: quiz.questionConfig?.typeDistribution || {}
+      },
+      studentId,
+      studentPerformance,
+      existingTopicAccuracy: {},
+      allQuestions
+    };
+
+    // Select questions using strategy
+    console.log(`[QuestionSelection] Calling strategy.select() with criteria:`, {
+      courseId: criteria.courseId,
+      difficulty: criteria.difficultyLevel,
+      totalQuestions: criteria.questionConfig.totalQuestions
+    });
+
+    const selectedQuestions = await strategy.select(criteria);
+
+    console.log(`[QuestionSelection] Strategy selected ${selectedQuestions.length} questions`);
+
+    if (selectedQuestions.length < questionCount) {
+      logger.warn(`[QuestionSelection] Strategy could only select ${selectedQuestions.length}/${questionCount} questions`);
+    }
+
+    logger.info(`[QuestionSelection] Successfully selected ${selectedQuestions.length} questions using ${questionSelectionStrategy} strategy`);
+
+    res.json({
+      success: true,
+      message: 'Questions selected successfully',
+      data: selectedQuestions
+    });
+
+  } catch (error) {
+    console.error('[selectQuestions] Exception caught:', error.message);
+    console.error('[selectQuestions] Stack trace:', error.stack);
+    logger.error(`[QuestionSelection] Error selecting questions: ${error.message}`);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to select questions',
+      error: process.env.NODE_ENV === 'development' ? error.message : undefined
+    });
   }
 };
