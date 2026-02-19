@@ -319,6 +319,26 @@ export const paymentService = {
   },
 }
 
+export const razorpayService = {
+  // Get Razorpay configuration
+  getConfig: async () => {
+    const { data } = await api.get('/payments/razorpay/config')
+    return data
+  },
+
+  // Create Razorpay order
+  createOrder: async (planId) => {
+    const { data } = await api.post('/payments/razorpay/create-order', { planId })
+    return data
+  },
+
+  // Verify Razorpay payment
+  verifyPayment: async (paymentData) => {
+    const { data } = await api.post('/payments/razorpay/verify', paymentData)
+    return data
+  },
+}
+
 export const reportService = {
   getStudentReport: async (studentId, params = {}) => {
     const { data } = await api.get(`/reports/student/${studentId}`, { params })

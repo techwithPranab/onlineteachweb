@@ -26,11 +26,19 @@ const paymentSchema = new mongoose.Schema({
   },
   paymentMethod: {
     type: String,
-    enum: ['card', 'bank_transfer', 'wallet'],
+    enum: ['card', 'bank_transfer', 'wallet', 'upi', 'netbanking', 'razorpay'],
     default: 'card'
+  },
+  paymentGateway: {
+    type: String,
+    enum: ['stripe', 'razorpay'],
+    default: 'stripe'
   },
   stripePaymentIntentId: String,
   stripeChargeId: String,
+  razorpayOrderId: String,
+  razorpayPaymentId: String,
+  razorpaySignature: String,
   invoiceUrl: String,
   receiptUrl: String,
   description: String,

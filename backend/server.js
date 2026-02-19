@@ -34,6 +34,7 @@ const contactRoutes = require('./routes/contact.routes');
 const activeQuizRoutes = require('./routes/activeQuiz.routes');
 const studentPerformanceRoutes = require('./routes/studentPerformance.routes');
 const achievementRoutes = require('./routes/achievement.routes');
+const razorpayRoutes = require('./routes/razorpay.routes');
 
 const app = express();
 const server = http.createServer(app);
@@ -88,6 +89,7 @@ app.use('/api/materials', materialRoutes);
 app.use('/api/evaluations', evaluationRoutes);
 app.use('/api/subscriptions', subscriptionRoutes);
 app.use('/api/payments', paymentRoutes);
+app.use('/api/payments/razorpay', razorpayRoutes);
 app.use('/api/live', liveRoutes);
 app.use('/api/reports', reportRoutes);
 app.use('/api/admin', adminRoutes);

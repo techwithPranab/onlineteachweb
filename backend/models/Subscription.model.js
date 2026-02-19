@@ -45,7 +45,9 @@ const subscriptionPlanSchema = new mongoose.Schema({
     default: true
   },
   stripeProductId: String,
-  stripePriceId: String
+  stripePriceId: String,
+  razorpayPlanId: String,
+  razorpayProductId: String
 }, {
   timestamps: true
 });
@@ -80,6 +82,10 @@ const subscriptionSchema = new mongoose.Schema({
   },
   stripeSubscriptionId: String,
   stripeCustomerId: String,
+  razorpaySubscriptionId: String,
+  razorpayCustomerId: String,
+  razorpayOrderId: String,
+  razorpayPaymentId: String,
   cancelledAt: Date,
   cancelReason: String,
   trialEndsAt: Date,

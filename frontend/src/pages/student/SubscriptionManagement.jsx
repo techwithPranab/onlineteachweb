@@ -1,21 +1,14 @@
 import { useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from 'react-query'
 import { CreditCard, CheckCircle, Clock, XCircle, Download } from 'lucide-react'
-import { subscriptionService, paymentService } from '@/services/apiServices'
+import { subscriptionService, paymentService, razorpayService } from '@/services/apiServices'
 import LoadingSpinner from '@/components/common/LoadingSpinner'
 import SEOHead from '@/components/SEO/SEOHead';
 import ErrorMessage from '@/components/common/ErrorMessage'
 import Modal from '@/components/common/Modal'
 import ConfirmDialog from '@/components/common/ConfirmDialog'
-import { loadStripe } from '@stripe/stripe-js'
-import { Elements } from '@stripe/react-stripe-js'
-import CheckoutForm from '@/components/payments/CheckoutForm'
+import RazorpayCheckout from '@/components/payments/RazorpayCheckout'
 import MeritaiButton from '@/components/ui/MeritaiButton'
-
-// Initialize Stripe if publishable key is present
-const stripePromise = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
-  ? loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY)
-  : null
 
 export default function SubscriptionManagement() {
   const queryClient = useQueryClient()
@@ -105,21 +98,14 @@ export default function SubscriptionManagement() {
     setShowCancelDialog(false)
   }
 
-  const handleConfirmWithoutStripe = async () => {
-    if (!selectedPlan || !selectedPlan.docId) return
-    try {
-      // Call checkout API without a payment method (fallback)
-      const res = await subscriptionService.checkout(selectedPlan.docId, null)
-      if (res && res.subscription) {
-        queryClient.invalidateQueries('subscriptionStatus')
-        setShowUpgradeModal(false)
-        setSelectedPlan(null)
-      } else {
-        console.error('Unexpected response when creating subscription without Stripe', res)
-      }
-    } catch (err) {
-      console.error('Error creating subscription without Stripe', err)
-    }
+  const handlePaymentSuccess = (subscription) => {
+    queryClient.invalidateQueries('subscriptionStatus')
+    queryClient.invalidateQueries('billingHistory')
+    setShowUpgradeModal(false)
+    setSelectedPlan(null)
+    
+    // Show success message
+    alert('🎉 Subscription activated successfully!')
   }
 
   if (isLoading) return <LoadingSpinner fullScreen />
@@ -446,62 +432,46 @@ export default function SubscriptionManagement() {
       <Modal
         isOpen={showUpgradeModal}
         onClose={() => setShowUpgradeModal(false)}
-        title="Upgrade Subscription"
+        title="💎 Upgrade Subscription"
       >
         {selectedPlan && (
           <div className="space-y-4 sm:space-y-6">
-            <p className="text-gray-700 text-sm sm:text-base">
-              You are upgrading to the <strong>{selectedPlan.name}</strong> plan.
-            </p>
-
             {selectedPlan.price > 0 ? (
-              stripePromise ? (
-                <Elements stripe={stripePromise}>
-                  <CheckoutForm
-                    plan={selectedPlan}
-                    onSuccess={() => {
-                      setShowUpgradeModal(false)
-                      setSelectedPlan(null)
-                    }}
-                    onCancel={() => setShowUpgradeModal(false)}
-                  />
-                </Elements>
-              ) : (
-                <div className="space-y-4">
-                  <div className="bg-yellow-50 p-3 sm:p-4 rounded text-sm text-yellow-800">
-                    Stripe is not configured in this environment. We will create the subscription entry without processing payment.
-                  </div>
-                  <div className="flex flex-col sm:flex-row gap-3">
-                    <button onClick={() => setShowUpgradeModal(false)} className="flex-1 px-4 py-3 border rounded-lg hover:bg-gray-50 min-h-[44px] text-sm sm:text-base font-medium">Cancel</button>
-                    <button onClick={handleConfirmWithoutStripe} className="flex-1 btn-primary min-h-[44px] text-sm sm:text-base font-medium">Confirm Subscription</button>
-                  </div>
-                </div>
-              )
+              <RazorpayCheckout
+                plan={selectedPlan}
+                onSuccess={handlePaymentSuccess}
+                onClose={() => setShowUpgradeModal(false)}
+              />
             ) : (
               <div className="space-y-4 sm:space-y-6">
-                <div className="bg-gray-50 p-3 sm:p-4 rounded-lg">
+                <div className="bg-gradient-to-br from-emerald-50 to-teal-50 rounded-2xl p-6 border-2 border-emerald-200">
+                  <h3 className="text-xl font-bold text-gray-900 mb-4">📋 Plan Summary</h3>
                   <div className="flex justify-between mb-2 text-sm sm:text-base">
                     <span className="text-gray-600">New Plan:</span>
                     <span className="font-semibold">{selectedPlan.name}</span>
                   </div>
                   <div className="flex justify-between mb-2 text-sm sm:text-base">
                     <span className="text-gray-600">Price:</span>
-                    <span className="font-semibold">Free</span>
+                    <span className="font-semibold text-emerald-600">Free</span>
                   </div>
                 </div>
                 <p className="text-sm text-gray-600">This plan does not require a payment method.</p>
                 <div className="flex flex-col sm:flex-row gap-3">
-                  <button onClick={() => setShowUpgradeModal(false)} className="flex-1 px-4 py-3 border border-gray-300 rounded-lg hover:bg-gray-50 min-h-[44px] text-sm sm:text-base font-medium">Cancel</button>
-                  <button
+                  <button 
+                    onClick={() => setShowUpgradeModal(false)} 
+                    className="flex-1 px-4 py-3 border-2 border-gray-300 text-gray-700 font-semibold rounded-xl hover:bg-gray-50 transition-all min-h-[44px] text-sm sm:text-base"
+                  >
+                    Cancel
+                  </button>
+                  <MeritaiButton
                     onClick={() => {
-                      // switch to free plan
                       downgradeMutation.mutate()
                       setShowUpgradeModal(false)
                     }}
-                    className="flex-1 btn-primary min-h-[44px] text-sm sm:text-base font-medium"
+                    className="flex-1 px-4 py-3 font-semibold rounded-xl shadow-lg hover:scale-105 transition-all min-h-[44px] text-sm sm:text-base"
                   >
                     Switch to Free
-                  </button>
+                  </MeritaiButton>
                 </div>
               </div>
             )}
