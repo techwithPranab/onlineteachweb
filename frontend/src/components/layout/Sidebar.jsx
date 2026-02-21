@@ -76,6 +76,7 @@ const adminLinks = [
       { to: '/admin/quizzes', icon: ClipboardList, label: 'Quiz Management' },
       { to: '/admin/questions', icon: HelpCircle, label: 'Question Bank' },
       { to: '/admin/questions/import-export', icon: ArrowUpDown, label: 'Import/Export' },
+      { to: '/admin/features', icon: Sparkles, label: 'Feature Management' },
       { to: '/admin/ai-questions/generate', icon: Sparkles, label: 'Generate Questions' },
       { to: '/admin/ai-questions/review', icon: ClipboardCheck, label: 'Review Questions' },
       { to: '/admin/offline-prompts', icon: FileText, label: 'Offline Prompts' },

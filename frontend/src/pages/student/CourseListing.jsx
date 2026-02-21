@@ -10,6 +10,8 @@ import ErrorMessage from '@/components/common/ErrorMessage'
 import EmptyState from '@/components/common/EmptyState'
 import MeritaiButton from '@/components/ui/MeritaiButton'
 import Pagination from '@/components/common/Pagination'
+import { FeatureBadge, UsageIndicator } from '@/components/common'
+import { useFeatureAccess } from '@/hooks/useFeatureAccess'
 
 export default function CourseListing() {
   const navigate = useNavigate()
@@ -20,6 +22,9 @@ export default function CourseListing() {
   const [showFilters, setShowFilters] = useState(false)
   const [currentPage, setCurrentPage] = useState(1)
   const [itemsPerPage] = useState(12) // Show 12 courses per page
+
+  // Check premium course access
+  const { allowed: canAccessPremium } = useFeatureAccess('courses.premium')
 
   // Set default grade to student's grade on mount
   useEffect(() => {
@@ -81,6 +86,16 @@ export default function CourseListing() {
         <p className="text-lg text-gray-600 font-medium">
           Find awesome courses to level up your skills! 🚀
         </p>
+        {/* Usage Indicator for course enrollment */}
+        <div className="mt-4 flex justify-center">
+          <div className="inline-block">
+            <UsageIndicator 
+              feature="courses.enroll" 
+              variant="badge"
+              showLabel={true}
+            />
+          </div>
+        </div>
       </div>
 
       {/* Search and Filters with Gen-Z styling */}
@@ -182,8 +197,15 @@ export default function CourseListing() {
             <div
               key={course._id}
               onClick={() => navigate(`/student/courses/${course._id}`)}
-              className="genz-card hover:scale-105 transition-all duration-300 cursor-pointer overflow-hidden"
+              className="genz-card hover:scale-105 transition-all duration-300 cursor-pointer overflow-hidden relative"
             >
+              {/* Premium Badge for premium courses */}
+              {course.isPremium && !canAccessPremium && (
+                <div className="absolute top-2 right-2 z-10">
+                  <FeatureBadge type="premium" position="inline" />
+                </div>
+              )}
+              
               {/* Gradient Top Bar */}
               <div className="h-2 bg-gradient-to-r from-emerald-500 to-teal-500"></div>
               

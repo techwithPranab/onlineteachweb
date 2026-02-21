@@ -3,6 +3,7 @@ const router = express.Router();
 const { body } = require('express-validator');
 const sessionController = require('../controllers/session.controller');
 const { authenticate, authorize } = require('../middleware/auth');
+const { requireFeature } = require('../middleware/featureAccess');
 const validate = require('../middleware/validate');
 
 // Create session
@@ -27,6 +28,7 @@ router.get('/', authenticate, sessionController.getSessions);
 router.post('/:id/enroll',
   authenticate,
   authorize('student'),
+  requireFeature('live_sessions.join'),
   sessionController.enrollInSession
 );
 

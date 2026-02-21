@@ -7,6 +7,7 @@ import SEOHead from '../../components/SEO/SEOHead';
 import ErrorMessage from '../../components/common/ErrorMessage'
 import EmptyState from '../../components/common/EmptyState'
 import MeritaiButton from '../../components/ui/MeritaiButton'
+import { FeatureButton, UsageIndicator } from '../../components/common'
 
 export default function QuizListing() {
   const [courses, setCourses] = useState([])
@@ -105,6 +106,16 @@ export default function QuizListing() {
           🎯 Available Quizzes
         </h1>
         <p className="text-gray-600 text-lg">Browse and attempt custom quizzes created by our expert tutors! 🚀</p>
+        {/* Usage Indicator for quiz attempts */}
+        <div className="mt-4 flex justify-center">
+          <div className="inline-block">
+            <UsageIndicator 
+              feature="quiz.take" 
+              variant="badge"
+              showLabel={true}
+            />
+          </div>
+        </div>
       </div>
 
       {/* Filters */}
@@ -261,12 +272,15 @@ export default function QuizListing() {
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                       <div className="flex flex-col gap-2">
                         {quiz.canAttempt ? (
-                          <MeritaiButton
+                          <FeatureButton
+                            feature="quiz.take"
                             onClick={() => handleStartQuiz(quiz)}
+                            variant="primary"
+                            size="sm"
                             className="text-xs px-3 py-1"
                           >
                             {quiz.attemptsTaken > 0 ? '🔄 Reattempt' : '🚀 Start'}
-                          </MeritaiButton>
+                          </FeatureButton>
                         ) : (
                           <button
                             disabled

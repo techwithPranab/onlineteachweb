@@ -24,6 +24,75 @@ const subscriptionPlanSchema = new mongoose.Schema({
   features: [{
     type: String
   }],
+  
+  // NEW: Feature-based access control
+  allowedFeatures: [{
+    featureKey: {
+      type: String,
+      required: true
+    },
+    enabled: {
+      type: Boolean,
+      default: true
+    },
+    limit: {
+      type: Number,
+      default: -1 // -1 means unlimited
+    },
+    metadata: {
+      type: mongoose.Schema.Types.Mixed,
+      default: {}
+    }
+  }],
+  
+  // NEW: Usage limits
+  limits: {
+    maxCourses: {
+      type: Number,
+      default: -1 // -1 means unlimited
+    },
+    maxLiveSessions: {
+      type: Number,
+      default: -1 // Per month
+    },
+    maxQuizAttempts: {
+      type: Number,
+      default: -1 // Per day
+    },
+    maxDownloads: {
+      type: Number,
+      default: -1 // Per month
+    },
+    maxStorageGB: {
+      type: Number,
+      default: 1
+    },
+    maxStudentGroups: {
+      type: Number,
+      default: 1
+    }
+  },
+  
+  // NEW: Quality settings
+  quality: {
+    videoQuality: {
+      type: String,
+      enum: ['sd', 'hd', '4k'],
+      default: 'sd'
+    },
+    audioQuality: {
+      type: String,
+      enum: ['standard', 'high'],
+      default: 'standard'
+    },
+    downloadQuality: {
+      type: String,
+      enum: ['standard', 'high'],
+      default: 'standard'
+    }
+  },
+  
+  // Legacy fields (kept for backward compatibility)
   maxCourses: {
     type: Number,
     default: -1 // -1 means unlimited

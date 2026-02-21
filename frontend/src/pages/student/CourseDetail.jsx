@@ -17,6 +17,8 @@ import SEOHead from '@/components/SEO/SEOHead';
 import ErrorMessage from '@/components/common/ErrorMessage'
 import MaterialViewer from '@/components/course/MaterialViewer'
 import Modal from '@/components/common/Modal'
+import { FeatureButton, FeatureGate, FeatureBadge } from '@/components/common'
+import { useFeatureAccess } from '@/hooks/useFeatureAccess'
 
 export default function CourseDetail() {
   const { id } = useParams()

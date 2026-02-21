@@ -99,6 +99,54 @@ const userSchema = new mongoose.Schema({
     ref: 'Subscription'
   },
   
+  // NEW: Active subscription reference (populated for quick access)
+  activeSubscription: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Subscription'
+  },
+  
+  // NEW: Feature usage tracking
+  featureUsage: [{
+    featureKey: {
+      type: String,
+      required: true
+    },
+    usageCount: {
+      type: Number,
+      default: 0
+    },
+    lastUsed: {
+      type: Date
+    },
+    periodStart: {
+      type: Date,
+      default: Date.now
+    },
+    periodEnd: {
+      type: Date
+    }
+  }],
+  
+  // NEW: Manual feature restrictions (admin can restrict specific features)
+  restrictedFeatures: [{
+    featureKey: {
+      type: String,
+      required: true
+    },
+    reason: {
+      type: String,
+      maxlength: 500
+    },
+    restrictedAt: {
+      type: Date,
+      default: Date.now
+    },
+    restrictedBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User'
+    }
+  }],
+  
   // Settings
   notifications: {
     email: { type: Boolean, default: true },

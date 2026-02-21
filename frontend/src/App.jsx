@@ -32,6 +32,7 @@ import CourseDetail from './pages/student/CourseDetail'
 import LiveClassRoom from './pages/student/LiveClassRoom'
 import ProgressReports from './pages/student/ProgressReports'
 import SubscriptionManagement from './pages/student/SubscriptionManagement'
+import MyFeatures from './pages/student/MyFeatures'
 import SessionDetail from './pages/student/SessionDetail'
 import UpcomingSessions from './pages/student/UpcomingSessions'
 import QuizListing from './pages/student/QuizListing'
@@ -68,6 +69,7 @@ import RevenueAnalytics from './pages/admin/RevenueAnalytics'
 import PaymentManagement from './pages/admin/PaymentManagement'
 import SessionManagement from './pages/admin/SessionManagement'
 import AdminSubscriptionManagement from './pages/admin/SubscriptionManagement'
+import FeatureManagement from './pages/admin/FeatureManagement'
 import GenerateOfflinePrompts from './pages/admin/GenerateOfflinePrompts'
 import AdminQuestionBank from './pages/admin/QuestionBank'
 import AdminQuestionImportExport from './pages/admin/QuestionImportExport'
@@ -139,6 +141,7 @@ function App() {
             <Route path="session/:id" element={<LiveClassRoom />} />
             <Route path="progress" element={<ProgressReports />} />
             <Route path="subscription" element={<SubscriptionManagement />} />
+            <Route path="my-features" element={<MyFeatures />} />
             <Route path="profile" element={<ProfileSettings />} />
             <Route path="notifications" element={<NotificationsPage />} />
             {/* Quiz Routes */}
@@ -202,6 +205,7 @@ function App() {
             <Route path="payments" element={<PaymentManagement />} />
             <Route path="sessions" element={<SessionManagement />} />
             <Route path="subscriptions" element={<AdminSubscriptionManagement />} />
+            <Route path="features" element={<FeatureManagement />} />
             <Route path="analytics" element={<RevenueAnalytics />} />
             <Route path="student-performance" element={<StudentPerformanceDashboard />} />
             <Route path="offline-prompts" element={<GenerateOfflinePrompts />} />

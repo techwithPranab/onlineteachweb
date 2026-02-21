@@ -7,10 +7,15 @@ import LoadingSpinner from '@/components/common/LoadingSpinner'
 import SEOHead from '@/components/SEO/SEOHead';
 import ErrorMessage from '@/components/common/ErrorMessage'
 import { UpcomingQuizzesWidget } from '@/components/dashboard'
+import { UpgradePrompt, UsageIndicator } from '@/components/common'
+import { useFeatureUsage } from '@/hooks/useFeatureAccess'
 
 export default function StudentDashboard() {
   const { user } = useAuthStore()
   const queryClient = useQueryClient()
+
+  // Fetch usage data for upgrade prompts
+  const { usageData } = useFeatureUsage()
 
   // Fetch enrolled courses
   const { data: coursesData, isLoading: coursesLoading, error: coursesError } = useQuery(
@@ -97,6 +102,13 @@ export default function StudentDashboard() {
   const averageAccuracy = quizPerformance.averageAccuracy || 0
   const availableCoursesCount = courses.length
 
+  // Check for high usage features
+  const highUsageFeatures = usageData?.filter(u => {
+    if (u.limit === null || u.limit === undefined) return false
+    const percentage = (u.used / u.limit) * 100
+    return percentage >= 80
+  }) || []
+
   return (
     <>
 
@@ -112,6 +124,15 @@ export default function StudentDashboard() {
           Let's make today count! Ready to learn?
         </p>
       </div>
+
+      {/* Upgrade Banner - Show if approaching limits */}
+      {highUsageFeatures.length > 0 && (
+        <UpgradePrompt
+          type="banner"
+          reason={`You're approaching the limit on ${highUsageFeatures.length} feature(s)`}
+          showComparison={false}
+        />
+      )}
 
       {/* Stats Cards with MeriTai styling - Quiz Focused */}
       <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
@@ -182,6 +203,35 @@ export default function StudentDashboard() {
 
       {/* Upcoming Quizzes Widget */}
       <UpcomingQuizzesWidget />
+
+      {/* Usage Statistics - Show top 3 limited features */}
+      {usageData && usageData.length > 0 && (
+        <div className="card">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-0 mb-4 sm:mb-6">
+            <h2 className="text-lg sm:text-xl font-bold text-gray-900">Feature Usage</h2>
+            <Link 
+              to="/student/my-features"
+              className="text-primary-600 hover:text-primary-700 font-medium text-sm flex items-center gap-1 self-start sm:self-auto"
+            >
+              View All Features
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {usageData.slice(0, 3).map((usage) => (
+              <div key={usage.featureKey} className="p-4 border border-gray-200 rounded-lg">
+                <UsageIndicator
+                  feature={usage.featureKey}
+                  variant="bar"
+                  showLabel={true}
+                  showRemaining={true}
+                  size="sm"
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Recent Materials */}
       <div className="card">

@@ -3,6 +3,7 @@ const router = express.Router();
 const { body } = require('express-validator');
 const courseController = require('../controllers/course.controller');
 const { authenticate, authorize } = require('../middleware/auth');
+const { requireFeature } = require('../middleware/featureAccess');
 const validate = require('../middleware/validate');
 
 // Create course - Admin only
@@ -41,9 +42,10 @@ router.get('/grades/:grade/subjects/:subject/courses', authenticate, courseContr
 // Get course by ID - Make it public for course details page
 router.get('/:id', courseController.getCourseById);
 
-// Submit review - Authenticated users
+// Submit review - Authenticated users (requires feature)
 router.post('/:id/review',
   authenticate,
+  requireFeature('courses.enroll'), // Must be enrolled to review
   [
     body('rating').isInt({ min: 1, max: 5 }).withMessage('Rating must be between 1 and 5'),
     body('comment').optional().trim(),

@@ -3,6 +3,7 @@ const router = express.Router();
 const { body, query, param } = require('express-validator');
 const quizController = require('../controllers/quiz.controller');
 const { authenticate, authorize } = require('../middleware/auth');
+const { requireFeature } = require('../middleware/featureAccess');
 const validate = require('../middleware/validate');
 
 // =====================
@@ -125,9 +126,10 @@ router.get('/:id/attempts',
 // STUDENT QUIZ ROUTES
 // =====================
 
-// Start a quiz
+// Start a quiz (requires feature)
 router.post('/:id/start',
   authenticate,
+  requireFeature('quiz.take'),
   [
     param('id').isMongoId().withMessage('Valid quiz ID required'),
     validate

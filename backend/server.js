@@ -35,6 +35,8 @@ const activeQuizRoutes = require('./routes/activeQuiz.routes');
 const studentPerformanceRoutes = require('./routes/studentPerformance.routes');
 const achievementRoutes = require('./routes/achievement.routes');
 const razorpayRoutes = require('./routes/razorpay.routes');
+const featureManagementRoutes = require('./routes/featureManagement.routes');
+const userFeaturesRoutes = require('./routes/userFeatures.routes');
 
 const app = express();
 const server = http.createServer(app);
@@ -93,6 +95,8 @@ app.use('/api/payments/razorpay', razorpayRoutes);
 app.use('/api/live', liveRoutes);
 app.use('/api/reports', reportRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/admin', featureManagementRoutes);
+app.use('/api/users', userFeaturesRoutes);
 app.use('/api/questions', questionRoutes);
 app.use('/api/quizzes', quizRoutes);
 app.use('/api/quizzes', quizAssignmentRoutes); // Quiz assignment routes (merged with quiz routes)

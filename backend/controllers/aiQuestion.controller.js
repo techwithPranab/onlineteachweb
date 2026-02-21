@@ -203,20 +203,30 @@ exports.approveDraft = async (req, res, next) => {
       }
     }
 
-    const result = await AIQuestionGenerationService.approveDraft(
-      req.params.id,
-      req.user._id,
-      edits
-    );
+    try {
+      const result = await AIQuestionGenerationService.approveDraft(
+        req.params.id,
+        req.user._id,
+        edits
+      );
 
-    logger.info(`Draft ${req.params.id} approved by user ${req.user._id}`);
+      logger.info(`Draft ${req.params.id} approved by user ${req.user._id}`);
 
-    res.json({
-      success: true,
-      message: 'Draft approved and question created',
-      draft: result.draft,
-      question: result.question
-    });
+      res.json({
+        success: true,
+        message: 'Draft approved and question created',
+        draft: result.draft,
+        question: result.question
+      });
+    } catch (err) {
+      // If validation failed after edits, return 400 with details
+      if (err.message && err.message.startsWith('Validation failed after edits:')) {
+        const payload = err.message.replace('Validation failed after edits:', '').trim();
+        const errors = payload ? payload.split(',').map(s => s.trim()) : [];
+        return res.status(400).json({ success: false, message: 'Validation failed', errors });
+      }
+      throw err;
+    }
   } catch (error) {
     next(error);
   }
@@ -670,8 +680,13 @@ exports.cleanupOrphanedDrafts = async (req, res, next) => {
 
     // Check each draft's course
     for (const draft of allDrafts) {
-      const course = await Course.findById(draft.courseId);
-      if (!course) {
+      const courseId = draft.questionPayload?.courseId;
+      if (courseId) {
+        const course = await Course.findById(courseId);
+        if (!course) {
+          orphanedDrafts.push(draft._id);
+        }
+      } else {
         orphanedDrafts.push(draft._id);
       }
     }

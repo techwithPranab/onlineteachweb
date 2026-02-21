@@ -3,6 +3,7 @@ const router = express.Router();
 const { body } = require('express-validator');
 const evaluationController = require('../controllers/evaluation.controller');
 const { authenticate, authorize } = require('../middleware/auth');
+const { requireFeature } = require('../middleware/featureAccess');
 const validate = require('../middleware/validate');
 
 // Create evaluation
@@ -20,7 +21,11 @@ router.post('/',
 );
 
 // Get evaluations for student
-router.get('/student/:id', authenticate, evaluationController.getStudentEvaluations);
+router.get('/student/:id', 
+  authenticate, 
+  requireFeature('quiz.feedback'),
+  evaluationController.getStudentEvaluations
+);
 
 // Get evaluations for session
 router.get('/session/:id',

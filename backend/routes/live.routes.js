@@ -3,11 +3,13 @@ const router = express.Router();
 const { body } = require('express-validator');
 const liveController = require('../controllers/live.controller');
 const { authenticate, authorize } = require('../middleware/auth');
+const { requireFeature } = require('../middleware/featureAccess');
 const validate = require('../middleware/validate');
 
 // Generate token
 router.post('/token',
   authenticate,
+  requireFeature('live_sessions.join'),
   [
     body('sessionId').notEmpty().withMessage('Session ID is required'),
     validate

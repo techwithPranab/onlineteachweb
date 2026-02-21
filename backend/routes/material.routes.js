@@ -5,6 +5,7 @@ const multer = require('multer');
 const path = require('path');
 const materialController = require('../controllers/material.controller');
 const { authenticate, authorize } = require('../middleware/auth');
+const { requireFeature } = require('../middleware/featureAccess');
 const validate = require('../middleware/validate');
 
 // Configure multer for file uploads
@@ -86,7 +87,11 @@ router.delete('/:id',
 // Get material previews by course (public)
 router.get('/previews/:courseId', materialController.getMaterialPreviewsByCourse);
 
-// Get materials by course
-router.get('/:courseId', authenticate, materialController.getMaterialsByCourse);
+// Get materials by course (requires download feature for full access)
+router.get('/:courseId',
+  authenticate,
+  requireFeature('materials.download'),
+  materialController.getMaterialsByCourse
+);
 
 module.exports = router;
