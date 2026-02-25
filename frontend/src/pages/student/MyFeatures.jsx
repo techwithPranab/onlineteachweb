@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { useQuery } from 'react-query';
 import { Crown, Star, TrendingUp, Lock, Unlock, Search, Filter } from 'lucide-react';
 import { useSubscriptionFeatures, useFeatureUsage } from '@/hooks/useFeatureAccess';
 import { UsageIndicator, FeatureBadge, UpgradePrompt } from '@/components/common';
@@ -16,24 +15,29 @@ export default function MyFeatures() {
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
 
   // Get subscription features
-  const { 
-    features, 
-    loading: featuresLoading, 
+  const {
+    features,
+    loading: featuresLoading,
     error: featuresError,
-    currentPlan 
+    currentPlan
   } = useSubscriptionFeatures();
 
   // Get usage data
-  const { 
-    usageData, 
-    loading: usageLoading 
+  const {
+    usageData,
+    loading: usageLoading
   } = useFeatureUsage();
 
   if (featuresLoading || usageLoading) return <LoadingSpinner fullScreen />;
   if (featuresError) return <ErrorMessage message={featuresError.message || 'Failed to load features'} />;
 
+  // Normalise: features may come back as an object map { key: featureObj } or an array
+  const featuresArray = Array.isArray(features)
+    ? features
+    : Object.values(features || {});
+
   // Group features by category
-  const featuresByCategory = features.reduce((acc, feature) => {
+  const featuresByCategory = featuresArray.reduce((acc, feature) => {
     const category = feature.category || 'Other';
     if (!acc[category]) acc[category] = [];
     acc[category].push(feature);
@@ -43,27 +47,27 @@ export default function MyFeatures() {
   // Filter features
   const filteredCategories = Object.entries(featuresByCategory).reduce((acc, [category, categoryFeatures]) => {
     const filtered = categoryFeatures.filter(feature => {
-      const matchesSearch = feature.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                          feature.description.toLowerCase().includes(searchTerm.toLowerCase());
+      const matchesSearch =
+        feature.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        (feature.description || '').toLowerCase().includes(searchTerm.toLowerCase());
       const matchesCategory = filterCategory === 'all' || category === filterCategory;
       return matchesSearch && matchesCategory;
     });
-    if (filtered.length > 0) {
-      acc[category] = filtered;
-    }
+    if (filtered.length > 0) acc[category] = filtered;
     return acc;
   }, {});
 
   // Calculate stats
-  const totalFeatures = features.length;
-  const accessibleFeatures = features.filter(f => f.enabled).length;
-  const featuresWithLimits = features.filter(f => f.enabled && f.hasLimit && f.limit !== null).length;
+  const allFeatures = featuresArray;
+  const totalFeatures = allFeatures.length;
+  const accessibleFeatures = allFeatures.filter(f => f.enabled).length;
+  const featuresWithLimits = allFeatures.filter(f => f.enabled && f.hasLimit && f.limit !== null).length;
 
-  // Get features with high usage
-  const highUsageFeatures = usageData.filter(u => {
-    if (u.limit === null) return false;
-    const percentage = (u.used / u.limit) * 100;
-    return percentage >= 80;
+  // Get features with high usage (≥80%)
+  const safeUsageData = usageData || [];
+  const highUsageFeatures = safeUsageData.filter(u => {
+    if (!u.limit) return false;
+    return (u.used / u.limit) * 100 >= 80;
   });
 
   const categoryIcons = {
@@ -90,207 +94,229 @@ export default function MyFeatures() {
       <SEOHead
         title="My Features & Usage"
         description="View your subscription features and usage statistics"
+        noIndex={true}
+        noFollow={true}
       />
 
-      <div className="container-fluid py-4">
-        {/* Header */}
-        <div className="mb-4">
-          <h2 className="mb-1">My Features & Usage</h2>
-          <p className="text-muted mb-0">View your subscription plan and feature usage</p>
-        </div>
+      <div className="min-h-screen bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
 
-        {/* Current Plan Card */}
-        <div className="row mb-4">
-          <div className="col-md-8 mx-auto">
-            <div className="card shadow-sm border-0" style={{
-              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-              color: 'white'
-            }}>
-              <div className="card-body p-4">
-                <div className="d-flex justify-content-between align-items-start mb-3">
+          {/* ── Page Header ──────────────────────────────────────── */}
+          <div className="genz-card mb-4 sm:mb-6 relative overflow-hidden">
+            <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-purple-500 to-indigo-500" />
+            <div className="p-4 sm:p-5 lg:p-6">
+              <h1 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent mb-2">
+                ⚡ My Features &amp; Usage
+              </h1>
+              <p className="text-gray-600 text-sm sm:text-base">
+                View your subscription plan and feature usage
+              </p>
+            </div>
+          </div>
+
+          {/* ── Current Plan Card ─────────────────────────────────── */}
+          <div className="max-w-3xl mx-auto mb-4 sm:mb-6">
+            <div className="rounded-2xl shadow-xl overflow-hidden"
+              style={{ background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' }}>
+              <div className="p-5 sm:p-6 lg:p-8 text-white">
+                {/* Plan name + price row */}
+                <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 mb-5">
                   <div>
-                    <div className="d-flex align-items-center gap-2 mb-2">
-                      <h3 className="mb-0">{currentPlan?.name || 'Free Plan'}</h3>
-                      <FeatureBadge 
+                    <div className="flex flex-wrap items-center gap-2 mb-2">
+                      <h2 className="text-xl sm:text-2xl font-bold">
+                        {currentPlan?.name || 'Free Plan'}
+                      </h2>
+                      <FeatureBadge
                         type={planBadgeType[currentPlan?.name] || 'free'}
                         size="lg"
                       />
                     </div>
-                    <p className="mb-0 opacity-75">
+                    <p className="text-white/75 text-sm sm:text-base">
                       {currentPlan?.description || 'Start with basic features'}
                     </p>
                   </div>
-                  <div className="text-end">
-                    <div className="h2 mb-0">${currentPlan?.price || 0}</div>
-                    <small className="opacity-75">per month</small>
+                  <div className="text-right flex-shrink-0">
+                    <div className="text-3xl sm:text-4xl font-extrabold">
+                      ₹{currentPlan?.price || 0}
+                    </div>
+                    <div className="text-white/75 text-sm">per month</div>
                   </div>
                 </div>
 
-                <div className="row g-3 mt-3">
-                  <div className="col-4">
-                    <div className="text-center">
-                      <div className="h4 mb-1">{accessibleFeatures}</div>
-                      <small className="opacity-75">Active Features</small>
-                    </div>
+                {/* Stats row */}
+                <div className="grid grid-cols-3 gap-3 mb-5">
+                  <div className="text-center">
+                    <div className="text-2xl sm:text-3xl font-bold">{accessibleFeatures}</div>
+                    <div className="text-white/75 text-xs sm:text-sm mt-1">Active Features</div>
                   </div>
-                  <div className="col-4">
-                    <div className="text-center border-start border-end border-white border-opacity-25">
-                      <div className="h4 mb-1">{featuresWithLimits}</div>
-                      <small className="opacity-75">With Limits</small>
-                    </div>
+                  <div className="text-center border-x border-white/25">
+                    <div className="text-2xl sm:text-3xl font-bold">{featuresWithLimits}</div>
+                    <div className="text-white/75 text-xs sm:text-sm mt-1">With Limits</div>
                   </div>
-                  <div className="col-4">
-                    <div className="text-center">
-                      <div className="h4 mb-1">{totalFeatures - accessibleFeatures}</div>
-                      <small className="opacity-75">Locked</small>
-                    </div>
+                  <div className="text-center">
+                    <div className="text-2xl sm:text-3xl font-bold">{totalFeatures - accessibleFeatures}</div>
+                    <div className="text-white/75 text-xs sm:text-sm mt-1">Locked</div>
                   </div>
                 </div>
 
-                <div className="d-flex gap-2 mt-4">
-                  <Link to="/student/subscription" className="btn btn-light flex-grow-1">
+                {/* CTA buttons */}
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <Link
+                    to="/student/subscription"
+                    className="flex-1 text-center py-2.5 sm:py-3 rounded-xl bg-white text-purple-700 font-bold text-sm sm:text-base hover:bg-white/90 transition-all hover:scale-105 min-h-[44px] flex items-center justify-center"
+                  >
                     Manage Subscription
                   </Link>
-                  <button 
-                    className="btn btn-warning flex-grow-1"
+                  <button
+                    className="flex-1 py-2.5 sm:py-3 rounded-xl bg-amber-400 text-gray-900 font-bold text-sm sm:text-base hover:bg-amber-300 transition-all hover:scale-105 flex items-center justify-center gap-2 min-h-[44px]"
                     onClick={() => setShowUpgradeModal(true)}
                   >
-                    <Crown size={16} className="me-2" />
+                    <Crown size={16} />
                     Upgrade Plan
                   </button>
                 </div>
               </div>
             </div>
           </div>
-        </div>
 
-        {/* High Usage Alert */}
-        {highUsageFeatures.length > 0 && (
-          <div className="alert alert-warning d-flex align-items-start mb-4">
-            <TrendingUp size={20} className="me-2 mt-1 flex-shrink-0" />
-            <div>
-              <strong>Usage Alert:</strong> You're approaching the limit on {highUsageFeatures.length} feature(s).
-              Consider upgrading to get unlimited access.
+          {/* ── High Usage Alert ──────────────────────────────────── */}
+          {highUsageFeatures.length > 0 && (
+            <div className="flex items-start gap-3 bg-amber-50 border-2 border-amber-300 rounded-2xl p-4 mb-4 sm:mb-6">
+              <TrendingUp size={20} className="text-amber-600 flex-shrink-0 mt-0.5" />
+              <p className="text-amber-800 text-sm sm:text-base">
+                <span className="font-bold">Usage Alert: </span>
+                You're approaching the limit on {highUsageFeatures.length} feature(s).
+                Consider upgrading to get unlimited access.
+              </p>
             </div>
-          </div>
-        )}
+          )}
 
-        {/* Usage Overview Section */}
-        {usageData.length > 0 && (
-          <div className="mb-4">
-            <h4 className="mb-3">Usage Overview</h4>
-            <div className="row g-3">
-              {usageData.slice(0, 6).map(usage => (
-                <div key={usage.featureKey} className="col-md-6 col-lg-4">
-                  <div className="card h-100">
-                    <div className="card-body">
-                      <UsageIndicator
-                        feature={usage.featureKey}
-                        variant="bar"
-                        showLabel={true}
-                        showRemaining={true}
-                        showResetDate={true}
-                      />
-                    </div>
+          {/* ── Usage Overview ────────────────────────────────────── */}
+          {safeUsageData.length > 0 && (
+            <div className="mb-4 sm:mb-6">
+              <h2 className="text-lg sm:text-xl font-bold text-gray-800 mb-3 sm:mb-4">
+                📊 Usage Overview
+              </h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+                {safeUsageData.slice(0, 6).map(usage => (
+                  <div key={usage.featureKey} className="genz-card p-4 hover:shadow-md transition-all">
+                    <UsageIndicator
+                      feature={usage.featureKey}
+                      variant="bar"
+                      showLabel={true}
+                      showRemaining={true}
+                      showResetDate={true}
+                    />
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
-          </div>
-        )}
+          )}
 
-        {/* Search and Filter */}
-        <div className="d-flex gap-2 mb-3">
-          <div className="input-group flex-grow-1" style={{ maxWidth: '400px' }}>
-            <span className="input-group-text">
-              <Search size={16} />
-            </span>
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Search features..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
+          {/* ── Search and Filter ─────────────────────────────────── */}
+          <div className="flex flex-col sm:flex-row gap-3 mb-4 sm:mb-6">
+            <div className="relative flex-1 max-w-full sm:max-w-sm">
+              <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
+              <input
+                type="text"
+                className="w-full pl-9 pr-4 py-2.5 rounded-xl border-2 border-gray-200 bg-white focus:outline-none focus:border-purple-400 text-sm transition-colors min-h-[44px]"
+                placeholder="Search features..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+            </div>
+            <select
+              className="w-full sm:w-48 px-4 py-2.5 rounded-xl border-2 border-gray-200 bg-white focus:outline-none focus:border-purple-400 text-sm transition-colors min-h-[44px]"
+              value={filterCategory}
+              onChange={(e) => setFilterCategory(e.target.value)}
+            >
+              <option value="all">All Categories</option>
+              {Object.keys(featuresByCategory).map(cat => (
+                <option key={cat} value={cat}>{cat}</option>
+              ))}
+            </select>
           </div>
-          <select
-            className="form-select"
-            style={{ maxWidth: '200px' }}
-            value={filterCategory}
-            onChange={(e) => setFilterCategory(e.target.value)}
-          >
-            <option value="all">All Categories</option>
-            {Object.keys(featuresByCategory).map(cat => (
-              <option key={cat} value={cat}>{cat}</option>
-            ))}
-          </select>
-        </div>
 
-        {/* Features by Category */}
-        <div className="row">
-          <div className="col-12">
+          {/* ── Features by Category ──────────────────────────────── */}
+          <div className="space-y-6 sm:space-y-8">
             {Object.entries(filteredCategories).map(([category, categoryFeatures]) => (
-              <div key={category} className="mb-4">
-                <h5 className="mb-3 d-flex align-items-center">
-                  <span className="me-2">{categoryIcons[category] || '📁'}</span>
-                  {category}
-                  <span className="badge bg-secondary ms-2">{categoryFeatures.length}</span>
-                </h5>
-                <div className="row g-3">
+              <div key={category}>
+                {/* Category heading */}
+                <div className="flex items-center gap-2 mb-3 sm:mb-4">
+                  <span className="text-xl">{categoryIcons[category] || '📁'}</span>
+                  <h3 className="text-base sm:text-lg font-bold text-gray-800">{category}</h3>
+                  <span className="ml-1 px-2 py-0.5 bg-gray-200 text-gray-600 text-xs font-bold rounded-full">
+                    {categoryFeatures.length}
+                  </span>
+                </div>
+
+                {/* Feature cards */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
                   {categoryFeatures.map(feature => {
-                    const usage = usageData.find(u => u.featureKey === feature.key);
+                    const usage = safeUsageData.find(u => u.featureKey === feature.key);
                     const isAccessible = feature.enabled;
-                    
+
                     return (
-                      <div key={feature.key} className="col-md-6 col-lg-4">
-                        <div className={`card h-100 ${!isAccessible ? 'border-secondary' : ''}`}>
-                          <div className="card-body">
-                            <div className="d-flex justify-content-between align-items-start mb-2">
-                              <h6 className="mb-0">{feature.name}</h6>
-                              {isAccessible ? (
-                                <Unlock size={18} className="text-success" />
-                              ) : (
-                                <Lock size={18} className="text-secondary" />
-                              )}
-                            </div>
-                            <p className="text-muted small mb-3">{feature.description}</p>
+                      <div
+                        key={feature.key}
+                        className={`genz-card p-4 flex flex-col gap-3 hover:shadow-md transition-all ${
+                          !isAccessible ? 'opacity-70 border-dashed' : ''
+                        }`}
+                      >
+                        {/* Feature header */}
+                        <div className="flex items-start justify-between gap-2">
+                          <h4 className="text-sm sm:text-base font-semibold text-gray-800 leading-tight">
+                            {feature.name}
+                          </h4>
+                          {isAccessible ? (
+                            <Unlock size={18} className="text-emerald-500 flex-shrink-0" />
+                          ) : (
+                            <Lock size={18} className="text-gray-400 flex-shrink-0" />
+                          )}
+                        </div>
 
-                            {isAccessible && feature.hasLimit && (
-                              <div className="mb-2">
-                                {feature.limit === null ? (
-                                  <span className="badge bg-success">
-                                    <Star size={12} className="me-1" />
-                                    Unlimited
-                                  </span>
-                                ) : usage ? (
-                                  <UsageIndicator
-                                    feature={feature.key}
-                                    variant="badge"
-                                    showPercentage={false}
-                                  />
-                                ) : (
-                                  <span className="badge bg-primary">
-                                    Limit: {feature.limit}
-                                  </span>
-                                )}
-                              </div>
-                            )}
+                        {/* Description */}
+                        <p className="text-gray-500 text-xs sm:text-sm leading-relaxed flex-1">
+                          {feature.description}
+                        </p>
 
-                            {isAccessible && !feature.hasLimit && (
-                              <span className="badge bg-info">Always Available</span>
-                            )}
-
-                            {!isAccessible && (
-                              <button
-                                className="btn btn-sm btn-outline-warning w-100"
-                                onClick={() => setShowUpgradeModal(true)}
-                              >
-                                <Crown size={14} className="me-1" />
-                                Upgrade to Unlock
-                              </button>
+                        {/* Limit / badge row */}
+                        {isAccessible && feature.hasLimit && (
+                          <div>
+                            {feature.limit === null ? (
+                              <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-emerald-100 text-emerald-700 text-xs font-bold rounded-full">
+                                <Star size={11} />
+                                Unlimited
+                              </span>
+                            ) : usage ? (
+                              <UsageIndicator
+                                feature={feature.key}
+                                variant="badge"
+                                showPercentage={false}
+                              />
+                            ) : (
+                              <span className="inline-block px-2.5 py-1 bg-indigo-100 text-indigo-700 text-xs font-bold rounded-full">
+                                Limit: {feature.limit}
+                              </span>
                             )}
                           </div>
-                        </div>
+                        )}
+
+                        {isAccessible && !feature.hasLimit && (
+                          <span className="inline-block px-2.5 py-1 bg-sky-100 text-sky-700 text-xs font-bold rounded-full">
+                            Always Available
+                          </span>
+                        )}
+
+                        {!isAccessible && (
+                          <button
+                            className="w-full py-2 rounded-xl border-2 border-amber-400 text-amber-600 font-bold text-xs sm:text-sm hover:bg-amber-50 hover:scale-105 transition-all flex items-center justify-center gap-1.5 min-h-[40px]"
+                            onClick={() => setShowUpgradeModal(true)}
+                          >
+                            <Crown size={14} />
+                            Upgrade to Unlock
+                          </button>
+                        )}
                       </div>
                     );
                   })}
@@ -298,19 +324,20 @@ export default function MyFeatures() {
               </div>
             ))}
           </div>
-        </div>
 
-        {/* No Results */}
-        {Object.keys(filteredCategories).length === 0 && (
-          <div className="text-center py-5">
-            <Filter size={48} className="text-muted mb-3" />
-            <h5 className="text-muted">No features found</h5>
-            <p className="text-muted">Try adjusting your search or filter</p>
-          </div>
-        )}
+          {/* ── No Results ────────────────────────────────────────── */}
+          {Object.keys(filteredCategories).length === 0 && (
+            <div className="text-center py-12 sm:py-16">
+              <Filter size={48} className="text-gray-300 mx-auto mb-4" />
+              <h3 className="text-lg font-semibold text-gray-500 mb-2">No features found</h3>
+              <p className="text-gray-400 text-sm">Try adjusting your search or filter</p>
+            </div>
+          )}
+
+        </div>
       </div>
 
-      {/* Upgrade Modal */}
+      {/* ── Upgrade Modal ─────────────────────────────────────────── */}
       <UpgradePrompt
         show={showUpgradeModal}
         type="modal"

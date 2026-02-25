@@ -10,6 +10,7 @@ import ErrorMessage from '@/components/common/ErrorMessage'
 import { algorithmQuizService } from '@/services/apiServices'
 import { Play, RotateCcw, Clock, Target, BookOpen, Trash2, AlertCircle, UserCheck } from 'lucide-react'
 import MeritaiCard from '@/components/ui/MeritaiCard'
+import { UsageIndicator } from '@/components/common'
 
 /**
  * Active Quiz Management Page
@@ -409,6 +410,14 @@ export default function ActiveQuizzes() {
           <p className="text-base sm:text-lg text-gray-600 font-medium px-4">
             Let's ace those quizzes! 🚀 Start when you're ready!
           </p>
+          {/* Remaining attempts indicator */}
+          <div className="mt-4 flex justify-center">
+            <UsageIndicator
+              feature="quiz.take"
+              variant="badge"
+              showLabel={true}
+            />
+          </div>
         </div>
 
         {/* Info Alert */}
@@ -452,11 +461,22 @@ export default function ActiveQuizzes() {
           pagination={pagination}
           onPageChange={setCurrentPage}
         />
+
+        {/* Usage Indicator - Show remaining attempts for the active quiz */}
+        {quizzes.length > 0 && (
+          <div className="mt-6">
+            <UsageIndicator
+              quiz={quizzes.find(q => q.status === 'in-progress')}
+              onLoadQuizzes={loadActiveQuizzes}
+            />
+          </div>
+        )}
       </div>
     </div>
 
 
-    </>)
+    </>
+  )
 }
 
 /**

@@ -119,6 +119,9 @@ exports.createCheckout = async (req, res, next) => {
       autoRenew: false
     });
 
+    // Update user.activeSubscription so header/features reflect the new plan
+    await User.findByIdAndUpdate(req.user._id, { activeSubscription: subscription._id });
+
     res.status(201).json({
       success: true,
       subscription,
@@ -179,6 +182,9 @@ exports.cancelSubscription = async (req, res, next) => {
     subscription.cancelReason = reason;
     subscription.autoRenew = false;
     await subscription.save();
+
+    // Clear user.activeSubscription so header shows Free plan
+    await User.findByIdAndUpdate(req.user._id, { activeSubscription: null });
     
     res.json({
       success: true,
@@ -243,6 +249,9 @@ exports.downgradeToFree = async (req, res, next) => {
       endDate,
       autoRenew: false
     });
+
+    // Update user.activeSubscription so header/features reflect the free plan
+    await User.findByIdAndUpdate(req.user._id, { activeSubscription: newSub._id });
 
     res.json({ success: true, subscription: newSub });
   } catch (error) {

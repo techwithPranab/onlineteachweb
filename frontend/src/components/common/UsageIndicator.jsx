@@ -73,8 +73,18 @@ const UsageIndicator = ({
     return 'success';
   };
 
-  const color = getColor(usage.percentage);
-  const percentage = Math.min(usage.percentage, 100);
+  // sanitize values to avoid NaN or Infinity from backend
+  const safeLimit = Number.isFinite(usage.limit) ? usage.limit : 0;
+  const safeUsageCount = Number.isFinite(usage.usageCount) ? usage.usageCount : 0;
+  let safePercentage = Number.isFinite(usage.percentage)
+    ? usage.percentage
+    : safeLimit > 0
+    ? (safeUsageCount / safeLimit) * 100
+    : 0;
+  if (!Number.isFinite(safePercentage)) safePercentage = 0;
+  const percentage = Math.min(safePercentage, 100);
+  const remaining = safeLimit - safeUsageCount;
+  const color = getColor(percentage);
 
   // Format reset date
   const formatResetDate = (date) => {
@@ -112,19 +122,19 @@ const UsageIndicator = ({
             style={{ width: `${percentage}%` }}
             aria-valuenow={usage.usageCount}
             aria-valuemin="0"
-            aria-valuemax={usage.limit}
+            aria-valuemax={safeLimit}
           ></div>
         </div>
 
         <div className="usage-footer">
           {showRemaining && (
             <small className="text-muted">
-              {usage.remaining > 0 ? (
-                <strong className={`text-${color}`}>{usage.remaining} remaining</strong>
+              {remaining > 0 ? (
+                <strong className={`text-${color}`}>{remaining} remaining</strong>
               ) : (
                 <strong className="text-danger">Limit reached</strong>
               )}
-              {' of '}{usage.limit} used
+              {' of '}{safeLimit} used
             </small>
           )}
           {showResetDate && usage.resetDate && (
@@ -266,8 +276,8 @@ const UsageIndicator = ({
     return (
       <span className={`badge bg-${color} usage-badge ${className}`}>
         {showIcon && <span>📊</span>}
-        {showRemaining && `${usage.remaining} left`}
-        {showPercentage && !showRemaining && `${Math.round(percentage)}%`}
+        {showRemaining && `${remaining} left`}
+         {showPercentage && !showRemaining && `${Math.round(percentage)}%`}
       </span>
     );
   }
@@ -277,10 +287,10 @@ const UsageIndicator = ({
     <span className={`usage-indicator usage-inline text-${color} ${className}`}>
       {showIcon && <span className="usage-icon">📊</span>}
       {showRemaining && (
-        <strong>{usage.remaining}</strong>
+        <strong>{remaining}</strong>
       )}
       {showRemaining && ' of '}
-      {usage.limit}
+      {safeLimit}
       {showPercentage && ` (${Math.round(percentage)}%)`}
     </span>
   );

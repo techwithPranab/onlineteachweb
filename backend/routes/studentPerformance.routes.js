@@ -31,6 +31,14 @@ router.get('/', authenticate, async (req, res) => {
       });
     }
     
+    // Log for debugging
+    console.log('Student Performance Retrieved:', {
+      studentId: userId,
+      hasData: !!performance,
+      subjectPerformanceKeys: performance.subjectPerformance ? Object.keys(performance.subjectPerformance) : [],
+      subjectCount: performance.subjectPerformance ? Object.keys(performance.subjectPerformance).length : 0
+    });
+    
     res.json({
       success: true,
       data: performance

@@ -194,6 +194,9 @@ exports.verifyPayment = async (req, res, next) => {
       }
     });
 
+    // ── CRITICAL: update user.activeSubscription so header reflects new plan ──
+    await User.findByIdAndUpdate(req.user._id, { activeSubscription: subscription._id });
+
     res.status(200).json({
       success: true,
       message: 'Payment verified successfully',

@@ -6,6 +6,7 @@ import LoadingSpinner from '@/components/common/LoadingSpinner'
 import SEOHead from '@/components/SEO/SEOHead';
 import ErrorMessage from '@/components/common/ErrorMessage'
 import { BookOpen, Clock, Target, AlertCircle, CheckCircle, ArrowRight, Layers } from 'lucide-react'
+import { UsageIndicator } from '@/components/common'
 
 /**
  * Quiz Setup Page
@@ -333,6 +334,8 @@ export default function QuizSetup() {
             </p>
           </div>
         )}
+
+        <UsageIndicator feature="quiz.take" variant="badge" showLabel={true} />
 
         {showCourseSelection ? (
           /* Subject & Course Selection Step */

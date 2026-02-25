@@ -16,7 +16,7 @@ export default function StudentDashboard() {
 
   // Fetch usage data for upgrade prompts
   const { usageData } = useFeatureUsage()
-
+  console.log('[StudentDashboard] Usage Data:', usageData);
   // Fetch enrolled courses
   const { data: coursesData, isLoading: coursesLoading, error: coursesError } = useQuery(
     ['studentCourses', user?._id],

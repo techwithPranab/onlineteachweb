@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { useQuery } from 'react-query';
 import featureService from '../services/featureService';
 
 /**
@@ -116,6 +117,7 @@ export const useUserFeatures = () => {
 export const useFeatureUsage = (featureKey = null) => {
   const [state, setState] = useState({
     usage: featureKey ? null : [],
+    usageData: featureKey ? null : [], // alias for backward compatibility
     loading: true,
     error: null
   });
@@ -128,14 +130,17 @@ export const useFeatureUsage = (featureKey = null) => {
         ? await featureService.getSpecificFeatureUsage(featureKey)
         : await featureService.getFeatureUsage();
 
+      const data = result.data || (featureKey ? null : []);
       setState({
-        usage: result.data || (featureKey ? null : []),
+        usage: data,
+        usageData: data, // alias for backward compatibility
         loading: false,
         error: null
       });
     } catch (error) {
       setState({
         usage: featureKey ? null : [],
+        usageData: featureKey ? null : [], // alias for backward compatibility
         loading: false,
         error: error.response?.data?.message || 'Failed to fetch usage'
       });
@@ -259,44 +264,23 @@ export const useHasAllFeatures = (featureKeys = []) => {
  * @returns {Object} - { plan, features, subscription, loading, error, refetch }
  */
 export const useSubscriptionFeatures = () => {
-  const [state, setState] = useState({
-    plan: null,
-    features: {},
-    subscription: null,
-    loading: true,
-    error: null
-  });
-
-  const fetchSubscriptionFeatures = useCallback(async () => {
-    setState(prev => ({ ...prev, loading: true, error: null }));
-
-    try {
-      const result = await featureService.getSubscriptionFeatures();
-      setState({
-        plan: result.data?.plan || null,
-        features: result.data?.features || {},
-        subscription: result.data?.subscription || null,
-        loading: false,
-        error: null
-      });
-    } catch (error) {
-      setState({
-        plan: null,
-        features: {},
-        subscription: null,
-        loading: false,
-        error: error.response?.data?.message || 'Failed to fetch subscription features'
-      });
+  const { data, isLoading, error, refetch } = useQuery(
+    'subscriptionFeatures',
+    () => featureService.getSubscriptionFeatures(),
+    {
+      refetchOnMount: true,
+      staleTime: 0,          // always re-fetch when invalidated
+      retry: 1,
     }
-  }, []);
-
-  useEffect(() => {
-    fetchSubscriptionFeatures();
-  }, [fetchSubscriptionFeatures]);
+  );
 
   return {
-    ...state,
-    refetch: fetchSubscriptionFeatures
+    plan: data?.plan || null,
+    features: data?.features || {},
+    subscription: data?.subscription || null,
+    loading: isLoading,
+    error: error?.response?.data?.message || (error ? 'Failed to fetch subscription features' : null),
+    refetch,
   };
 };
 

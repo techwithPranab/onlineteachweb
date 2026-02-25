@@ -37,7 +37,41 @@ exports.register = async (req, res, next) => {
     }
     
     const user = await User.create(userData);
-    
+
+    // If student, assign default free subscription
+    if (user.role === 'student') {
+      const { SubscriptionPlan, Subscription } = require('../models/Subscription.model');
+
+      // find or create free plan
+      let freePlan = await SubscriptionPlan.findOne({ name: 'Free' });
+      if (!freePlan) {
+        freePlan = await SubscriptionPlan.create({
+          name: 'Free',
+          description: 'Free plan with limited features',
+          price: 0,
+          interval: 'month',
+          features: [],
+          allowedFeatures: [],
+          limits: {},
+          quality: {}
+        });
+      }
+
+      // create subscription record
+      const subscription = await Subscription.create({
+        user: user._id,
+        plan: freePlan._id,
+        status: 'active',
+        startDate: new Date(),
+        endDate: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000), // 1 year free
+        autoRenew: false
+      });
+
+      user.subscription = subscription._id;
+      user.activeSubscription = subscription._id;
+      await user.save();
+    }
+
     // Generate tokens
     const token = generateToken(user._id);
     const refreshToken = generateRefreshToken(user._id);

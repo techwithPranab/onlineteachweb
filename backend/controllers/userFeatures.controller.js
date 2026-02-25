@@ -1,5 +1,6 @@
 const featureAccessService = require('../services/featureAccess.service');
 const User = require('../models/User.model');
+const { SubscriptionPlan } = require('../models/Subscription.model');
 const logger = require('../utils/logger');
 
 // @desc    Get current user's accessible features
@@ -49,11 +50,35 @@ exports.getFeatureUsage = async (req, res, next) => {
     });
 
     if (!user.activeSubscription) {
+      // return a default free plan so header can display something
+      let freePlan = await SubscriptionPlan.findOne({ name: 'Free' });
+      if (!freePlan) {
+        freePlan = await SubscriptionPlan.create({
+          name: 'Free',
+          description: 'Free plan with limited features',
+          price: 0,
+          interval: 'month',
+          features: [],
+          allowedFeatures: [],
+          limits: {},
+          quality: {}
+        });
+      }
+
       return res.json({
         success: true,
-        usage: [],
-        plan: null,
-        hasActiveSubscription: false
+        hasSubscription: false,
+        subscription: null,
+        plan: {
+          id: freePlan._id,
+          name: freePlan.name,
+          description: freePlan.description,
+          price: freePlan.price,
+          currency: freePlan.currency,
+          limits: freePlan.limits,
+          quality: freePlan.quality
+        },
+        features: {}
       });
     }
 
@@ -149,10 +174,35 @@ exports.getSubscriptionFeatures = async (req, res, next) => {
     });
 
     if (!user.activeSubscription) {
+      // return a default free plan so header can display something
+      let freePlan = await SubscriptionPlan.findOne({ name: 'Free' });
+      if (!freePlan) {
+        freePlan = await SubscriptionPlan.create({
+          name: 'Free',
+          description: 'Free plan with limited features',
+          price: 0,
+          interval: 'month',
+          features: [],
+          allowedFeatures: [],
+          limits: {},
+          quality: {}
+        });
+      }
+
       return res.json({
         success: true,
         hasSubscription: false,
-        message: 'No active subscription'
+        subscription: null,
+        plan: {
+          id: freePlan._id,
+          name: freePlan.name,
+          description: freePlan.description,
+          price: freePlan.price,
+          currency: freePlan.currency,
+          limits: freePlan.limits,
+          quality: freePlan.quality
+        },
+        features: {}
       });
     }
 

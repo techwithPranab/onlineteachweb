@@ -16,11 +16,13 @@ export default function SubscriptionManagement() {
   const [showCancelDialog, setShowCancelDialog] = useState(false)
   const [selectedPlan, setSelectedPlan] = useState(null)
   const [billing, setBilling] = useState('monthly') // 'monthly' | 'annually'
+  const [successMsg, setSuccessMsg] = useState('')
 
   // Subscription status
   const { data: statusData, isLoading: statusLoading, error: statusError } = useQuery(
     'subscriptionStatus',
-    subscriptionService.getStatus
+    subscriptionService.getStatus,
+    { refetchOnMount: true, staleTime: 0 }
   )
 
   // Public plans
@@ -43,6 +45,7 @@ export default function SubscriptionManagement() {
     {
       onSuccess: () => {
         queryClient.invalidateQueries('subscriptionStatus')
+        queryClient.invalidateQueries('subscriptionFeatures')
       },
     }
   )
@@ -50,6 +53,7 @@ export default function SubscriptionManagement() {
   const downgradeMutation = useMutation(() => subscriptionService.downgradeToFree(), {
     onSuccess: () => {
       queryClient.invalidateQueries('subscriptionStatus')
+      queryClient.invalidateQueries('subscriptionFeatures')
     }
   })
 
@@ -86,7 +90,9 @@ export default function SubscriptionManagement() {
     }
   ]
 
-  const currentSubscription = statusData?.data
+  // Backend returns { success, subscription, plan } - not nested under .data
+  const currentSubscription = statusData?.subscription || null
+  const isCurrentFree = !currentSubscription || /free/i.test(currentSubscription.plan?.name || '')
 
   const handleUpgrade = (plan) => {
     setSelectedPlan(plan)
@@ -101,11 +107,12 @@ export default function SubscriptionManagement() {
   const handlePaymentSuccess = (subscription) => {
     queryClient.invalidateQueries('subscriptionStatus')
     queryClient.invalidateQueries('billingHistory')
+    queryClient.invalidateQueries('subscriptionFeatures')
     setShowUpgradeModal(false)
     setSelectedPlan(null)
     
-    // Show success message
-    alert('🎉 Subscription activated successfully!')
+    setSuccessMsg('Subscription activated successfully! Your plan has been updated.')
+    setTimeout(() => setSuccessMsg(''), 6000)
   }
 
   if (isLoading) return <LoadingSpinner fullScreen />
@@ -129,8 +136,16 @@ export default function SubscriptionManagement() {
         </div>
       </div>
 
+      {/* Success Banner */}
+      {successMsg && (
+        <div className="mb-4 flex items-center gap-3 bg-gradient-to-r from-emerald-50 to-teal-50 border-2 border-emerald-400 rounded-2xl px-5 py-4 shadow">
+          <CheckCircle className="w-6 h-6 text-emerald-500 flex-shrink-0" />
+          <p className="text-emerald-800 font-semibold text-sm">{successMsg}</p>
+        </div>
+      )}
+
       {/* Current Subscription */}
-      {currentSubscription && (
+      {currentSubscription ? (
         <div className="genz-card mb-4 sm:mb-6 relative overflow-hidden">
           <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-green-500 via-emerald-500 to-teal-500"></div>
           <div className="p-4 sm:p-5 lg:p-6">
@@ -166,8 +181,9 @@ export default function SubscriptionManagement() {
               <div className="genz-card p-3 sm:p-4 hover:scale-105 transition-all">
                 <p className="text-xs sm:text-sm text-gray-500 font-medium mb-1">📅 Next Billing Date</p>
                 <p className="text-sm sm:text-base font-bold text-gray-900">
-                  {currentSubscription.currentPeriodEnd
-                    ? new Date(currentSubscription.currentPeriodEnd).toLocaleDateString()
+                  {(currentSubscription.currentPeriodEnd || currentSubscription.endDate)
+                    ? new Date(currentSubscription.currentPeriodEnd || currentSubscription.endDate)
+                        .toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })
                     : 'N/A'}
                 </p>
               </div>
@@ -197,13 +213,19 @@ export default function SubscriptionManagement() {
             </div>
           </div>
         </div>
+      ) : (
+        <div className="genz-card mb-4 sm:mb-6 p-5 border-2 border-dashed border-emerald-300 text-center">
+          <p className="text-2xl mb-2">👑</p>
+          <h2 className="text-lg font-bold text-gray-800 mb-1">No Active Subscription</h2>
+          <p className="text-gray-500 text-sm">You are on the Free plan. Subscribe to unlock all features.</p>
+        </div>
       )}
 
       {/* Available Plans */}
       <div className="mb-4 sm:mb-6">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 sm:mb-6 gap-3">
           <h2 className="text-lg sm:text-xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
-            {currentSubscription ? '🚀 Upgrade Your Plan' : '🎯 Choose a Plan'}
+            {currentSubscription && !isCurrentFree ? 'Change Your Plan' : 'Choose a Plan'}
           </h2>
 
           {/* Billing toggle */}
@@ -237,7 +259,14 @@ export default function SubscriptionManagement() {
 
         <div className="grid grid-cols-1 gap-4 sm:gap-6">
           {plans.map((plan) => {
-            const isCurrent = currentSubscription?.plan?._id?.toString() === (plan.docId?.toString() || plan.id)
+                const currentPlanId = currentSubscription?.plan?._id?.toString()
+                const currentPlanName = (currentSubscription?.plan?.name || '').toLowerCase()
+                const isActive = currentSubscription?.status === 'active'
+                // Match by ID first; fall back to name-based match (handles free plan)
+                const isCurrent = isActive && (
+                  (plan.docId && currentPlanId && currentPlanId === plan.docId.toString()) ||
+                  (!plan.docId && currentPlanName && currentPlanName.includes(plan.name.toLowerCase()))
+                )
             return (
               <div
                 key={plan.id}
@@ -272,22 +301,28 @@ export default function SubscriptionManagement() {
                   </ul>
 
                   {isCurrent ? (
-                    <MeritaiButton disabled className="w-full text-sm sm:text-base py-2 sm:py-3">
-                      ✅ Current Plan
+                    <MeritaiButton disabled className="w-full text-sm sm:text-base py-2 sm:py-3 opacity-70 cursor-not-allowed">
+                      Current Plan (Active)
                     </MeritaiButton>
                   ) : plan.price === 0 ? (
-                    <button
-                      onClick={() => handleUpgrade(plan)}
-                      className="genz-btn-secondary w-full text-sm sm:text-base py-2 sm:py-3 hover:scale-105 transition-all"
-                    >
-                      🔄 Switch to Free
-                    </button>
+                    currentSubscription && !isCurrentFree ? (
+                      <button
+                        onClick={() => handleUpgrade(plan)}
+                        className="genz-btn-secondary w-full text-sm sm:text-base py-2 sm:py-3 hover:scale-105 transition-all"
+                      >
+                        Switch to Free
+                      </button>
+                    ) : (
+                      <MeritaiButton disabled className="w-full text-sm sm:text-base py-2 sm:py-3 opacity-70 cursor-not-allowed">
+                        Current Plan (Active)
+                      </MeritaiButton>
+                    )
                   ) : (
                     <MeritaiButton
                       onClick={() => handleUpgrade(plan)}
                       className="w-full text-sm sm:text-base py-2 sm:py-3 hover:scale-105 transition-all"
                     >
-                      {currentSubscription ? '🚀 Upgrade' : '💎 Subscribe'}
+                      {currentSubscription && !isCurrentFree ? 'Switch Plan' : 'Subscribe Now'}
                     </MeritaiButton>
                   )}
                 </div>
