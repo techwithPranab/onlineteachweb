@@ -247,7 +247,13 @@ exports.getAllCoursesForAdmin = async (req, res, next) => {
     if (grade) query.grade = parseInt(grade);
     if (subject) query.subject = new RegExp(subject, 'i');
     if (search) {
-      query.$text = { $search: search };
+      // Use regex search for more flexible matching (same as getCourses)
+      const regex = new RegExp(search, 'i');
+      query.$or = [
+        { title: regex },
+        { description: regex },
+        { subject: regex }
+      ];
     }
 
     const skip = (parseInt(page) - 1) * parseInt(limit);

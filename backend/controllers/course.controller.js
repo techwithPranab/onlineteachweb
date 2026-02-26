@@ -66,7 +66,14 @@ exports.getCourses = async (req, res, next) => {
     if (subject) query.subject = new RegExp(subject, 'i');
     if (status) query.status = status;
     if (search) {
-      query.$text = { $search: search };
+      // use regex search for more flexible matching (fallback to text index if available)
+      // this allows partial/substring matches which users expect from a search box
+      const regex = new RegExp(search, 'i');
+      query.$or = [
+        { title: regex },
+        { description: regex },
+        { subject: regex }
+      ];
     }
 
     const skip = (parseInt(page) - 1) * parseInt(limit);
@@ -161,7 +168,12 @@ exports.getPublicCourses = async (req, res, next) => {
     if (grade) query.grade = parseInt(grade);
     if (subject) query.subject = new RegExp(subject, 'i');
     if (search) {
-      query.$text = { $search: search };
+      const regex = new RegExp(search, 'i');
+      query.$or = [
+        { title: regex },
+        { description: regex },
+        { subject: regex }
+      ];
     }
 
     const skip = (parseInt(page) - 1) * parseInt(limit);
@@ -242,8 +254,7 @@ exports.getPublicCourses = async (req, res, next) => {
 exports.getCourseById = async (req, res, next) => {
   try {
     const course = await Course.findById(req.params.id)
-      .populate('createdBy', 'name avatar bio')
-      .populate('reviews.student', 'name avatar');
+      .populate('createdBy', 'name avatar bio');
     
     if (!course) {
       return res.status(404).json({
@@ -368,62 +379,15 @@ exports.deleteCourse = async (req, res, next) => {
   }
 };
 
-// @desc    Submit course review
+// @desc    Submit course review (DEPRECATED - Use /api/reviews endpoint)
 // @route   POST /api/courses/:id/review
 // @access  Private (Student only)
 exports.submitReview = async (req, res, next) => {
   try {
-    const { rating, comment } = req.body;
-    
-    if (!rating || rating < 1 || rating > 5) {
-      return res.status(400).json({
-        success: false,
-        message: 'Rating must be between 1 and 5'
-      });
-    }
-
-    const course = await Course.findById(req.params.id);
-    
-    if (!course) {
-      return res.status(404).json({
-        success: false,
-        message: 'Course not found'
-      });
-    }
-    
-    // Check if user already reviewed
-    const existingReview = course.reviews.find(
-      r => r.student.toString() === req.user._id.toString()
-    );
-    
-    if (existingReview) {
-      return res.status(400).json({
-        success: false,
-        message: 'You have already reviewed this course'
-      });
-    }
-    
-    // Add review
-    course.reviews.push({
-      student: req.user._id,
-      rating,
-      comment,
-      createdAt: new Date()
-    });
-    
-    // Update course rating
-    const totalRatings = course.reviews.reduce((sum, review) => sum + review.rating, 0);
-    course.rating = totalRatings / course.reviews.length;
-    course.reviewCount = course.reviews.length;
-    course.totalRatings = totalRatings;
-    
-    await course.save();
-    await course.populate('reviews.student', 'name avatar');
-    
-    res.status(201).json({
-      success: true,
-      message: 'Review submitted successfully',
-      course
+    return res.status(410).json({
+      success: false,
+      message: 'This endpoint is deprecated. Please use POST /api/reviews to submit reviews.',
+      newEndpoint: '/api/reviews'
     });
   } catch (error) {
     next(error);

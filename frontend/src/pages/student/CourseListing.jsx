@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useQuery } from 'react-query'
-import { Search, BookOpen, Star, Filter, X } from 'lucide-react'
+import { Search, BookOpen, Star, X } from 'lucide-react'
 import { courseService } from '@/services/apiServices'
 import { useAuthStore } from '@/store/authStore'
 import LoadingSpinner from '@/components/common/LoadingSpinner'
@@ -17,42 +17,35 @@ export default function CourseListing() {
   const navigate = useNavigate()
   const { user } = useAuthStore()
   const [searchQuery, setSearchQuery] = useState('')
-  const [selectedGrade, setSelectedGrade] = useState('')
   const [selectedSubject, setSelectedSubject] = useState('')
-  const [showFilters, setShowFilters] = useState(false)
   const [currentPage, setCurrentPage] = useState(1)
-  const [itemsPerPage] = useState(12) // Show 12 courses per page
+  const [itemsPerPage] = useState(9) // Show 9 courses per page
 
   // Check premium course access
   const { allowed: canAccessPremium } = useFeatureAccess('courses.premium')
 
-  // Set default grade to student's grade on mount
-  useEffect(() => {
-    if (user?.grade && !selectedGrade) {
-      setSelectedGrade(user.grade.toString())
-    }
-  }, [user, selectedGrade])
+  // Use student's grade automatically
+  const selectedGrade = user?.grade?.toString() || ''
 
   // Reset to page 1 when filters change
   useEffect(() => {
     setCurrentPage(1)
-  }, [searchQuery, selectedGrade, selectedSubject])
+  }, [searchQuery, selectedSubject])
+
+  const queryParams = {
+    search: searchQuery,
+    subject: selectedSubject,
+    page: currentPage,
+    limit: itemsPerPage
+  };
+
+  if (!searchQuery) {
+    queryParams.grade = selectedGrade;
+  }
 
   const { data: coursesData, isLoading, error, refetch } = useQuery(
-    ['courses', {
-      search: searchQuery,
-      grade: selectedGrade,
-      subject: selectedSubject,
-      page: currentPage,
-      limit: itemsPerPage
-    }],
-    () => courseService.getCourses({
-      search: searchQuery,
-      grade: selectedGrade,
-      subject: selectedSubject,
-      page: currentPage,
-      limit: itemsPerPage
-    }),
+    ['courses', queryParams],
+    () => courseService.getCourses(queryParams),
     { keepPreviousData: true }
   )
 
@@ -61,16 +54,13 @@ export default function CourseListing() {
     'Physics', 'Chemistry', 'Biology', 'Computer Science'
   ]
 
-  const grades = Array.from({ length: 12 }, (_, i) => i + 1)
-
   const clearFilters = () => {
     setSearchQuery('')
-    setSelectedGrade('')
     setSelectedSubject('')
     setCurrentPage(1)
   }
 
-  const hasActiveFilters = searchQuery || selectedGrade || selectedSubject
+  const hasActiveFilters = searchQuery || selectedSubject
 
   return (
     <>
@@ -100,7 +90,7 @@ export default function CourseListing() {
 
       {/* Search and Filters with Gen-Z styling */}
       <div className="genz-card-glass p-4 sm:p-6 mb-6 sm:mb-8 border-2 border-emerald-200">
-        <div className="flex flex-col sm:flex-row gap-4">
+        <div className="flex flex-col sm:flex-row sm:items-center gap-4">
           {/* Search */}
           <div className="flex-1 relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-emerald-400" />
@@ -113,64 +103,33 @@ export default function CourseListing() {
             />
           </div>
 
-          {/* Filter Toggle Button */}
-          <button
-            onClick={() => setShowFilters(!showFilters)}
-            className="px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white font-semibold rounded-xl shadow-lg transition-all duration-300 transform hover:scale-105 hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none text-sm sm:text-base min-h-[44px] flex items-center justify-center gap-2 whitespace-nowrap"
-          >
-            <Filter className="w-4 h-4" />
-            Filters ✨
-          </button>
-        </div>
-
-        {/* Expandable Filters */}
-        {showFilters && (
-          <div className="mt-4 pt-4 border-t border-gray-200">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Grade</label>
-                <select
-                  value={selectedGrade}
-                  onChange={(e) => setSelectedGrade(e.target.value)}
-                  className="input-field w-full min-h-[44px] text-sm sm:text-base"
-                >
-                  <option value="">All Grades</option>
-                  {grades.map((grade) => (
-                    <option key={grade} value={grade}>
-                      Grade {grade}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Subject</label>
-                <select
-                  value={selectedSubject}
-                  onChange={(e) => setSelectedSubject(e.target.value)}
-                  className="input-field w-full min-h-[44px] text-sm sm:text-base"
-                >
-                  <option value="">All Subjects</option>
-                  {subjects.map((subject) => (
-                    <option key={subject} value={subject}>
-                      {subject}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </div>
-
-            {hasActiveFilters && (
-              <button
-                onClick={clearFilters}
-                className="mt-4 text-sm text-primary-600 hover:text-primary-700 flex items-center gap-1 min-h-[44px] px-2 py-1"
-              >
-                <X className="w-4 h-4" />
-                Clear all filters
-              </button>
-            )}
+          {/* Subject filter */}
+          <div className="w-full sm:w-auto">
+            <select
+              value={selectedSubject}
+              onChange={(e) => setSelectedSubject(e.target.value)}
+              className="input-field w-full min-h-[44px] text-sm sm:text-base"
+            >
+              <option value="">All Subjects</option>
+              {subjects.map((subject) => (
+                <option key={subject} value={subject}>
+                  {subject}
+                </option>
+              ))}
+            </select>
           </div>
-        )}
+
+          {/* Clear filters button inline */}
+          {hasActiveFilters && (
+            <button
+              onClick={clearFilters}
+              className="text-sm text-primary-600 hover:text-primary-700 flex items-center gap-1 min-h-[44px] px-2 py-1"
+            >
+              <X className="w-4 h-4" />
+              Clear
+            </button>
+          )}
+        </div>
       </div>
 
       {/* Course Grid */}

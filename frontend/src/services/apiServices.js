@@ -938,3 +938,72 @@ export const achievementService = {
     return data
   }
 }
+
+// Review service for course reviews and ratings
+export const reviewService = {
+  // Student functions
+  submitReview: async (reviewData) => {
+    const { data } = await api.post('/reviews', reviewData)
+    return data
+  },
+
+  getMyReview: async (courseId) => {
+    const { data } = await api.get(`/reviews/my-review/${courseId}`)
+    return data
+  },
+
+  updateMyReview: async (reviewId, reviewData) => {
+    const { data } = await api.put(`/reviews/${reviewId}`, reviewData)
+    return data
+  },
+
+  deleteMyReview: async (reviewId) => {
+    const { data } = await api.delete(`/reviews/${reviewId}`)
+    return data
+  },
+
+  // Public functions
+  getCourseReviews: async (courseId, params = {}) => {
+    const { data } = await api.get(`/reviews/course/${courseId}`, { params })
+    return data
+  },
+
+  getFeaturedReviews: async (limit = 10) => {
+    const { data } = await api.get('/reviews/featured', { params: { limit } })
+    return data
+  }
+}
+
+// Admin review service
+export const adminReviewService = {
+  getReviewStats: async () => {
+    const { data } = await api.get('/reviews/admin/stats')
+    return data
+  },
+
+  getPendingReviews: async (params = {}) => {
+    const { data } = await api.get('/reviews/admin/pending', { params })
+    return data
+  },
+
+  getAllReviews: async (params = {}) => {
+    const { data } = await api.get('/reviews/admin/all', { params })
+    return data
+  },
+
+  approveReview: async (reviewId) => {
+    const { data } = await api.put(`/reviews/admin/${reviewId}/approve`)
+    return data
+  },
+
+  rejectReview: async (reviewId, adminNotes) => {
+    const { data } = await api.put(`/reviews/admin/${reviewId}/reject`, { adminNotes })
+    return data
+  },
+
+  toggleFeaturedReview: async (reviewId) => {
+    const { data } = await api.put(`/reviews/admin/${reviewId}/toggle-featured`)
+    return data
+  }
+}
+

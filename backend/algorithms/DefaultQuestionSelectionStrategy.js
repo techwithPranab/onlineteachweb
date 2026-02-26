@@ -254,11 +254,17 @@ class DefaultQuestionSelectionStrategy extends QuestionSelectionStrategy {
         options: q.options ? q.options.map((opt, optIndex) => ({
           _id: opt._id,
           text: opt.text,
+          isCorrect: opt.isCorrect, // ✅ CRITICAL: Include isCorrect flag
           displayOrder: optIndex
         })) : [],
+        correctAnswer: q.correctAnswer, // ✅ CRITICAL: Include correctAnswer
+        expectedAnswer: q.expectedAnswer, // For text-based questions
+        numericalAnswer: q.numericalAnswer, // For numerical questions
+        explanation: q.explanation, // Answer explanation
         marks: q.marks,
         negativeMarks: q.negativeMarks,
         topic: q.topic,
+        subject: q.subject,
         difficultyLevel: q.difficultyLevel
       }
     }));

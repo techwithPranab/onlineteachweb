@@ -519,30 +519,99 @@ router.post('/', validateQuizCreation, async (req, res) => {
       const strategySelectedQuestions = await strategy.select(criteria);
 
       console.log(`[ActiveQuiz] Strategy selected ${strategySelectedQuestions.length} questions`);
+      
+      // Debug: Log first question structure
+      if (strategySelectedQuestions.length > 0) {
+        console.log('[ActiveQuiz] Sample question structure:', JSON.stringify({
+          hasSnapshot: !!strategySelectedQuestions[0].snapshot,
+          hasCorrectAnswer: !!strategySelectedQuestions[0].correctAnswer,
+          snapshotKeys: strategySelectedQuestions[0].snapshot ? Object.keys(strategySelectedQuestions[0].snapshot) : [],
+          topLevelKeys: Object.keys(strategySelectedQuestions[0]),
+          correctAnswerValue: strategySelectedQuestions[0].snapshot?.correctAnswer || strategySelectedQuestions[0].correctAnswer
+        }, null, 2));
+      }
 
       // Transform strategy output to expected format
-      selectedQuestions = strategySelectedQuestions.map(q => ({
-        id: (q.questionId || q._id).toString(),
-        question: q.snapshot?.question || q.snapshot?.text || q.text || '',
-        type: q.snapshot?.type || q.type || 'mcq-single',
-        options: (q.snapshot?.options || q.options || []).map(opt => ({
-          id: (opt._id || opt.id).toString(),
-          text: opt.text || ''
-        })),
-        correctAnswer: q.snapshot?.correctAnswer || q.correctAnswer,
-        expectedAnswer: q.snapshot?.expectedAnswer || q.expectedAnswer,
-        numericalAnswer: q.snapshot?.numericalAnswer || q.numericalAnswer,
-        marks: q.snapshot?.marks || q.marks || 1,
-        negativeMarks: q.snapshot?.negativeMarks || q.negativeMarks || 0,
-        topic: q.snapshot?.topic || q.topic || 'General',
-        difficulty: q.snapshot?.difficulty || q.snapshot?.difficultyLevel || q.difficulty || difficulty,
-        explanation: q.snapshot?.explanation || q.explanation || ''
-      }));
+      selectedQuestions = strategySelectedQuestions.map((q, idx) => {
+        // Get the correct answer - handle different structures
+        let correctAnswer = q.snapshot?.correctAnswer || q.correctAnswer;
+        
+        // If still undefined, try to derive from options (for MCQ)
+        if (!correctAnswer && (q.snapshot?.options || q.options)) {
+          const options = q.snapshot?.options || q.options || [];
+          const correctOption = options.find(opt => opt.isCorrect);
+          if (correctOption) {
+            correctAnswer = correctOption.text || correctOption.id?.toString();
+          }
+        }
+        
+        // Final fallback for different question types
+        if (!correctAnswer) {
+          const questionType = q.snapshot?.type || q.type;
+          
+          // For numerical questions, use the numerical answer value
+          if (questionType === 'numerical' && (q.snapshot?.numericalAnswer || q.numericalAnswer)) {
+            const numAnswer = q.snapshot?.numericalAnswer || q.numericalAnswer;
+            correctAnswer = numAnswer.value?.toString() || '';
+          }
+          // For short/long answer, use expected answer
+          else if ((questionType === 'short-answer' || questionType === 'long-answer') && 
+                   (q.snapshot?.expectedAnswer || q.expectedAnswer)) {
+            correctAnswer = q.snapshot?.expectedAnswer || q.expectedAnswer;
+          }
+          // Last resort - empty string
+          else {
+            correctAnswer = '';
+            console.warn(`[ActiveQuiz] Question ${idx + 1} (ID: ${q.questionId || q._id}) missing correctAnswer. Type: ${questionType}`);
+          }
+        }
+        
+        return {
+          id: (q.questionId || q._id).toString(),
+          question: q.snapshot?.question || q.snapshot?.text || q.text || '',
+          type: q.snapshot?.type || q.type || 'mcq-single',
+          options: (q.snapshot?.options || q.options || []).map(opt => ({
+            id: (opt._id || opt.id).toString(),
+            text: opt.text || ''
+          })),
+          correctAnswer,
+          expectedAnswer: q.snapshot?.expectedAnswer || q.expectedAnswer,
+          numericalAnswer: q.snapshot?.numericalAnswer || q.numericalAnswer,
+          marks: q.snapshot?.marks || q.marks || 1,
+          negativeMarks: q.snapshot?.negativeMarks || q.negativeMarks || 0,
+          topic: q.snapshot?.topic || q.topic || 'General',
+          difficulty: q.snapshot?.difficulty || q.snapshot?.difficultyLevel || q.difficulty || difficulty,
+          explanation: q.snapshot?.explanation || q.explanation || ''
+        };
+      });
 
       if (selectedQuestions.length < questionCount) {
         return res.status(400).json({
           success: false,
           message: `Could only select ${selectedQuestions.length} questions. Required: ${questionCount}`
+        });
+      }
+      
+      // Validate that all questions have correctAnswer
+      const missingCorrectAnswer = selectedQuestions.filter(q => !q.correctAnswer);
+      if (missingCorrectAnswer.length > 0) {
+        console.error('[ActiveQuiz] Questions missing correctAnswer:', missingCorrectAnswer.map((q, idx) => ({
+          index: idx,
+          questionId: q.id,
+          questionText: q.question?.substring(0, 50),
+          type: q.type,
+          hasOptions: !!q.options?.length,
+          optionsWithIsCorrect: q.options?.filter(opt => opt.isCorrect)?.length || 0
+        })));
+        
+        return res.status(400).json({
+          success: false,
+          message: 'Some questions are missing correct answers. Please check the question data.',
+          details: {
+            missingCount: missingCorrectAnswer.length,
+            totalCount: selectedQuestions.length,
+            questionIds: missingCorrectAnswer.map(q => q.id)
+          }
         });
       }
     }

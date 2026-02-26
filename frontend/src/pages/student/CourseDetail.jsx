@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { useQuery } from 'react-query'
+import { useQuery, useMutation, useQueryClient } from 'react-query'
 import {
   ArrowLeft,
   BookOpen,
@@ -10,22 +10,34 @@ import {
   Video,
   FileText,
   CheckCircle,
+  PlusCircle,
 } from 'lucide-react'
-import { courseService, materialService, sessionService } from '@/services/apiServices'
+import { courseService, materialService, sessionService, reviewService } from '@/services/apiServices'
 import LoadingSpinner from '@/components/common/LoadingSpinner'
 import SEOHead from '@/components/SEO/SEOHead';
 import ErrorMessage from '@/components/common/ErrorMessage'
 import MaterialViewer from '@/components/course/MaterialViewer'
 import Modal from '@/components/common/Modal'
+import ReviewForm from '@/components/course/ReviewForm'
+import ReviewList from '@/components/course/ReviewList'
+import StarRating from '@/components/course/StarRating'
 import { FeatureButton, FeatureGate, FeatureBadge } from '@/components/common'
 import { useFeatureAccess } from '@/hooks/useFeatureAccess'
+import toast from '@/utils/toast'
+import { useAuthStore } from '@/store/authStore'
 
 export default function CourseDetail() {
   const { id } = useParams()
   const navigate = useNavigate()
+  const { user } = useAuthStore()
+  const queryClient = useQueryClient()
   const [activeTab, setActiveTab] = useState('overview')
   const [selectedMaterial, setSelectedMaterial] = useState(null)
   const [isMaterialModalOpen, setIsMaterialModalOpen] = useState(false)
+  const [isReviewModalOpen, setIsReviewModalOpen] = useState(false)
+  const [reviewToEdit, setReviewToEdit] = useState(null)
+  const [reviewPage, setReviewPage] = useState(1)
+  const [reviewSort, setReviewSort] = useState('createdAt')
 
   // Scroll to top when component mounts
   useEffect(() => {
@@ -50,7 +62,81 @@ console.log('materialsData: ', materialsData);
     { enabled: !!id }
   )
 
+  // Reviews queries
+  const { data: myReviewData } = useQuery(
+    ['myReview', id],
+    () => reviewService.getMyReview(id),
+    { 
+      enabled: !!id && !!user,
+      retry: false,
+      onError: () => {} // Silent fail if no review exists
+    }
+  )
+
+  const { data: reviewsData, isLoading: reviewsLoading } = useQuery(
+    ['courseReviews', id, reviewPage, reviewSort],
+    () => reviewService.getCourseReviews(id, {
+      page: reviewPage,
+      limit: 10,
+      sortBy: reviewSort,
+      sortOrder: 'desc'
+    }),
+    { enabled: !!id && activeTab === 'reviews' }
+  )
+
+  // Review mutations
+  const submitReviewMutation = useMutation(
+    (reviewData) => reviewService.submitReview({ ...reviewData, courseId: id }),
+    {
+      onSuccess: () => {
+        toast.success('Review submitted successfully! It will be published after admin approval. 🎉')
+        queryClient.invalidateQueries(['myReview', id])
+        queryClient.invalidateQueries(['courseReviews', id])
+        queryClient.invalidateQueries(['course', id])
+        setIsReviewModalOpen(false)
+        setReviewToEdit(null)
+      },
+      onError: (error) => {
+        toast.error(error.response?.data?.message || 'Failed to submit review')
+      }
+    }
+  )
+
+  const updateReviewMutation = useMutation(
+    ({ reviewId, reviewData }) => reviewService.updateMyReview(reviewId, reviewData),
+    {
+      onSuccess: () => {
+        toast.success('Review updated successfully! It will be re-reviewed by admin. ✨')
+        queryClient.invalidateQueries(['myReview', id])
+        queryClient.invalidateQueries(['courseReviews', id])
+        setIsReviewModalOpen(false)
+        setReviewToEdit(null)
+      },
+      onError: (error) => {
+        toast.error(error.response?.data?.message || 'Failed to update review')
+      }
+    }
+  )
+
+  const deleteReviewMutation = useMutation(
+    (reviewId) => reviewService.deleteMyReview(reviewId),
+    {
+      onSuccess: () => {
+        toast.success('Review deleted successfully')
+        queryClient.invalidateQueries(['myReview', id])
+        queryClient.invalidateQueries(['courseReviews', id])
+        queryClient.invalidateQueries(['course', id])
+      },
+      onError: (error) => {
+        toast.error(error.response?.data?.message || 'Failed to delete review')
+      }
+    }
+  )
+
   const course = courseData?.course
+  const myReview = myReviewData?.review
+  const reviews = reviewsData?.reviews || []
+  const reviewsPagination = reviewsData?.pagination
 
   const openMaterialModal = (material) => {
     setSelectedMaterial(material)
@@ -60,6 +146,51 @@ console.log('materialsData: ', materialsData);
   const closeMaterialModal = () => {
     setIsMaterialModalOpen(false)
     setSelectedMaterial(null)
+  }
+
+  // Review handlers
+  const openReviewModal = (review = null) => {
+    if (!user) {
+      toast.error('Please login to write a review')
+      return
+    }
+    setReviewToEdit(review)
+    setIsReviewModalOpen(true)
+  }
+
+  const closeReviewModal = () => {
+    setIsReviewModalOpen(false)
+    setReviewToEdit(null)
+  }
+
+  const handleSubmitReview = (reviewData) => {
+    if (reviewToEdit) {
+      updateReviewMutation.mutate({
+        reviewId: reviewToEdit._id,
+        reviewData
+      })
+    } else {
+      submitReviewMutation.mutate(reviewData)
+    }
+  }
+
+  const handleEditReview = (review) => {
+    openReviewModal(review)
+  }
+
+  const handleDeleteReview = (review) => {
+    if (window.confirm('Are you sure you want to delete this review? This action cannot be undone.')) {
+      deleteReviewMutation.mutate(review._id)
+    }
+  }
+
+  const handleReviewPageChange = (page) => {
+    setReviewPage(page)
+  }
+
+  const handleReviewSortChange = (sort) => {
+    setReviewSort(sort)
+    setReviewPage(1) // Reset to first page on sort change
   }
 
   if (isLoading) return <LoadingSpinner fullScreen />
@@ -127,7 +258,7 @@ console.log('materialsData: ', materialsData);
                 <div className="flex flex-col items-center gap-1.5 sm:gap-2">
                   <Clock className="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 lg:w-8 lg:h-8 text-blue-500 flex-shrink-0" />
                   <div className="text-center min-w-0">
-                    <div className="font-bold text-base sm:text-lg md:text-xl text-gray-900">{course.duration || '12'} wks</div>
+                    <div className="font-bold text-base sm:text-lg md:text-xl text-gray-900">{course.duration || '12'} </div>
                     <div className="text-[10px] sm:text-xs md:text-sm text-gray-600 font-medium">Duration</div>
                   </div>
                 </div>
@@ -172,8 +303,8 @@ console.log('materialsData: ', materialsData);
                 }`}
               >
                 <tab.icon className={`w-3.5 h-3.5 sm:w-4 sm:h-4 md:w-5 md:h-5 flex-shrink-0 ${activeTab === tab.id ? 'animate-bounce-slow' : ''}`} />
-                <span className="hidden xs:inline">{tab.label}</span>
-                <span className="xs:hidden">{tab.label.slice(0, 3)}</span>
+                <span className="hidden md:inline">{tab.label}</span>
+                <span className="md:hidden">{tab.label.slice(0, 3)}</span>
               </button>
             ))}
           </nav>
@@ -333,57 +464,76 @@ console.log('materialsData: ', materialsData);
           )}
 
           {activeTab === 'reviews' && (
-            <div>
-              <h3 className="text-sm sm:text-base lg:text-lg font-semibold mb-3 sm:mb-4 text-gray-900 flex items-center gap-2">
-                ⭐ Student Reviews
-              </h3>
-              {course.reviews?.length > 0 ? (
-                <div className="space-y-4 sm:space-y-6">
-                  {course.reviews.map((review, index) => (
-                    <div key={index} className="genz-card p-3 sm:p-4 active:scale-95 sm:hover:scale-105 transition-all">
-                      <div className="flex flex-col sm:flex-row sm:items-start gap-3 sm:gap-4">
-                        <div className="flex-shrink-0 self-center sm:self-start">
-                          <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full flex items-center justify-center shadow-lg">
-                            <span className="text-white font-bold text-sm sm:text-base">
-                              {(review.student?.name || 'Anonymous').charAt(0).toUpperCase()}
-                            </span>
-                          </div>
-                        </div>
-                        <div className="flex-1 min-w-0 text-center sm:text-left">
-                          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2 gap-1.5 sm:gap-2">
-                            <div className="flex flex-col sm:flex-row items-center justify-center sm:justify-start gap-1.5 sm:gap-2">
-                              <h4 className="font-semibold text-gray-900 text-sm sm:text-base break-words">
-                                {review.student?.name || 'Anonymous'}
-                              </h4>
-                              <div className="flex">
-                                {[...Array(5)].map((_, i) => (
-                                  <Star
-                                    key={i}
-                                    className={`w-3.5 h-3.5 sm:w-4 sm:h-4 ${
-                                      i < review.rating ? 'text-yellow-400 fill-current' : 'text-gray-300'
-                                    }`}
-                                  />
-                                ))}
-                              </div>
-                            </div>
-                            <span className="text-xs text-gray-500">
-                              {new Date(review.createdAt || Date.now()).toLocaleDateString()}
-                            </span>
-                          </div>
-                          <p className="text-gray-700 text-xs sm:text-sm leading-relaxed break-words">{review.comment}</p>
-                        </div>
+            <div className="space-y-4 sm:space-y-5 md:space-y-6">
+              {/* Reviews Header with Stats */}
+              <div className="genz-card p-4 sm:p-5 md:p-6 bg-gradient-to-br from-emerald-50 to-teal-50">
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                  <div className="text-center md:text-left">
+                    <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900 mb-2 flex items-center justify-center md:justify-start gap-2">
+                      ⭐ Course Reviews
+                    </h3>
+                    <div className="flex items-center justify-center md:justify-start gap-3">
+                      <div className="flex items-center gap-2">
+                        <StarRating rating={course.averageRating || 0} readOnly size="lg" />
                       </div>
+                      {course.reviewCount > 0 && (
+                        <span className="text-sm text-gray-600">
+                          ({course.reviewCount} {course.reviewCount === 1 ? 'review' : 'reviews'})
+                        </span>
+                      )}
                     </div>
-                  ))}
-                </div>
-              ) : (
-                <div className="text-center py-8 sm:py-12">
-                  <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-gray-400 to-gray-500 rounded-full flex items-center justify-center mx-auto mb-3 text-2xl sm:text-3xl">
-                    ⭐
                   </div>
-                  <p className="text-gray-600 text-sm sm:text-base font-medium">No reviews yet. Be the first to review!</p>
+
+                  {/* Write Review Button */}
+                  {user && (
+                    <button
+                      onClick={() => openReviewModal(myReview)}
+                      className="
+                        genz-btn-primary inline-flex items-center justify-center gap-2 
+                        min-h-[44px] px-4 sm:px-6 py-2.5 sm:py-3 rounded-lg 
+                        text-sm sm:text-base font-medium
+                        transition-all active:scale-95 sm:hover:scale-105
+                        shadow-lg
+                      "
+                    >
+                      <PlusCircle className="w-4 h-4 sm:w-5 sm:h-5" />
+                      <span>{myReview ? 'Edit Your Review' : 'Write a Review'}</span>
+                    </button>
+                  )}
                 </div>
-              )}
+
+                {/* Pending Review Notice */}
+                {myReview && myReview.status === 'pending' && (
+                  <div className="mt-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+                    <p className="text-xs sm:text-sm text-yellow-800">
+                      ⏳ Your review is pending admin approval. You can edit or delete it anytime.
+                    </p>
+                  </div>
+                )}
+
+                {/* Rejected Review Notice */}
+                {myReview && myReview.status === 'rejected' && (
+                  <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-lg">
+                    <p className="text-xs sm:text-sm text-red-800 mb-2">
+                      ❌ Your review was not approved. {myReview.adminNotes && `Reason: ${myReview.adminNotes}`}
+                    </p>
+                    <p className="text-xs text-red-700">You can edit and resubmit your review.</p>
+                  </div>
+                )}
+              </div>
+
+              {/* Reviews List */}
+              <ReviewList
+                reviews={reviews}
+                isLoading={reviewsLoading}
+                pagination={reviewsPagination}
+                onPageChange={handleReviewPageChange}
+                onSortChange={handleReviewSortChange}
+                currentSort={reviewSort}
+                ownReviewId={myReview?._id}
+                onEditReview={handleEditReview}
+                onDeleteReview={handleDeleteReview}
+              />
             </div>
           )}
         </div>
@@ -399,6 +549,21 @@ console.log('materialsData: ', materialsData);
       size="md"
     >
       {selectedMaterial && <MaterialViewer material={selectedMaterial} showPreview={false} />}
+    </Modal>
+
+    {/* Review Form Modal */}
+    <Modal
+      isOpen={isReviewModalOpen}
+      onClose={closeReviewModal}
+      title={reviewToEdit ? 'Edit Your Review' : 'Write a Review'}
+      size="lg"
+    >
+      <ReviewForm
+        onSubmit={handleSubmitReview}
+        initialData={reviewToEdit}
+        isLoading={submitReviewMutation.isLoading || updateReviewMutation.isLoading}
+        onCancel={closeReviewModal}
+      />
     </Modal>
 
     </>)
