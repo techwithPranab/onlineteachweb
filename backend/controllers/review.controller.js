@@ -298,6 +298,35 @@ exports.getFeaturedReviews = async (req, res) => {
   }
 };
 
+/**
+ * Get recent approved reviews across all courses (public — homepage fallback)
+ * GET /api/reviews/approved/recent
+ */
+exports.getRecentApprovedReviews = async (req, res) => {
+  try {
+    const { limit = 3 } = req.query;
+    const reviews = await CourseReview.find({ status: 'approved' })
+      .populate('student', 'name email profilePicture')
+      .populate('course', 'title thumbnail grade subject')
+      .sort({ createdAt: -1 })
+      .limit(parseInt(limit))
+      .lean();
+
+    res.status(200).json({
+      success: true,
+      count: reviews.length,
+      reviews
+    });
+  } catch (error) {
+    console.error('Error fetching recent approved reviews:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to fetch recent approved reviews',
+      error: error.message
+    });
+  }
+};
+
 // ==================== ADMIN FUNCTIONS ====================
 
 /**

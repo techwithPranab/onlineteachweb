@@ -38,6 +38,7 @@ export default function CourseDetails() {
     { enabled: !!id }
   )
   const approvedReviews = reviewsData?.reviews || []
+  const approvedReviewCount = reviewsData?.total ?? approvedReviews.length
 
   // Fetch material previews on component mount
   useEffect(() => {
@@ -166,7 +167,7 @@ export default function CourseDetails() {
                       {renderStars(course.rating || course.averageRating || 0)}
                     </div>
                     <span className="text-sm sm:text-base text-gray-600">
-                      {course.rating || course.averageRating ? (course.rating || course.averageRating).toFixed(1) : 'No ratings'} ({course.reviewCount || course.reviews?.length || 0} reviews)
+                      {course.averageRating || course.rating ? (course.averageRating || course.rating).toFixed(1) : 'No ratings'} ({approvedReviewCount} reviews)
                     </span>
                   </div>
                 </div>
@@ -223,7 +224,7 @@ export default function CourseDetails() {
                     <Users className="w-5 h-5 text-blue-600" />
                   </div>
                   <span className="text-2xl font-bold text-blue-700">
-                    {course.reviewCount ?? approvedReviews.length}
+                    {approvedReviewCount}
                   </span>
                   <span className="text-xs text-gray-500 mt-1">Student Reviews</span>
                 </div>
@@ -356,7 +357,7 @@ export default function CourseDetails() {
                 <div>
                   <h2 className="text-xl font-bold text-gray-900">Student Reviews</h2>
                   <p className="text-sm text-gray-500 mt-0.5">
-                    {approvedReviews.length} approved review{approvedReviews.length !== 1 ? 's' : ''}
+                    {approvedReviewCount} approved review{approvedReviewCount !== 1 ? 's' : ''}
                   </p>
                 </div>
                 {isAuthenticated && !showReviewForm && (
@@ -439,8 +440,11 @@ export default function CourseDetails() {
                             <span className="text-xs text-gray-500 ml-1">{review.rating}/5</span>
                           </div>
                           {/* Comment */}
-                          {review.comment && (
-                            <p className="text-gray-700 text-sm leading-relaxed">{review.comment}</p>
+                          {review.reviewTitle && (
+                            <p className="font-semibold text-gray-900 text-sm mb-1">{review.reviewTitle}</p>
+                          )}
+                          {review.reviewText && (
+                            <p className="text-gray-700 text-sm leading-relaxed">{review.reviewText}</p>
                           )}
                           {/* Featured badge */}
                           {review.isFeatured && (

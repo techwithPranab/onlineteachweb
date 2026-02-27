@@ -169,11 +169,8 @@ export default function Signup() {
                      onChange={(e) => setFormData({ ...formData, grade: e.target.value })}
                    >
                      <option value="">Select Grade</option>
-                     {Array.from({ length: 12 }, (_, i) => i + 1).map((grade) => (
-                       <option key={grade} value={grade}>
-                         Grade {grade}
-                       </option>
-                     ))}
+                     <option value="4">Grade 4</option>
+                     <option value="5">Grade 5</option>
                    </select>
                  </div>
                )}

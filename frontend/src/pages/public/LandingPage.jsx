@@ -1,4 +1,6 @@
+import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import { useQuery } from 'react-query'
 import { 
   ArrowRight, 
   Brain, 
@@ -15,9 +17,14 @@ import {
   GraduationCap,
   Briefcase,
   BookMarked,
-  Trophy
+  Trophy,
+  Star,
+  Rocket,
+  CalendarDays,
+  Bell
 } from 'lucide-react'
 import SEOHead from '../../components/SEO/SEOHead'
+import { reviewService } from '../../services/apiServices'
 import { OrganizationSchema, WebsiteSchema } from '../../components/Schema'
 
 export default function LandingPage() {
@@ -38,6 +45,9 @@ export default function LandingPage() {
       <div className="min-h-screen">
         {/* Hero Section - AI-Powered Gap Identification */}
         <HeroSection />
+
+        {/* Launch Date Announcement */}
+        <LaunchAnnouncementSection />
         
         {/* How It Works - 4-Step Flow */}
         <HowItWorksSection />
@@ -120,6 +130,107 @@ function HeroSection() {
             </div>
           </div>
         </div>
+      </div>
+    </section>
+  )
+}
+
+// =============================================
+// LAUNCH ANNOUNCEMENT SECTION
+// =============================================
+function LaunchAnnouncementSection() {
+  // Set your official launch date here
+  const LAUNCH_DATE = new Date('2026-04-01T00:00:00')
+
+  const [timeLeft, setTimeLeft] = useState(getTimeLeft())
+
+  function getTimeLeft() {
+    const diff = LAUNCH_DATE - new Date()
+    if (diff <= 0) return null
+    return {
+      days: Math.floor(diff / (1000 * 60 * 60 * 24)),
+      hours: Math.floor((diff / (1000 * 60 * 60)) % 24),
+      minutes: Math.floor((diff / (1000 * 60)) % 60),
+      seconds: Math.floor((diff / 1000) % 60),
+    }
+  }
+
+  useEffect(() => {
+    const timer = setInterval(() => setTimeLeft(getTimeLeft()), 1000)
+    return () => clearInterval(timer)
+  }, [])
+
+  const launched = timeLeft === null
+
+  return (
+    <section className="bg-gradient-to-r from-amber-500 via-orange-500 to-rose-500 text-white py-14">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        {/* Badge */}
+        <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm px-4 py-1.5 rounded-full text-sm font-semibold mb-5 tracking-wide uppercase">
+          <Rocket className="h-4 w-4 animate-bounce" />
+          {launched ? 'Now Live!' : 'Coming Soon'}
+        </div>
+
+        {/* Headline */}
+        <h2 className="text-3xl md:text-5xl font-extrabold mb-3 leading-tight drop-shadow">
+          {launched
+            ? '🎉 MeritAI is officially live!'
+            : 'MeritAI is Launching Soon!'}
+        </h2>
+        <p className="text-lg md:text-xl text-white/90 mb-8 max-w-2xl mx-auto">
+          {launched
+            ? 'Start your personalised AI-powered learning journey today.'
+            : 'Get ready for AI-powered personalised learning — designed for every student. Mark your calendar and be first in line!'}
+        </p>
+
+        {/* Countdown or Launch Date */}
+        {!launched && timeLeft ? (
+          <div className="flex justify-center gap-4 sm:gap-8 mb-8">
+            {[
+              { label: 'Days',    value: timeLeft.days },
+              { label: 'Hours',   value: timeLeft.hours },
+              { label: 'Minutes', value: timeLeft.minutes },
+              { label: 'Seconds', value: timeLeft.seconds },
+            ].map(({ label, value }) => (
+              <div key={label} className="flex flex-col items-center">
+                <div className="bg-white/20 backdrop-blur rounded-xl px-4 py-3 min-w-[64px] sm:min-w-[80px]">
+                  <span className="text-3xl sm:text-4xl font-extrabold tabular-nums">
+                    {String(value).padStart(2, '0')}
+                  </span>
+                </div>
+                <span className="text-xs sm:text-sm font-medium mt-1.5 text-white/80 uppercase tracking-widest">
+                  {label}
+                </span>
+              </div>
+            ))}
+          </div>
+        ) : !launched ? (
+          <div className="flex items-center justify-center gap-2 mb-8 text-white/90">
+            <CalendarDays className="h-5 w-5" />
+            <span className="text-lg font-semibold">
+              {LAUNCH_DATE.toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' })}
+            </span>
+          </div>
+        ) : null}
+
+        {/* CTA */}
+        <Link
+          to="/signup"
+          className="inline-flex items-center gap-2 bg-white text-orange-600 px-8 py-3.5 rounded-lg font-bold text-base hover:bg-orange-50 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+        >
+          {launched ? (
+            <>
+              <Rocket className="h-5 w-5" />
+              Get Started Free
+            </>
+          ) : (
+            <>
+              <Bell className="h-5 w-5" />
+              Sign Up & Get Early Access
+            </>
+          )}
+          <ArrowRight className="h-4 w-4" />
+        </Link>
       </div>
     </section>
   )
@@ -378,6 +489,39 @@ function TrustValueSection() {
     }
   ]
 
+  // Step 1: fetch reviews that are both approved AND featured
+  const { data: featuredData, isLoading: featuredLoading } = useQuery(
+    'featuredReviews',
+    () => reviewService.getFeaturedReviews(3),
+    { staleTime: 5 * 60 * 1000 }
+  )
+  const featuredReviews = featuredData?.reviews || []
+
+  // Step 2: if no featured reviews exist, fall back to latest approved reviews from any course
+  // We reuse the getCourseReviews approach but target a generic approved-reviews endpoint.
+  // Since the backend doesn't have a standalone "all approved" public endpoint, we use
+  // a per-course call only when we have a courseId — so instead we just widen the featured
+  // query to also try any approved review from the first available course.
+  // Best approach: call getFeaturedReviews with a large limit then pick top 3; if that
+  // returns nothing, call getCourseReviews without a courseId isn't possible, so we
+  // add a new service method using the admin reviews list but filtered to approved.
+  // Simplest real fix: backend already supports getCourseReviews per course.
+  // We use the isFeatured:false fallback by fetching recent reviews across all courses
+  // via a dedicated endpoint we'll call inline.
+  const needsFallback = !featuredLoading && featuredReviews.length === 0
+  const { data: fallbackData } = useQuery(
+    'recentApprovedReviews',
+    () => reviewService.getAllApprovedReviews(3),
+    {
+      enabled: needsFallback,
+      staleTime: 5 * 60 * 1000
+    }
+  )
+  const fallbackReviews = fallbackData?.reviews || []
+
+  // Use featured if available, otherwise approved, otherwise nothing
+  const displayReviews = featuredReviews.length > 0 ? featuredReviews : fallbackReviews
+
   return (
     <section className="py-20 bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -404,28 +548,46 @@ function TrustValueSection() {
           ))}
         </div>
 
-        {/* Testimonials Placeholder */}
+        {/* What Our Students Say */}
         <div className="bg-white rounded-2xl shadow-lg p-8 md:p-12">
-          <h3 className="text-3xl font-bold text-gray-900 mb-8 text-center">
+          <h3 className="text-3xl font-bold text-gray-900 mb-2 text-center">
             What Our Students Say
           </h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <TestimonialCard
-              quote="The AI assessment showed me exactly where I was weak. After 3 months, my scores improved by 40%!"
-              author="Priya Sharma"
-              role="Class 10 Student"
-            />
-            <TestimonialCard
-              quote="Personalized mentorship made all the difference. My tutor understood my learning style perfectly."
-              author="Rahul Verma"
-              role="JEE Aspirant"
-            />
-            <TestimonialCard
-              quote="Finally, a platform that doesn't waste time on what I already know. Super efficient!"
-              author="Anita Desai"
-              role="College Student"
-            />
-          </div>
+          <p className="text-center text-gray-500 mb-8">Real reviews from our learners</p>
+
+          {displayReviews.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {displayReviews.map((review, index) => (
+                <TestimonialCard
+                  key={review._id || index}
+                  title={review.reviewTitle || ''}
+                  quote={review.reviewText || ''}
+                  author={review.student?.name || 'MeritAI Student'}
+                  role={
+                    review.course?.subject && review.course?.grade
+                      ? `Grade ${review.course.grade} — ${review.course.subject}`
+                      : review.course?.title || 'MeritAI Student'
+                  }
+                  rating={review.rating || 5}
+                />
+              ))}
+            </div>
+          ) : !featuredLoading ? (
+            <p className="text-center text-gray-400 py-8">No student reviews yet.</p>
+          ) : (
+            /* Loading skeleton */
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {[1, 2, 3].map((i) => (
+                <div key={i} className="bg-gray-50 rounded-xl p-6 animate-pulse">
+                  <div className="h-4 bg-gray-200 rounded w-24 mb-4" />
+                  <div className="h-3 bg-gray-200 rounded w-full mb-2" />
+                  <div className="h-3 bg-gray-200 rounded w-5/6 mb-2" />
+                  <div className="h-3 bg-gray-200 rounded w-4/6 mb-6" />
+                  <div className="h-3 bg-gray-200 rounded w-1/2" />
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </section>
@@ -527,14 +689,26 @@ function AudienceCard({ icon, title, subtitle, description, benefits }) {
 }
 
 // Testimonial Card Component
-function TestimonialCard({ quote, author, role }) {
+function TestimonialCard({ title, quote, author, role, rating = 5 }) {
   return (
-    <div className="bg-gray-50 rounded-lg p-6">
-      <div className="text-primary-600 text-4xl mb-4">"</div>
-      <p className="text-gray-700 mb-6 italic leading-relaxed">{quote}</p>
-      <div className="border-t pt-4">
+    <div className="bg-gray-50 rounded-xl p-6 border border-gray-100 flex flex-col">
+      {/* Stars */}
+      <div className="flex gap-0.5 mb-3">
+        {[1, 2, 3, 4, 5].map((star) => (
+          <Star
+            key={star}
+            className={`w-4 h-4 ${star <= rating ? 'text-yellow-400 fill-current' : 'text-gray-300'}`}
+          />
+        ))}
+      </div>
+      <div className="text-primary-500 text-3xl leading-none mb-2">"</div>
+      {title && (
+        <p className="font-semibold text-gray-900 mb-1">{title}</p>
+      )}
+      <p className="text-gray-700 mb-6 italic leading-relaxed flex-1">{quote}</p>
+      <div className="border-t border-gray-200 pt-4">
         <p className="font-semibold text-gray-900">{author}</p>
-        <p className="text-sm text-gray-600">{role}</p>
+        <p className="text-sm text-gray-500">{role}</p>
       </div>
     </div>
   )

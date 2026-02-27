@@ -982,6 +982,12 @@ export const reviewService = {
   getFeaturedReviews: async (limit = 10) => {
     const { data } = await api.get('/reviews/featured', { params: { limit } })
     return data
+  },
+
+  // Fallback: recent approved reviews (no isFeatured requirement)
+  getAllApprovedReviews: async (limit = 3) => {
+    const { data } = await api.get('/reviews/approved/recent', { params: { limit } })
+    return data
   }
 }
 

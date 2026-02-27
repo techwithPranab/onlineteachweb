@@ -11,6 +11,9 @@ router.get('/course/:courseId', reviewController.getCourseReviews);
 // Get featured reviews
 router.get('/featured', reviewController.getFeaturedReviews);
 
+// Get recent approved reviews across all courses (public, used for homepage)
+router.get('/approved/recent', reviewController.getRecentApprovedReviews);
+
 // ==================== STUDENT ROUTES (AUTHENTICATED) ====================
 
 // Submit or update a review
