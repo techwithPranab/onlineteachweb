@@ -197,6 +197,33 @@ exports.getPublicCourses = async (req, res, next) => {
       },
       {
         $lookup: {
+          from: 'quizsessions',
+          let: { courseId: '$_id' },
+          pipeline: [
+            {
+              $match: {
+                $expr: {
+                  $and: [
+                    { $eq: ['$courseId', '$$courseId'] },
+                    { $in: ['$status', ['completed', 'submitted', 'auto-submitted']] }
+                  ]
+                }
+              }
+            },
+            { $count: 'count' }
+          ],
+          as: 'quizSessionsData'
+        }
+      },
+      {
+        $addFields: {
+          completedQuizCount: {
+            $ifNull: [{ $arrayElemAt: ['$quizSessionsData.count', 0] }, 0]
+          }
+        }
+      },
+      {
+        $lookup: {
           from: 'users',
           let: { createdBy: '$createdBy' },
           pipeline: [
@@ -224,6 +251,7 @@ exports.getPublicCourses = async (req, res, next) => {
       {
         $project: {
           questions: 0, // Remove the questions array from the result
+          quizSessionsData: 0, // Remove raw quiz sessions data
           'createdBy.password': 0, // Remove password from populated user
           'createdBy.__v': 0 // Remove version field
         }

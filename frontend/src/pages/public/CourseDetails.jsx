@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useQuery, useMutation, useQueryClient } from 'react-query'
-import { ArrowLeft } from 'lucide-react'
-import { courseService, materialService } from '../../services/apiServices'
+import { ArrowLeft, Star, CheckCircle, Users, BookOpen, ClipboardList } from 'lucide-react'
+import { courseService, materialService, reviewService } from '../../services/apiServices'
 import { useAuthStore } from '../../store/authStore'
 import LoadingSpinner from '../../components/common/LoadingSpinner'
 import ErrorMessage from '../../components/common/ErrorMessage'
@@ -30,6 +30,14 @@ export default function CourseDetails() {
   )
 
   const course = courseData?.course
+
+  // Fetch approved reviews for this course
+  const { data: reviewsData } = useQuery(
+    ['courseReviews', id],
+    () => reviewService.getCourseReviews(id, { limit: 50 }),
+    { enabled: !!id }
+  )
+  const approvedReviews = reviewsData?.reviews || []
 
   // Fetch material previews on component mount
   useEffect(() => {
@@ -191,35 +199,44 @@ export default function CourseDetails() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-6">
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-4 lg:space-y-6 order-2 lg:order-1">
-            {/* Course Info */}
+            {/* ── Ratings & Stats Summary ── */}
             <div className="bg-white rounded-lg shadow p-4 sm:p-6">
-              <h2 className="text-xl font-bold text-gray-900 mb-3">Course Information</h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <p className="text-sm text-gray-500">Duration</p>
-                  <p className="font-semibold">{course.duration || 'Self-paced'}</p>
+              <h2 className="text-xl font-bold text-gray-900 mb-4">Ratings &amp; Activity</h2>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                {/* Average Rating */}
+                <div className="flex flex-col items-center justify-center bg-yellow-50 rounded-xl p-4 border border-yellow-100">
+                  <div className="flex items-end gap-2 mb-1">
+                    <span className="text-4xl font-extrabold text-yellow-500">
+                      {course.averageRating ? course.averageRating.toFixed(1) : (course.rating ? Number(course.rating).toFixed(1) : '—')}
+                    </span>
+                    <span className="text-gray-400 text-sm mb-1">/ 5</span>
+                  </div>
+                  <div className="flex gap-0.5 mb-1">
+                    {renderStars(course.averageRating || course.rating || 0)}
+                  </div>
+                  <span className="text-xs text-gray-500">Average Rating</span>
                 </div>
-                <div>
-                  <p className="text-sm text-gray-500">Estimated Hours</p>
-                  <p className="font-semibold">{course.estimatedHours || 'N/A'} hours</p>
+
+                {/* Total Reviews */}
+                <div className="flex flex-col items-center justify-center bg-blue-50 rounded-xl p-4 border border-blue-100">
+                  <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center mb-2">
+                    <Users className="w-5 h-5 text-blue-600" />
+                  </div>
+                  <span className="text-2xl font-bold text-blue-700">
+                    {course.reviewCount ?? approvedReviews.length}
+                  </span>
+                  <span className="text-xs text-gray-500 mt-1">Student Reviews</span>
                 </div>
-                <div>
-                  <p className="text-sm text-gray-500">Language</p>
-                  <p className="font-semibold">{course.language || 'English'}</p>
-                </div>
-                <div>
-                  <p className="text-sm text-gray-500">Certificate</p>
-                  <p className="font-semibold">{course.certificate ? 'Yes' : 'No'}</p>
-                </div>
-                <div>
-                  <p className="text-sm text-gray-500">Difficulty</p>
-                  <p className="font-semibold">
-                    {'⭐'.repeat(course.difficulty || 1)} ({course.difficulty || 1}/5)
-                  </p>
-                </div>
-                <div>
-                  <p className="text-sm text-gray-500">Max Students</p>
-                  <p className="font-semibold">{course.maxStudents || 'Unlimited'}</p>
+
+                {/* Total Quizzes Completed */}
+                <div className="flex flex-col items-center justify-center bg-green-50 rounded-xl p-4 border border-green-100">
+                  <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center mb-2">
+                    <ClipboardList className="w-5 h-5 text-green-600" />
+                  </div>
+                  <span className="text-2xl font-bold text-green-700">
+                    {course.completedQuizCount ?? 0}
+                  </span>
+                  <span className="text-xs text-gray-500 mt-1">Quizzes Completed</span>
                 </div>
               </div>
             </div>
@@ -333,10 +350,15 @@ export default function CourseDetails() {
               </div>
             )}
 
-            {/* Reviews Section */}
+            {/* ── Approved Student Reviews ── */}
             <div className="bg-white rounded-lg shadow p-4 sm:p-6">
-              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
-                <h2 className="text-xl font-bold text-gray-900">Student Reviews</h2>
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-5">
+                <div>
+                  <h2 className="text-xl font-bold text-gray-900">Student Reviews</h2>
+                  <p className="text-sm text-gray-500 mt-0.5">
+                    {approvedReviews.length} approved review{approvedReviews.length !== 1 ? 's' : ''}
+                  </p>
+                </div>
                 {isAuthenticated && !showReviewForm && (
                   <button
                     onClick={() => setShowReviewForm(true)}
@@ -351,20 +373,16 @@ export default function CourseDetails() {
               {showReviewForm && (
                 <form onSubmit={handleSubmitReview} className="mb-6 p-4 bg-gray-50 rounded-lg">
                   <h3 className="text-lg font-semibold mb-4">Write Your Review</h3>
-                  
+
                   <div className="mb-4">
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Your Rating
-                    </label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Your Rating</label>
                     <div className="flex gap-1">
                       {renderStars(rating, true)}
                     </div>
                   </div>
 
                   <div className="mb-4">
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Your Review
-                    </label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Your Review</label>
                     <textarea
                       value={comment}
                       onChange={(e) => setComment(e.target.value)}
@@ -385,11 +403,7 @@ export default function CourseDetails() {
                     </button>
                     <button
                       type="button"
-                      onClick={() => {
-                        setShowReviewForm(false)
-                        setRating(0)
-                        setComment('')
-                      }}
+                      onClick={() => { setShowReviewForm(false); setRating(0); setComment('') }}
                       className="bg-gray-300 text-gray-700 px-4 sm:px-6 py-2 rounded-lg hover:bg-gray-400 transition-colors text-sm sm:text-base w-full sm:w-auto"
                     >
                       Cancel
@@ -398,35 +412,52 @@ export default function CourseDetails() {
                 </form>
               )}
 
-              {/* Reviews List */}
-              <div className="space-y-4">
-                {course.reviews && course.reviews.length > 0 ? (
-                  course.reviews.map((review, index) => (
-                    <div key={index} className="border-b border-gray-200 pb-4 last:border-b-0">
-                      <div className="flex items-start justify-between mb-2">
-                        <div>
-                          <p className="font-semibold text-gray-900">
-                            {review.student?.name || 'Anonymous Student'}
-                          </p>
-                          <div className="flex items-center gap-2 mt-1">
-                            <div className="flex">
-                              {renderStars(review.rating)}
-                            </div>
-                            <span className="text-sm text-gray-500">
-                              {new Date(review.createdAt).toLocaleDateString()}
+              {/* Approved Reviews List */}
+              <div className="space-y-5">
+                {approvedReviews.length > 0 ? (
+                  approvedReviews.map((review, index) => (
+                    <div key={review._id || index} className="border-b border-gray-100 pb-5 last:border-b-0 last:pb-0">
+                      <div className="flex items-start gap-3">
+                        {/* Avatar */}
+                        <div className="w-9 h-9 rounded-full bg-primary-100 flex items-center justify-center flex-shrink-0">
+                          <span className="text-primary-700 font-semibold text-sm">
+                            {(review.student?.name || review.studentName || 'A').charAt(0).toUpperCase()}
+                          </span>
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 mb-1">
+                            <p className="font-semibold text-gray-900 text-sm">
+                              {review.student?.name || review.studentName || 'Anonymous Student'}
+                            </p>
+                            <span className="text-xs text-gray-400">
+                              {new Date(review.createdAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
                             </span>
                           </div>
+                          {/* Star Rating */}
+                          <div className="flex items-center gap-1 mb-2">
+                            {renderStars(review.rating)}
+                            <span className="text-xs text-gray-500 ml-1">{review.rating}/5</span>
+                          </div>
+                          {/* Comment */}
+                          {review.comment && (
+                            <p className="text-gray-700 text-sm leading-relaxed">{review.comment}</p>
+                          )}
+                          {/* Featured badge */}
+                          {review.isFeatured && (
+                            <span className="inline-flex items-center gap-1 mt-2 px-2 py-0.5 rounded-full text-xs font-medium bg-yellow-50 text-yellow-700 border border-yellow-200">
+                              <Star className="w-3 h-3 fill-current" /> Featured Review
+                            </span>
+                          )}
                         </div>
                       </div>
-                      {review.comment && (
-                        <p className="text-gray-700 mt-2">{review.comment}</p>
-                      )}
                     </div>
                   ))
                 ) : (
-                  <p className="text-gray-500 text-center py-8">
-                    No reviews yet. Be the first to review this course!
-                  </p>
+                  <div className="text-center py-10">
+                    <Star className="w-12 h-12 text-gray-200 mx-auto mb-3" />
+                    <p className="text-gray-500 font-medium">No reviews yet</p>
+                    <p className="text-gray-400 text-sm mt-1">Be the first to review this course!</p>
+                  </div>
                 )}
               </div>
             </div>

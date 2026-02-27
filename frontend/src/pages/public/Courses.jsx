@@ -88,92 +88,85 @@ export default function Courses() {
           </p>
         </div>
 
-        {/* Main Content Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-          {/* Filters Sidebar */}
-          <div className="lg:col-span-1">
-            <div className="bg-white rounded-xl shadow-lg border border-gray-100 p-6 sticky top-4">
-              <h2 className="text-lg font-semibold text-gray-800 mb-4">Filter Courses</h2>
-              <div className="space-y-4">
-                <div>
-                  <label htmlFor="grade-filter" className="block text-sm font-medium text-gray-700 mb-2">
-                    Grade Level
-                  </label>
-                  <select
-                    id="grade-filter"
-                    value={selectedGrade}
-                    onChange={(e) => setSelectedGrade(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-gray-50 hover:bg-white transition-colors"
-                  >
-                    <option value="">All Grades</option>
-                    {availableGrades.map(grade => (
-                      <option key={grade} value={grade}>Grade {grade}</option>
-                    ))}
-                  </select>
-                </div>
+        {/* Horizontal Filter Bar */}
+        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 mb-8">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+            <span className="text-sm font-semibold text-gray-700 whitespace-nowrap">Filter By:</span>
 
-                <div>
-                  <label htmlFor="subject-filter" className="block text-sm font-medium text-gray-700 mb-2">
-                    Subject
-                  </label>
-                  <select
-                    id="subject-filter"
-                    value={selectedSubject}
-                    onChange={(e) => setSelectedSubject(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-gray-50 hover:bg-white transition-colors"
-                  >
-                    <option value="">All Subjects</option>
-                    {availableSubjects.map(subject => (
-                      <option key={subject} value={subject}>{subject}</option>
-                    ))}
-                  </select>
-                </div>
-
-                <div>
-                  <button
-                    onClick={clearFilters}
-                    className="w-full px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-800 border border-gray-200 rounded-lg hover:bg-gray-50 transition-all duration-200"
-                  >
-                    Clear All Filters
-                  </button>
-                </div>
-
-                {/* Active Filters Display */}
-                {(selectedGrade || selectedSubject) && (
-                  <div className="pt-4 border-t border-gray-100">
-                    <span className="text-sm text-gray-500 block mb-3">Active filters:</span>
-                    <div className="space-y-2">
-                      {selectedGrade && (
-                        <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary-50 text-primary-700 border border-primary-200">
-                          Grade {selectedGrade}
-                          <button
-                            onClick={() => setSelectedGrade('')}
-                            className="ml-2 text-primary-500 hover:text-primary-700 text-lg leading-none"
-                          >
-                            ×
-                          </button>
-                        </span>
-                      )}
-                      {selectedSubject && (
-                        <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary-50 text-primary-700 border border-primary-200">
-                          {selectedSubject}
-                          <button
-                            onClick={() => setSelectedSubject('')}
-                            className="ml-2 text-primary-500 hover:text-primary-700 text-lg leading-none"
-                          >
-                            ×
-                          </button>
-                        </span>
-                      )}
-                    </div>
-                  </div>
-                )}
-              </div>
+            {/* Grade Filter */}
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-1 sm:gap-2">
+              <label htmlFor="grade-filter" className="text-sm font-medium text-gray-600 whitespace-nowrap">
+                Grade Level
+              </label>
+              <select
+                id="grade-filter"
+                value={selectedGrade}
+                onChange={(e) => setSelectedGrade(e.target.value)}
+                className="px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-gray-50 hover:bg-white transition-colors text-sm"
+              >
+                <option value="">All Grades</option>
+                {availableGrades.map(grade => (
+                  <option key={grade} value={grade}>Grade {grade}</option>
+                ))}
+              </select>
             </div>
-          </div>
 
-          {/* Main Content */}
-          <div className="lg:col-span-3">
+            {/* Subject Filter */}
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-1 sm:gap-2">
+              <label htmlFor="subject-filter" className="text-sm font-medium text-gray-600 whitespace-nowrap">
+                Subject
+              </label>
+              <select
+                id="subject-filter"
+                value={selectedSubject}
+                onChange={(e) => setSelectedSubject(e.target.value)}
+                className="px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-gray-50 hover:bg-white transition-colors text-sm"
+              >
+                <option value="">All Subjects</option>
+                {availableSubjects.map(subject => (
+                  <option key={subject} value={subject}>{subject}</option>
+                ))}
+              </select>
+            </div>
+
+            {/* Active Filter Tags */}
+            {(selectedGrade || selectedSubject) && (
+              <div className="flex flex-wrap items-center gap-2 sm:ml-auto">
+                {selectedGrade && (
+                  <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary-50 text-primary-700 border border-primary-200">
+                    Grade {selectedGrade}
+                    <button
+                      onClick={() => setSelectedGrade('')}
+                      className="ml-2 text-primary-500 hover:text-primary-700 text-lg leading-none"
+                    >
+                      ×
+                    </button>
+                  </span>
+                )}
+                {selectedSubject && (
+                  <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary-50 text-primary-700 border border-primary-200">
+                    {selectedSubject}
+                    <button
+                      onClick={() => setSelectedSubject('')}
+                      className="ml-2 text-primary-500 hover:text-primary-700 text-lg leading-none"
+                    >
+                      ×
+                    </button>
+                  </span>
+                )}
+                <button
+                  onClick={clearFilters}
+                  className="px-3 py-1 text-sm font-medium text-gray-500 hover:text-gray-700 border border-gray-200 rounded-lg hover:bg-gray-50 transition-all duration-200"
+                >
+                  Clear All
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Main Content */}
+        <div>
             {/* Results Summary */}
             <div className="mb-6">
               <p className="text-gray-600 font-medium">
@@ -232,7 +225,6 @@ export default function Courses() {
                 ))}
               </div>
             )}
-          </div>
         </div>
       </div>
     </div>

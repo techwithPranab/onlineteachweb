@@ -65,7 +65,7 @@ export default function AdminDashboard() {
     },
     {
       label: 'Total Revenue',
-      value: `$${analytics.totalRevenue?.toLocaleString() || '0'}`,
+      value: `₹${analytics.totalRevenue?.toLocaleString('en-IN') || '0'}`,
       change: '+23%',
       icon: DollarSign,
       color: 'green',

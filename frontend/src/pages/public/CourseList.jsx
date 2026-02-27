@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate, useParams, Link } from 'react-router-dom'
 import { useQuery } from 'react-query'
-import { BookOpen, Star, ArrowLeft } from 'lucide-react'
+import { BookOpen, Star, ArrowLeft, ClipboardList, HelpCircle } from 'lucide-react'
 import { courseService } from '../../services/apiServices'
 import LoadingSpinner from '../../components/common/LoadingSpinner'
 import ErrorMessage from '../../components/common/ErrorMessage'
@@ -100,13 +100,17 @@ export default function CourseList() {
 
                   {/* Stats */}
                   <div className="flex items-center gap-4 text-sm text-gray-600 mb-4">
-                    <div className="flex items-center gap-1">
+                    <div className="flex items-center gap-1" title="Average Rating">
                       <Star className="w-4 h-4 text-yellow-400 fill-current" />
                       <span>{course.averageRating?.toFixed(1) || 'N/A'}</span>
                     </div>
-                    <div className="flex items-center gap-1">
-                      <BookOpen className="w-4 h-4" />
-                      <span>{course.enrolledStudents?.length || 0} students</span>
+                    <div className="flex items-center gap-1" title="Total Questions">
+                      <HelpCircle className="w-4 h-4 text-blue-500" />
+                      <span>{course.questionCount ?? 0} questions</span>
+                    </div>
+                    <div className="flex items-center gap-1" title="Quizzes Completed">
+                      <ClipboardList className="w-4 h-4 text-green-500" />
+                      <span>{course.completedQuizCount ?? 0} quizzes done</span>
                     </div>
                   </div>
 

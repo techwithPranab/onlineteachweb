@@ -64,20 +64,20 @@ const UpgradePrompt = ({
   const planComparison = [
     {
       name: 'Free',
-      price: '$0/month',
+      price: '₹0/month',
       features: ['2 courses', '5 live sessions', 'Basic support'],
       current: currentPlan?.name === 'Free'
     },
     {
       name: 'Standard',
-      price: '$19/month',
+      price: '₹19/month',
       features: ['10 courses', 'Unlimited live sessions', 'Priority support', 'HD videos'],
       current: currentPlan?.name === 'Standard',
       recommended: true
     },
     {
       name: 'Premium',
-      price: '$39/month',
+      price: '₹39/month',
       features: ['Unlimited courses', 'All features', '1-on-1 tutoring', 'Offline access', 'Advanced analytics'],
       current: currentPlan?.name === 'Premium'
     }

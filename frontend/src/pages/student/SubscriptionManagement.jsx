@@ -370,7 +370,7 @@ export default function SubscriptionManagement() {
                   </div>
                   <div className="flex justify-between items-center">
                     <p className="text-lg font-bold text-gray-900">
-                      {invoice.currency === 'INR' ? '₹' : '$'}{invoice.amount.toFixed(2)}
+                      ₹{invoice.amount.toFixed(2)}
                     </p>
                     {invoice.invoiceUrl && (
                       <a
@@ -422,7 +422,7 @@ export default function SubscriptionManagement() {
                           {invoice.description}
                         </td>
                         <td className="py-3 sm:py-4 px-2 sm:px-4 text-xs sm:text-sm font-bold text-gray-900 whitespace-nowrap">
-                          {invoice.currency === 'INR' ? '₹' : '$'}{invoice.amount.toFixed(2)}
+                          ₹{invoice.amount.toFixed(2)}
                         </td>
                         <td className="py-3 sm:py-4 px-2 sm:px-4 whitespace-nowrap">
                           <span className={`px-2 sm:px-3 py-1 rounded-full text-xs font-bold capitalize shadow-lg ${
