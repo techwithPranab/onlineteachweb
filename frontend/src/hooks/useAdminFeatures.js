@@ -170,19 +170,23 @@ export const usePlanComparison = () => {
       const allowedFeatures = plan.allowedFeatures || [];
       const existingIndex = allowedFeatures.findIndex(f => f.featureKey === featureKey);
 
+      // If enabled not explicitly provided, flip the current value
+      const currentEnabled = existingIndex >= 0 ? (allowedFeatures[existingIndex].enabled !== false) : false;
+      const newEnabled = enabled !== undefined ? enabled : !currentEnabled;
+
       let updatedFeatures;
       if (existingIndex >= 0) {
         // Update existing feature
         updatedFeatures = [...allowedFeatures];
         updatedFeatures[existingIndex] = {
           ...updatedFeatures[existingIndex],
-          enabled
+          enabled: newEnabled
         };
       } else {
         // Add new feature
         updatedFeatures = [
           ...allowedFeatures,
-          { featureKey, enabled, limit: null }
+          { featureKey, enabled: newEnabled, limit: null }
         ];
       }
 
@@ -245,7 +249,10 @@ export const usePlanComparison = () => {
     refetch: fetchComparison,
     updatePlan,
     toggleFeature,
-    setFeatureLimit
+    setFeatureLimit,
+    // Changes are saved immediately on each toggle/limit change,
+    // so savePlanChanges is a no-op kept for API compatibility.
+    savePlanChanges: async () => ({ success: true }),
   };
 };
 

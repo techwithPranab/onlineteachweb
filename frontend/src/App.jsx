@@ -75,6 +75,7 @@ import AdminQuestionBank from './pages/admin/QuestionBank'
 import AdminQuestionImportExport from './pages/admin/QuestionImportExport'
 import ContactMessages from './pages/admin/ContactMessages'
 import StudentPerformanceDashboard from './pages/admin/StudentPerformanceDashboard'
+import ReviewApproval from './pages/admin/ReviewApproval'
 
 // Shared
 import ProfileSettings from './pages/shared/ProfileSettings'
@@ -220,6 +221,7 @@ function App() {
             <Route path="questions" element={<AdminQuestionBank />} />
             <Route path="questions/import-export" element={<AdminQuestionImportExport />} />
             <Route path="contact-messages" element={<ContactMessages />} />
+            <Route path="reviews" element={<ReviewApproval />} />
             <Route path="ai-questions" element={<AIQuestionReview />} />
             <Route path="ai-questions/generate" element={<AIQuestionGenerator />} />
             <Route path="ai-questions/review" element={<AIQuestionReview />} />

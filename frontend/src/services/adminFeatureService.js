@@ -211,7 +211,11 @@ class AdminFeatureService {
     // - { comparison: { plans, features } }
     // - { plans, features }
     const payload = (comparisonData && (comparisonData.data || comparisonData.comparison)) || comparisonData || {};
-    const plans = payload.plans || [];
+    // Normalize plans: backend returns { id } but frontend expects { _id }
+    const plans = (payload.plans || []).map(p => ({
+      ...p,
+      _id: p._id || p.id,
+    }));
     const features = payload.features || [];
 
     // Group features by category
@@ -223,13 +227,16 @@ class AdminFeatureService {
       return acc;
     }, {});
 
-    // Build matrix: matrix[featureKey][planId] = { enabled, limit }
+    // Build matrix: matrix[planId][featureKey] = { enabled, limit }
+    // (UI reads as matrix[plan._id][feature.key])
     const matrix = {};
-    features.forEach(feature => {
-      matrix[feature.key] = {};
-      plans.forEach(plan => {
+    plans.forEach(plan => {
+      matrix[plan._id] = {};
+      features.forEach(feature => {
         const planFeature = plan.allowedFeatures?.find(f => f.featureKey === feature.key);
-        matrix[feature.key][plan._id] = planFeature || { enabled: false, limit: null };
+        matrix[plan._id][feature.key] = planFeature
+          ? { enabled: planFeature.enabled !== false, limit: planFeature.limit ?? null }
+          : { enabled: false, limit: null };
       });
     });
 

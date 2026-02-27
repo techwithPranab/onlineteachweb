@@ -55,7 +55,7 @@ export default function RevenueAnalytics() {
   const subscriptionBreakdown = analytics.subscriptionData?.map(item => ({
     plan: item.name,
     revenue: item.value,
-    users: Math.floor(item.value / 10) // Estimate users based on revenue
+    users: item.users ?? Math.floor(item.value / 100)
   })) || [
     { plan: 'Basic', revenue: 4200, users: 420 },
     { plan: 'Standard', revenue: 20400, users: 680 },
@@ -82,7 +82,7 @@ export default function RevenueAnalytics() {
   const stats = [
     {
       label: 'Total Revenue',
-      value: `$${analytics.totalRevenue?.toLocaleString() || '45,280'}`,
+      value: `₹${analytics.totalRevenue?.toLocaleString('en-IN') ?? '45,280'}`,
       change: '+23%',
       trend: 'up',
       icon: DollarSign,
@@ -90,7 +90,7 @@ export default function RevenueAnalytics() {
     },
     {
       label: 'Subscription Revenue',
-      value: `$${analytics.subscriptionRevenue?.toLocaleString() || '32,000'}`,
+      value: `₹${analytics.subscriptionRevenue?.toLocaleString('en-IN') ?? '32,000'}`,
       change: '+18%',
       trend: 'up',
       icon: CreditCard,
@@ -98,7 +98,7 @@ export default function RevenueAnalytics() {
     },
     {
       label: 'Course Sales',
-      value: `$${analytics.courseRevenue?.toLocaleString() || '13,280'}`,
+      value: `₹${analytics.courseRevenue?.toLocaleString('en-IN') ?? '13,280'}`,
       change: '+35%',
       trend: 'up',
       icon: TrendingUp,
@@ -106,7 +106,7 @@ export default function RevenueAnalytics() {
     },
     {
       label: 'Active Subscribers',
-      value: analytics.totalUsers?.toLocaleString() || '1,248',
+      value: analytics.totalUsers?.toLocaleString('en-IN') ?? '1,248',
       change: '+12%',
       trend: 'up',
       icon: Users,
@@ -222,8 +222,8 @@ export default function RevenueAnalytics() {
               </defs>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="date" />
-              <YAxis />
-              <Tooltip />
+              <YAxis tickFormatter={(v) => `₹${v.toLocaleString('en-IN')}`} />
+              <Tooltip formatter={(v) => [`₹${v.toLocaleString('en-IN')}`, '']} />
               <Legend />
               <Area
                 type="monotone"
@@ -248,8 +248,8 @@ export default function RevenueAnalytics() {
               <BarChart data={subscriptionBreakdown}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="plan" />
-                <YAxis />
-                <Tooltip />
+                <YAxis tickFormatter={(v) => `₹${v.toLocaleString('en-IN')}`} />
+                <Tooltip formatter={(v) => [`₹${v.toLocaleString('en-IN')}`, 'Revenue']} />
                 <Legend />
                 <Bar dataKey="revenue" fill="#6366f1" />
               </BarChart>
@@ -309,10 +309,10 @@ export default function RevenueAnalytics() {
                     <td className="py-1 px-2 text-xs font-medium text-gray-900">{course.name}</td>
                     <td className="py-1 px-2 text-xs text-gray-600">{course.students}</td>
                     <td className="py-1 px-2 text-xs font-semibold text-gray-900">
-                      ${course.revenue.toLocaleString()}
+                      ₹{course.revenue.toLocaleString('en-IN')}
                     </td>
                     <td className="py-1 px-2 text-xs text-gray-600">
-                      ${(course.revenue / course.students).toFixed(2)}
+                      ₹{(course.revenue / course.students).toFixed(2)}
                     </td>
                   </tr>
                 ))}
@@ -331,7 +331,7 @@ export default function RevenueAnalytics() {
               <h3 className="text-base font-semibold text-gray-900">This Month</h3>
             </div>
             <p className="text-2xl font-bold text-gray-900 mb-2">
-              ${analytics.totalRevenue?.toLocaleString() || '45,280'}
+              ₹{analytics.totalRevenue?.toLocaleString('en-IN') ?? '45,280'}
             </p>
             <p className="text-sm text-green-600 font-medium">+23% from last month</p>
           </div>
@@ -357,7 +357,7 @@ export default function RevenueAnalytics() {
               <h3 className="text-base font-semibold text-gray-900">ARPU</h3>
             </div>
             <p className="text-2xl font-bold text-gray-900 mb-2">
-              ${analytics.arpu?.toFixed(2) || '36.28'}
+              ₹{analytics.arpu?.toFixed(2) ?? '36.28'}
             </p>
             <p className="text-sm text-gray-600">Average revenue per user</p>
           </div>

@@ -24,6 +24,9 @@ router.post('/',
 // Get sessions
 router.get('/', authenticate, sessionController.getSessions);
 
+// Get pending sessions (admin) - must be BEFORE /:id to avoid route conflict
+router.get('/pending', authenticate, authorize('admin'), sessionController.getPendingSessions);
+
 // Enroll in session (students)
 router.post('/:id/enroll',
   authenticate,

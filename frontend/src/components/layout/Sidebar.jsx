@@ -26,6 +26,7 @@ import {
   Mail,
   History,
   LogOut,
+  Star,
 } from 'lucide-react'
 
 const studentLinks = [
@@ -94,6 +95,7 @@ const adminLinks = [
       { to: '/admin/users', icon: Users, label: 'Users' },
       { to: '/admin/contact-messages', icon: Mail, label: 'Contact Messages' },
       { to: '/admin/tutors/approval', icon: GraduationCap, label: 'Tutor Approval' },
+      { to: '/admin/reviews', icon: Star, label: 'Review Approval' },
     ]
   },
 
