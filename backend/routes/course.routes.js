@@ -42,6 +42,9 @@ router.get('/grades/:grade/subjects/:subject/courses', authenticate, courseContr
 // Get course by ID - Make it public for course details page
 router.get('/:id', courseController.getCourseById);
 
+// Get completed quiz count for a course (for the current student)
+router.get('/:id/quiz-count', authenticate, courseController.getCourseQuizCount);
+
 // Submit review - Authenticated users (requires feature)
 router.post('/:id/review',
   authenticate,

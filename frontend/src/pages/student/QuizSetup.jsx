@@ -34,6 +34,8 @@ export default function QuizSetup() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [showCourseSelection, setShowCourseSelection] = useState(false)
+  const [courseQuestionCounts, setCourseQuestionCounts] = useState({}) // Track question counts per course
+  const [courseQuizCounts, setCourseQuizCounts] = useState({}) // Track completed quiz counts per course
   
   // Quiz configuration state
   const [config, setConfig] = useState({
@@ -79,14 +81,32 @@ export default function QuizSetup() {
         setShowCourseSelection(true) // Show course selection when accessed directly
       }
       
-      // Load all available courses
-      const courseResponse = await courseService.getCourses()
+      // Load subjects using the dedicated subjects endpoint (filtered by user's grade)
+      // This ensures we get ALL subjects, not just the first 10 from a paginated courses call
+      const studentGrade = user?.grade
+      const courseParams = { limit: 1000, ...(studentGrade ? { grade: studentGrade } : {}) }
+
+      const [subjectsResponse, courseResponse] = await Promise.all([
+        courseService.getSubjects().catch(() => null), // already filtered by grade on backend
+        courseService.getCourses(courseParams)         // filter by student's grade
+      ])
+
       const allCourses = courseResponse.courses || []
       setCourses(allCourses)
-      
-      // Extract unique subjects
-      const uniqueSubjects = [...new Set(allCourses.map(c => c.subject))].filter(Boolean)
+
+      // Use dedicated subjects endpoint first; fall back to extracting from courses
+      let uniqueSubjects
+      if (subjectsResponse?.subjects?.length > 0) {
+        uniqueSubjects = subjectsResponse.subjects.map(s => s.name || s).filter(Boolean).sort()
+      } else {
+        uniqueSubjects = [...new Set(allCourses.map(c => c.subject))].filter(Boolean).sort()
+      }
+
+      console.log('[QuizSetup] Student grade:', studentGrade, '| Subjects loaded:', uniqueSubjects)
       setSubjects(uniqueSubjects)
+
+      // Fetch question counts for all courses
+      await fetchQuestionCounts(allCourses)
       
     } catch (err) {
       setError(err.message || 'Failed to load quiz configuration')
@@ -94,6 +114,29 @@ export default function QuizSetup() {
     } finally {
       setLoading(false)
     }
+  }
+
+  /**
+   * Fetch question counts and completed quiz counts for all courses
+   */
+  const fetchQuestionCounts = async (coursesToCheck) => {
+    const questionCounts = {}
+    const quizCounts = {}
+
+    // Fetch both question counts and quiz counts in parallel for all courses
+    await Promise.allSettled(
+      coursesToCheck.map(async (course) => {
+        const [qCountRes, quizCountRes] = await Promise.allSettled([
+          questionService.getQuestionCount(course._id),
+          courseService.getCourseQuizCount(course._id)
+        ])
+        questionCounts[course._id] = qCountRes.status === 'fulfilled' ? (qCountRes.value?.count || 0) : 0
+        quizCounts[course._id] = quizCountRes.status === 'fulfilled' ? (quizCountRes.value?.count || 0) : 0
+      })
+    )
+
+    setCourseQuestionCounts(questionCounts)
+    setCourseQuizCounts(quizCounts)
   }
 
   // Filter courses when subject changes
@@ -351,24 +394,40 @@ export default function QuizSetup() {
             {/* Subject Selection */}
             <div className="mb-6">
               <label className="block text-sm font-medium text-gray-700 mb-3">
-                Step 1: Select Subject
+                Step 1: Select Subject ({subjects.length} available)
               </label>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                {subjects.map(subject => (
-                  <button
-                    key={subject}
-                    onClick={() => setConfig(prev => ({ ...prev, subject }))}
-                    className={`p-4 border-2 rounded-lg transition-all ${
-                      config.subject === subject
-                        ? 'border-indigo-600 bg-indigo-50 text-indigo-700'
-                        : 'border-gray-200 hover:border-gray-300 text-gray-700'
-                    }`}
-                  >
-                    <BookOpen className="w-6 h-6 mx-auto mb-2" />
-                    <p className="font-medium text-sm">{subject}</p>
-                  </button>
-                ))}
-              </div>
+              {subjects.length === 0 ? (
+                <div className="text-center py-8 bg-gray-50 rounded-lg">
+                  <p className="text-gray-500">No subjects available at the moment.</p>
+                </div>
+              ) : (
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+                  {subjects.sort().map(subject => {
+                    // Count courses for this subject
+                    const coursesForSubject = courses.filter(c => c.subject === subject).length
+                    const questionsForSubject = courses
+                      .filter(c => c.subject === subject)
+                      .reduce((sum, c) => sum + (courseQuestionCounts[c._id] || 0), 0)
+                    
+                    return (
+                      <button
+                        key={subject}
+                        onClick={() => setConfig(prev => ({ ...prev, subject }))}
+                        className={`p-4 border-2 rounded-lg transition-all ${
+                          config.subject === subject
+                            ? 'border-indigo-600 bg-indigo-50 text-indigo-700'
+                            : 'border-gray-200 hover:border-gray-300 text-gray-700'
+                        }`}
+                        title={`${coursesForSubject} courses, ${questionsForSubject} questions available`}
+                      >
+                        <BookOpen className="w-6 h-6 mx-auto mb-2" />
+                        <p className="font-medium text-sm">{subject}</p>
+                        <p className="text-xs text-gray-500 mt-1">{coursesForSubject} course{coursesForSubject !== 1 ? 's' : ''}</p>
+                      </button>
+                    )
+                  })}
+                </div>
+              )}
             </div>
             
             {/* Course Selection */}
@@ -378,26 +437,52 @@ export default function QuizSetup() {
                   Step 2: Select Course
                 </label>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {filteredCourses.map(course => (
-                    <div
-                      key={course._id}
-                      onClick={() => {
-                        setConfig(prev => ({ ...prev, courseId: course._id }))
-                        setShowCourseSelection(false)
-                      }}
-                      className={`p-4 border-2 rounded-lg cursor-pointer transition-all ${
-                        config.courseId === course._id
-                          ? 'border-indigo-600 bg-indigo-50'
-                          : 'border-gray-200 hover:border-indigo-300 hover:bg-indigo-50'
-                      }`}
-                    >
-                      <h3 className="font-semibold text-gray-900 mb-1">{course.title}</h3>
-                      <p className="text-sm text-gray-500">Grade {course.grade} • {course.subject}</p>
-                      {course.description && (
-                        <p className="text-xs text-gray-400 mt-2 line-clamp-2">{course.description}</p>
-                      )}
-                    </div>
-                  ))}
+                  {filteredCourses.map(course => {
+                    const questionCount = courseQuestionCounts[course._id] || 0
+                    const hasQuestions = questionCount > 0
+                    const completedQuizzes = courseQuizCounts[course._id] || 0
+
+                    return (
+                      <div
+                        key={course._id}
+                        onClick={() => {
+                          if (hasQuestions) {
+                            setConfig(prev => ({ ...prev, courseId: course._id }))
+                            setShowCourseSelection(false)
+                          }
+                        }}
+                        className={`p-4 border-2 rounded-lg transition-all relative ${
+                          !hasQuestions
+                            ? 'border-gray-200 bg-gray-50 cursor-not-allowed opacity-60'
+                            : config.courseId === course._id
+                            ? 'border-indigo-600 bg-indigo-50 cursor-pointer'
+                            : 'border-gray-200 hover:border-indigo-300 hover:bg-indigo-50 cursor-pointer'
+                        }`}
+                      >
+                        <h3 className="font-semibold text-gray-900 mb-1">{course.title}</h3>
+                        <p className="text-sm text-gray-500">Grade {course.grade} • {course.subject}</p>
+                        {course.description && (
+                          <p className="text-xs text-gray-400 mt-2 line-clamp-2">{course.description}</p>
+                        )}
+
+                        {/* Counts row */}
+                        <div className="mt-3 flex items-center gap-2 flex-wrap">
+                          {hasQuestions ? (
+                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                              {questionCount} {questionCount === 1 ? 'question' : 'questions'}
+                            </span>
+                          ) : (
+                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                              No questions available
+                            </span>
+                          )}
+                          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 text-indigo-700">
+                            🏆 {completedQuizzes} {completedQuizzes === 1 ? 'quiz' : 'quizzes'} done
+                          </span>
+                        </div>
+                      </div>
+                    )
+                  })}
                 </div>
                 
                 {filteredCourses.length === 0 && (
@@ -589,6 +674,27 @@ export default function QuizSetup() {
                   </label>
                 </div>
               </div>
+
+              {/* Create Quiz Button - Moved below rules */}
+              <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 sm:p-6">
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <button
+                    onClick={handleStartQuiz}
+                    disabled={!acceptedRules || (!config.courseId && !quizId) || loading}
+                    className="flex-1 btn-primary flex items-center justify-center gap-2 min-h-[44px] disabled:opacity-50 disabled:cursor-not-allowed text-sm sm:text-base"
+                  >
+                    {loading ? 'Creating Quiz...' : 'Create Quiz'}
+                    <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
+                  </button>
+                  
+                  <button
+                    onClick={() => navigate('/student/quizzes')}
+                    className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 text-gray-700 min-h-[44px] text-sm sm:text-base"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
             </div>
 
             {/* Sidebar - Quiz Summary */}
@@ -651,22 +757,6 @@ export default function QuizSetup() {
                     </div>
                   )}
                 </div>
-                
-                <button
-                  onClick={handleStartQuiz}
-                  disabled={!acceptedRules || (!config.courseId && !quizId) || loading}
-                  className="w-full btn-primary flex items-center justify-center gap-2 min-h-[44px] disabled:opacity-50 disabled:cursor-not-allowed text-sm sm:text-base"
-                >
-                  {loading ? 'Creating Quiz...' : 'Create Quiz'}
-                  <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
-                </button>
-                
-                <button
-                  onClick={() => navigate('/student/quizzes')}
-                  className="w-full mt-3 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 text-gray-700 min-h-[44px] text-sm sm:text-base"
-                >
-                  Cancel
-                </button>
               </div>
             </div>
           </div>

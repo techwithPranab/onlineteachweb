@@ -66,6 +66,11 @@ export const courseService = {
     return data
   },
 
+  getCourseQuizCount: async (courseId) => {
+    const { data } = await api.get(`/courses/${courseId}/quiz-count`)
+    return data
+  },
+
   createCourse: async (courseData) => {
     const { data } = await api.post('/courses', courseData)
     return data
@@ -550,6 +555,12 @@ export const questionService = {
   // Get generation by ID
   getGenerationById: async (id) => {
     const { data } = await api.get(`/questions/generate/${id}`)
+    return data
+  },
+
+  // Get question count for a course
+  getQuestionCount: async (courseId) => {
+    const { data } = await api.get(`/questions/count/${courseId}`)
     return data
   },
 }

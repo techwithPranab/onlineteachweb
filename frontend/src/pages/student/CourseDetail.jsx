@@ -11,6 +11,7 @@ import {
   FileText,
   CheckCircle,
   PlusCircle,
+  Trophy,
 } from 'lucide-react'
 import { courseService, materialService, sessionService, reviewService } from '@/services/apiServices'
 import LoadingSpinner from '@/components/common/LoadingSpinner'
@@ -60,6 +61,12 @@ console.log('materialsData: ', materialsData);
     ['sessions', id],
     () => sessionService.getSessions({ courseId: id }),
     { enabled: !!id }
+  )
+
+  const { data: quizCountData } = useQuery(
+    ['courseQuizCount', id],
+    () => courseService.getCourseQuizCount(id),
+    { enabled: !!id && !!user }
   )
 
   // Reviews queries
@@ -243,7 +250,7 @@ console.log('materialsData: ', materialsData);
             </div>
 
             {/* Stats Grid - Mobile Optimized */}
-            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-2 sm:gap-3 md:gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2 sm:gap-3 md:gap-4">
               <div className="genz-card p-2.5 sm:p-3 md:p-4 lg:p-5 active:scale-[0.98] sm:hover:scale-105 transition-all">
                 <div className="flex flex-col items-center gap-1.5 sm:gap-2">
                   <Star className="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 lg:w-8 lg:h-8 text-yellow-400 fill-current animate-pulse flex-shrink-0" />
@@ -280,6 +287,18 @@ console.log('materialsData: ', materialsData);
                   <div className="text-center min-w-0">
                     <div className="font-bold text-base sm:text-lg md:text-xl text-gray-900 capitalize truncate">{course.level || 'Intermediate'}</div>
                     <div className="text-[10px] sm:text-xs md:text-sm text-gray-600 font-medium">Level</div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="genz-card p-2.5 sm:p-3 md:p-4 lg:p-5 active:scale-[0.98] sm:hover:scale-105 transition-all col-span-2 sm:col-span-1">
+                <div className="flex flex-col items-center gap-1.5 sm:gap-2">
+                  <Trophy className="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 lg:w-8 lg:h-8 text-indigo-500 flex-shrink-0" />
+                  <div className="text-center min-w-0">
+                    <div className="font-bold text-base sm:text-lg md:text-xl text-indigo-600">
+                      {quizCountData?.count ?? course.completedQuizCount ?? 0}
+                    </div>
+                    <div className="text-[10px] sm:text-xs md:text-sm text-gray-600 font-medium">Quizzes Done</div>
                   </div>
                 </div>
               </div>

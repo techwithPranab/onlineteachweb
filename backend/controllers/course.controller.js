@@ -267,10 +267,15 @@ exports.getCourseById = async (req, res, next) => {
     const Material = require('../models/Material.model');
     const Session = require('../models/Session.model');
     const Question = require('../models/Question.model');
+    const QuizSession = require('../models/QuizSession.model');
 
-    const [sessions, questionCount] = await Promise.all([
+    const [sessions, questionCount, completedQuizCount] = await Promise.all([
       Session.find({ course: course._id }).sort('scheduledAt'),
-      Question.countDocuments({ courseId: course._id })
+      Question.countDocuments({ courseId: course._id }),
+      QuizSession.countDocuments({
+        courseId: course._id,
+        status: { $in: ['completed', 'submitted', 'auto-submitted'] }
+      })
     ]);
 
     res.json({
@@ -278,6 +283,7 @@ exports.getCourseById = async (req, res, next) => {
       course: {
         ...course.toObject(),
         questionCount,
+        completedQuizCount,
         createdBy: course.createdBy || null // Handle missing createdBy
       },
       materials: [],
@@ -417,6 +423,23 @@ exports.getCourseStudents = async (req, res, next) => {
   }
 };
 
+// @desc    Get completed quiz count for a specific course (current student)
+// @route   GET /api/courses/:id/quiz-count
+// @access  Private
+exports.getCourseQuizCount = async (req, res, next) => {
+  try {
+    const QuizSession = require('../models/QuizSession.model');
+    const count = await QuizSession.countDocuments({
+      courseId: req.params.id,
+      studentId: req.user._id,
+      status: { $in: ['completed', 'submitted', 'auto-submitted'] }
+    });
+    res.json({ success: true, count });
+  } catch (error) {
+    next(error);
+  }
+};
+
 // @desc    Get unique grades
 // @route   GET /api/courses/grades
 // @access  Private
@@ -437,12 +460,18 @@ exports.getGrades = async (req, res, next) => {
 // @access  Private
 exports.getSubjects = async (req, res, next) => {
   try {
-    const userGrade = req.user.grade;
+    const userGrade = req.user?.grade;
 
-    // Get subjects with courses filtered by user's grade
+    // Build match query - only filter by grade if user has a grade set
+    const matchQuery = { isActive: true };
+    if (userGrade) {
+      matchQuery.grade = userGrade;
+    }
+
+    // Get subjects with courses (filtered by user's grade if available)
     const subjectsWithCourses = await Course.aggregate([
       {
-        $match: { grade: userGrade } // Filter courses by user's grade
+        $match: matchQuery
       },
       {
         $group: {
