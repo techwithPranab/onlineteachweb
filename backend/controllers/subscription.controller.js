@@ -94,6 +94,15 @@ exports.createCheckout = async (req, res, next) => {
         currentPeriodEnd: new Date(stripeSubscription.current_period_end * 1000)
       });
 
+      // **IMPORTANT**: update the user document so requests that rely on
+      // `user.activeSubscription` (e.g. subscription features / header badge)
+      // will immediately reflect the new plan instead of waiting for a webhook.
+      try {
+        await User.findByIdAndUpdate(req.user._id, { activeSubscription: subscription._id });
+      } catch (err) {
+        console.error('Failed to update user.activeSubscription after stripe checkout:', err.message || err);
+      }
+
       return res.status(201).json({
         success: true,
         subscription,

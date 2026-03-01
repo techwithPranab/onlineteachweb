@@ -46,6 +46,7 @@ export default function SubscriptionManagement() {
       onSuccess: () => {
         queryClient.invalidateQueries('subscriptionStatus')
         queryClient.invalidateQueries('subscriptionFeatures')
+        queryClient.invalidateQueries('userFeatures')
       },
     }
   )
@@ -54,6 +55,7 @@ export default function SubscriptionManagement() {
     onSuccess: () => {
       queryClient.invalidateQueries('subscriptionStatus')
       queryClient.invalidateQueries('subscriptionFeatures')
+      queryClient.invalidateQueries('userFeatures')
     }
   })
 
@@ -108,6 +110,7 @@ export default function SubscriptionManagement() {
     queryClient.invalidateQueries('subscriptionStatus')
     queryClient.invalidateQueries('billingHistory')
     queryClient.invalidateQueries('subscriptionFeatures')
+    queryClient.invalidateQueries('userFeatures')
     setShowUpgradeModal(false)
     setSelectedPlan(null)
     
