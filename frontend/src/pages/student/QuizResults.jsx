@@ -265,7 +265,7 @@ export default function QuizResults() {
         return {
           scoreAnalysis: { totalQuestions: 0, correct: 0, wrong: 0, percentage: 0 },
           topicAnalysis: [],
-          difficultyAnalysis: { easy: { total: 0, correct: 0 }, medium: {}, hard: {} },
+          difficultyAnalysis: { easy: { total: 0, correct: 0 }, medium: {}, hard: {}, olympiad: {} },
           timeAnalysis: {},
           improvementAreas: [],
           nextActions: []

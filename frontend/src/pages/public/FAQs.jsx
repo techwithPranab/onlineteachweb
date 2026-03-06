@@ -113,7 +113,7 @@ export default function FAQs() {
     {
       category: 'quizzes',
       question: 'How do I create a quiz?',
-      answer: 'Students can create custom quizzes from the Quiz Setup page. Select your subject, course, grade level, difficulty (Easy/Medium/Hard), number of questions (1-100), and duration (1-300 minutes). The AI will generate personalized questions based on your selected criteria. You can also choose between different question selection strategies like adaptive or random.'
+      answer: 'Students can create custom quizzes from the Quiz Setup page. Select your subject, course, grade level, difficulty (Easy/Medium/Hard/Olympiad), number of questions (1-100), and duration (1-300 minutes). The AI will generate personalized questions based on your selected criteria. You can also choose between different question selection strategies like adaptive or random.'
     },
     {
       category: 'quizzes',

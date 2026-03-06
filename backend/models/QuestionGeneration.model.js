@@ -45,7 +45,7 @@ const questionGenerationSchema = new mongoose.Schema({
   generationParams: {
     difficultyLevel: {
       type: String,
-      enum: ['easy', 'medium', 'hard']
+      enum: ['easy', 'medium', 'hard', 'olympiad']
     },
     questionType: {
       type: String,

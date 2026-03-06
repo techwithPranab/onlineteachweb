@@ -13,7 +13,7 @@ const validateQuizCreation = [
   body('subject').isString().trim().notEmpty().withMessage('Subject is required'),
   body('courseName').isString().trim().notEmpty().withMessage('Course name is required'),
   body('courseId').isMongoId().withMessage('Valid course ID is required'),
-  body('difficulty').isIn(['easy', 'medium', 'hard']).withMessage('Valid difficulty level required'),
+  body('difficulty').isIn(['easy', 'medium', 'hard', 'olympiad']).withMessage('Valid difficulty level required'),
   body('questionCount').isInt({ min: 1, max: 100 }).withMessage('Question count must be between 1-100'),
   body('duration').isInt({ min: 1, max: 300 }).withMessage('Duration must be between 1-300 minutes'),
   body('questions').optional().isArray().withMessage('Questions array must be an array'),
@@ -23,7 +23,7 @@ const validateQuizCreation = [
   body('questions.*.options').optional().isArray().withMessage('Question options are required'),
   body('questions.*.correctAnswer').optional().exists().withMessage('Correct answer is required'),
   body('questions.*.topic').optional().isString().notEmpty().withMessage('Question topic is required'),
-  body('questions.*.difficulty').optional().isIn(['easy', 'medium', 'hard']).withMessage('Valid question difficulty required'),
+  body('questions.*.difficulty').optional().isIn(['easy', 'medium', 'hard', 'olympiad']).withMessage('Valid question difficulty required'),
   body('questionSelectionStrategy').optional().isIn(['adaptive', 'default']).withMessage('Valid strategy required')
 ];
 

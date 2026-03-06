@@ -256,6 +256,7 @@ export default function QuestionImportExport() {
                 <option value="easy">Easy</option>
                 <option value="medium">Medium</option>
                 <option value="hard">Hard</option>
+                <option value="olympiad">Olympiad</option>
               </select>
             </div>
             

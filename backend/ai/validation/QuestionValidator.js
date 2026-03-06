@@ -7,7 +7,7 @@ const logger = require('../../utils/logger');
 class QuestionValidator {
   constructor() {
     // Valid enums
-    this.validDifficulties = ['easy', 'medium', 'hard'];
+    this.validDifficulties = ['easy', 'medium', 'hard', 'olympiad'];
     this.validTypes = ['mcq-single', 'mcq-multiple', 'true-false', 'numerical', 'short-answer', 'long-answer', 'case-based'];
     
     // Required fields per question type
@@ -298,9 +298,19 @@ class QuestionValidator {
       difficultyLevel: question.difficultyLevel,
       type: question.type,
       explanation: question.explanation?.trim() || '',
-      marks: question.marks || (question.difficultyLevel === 'easy' ? 1 : question.difficultyLevel === 'medium' ? 2 : 3),
+      marks: question.marks || (
+        question.difficultyLevel === 'easy' ? 1 : 
+        question.difficultyLevel === 'medium' ? 2 : 
+        question.difficultyLevel === 'hard' ? 3 : 
+        question.difficultyLevel === 'olympiad' ? 5 : 3
+      ),
       negativeMarks: question.negativeMarks || 0,
-      recommendedTime: question.recommendedTime || (question.difficultyLevel === 'easy' ? 60 : question.difficultyLevel === 'medium' ? 120 : 180),
+      recommendedTime: question.recommendedTime || (
+        question.difficultyLevel === 'easy' ? 60 : 
+        question.difficultyLevel === 'medium' ? 120 : 
+        question.difficultyLevel === 'hard' ? 180 : 
+        question.difficultyLevel === 'olympiad' ? 300 : 180
+      ),
       tags: Array.isArray(question.tags) ? question.tags.map(t => t.trim()) : []
     };
     

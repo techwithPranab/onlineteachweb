@@ -379,9 +379,26 @@ class AIQuestionGenerationService {
           continue; // Skip saving this draft
         }
 
-        finalPayload = revalidation.sanitized;
+        // preserve sanitized result but keep metadata
+        finalPayload = {
+          ...revalidation.sanitized,
+          courseId,
+          courseTitle: course.title,
+          chapterName: chapterName || question.chapterName,
+          grade,
+          subject
+        };
       } else {
-        finalPayload = validation.sanitized;
+        // sanitized output may strip out fields not known to validator (course metadata),
+        // so merge them back explicitly
+        finalPayload = {
+          ...validation.sanitized,
+          courseId,
+          courseTitle: course.title,
+          chapterName: chapterName || question.chapterName,
+          grade,
+          subject
+        };
       }
 
       const draft = await AIQuestionDraft.create({

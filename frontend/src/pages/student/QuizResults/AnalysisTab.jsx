@@ -53,16 +53,20 @@ export default function AnalysisTab({ enhancedAnalysis, evaluation }) {
       {enhancedAnalysis?.difficultyAnalysis && Object.keys(enhancedAnalysis.difficultyAnalysis).length > 0 && (
         <div className="bg-white rounded-lg shadow-sm p-6">
           <h3 className="text-lg font-semibold text-gray-900 mb-4">Difficulty-wise Performance</h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {['easy', 'medium', 'hard'].map((level) => {
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {['easy', 'medium', 'hard', 'olympiad'].map((level) => {
               const data = enhancedAnalysis.difficultyAnalysis[level]
               if (!data || data.total === 0) return null;
+              const colors = {
+                easy: '#22c55e',
+                medium: '#eab308',
+                hard: '#ef4444',
+                olympiad: '#8b5cf6'
+              };
               return (
                 <div key={level} className="text-center p-4 bg-gray-50 rounded-lg">
                   <h4 className="font-medium text-gray-900 capitalize mb-2">{level}</h4>
-                  <div className="text-3xl font-bold mb-1" style={{
-                    color: level === 'easy' ? '#22c55e' : level === 'medium' ? '#eab308' : '#ef4444'
-                  }}>
+                  <div className="text-3xl font-bold mb-1" style={{ color: colors[level] }}>
                     {Math.round(data.accuracy || 0)}%
                   </div>
                   <p className="text-sm text-gray-500">

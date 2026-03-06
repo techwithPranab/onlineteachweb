@@ -47,7 +47,7 @@ const questionOfflinePromptSchema = new mongoose.Schema({
   },
   difficultyLevel: {
     type: String,
-    enum: ['easy', 'medium', 'hard'],
+    enum: ['easy', 'medium', 'hard', 'olympiad'],
     required: true,
     index: true
   },

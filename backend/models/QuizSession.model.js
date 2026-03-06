@@ -128,7 +128,7 @@ const quizSessionSchema = new mongoose.Schema({
     subject: String,
     difficulty: {
       type: String,
-      enum: ['easy', 'medium', 'hard'],
+      enum: ['easy', 'medium', 'hard', 'olympiad'],
       default: 'medium'
     },
     explanation: String,
@@ -225,7 +225,7 @@ const quizSessionSchema = new mongoose.Schema({
   // Difficulty level for algorithm-generated quizzes
   difficulty: {
     type: String,
-    enum: ['easy', 'medium', 'hard'],
+    enum: ['easy', 'medium', 'hard', 'olympiad'],
     default: 'medium'
   },
   // Metadata for algorithm-generated quizzes
@@ -263,7 +263,7 @@ const quizSessionSchema = new mongoose.Schema({
     performanceByDifficulty: [{
       difficulty: {
         type: String,
-        enum: ['easy', 'medium', 'hard']
+        enum: ['easy', 'medium', 'hard', 'olympiad']
       },
       accuracy: Number,
       correct: Number,

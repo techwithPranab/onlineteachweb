@@ -151,6 +151,7 @@ export default function QuestionBank() {
       case 'easy': return 'bg-green-100 text-green-800'
       case 'medium': return 'bg-yellow-100 text-yellow-800'
       case 'hard': return 'bg-red-100 text-red-800'
+      case 'olympiad': return 'bg-purple-100 text-purple-800'
       default: return 'bg-gray-100 text-gray-800'
     }
   }
@@ -240,6 +241,7 @@ export default function QuestionBank() {
               <option value="easy">Easy</option>
               <option value="medium">Medium</option>
               <option value="hard">Hard</option>
+              <option value="olympiad">Olympiad</option>
             </select>
           </div>
           <div>

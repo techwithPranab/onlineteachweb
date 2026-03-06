@@ -17,7 +17,7 @@ router.post('/',
   [
     body('title').trim().notEmpty().withMessage('Title is required'),
     body('courseId').isMongoId().withMessage('Valid course ID is required'),
-    body('difficultyLevel').isIn(['easy', 'medium', 'hard']).withMessage('Valid difficulty level is required'),
+    body('difficultyLevel').isIn(['easy', 'medium', 'hard', 'olympiad']).withMessage('Valid difficulty level is required'),
     body('duration').isInt({ min: 1, max: 300 }).withMessage('Duration must be between 1 and 300 minutes'),
     body('totalMarks').isInt({ min: 1 }).withMessage('Total marks is required'),
     body('passingPercentage').optional().isFloat({ min: 0, max: 100 }),
@@ -35,7 +35,7 @@ router.get('/',
   [
     query('courseId').optional().isMongoId(),
     query('status').optional().isIn(['draft', 'published', 'archived']),
-    query('difficultyLevel').optional().isIn(['easy', 'medium', 'hard']),
+    query('difficultyLevel').optional().isIn(['easy', 'medium', 'hard', 'olympiad']),
     query('page').optional().isInt({ min: 1 }),
     query('limit').optional().isInt({ min: 1, max: 50 }),
     validate
@@ -59,7 +59,7 @@ router.get('/available',
   [
     query('subject').optional().isString(),
     query('courseId').optional().isMongoId(),
-    query('difficultyLevel').optional().isIn(['easy', 'medium', 'hard']),
+    query('difficultyLevel').optional().isIn(['easy', 'medium', 'hard', 'olympiad']),
     validate
   ],
   quizController.getAllAvailableQuizzes
@@ -143,7 +143,7 @@ router.post('/:id/select-questions',
   [
     param('id').isMongoId().withMessage('Valid quiz ID required'),
     body('questionCount').isInt({ min: 1, max: 100 }).withMessage('Question count required'),
-    body('difficulty').isIn(['easy', 'medium', 'hard']).withMessage('Valid difficulty required'),
+    body('difficulty').isIn(['easy', 'medium', 'hard', 'olympiad']).withMessage('Valid difficulty required'),
     body('questionSelectionStrategy').optional().isIn(['adaptive', 'default']).withMessage('Valid strategy required'),
     validate
   ],

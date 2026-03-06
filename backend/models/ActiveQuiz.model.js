@@ -71,7 +71,7 @@ const activeQuizSchema = new mongoose.Schema({
   // Quiz configuration
   difficulty: {
     type: String,
-    enum: ['easy', 'medium', 'hard'],
+    enum: ['easy', 'medium', 'hard', 'olympiad'],
     required: true
   },
 
@@ -141,7 +141,7 @@ const activeQuizSchema = new mongoose.Schema({
     },
     difficulty: {
       type: String,
-      enum: ['easy', 'medium', 'hard'],
+      enum: ['easy', 'medium', 'hard', 'olympiad'],
       required: true
     },
     marks: {

@@ -90,7 +90,7 @@ const improvementSuggestionSchema = new mongoose.Schema({
   }],
   recommendedQuizLevel: {
     type: String,
-    enum: ['easy', 'medium', 'hard']
+    enum: ['easy', 'medium', 'hard', 'olympiad']
   }
 }, { _id: false });
 

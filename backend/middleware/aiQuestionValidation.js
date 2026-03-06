@@ -30,8 +30,8 @@ const generateQuestionsValidation = [
   
   body('difficultyLevels.*')
     .optional()
-    .isIn(['easy', 'medium', 'hard'])
-    .withMessage('Each difficulty level must be easy, medium, or hard'),
+    .isIn(['easy', 'medium', 'hard', 'olympiad'])
+    .withMessage('Each difficulty level must be easy, medium, hard, or olympiad'),
   
   body('questionTypes')
     .optional()

@@ -587,6 +587,15 @@ export default function StudentPerformanceDashboard() {
                   <span className="text-sm font-medium">55%</span>
                 </div>
               </div>
+              <div className="flex justify-between items-center">
+                <span className="text-sm text-gray-600">Olympiad Questions</span>
+                <div className="flex items-center gap-2">
+                  <div className="w-20 bg-gray-200 rounded-full h-2">
+                    <div className="bg-purple-500 h-2 rounded-full" style={{width: '40%'}}></div>
+                  </div>
+                  <span className="text-sm font-medium">40%</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>

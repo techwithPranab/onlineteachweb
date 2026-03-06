@@ -281,8 +281,8 @@ export default function QuizSetup() {
                   </div>
                 </div>
                 
-                <div className="grid grid-cols-3 gap-3">
-                  {['easy', 'medium', 'hard'].map(level => (
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                  {['easy', 'medium', 'hard', 'olympiad'].map(level => (
                     <button
                       key={level}
                       onClick={() => handleConfigChange('difficulty', level)}

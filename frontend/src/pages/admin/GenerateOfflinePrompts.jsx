@@ -318,7 +318,8 @@ export default function GenerateOfflinePrompts() {
   const difficultyLevels = [
     { value: 'easy', label: 'Easy' },
     { value: 'medium', label: 'Medium' },
-    { value: 'hard', label: 'Hard' }
+    { value: 'hard', label: 'Hard' },
+    { value: 'olympiad', label: 'Olympiad' }
   ];
 
   return (
@@ -499,7 +500,8 @@ export default function GenerateOfflinePrompts() {
                       <span className={`px-2 py-1 text-xs font-semibold rounded-full ${
                         prompt.difficultyLevel === 'easy' ? 'bg-green-100 text-green-800' :
                         prompt.difficultyLevel === 'medium' ? 'bg-yellow-100 text-yellow-800' :
-                        'bg-red-100 text-red-800'
+                        prompt.difficultyLevel === 'hard' ? 'bg-red-100 text-red-800' :
+                        'bg-purple-100 text-purple-800'
                       }`}>
                         {prompt.difficultyLevel}
                       </span>

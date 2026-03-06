@@ -83,7 +83,7 @@ const aiQuestionDraftSchema = new mongoose.Schema({
         }
         
         // Validate difficulty level
-        const validDifficulties = ['easy', 'medium', 'hard'];
+        const validDifficulties = ['easy', 'medium', 'hard', 'olympiad'];
         if (!validDifficulties.includes(payload.difficultyLevel)) {
           this.invalidate('questionPayload', `Invalid difficulty level: ${payload.difficultyLevel}`);
           return false;
@@ -318,7 +318,7 @@ aiQuestionDraftSchema.methods.validateQuestionPayload = function() {
   });
   
   // Difficulty level validation
-  const validDifficulties = ['easy', 'medium', 'hard'];
+  const validDifficulties = ['easy', 'medium', 'hard', 'olympiad'];
   if (payload.difficultyLevel && !validDifficulties.includes(payload.difficultyLevel)) {
     errors.push(`Invalid difficulty level: ${payload.difficultyLevel}. Must be one of: ${validDifficulties.join(', ')}`);
   }

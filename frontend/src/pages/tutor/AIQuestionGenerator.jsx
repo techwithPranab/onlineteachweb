@@ -228,7 +228,8 @@ export default function AIQuestionGenerator() {
   const difficultyLevels = [
     { value: 'easy', label: 'Easy', color: 'text-green-600' },
     { value: 'medium', label: 'Medium', color: 'text-yellow-600' },
-    { value: 'hard', label: 'Hard', color: 'text-red-600' }
+    { value: 'hard', label: 'Hard', color: 'text-red-600' },
+    { value: 'olympiad', label: 'Olympiad', color: 'text-purple-600' }
   ]
 
   const sources = [
