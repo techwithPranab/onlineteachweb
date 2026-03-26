@@ -18,7 +18,7 @@ class QuestionValidator {
       'numerical': ['numericalAnswer'],
       'short-answer': ['expectedAnswer'],
       'long-answer': ['expectedAnswer'],
-      'case-based': ['caseStudy', 'options']
+      'case-based': ['caseStudy']  // options are optional — case-based can be open-ended
     };
   }
 
@@ -149,9 +149,7 @@ class QuestionValidator {
       if (!opt.text || typeof opt.text !== 'string') {
         errors.push(`Option ${idx + 1} must have a text field`);
       }
-      if (!opt.explanation || typeof opt.explanation !== 'string') {
-        errors.push(`Option ${idx + 1} should have an explanation`);
-      }
+      // explanation is optional — auto-fix will add a placeholder if missing
     });
     
     // Validate correctAnswer field exists
@@ -180,11 +178,7 @@ class QuestionValidator {
     }
     
     // Validate each option has explanation
-    question.options.forEach((opt, idx) => {
-      if (!opt.explanation || typeof opt.explanation !== 'string') {
-        errors.push(`Option ${idx + 1} should have an explanation`);
-      }
-    });
+    // explanation is optional — auto-fix will add a placeholder if missing
     
     // Validate correctAnswer field exists
     if (!question.correctAnswer || typeof question.correctAnswer !== 'string') {
@@ -276,13 +270,22 @@ class QuestionValidator {
       errors.push('Case study text is required');
     }
     
-    if (question.caseStudy && question.caseStudy.trim().length < 50) {
-      errors.push('Case study should be at least 50 characters');
+    if (question.caseStudy && question.caseStudy.trim().length < 20) {
+      errors.push('Case study should be at least 20 characters');
     }
     
-    // Validate options if present
-    if (question.options) {
+    // Options are OPTIONAL for case-based — only validate them if present
+    if (question.options && Array.isArray(question.options) && question.options.length > 0) {
       errors.push(...this._validateMCQSingle({ ...question, type: 'mcq-single' }));
+    }
+
+    // Must have at least one of: correctAnswer, expectedAnswer, or keywords
+    const hasAnswer = (question.correctAnswer && typeof question.correctAnswer === 'string' && question.correctAnswer.trim().length > 0)
+      || (question.expectedAnswer && typeof question.expectedAnswer === 'string' && question.expectedAnswer.trim().length > 0)
+      || (Array.isArray(question.keywords) && question.keywords.length > 0);
+
+    if (!hasAnswer) {
+      errors.push('Case-based question must have a correctAnswer, expectedAnswer, or keywords');
     }
     
     return errors;

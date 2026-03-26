@@ -74,7 +74,7 @@ const aiQuestionDraftSchema = new mongoose.Schema({
     validate: {
       validator: function(payload) {
         // Basic validation for required fields
-        const requiredFields = ['courseId', 'courseTitle', 'chapterName', 'grade', 'subject', 'topic', 'difficultyLevel', 'type', 'text', 'correctAnswer', 'explanation', 'marks'];
+        const requiredFields = ['courseId', 'courseTitle', 'chapterName', 'grade', 'subject', 'topic', 'difficultyLevel', 'type', 'text', 'correctAnswer', 'marks'];
         const missingFields = requiredFields.filter(field => !payload[field]);
         
         if (missingFields.length > 0) {
@@ -125,9 +125,20 @@ const aiQuestionDraftSchema = new mongoose.Schema({
             
           case 'short-answer':
           case 'long-answer':
-          case 'case-based':
             if (!payload.expectedAnswer && (!payload.keywords || payload.keywords.length === 0)) {
               this.invalidate('questionPayload', 'Text-based questions must have expectedAnswer or keywords');
+              return false;
+            }
+            break;
+
+          case 'case-based':
+            if (!payload.caseStudy) {
+              this.invalidate('questionPayload', 'Case-based questions must have a caseStudy');
+              return false;
+            }
+            // Accept correctAnswer, expectedAnswer, or keywords as valid answer
+            if (!payload.correctAnswer && !payload.expectedAnswer && (!payload.keywords || payload.keywords.length === 0)) {
+              this.invalidate('questionPayload', 'Case-based questions must have correctAnswer, expectedAnswer, or keywords');
               return false;
             }
             break;
@@ -310,7 +321,7 @@ aiQuestionDraftSchema.methods.validateQuestionPayload = function() {
   const errors = [];
   
   // Required fields validation
-  const requiredFields = ['courseId', 'chapterName', 'grade', 'subject', 'topic', 'difficultyLevel', 'type', 'text', 'correctAnswer', 'explanation', 'marks'];
+  const requiredFields = ['courseId', 'chapterName', 'grade', 'subject', 'topic', 'difficultyLevel', 'type', 'text', 'correctAnswer', 'marks'];
   requiredFields.forEach(field => {
     if (!payload[field]) {
       errors.push(`Missing required field: ${field}`);
@@ -358,9 +369,18 @@ aiQuestionDraftSchema.methods.validateQuestionPayload = function() {
         
       case 'short-answer':
       case 'long-answer':
-      case 'case-based':
         if (!payload.expectedAnswer && (!payload.keywords || !Array.isArray(payload.keywords) || payload.keywords.length === 0)) {
           errors.push('Text-based questions must have either expectedAnswer or keywords array');
+        }
+        break;
+
+      case 'case-based':
+        if (!payload.caseStudy) {
+          errors.push('Case-based questions must have a caseStudy');
+        }
+        // Accept correctAnswer, expectedAnswer, or keywords as valid answer
+        if (!payload.correctAnswer && !payload.expectedAnswer && (!payload.keywords || !Array.isArray(payload.keywords) || payload.keywords.length === 0)) {
+          errors.push('Case-based questions must have correctAnswer, expectedAnswer, or keywords array');
         }
         break;
     }

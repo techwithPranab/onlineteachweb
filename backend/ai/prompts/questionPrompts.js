@@ -181,8 +181,10 @@ Return a JSON object with a "questions" array. Each question MUST have this exac
       "keywords": ["key", "terms", "that", "must", "appear"],
       "sampleAnswer": "A detailed sample answer demonstrating the expected response",` : ''}
       ${questionType === 'case-based' ? 
-        `"caseStudy": "The complete case study scenario with all necessary details",
-      "correctAnswer": "The correct answer for the case-based question",` : ''}
+        `"caseStudy": "The complete case study scenario with all necessary background details (minimum 50 words)",
+      "correctAnswer": "The correct answer for the case-based question",
+      "expectedAnswer": "A detailed model answer that would receive full marks",
+      "keywords": ["key", "concepts", "from", "the", "answer"],` : ''}
       "explanation": "DETAILED explanation of WHY the correct answer is correct, including the concept being tested",
       "hint": "A helpful hint for students who are struggling",
       "marks": ${difficultyLevel === 'easy' ? 1 : difficultyLevel === 'medium' ? 2 : difficultyLevel === 'hard' ? 3 : 5},

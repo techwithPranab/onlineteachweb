@@ -348,7 +348,7 @@ class AIQuestionGenerationService {
         type: question.type,
         text: question.text,
         correctAnswer: question.correctAnswer,
-        explanation: question.explanation,
+        explanation: question.explanation || '',
         marks: question.marks || 1,
         negativeMarks: question.negativeMarks || 0,
         recommendedTime: question.recommendedTime || 60,
@@ -386,7 +386,8 @@ class AIQuestionGenerationService {
           courseTitle: course.title,
           chapterName: chapterName || question.chapterName,
           grade,
-          subject
+          subject,
+          explanation: revalidation.sanitized?.explanation || question.explanation || 'Explanation not provided — please review and update.'
         };
       } else {
         // sanitized output may strip out fields not known to validator (course metadata),
@@ -397,7 +398,8 @@ class AIQuestionGenerationService {
           courseTitle: course.title,
           chapterName: chapterName || question.chapterName,
           grade,
-          subject
+          subject,
+          explanation: validation.sanitized?.explanation || question.explanation || 'Explanation not provided — please review and update.'
         };
       }
 
@@ -430,9 +432,13 @@ class AIQuestionGenerationService {
       q.topic = 'General';
       fixes.push('Set default topic');
     }
-    if (!q.difficultyLevel || !['easy', 'medium', 'hard'].includes(q.difficultyLevel)) {
+    if (!q.difficultyLevel || !['easy', 'medium', 'hard', 'olympiad'].includes(q.difficultyLevel)) {
       q.difficultyLevel = 'medium';
       fixes.push('Set default difficultyLevel to medium');
+    }
+    if (!q.explanation || typeof q.explanation !== 'string' || q.explanation.trim().length === 0) {
+      q.explanation = 'Explanation not provided — please review and update.';
+      fixes.push('Added placeholder explanation');
     }
 
     // MCQ / True-False handling
@@ -505,6 +511,24 @@ class AIQuestionGenerationService {
       if (q.expectedAnswer && q.expectedAnswer.trim().length < 10) {
         q.expectedAnswer = `${q.expectedAnswer.trim()} (model answer)`;
         fixes.push('Padded expectedAnswer to meet min length');
+      }
+    }
+
+    // Case-based: ensure caseStudy exists and correctAnswer/expectedAnswer is set
+    if (q.type === 'case-based') {
+      if (!q.caseStudy || typeof q.caseStudy !== 'string' || q.caseStudy.trim().length === 0) {
+        q.caseStudy = q.text || 'Case study scenario not provided — please edit.';
+        fixes.push('Added placeholder caseStudy');
+      }
+      // Set expectedAnswer from correctAnswer so model validator is satisfied
+      if (!q.expectedAnswer && q.correctAnswer) {
+        q.expectedAnswer = String(q.correctAnswer);
+        fixes.push('Set expectedAnswer from correctAnswer for case-based');
+      }
+      if (!q.correctAnswer && !q.expectedAnswer) {
+        q.correctAnswer = 'Answer not provided — please review and update.';
+        q.expectedAnswer = q.correctAnswer;
+        fixes.push('Added placeholder correctAnswer/expectedAnswer for case-based');
       }
     }
 

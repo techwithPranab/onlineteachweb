@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useState, useEffect, useRef } from 'react'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { useQuery } from 'react-query'
 import aiQuestionService from '../../services/aiQuestionService'
 import { courseService, questionService } from '../../services/apiServices'
@@ -10,6 +10,9 @@ import Modal from '../../components/common/Modal'
 
 export default function AIQuestionGenerator() {
   const navigate = useNavigate()
+  const location = useLocation()
+  // Derive base path so this component works for both /tutor and /admin routes
+  const basePath = location.pathname.startsWith('/admin') ? '/admin' : '/tutor'
   const [courses, setCourses] = useState([])
   const [loading, setLoading] = useState(false)
   const [generating, setGenerating] = useState(false)
@@ -17,6 +20,14 @@ export default function AIQuestionGenerator() {
   const [success, setSuccess] = useState(null)
   const [showResultModal, setShowResultModal] = useState(false)
   const [generationResult, setGenerationResult] = useState(null)
+
+  // Progress popup state
+  const [showProgressModal, setShowProgressModal] = useState(false)
+  const [progressSteps, setProgressSteps] = useState([])
+  const [currentStepIndex, setCurrentStepIndex] = useState(0)
+  const [progressDots, setProgressDots] = useState('')
+  const progressTimerRef = useRef(null)
+  const dotsTimerRef = useRef(null)
 
   // Form state
   const [formData, setFormData] = useState({
@@ -191,11 +202,53 @@ export default function AIQuestionGenerator() {
       return
     }
 
-    try {
-      setGenerating(true)
-      setError(null)
-      setSuccess(null)
+    // Calculate estimated question count for progress messaging
+    const topicCount = formData.topics.length || availableTopics.length || 1
+    const totalEstimated = topicCount * formData.difficultyLevels.length * formData.questionTypes.length * formData.questionsPerTopic
 
+    // Build dynamic progress steps based on selections
+    const steps = [
+      { id: 'init',       icon: '🔌', label: 'Connecting to AI provider',          detail: 'Establishing secure connection...',              duration: 1200 },
+      { id: 'course',     icon: '📚', label: 'Loading course content',             detail: `Fetching syllabus and materials for ${selectedCourse?.title || 'course'}...`, duration: 1500 },
+      { id: 'topics',     icon: '🗂️',  label: `Preparing ${topicCount} topic${topicCount > 1 ? 's' : ''}`, detail: 'Organising topics and difficulty combinations...', duration: 1000 },
+      { id: 'generating', icon: '🤖', label: `Generating ~${totalEstimated} questions`, detail: `AI is crafting ${formData.difficultyLevels.join(', ')} level questions...`, duration: null }, // holds until API resolves
+      { id: 'validating', icon: '✅', label: 'Validating & filtering questions',   detail: 'Checking quality, removing duplicates...',         duration: 1200 },
+      { id: 'saving',     icon: '💾', label: 'Saving drafts',                      detail: 'Storing question drafts for your review...',       duration: 800  },
+    ]
+
+    setProgressSteps(steps.map(s => ({ ...s, status: 'pending' })))
+    setCurrentStepIndex(0)
+    setShowProgressModal(true)
+    setGenerating(true)
+    setError(null)
+    setSuccess(null)
+
+    // Animate dots
+    dotsTimerRef.current = setInterval(() => {
+      setProgressDots(d => d.length >= 3 ? '' : d + '.')
+    }, 400)
+
+    // Advance through timed steps (all except the 'generating' step which waits for API)
+    let stepIdx = 0
+    const advanceStep = (index) => {
+      setProgressSteps(prev => prev.map((s, i) => ({
+        ...s,
+        status: i < index ? 'done' : i === index ? 'active' : 'pending'
+      })))
+      setCurrentStepIndex(index)
+    }
+
+    // Steps 0–2 play out automatically before API call resolves
+    let elapsed = 0
+    for (let i = 0; i < 3; i++) {
+      const delay = elapsed
+      progressTimerRef.current = setTimeout(() => advanceStep(i), delay)
+      elapsed += steps[i].duration
+    }
+    // Step 3 (generating) activates after step 2 finishes
+    progressTimerRef.current = setTimeout(() => advanceStep(3), elapsed)
+
+    try {
       const result = await aiQuestionService.generateQuestions({
         courseId: formData.courseId,
         topics: formData.topics.length > 0 ? formData.topics : undefined,
@@ -205,13 +258,33 @@ export default function AIQuestionGenerator() {
         sources: formData.sources
       })
 
+      // API returned — advance through validating → saving → done
+      advanceStep(4)
+      await new Promise(r => setTimeout(r, steps[4].duration))
+      advanceStep(5)
+      await new Promise(r => setTimeout(r, steps[5].duration))
+
+      // All done
+      setProgressSteps(prev => prev.map(s => ({ ...s, status: 'done' })))
+      await new Promise(r => setTimeout(r, 500))
+
+      setShowProgressModal(false)
       setGenerationResult(result)
       setShowResultModal(true)
       setSuccess(`Generated ${result.summary.draftsCreated} question drafts!`)
     } catch (err) {
+      // Mark current step as errored
+      setProgressSteps(prev => prev.map((s, i) => ({
+        ...s,
+        status: i < currentStepIndex ? 'done' : i === currentStepIndex ? 'error' : 'pending'
+      })))
+      await new Promise(r => setTimeout(r, 800))
+      setShowProgressModal(false)
       setError(err.response?.data?.message || 'Failed to generate questions')
     } finally {
       setGenerating(false)
+      clearInterval(dotsTimerRef.current)
+      clearTimeout(progressTimerRef.current)
     }
   }
 
@@ -264,7 +337,7 @@ export default function AIQuestionGenerator() {
           <span className="text-green-500 text-xl">✓</span>
           <span className="text-green-800">{success}</span>
           <button 
-            onClick={() => navigate('/tutor/ai-questions/review')}
+            onClick={() => navigate(`${basePath}/ai-questions/review`)}
             className="ml-auto text-green-700 hover:text-green-900 font-medium"
           >
             Review Drafts →
@@ -559,7 +632,7 @@ export default function AIQuestionGenerator() {
       {/* Quick Actions */}
       <div className="mt-6 flex gap-4">
         <button
-          onClick={() => navigate('/tutor/ai-questions/review')}
+          onClick={() => navigate(`${basePath}/ai-questions/review`)}
           className="flex-1 py-3 px-4 bg-white border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 font-medium"
         >
           📋 Review Pending Drafts
@@ -571,6 +644,110 @@ export default function AIQuestionGenerator() {
           📚 Question Bank
         </button>
       </div>
+
+      {/* ── AI Generation Progress Modal ── */}
+      {showProgressModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
+          {/* Backdrop */}
+          <div className="absolute inset-0 bg-gray-900 bg-opacity-60 backdrop-blur-sm" />
+
+          {/* Panel */}
+          <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-md p-6 overflow-hidden">
+
+            {/* Animated gradient top bar */}
+            <div className="absolute top-0 left-0 right-0 h-1 rounded-t-2xl overflow-hidden">
+              <div className="h-full bg-gradient-to-r from-blue-500 via-purple-500 to-blue-500 bg-[length:200%_100%] animate-[shimmer_1.5s_linear_infinite]" />
+            </div>
+
+            {/* Header */}
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center shadow-lg">
+                <svg className="animate-spin w-5 h-5 text-white" viewBox="0 0 24 24" fill="none">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/>
+                </svg>
+              </div>
+              <div>
+                <h3 className="font-bold text-gray-900 text-lg">Generating Questions</h3>
+                <p className="text-sm text-gray-500">Please wait, this may take a moment{progressDots}</p>
+              </div>
+            </div>
+
+            {/* Steps */}
+            <div className="space-y-3">
+              {progressSteps.map((step, idx) => {
+                const isActive  = step.status === 'active'
+                const isDone    = step.status === 'done'
+                const isError   = step.status === 'error'
+                const isPending = step.status === 'pending'
+
+                return (
+                  <div
+                    key={step.id}
+                    className={`flex items-start gap-3 p-3 rounded-xl transition-all duration-500 ${
+                      isActive  ? 'bg-blue-50 border border-blue-200 shadow-sm' :
+                      isDone    ? 'bg-green-50 border border-green-100' :
+                      isError   ? 'bg-red-50 border border-red-200' :
+                      'bg-gray-50 border border-transparent opacity-50'
+                    }`}
+                  >
+                    {/* Status icon */}
+                    <div className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold transition-all duration-300 ${
+                      isActive  ? 'bg-blue-500 text-white shadow-md shadow-blue-200' :
+                      isDone    ? 'bg-green-500 text-white' :
+                      isError   ? 'bg-red-500 text-white' :
+                      'bg-gray-200 text-gray-400'
+                    }`}>
+                      {isActive  ? <svg className="animate-spin w-4 h-4" viewBox="0 0 24 24" fill="none"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg> :
+                       isDone    ? <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7"/></svg> :
+                       isError   ? '✕' :
+                       <span className="text-xs">{idx + 1}</span>}
+                    </div>
+
+                    {/* Text */}
+                    <div className="flex-1 min-w-0">
+                      <div className={`text-sm font-semibold leading-tight ${
+                        isActive ? 'text-blue-800' : isDone ? 'text-green-800' : isError ? 'text-red-800' : 'text-gray-400'
+                      }`}>
+                        <span className="mr-1.5">{step.icon}</span>
+                        {step.label}
+                      </div>
+                      {(isActive || isError) && (
+                        <div className={`text-xs mt-0.5 ${isError ? 'text-red-600' : 'text-blue-600'}`}>
+                          {isError ? 'An error occurred. Please try again.' : step.detail}
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Done checkmark pulse */}
+                    {isDone && (
+                      <div className="flex-shrink-0 text-green-500 text-sm">✓</div>
+                    )}
+                  </div>
+                )
+              })}
+            </div>
+
+            {/* Overall progress bar */}
+            <div className="mt-5">
+              <div className="flex justify-between text-xs text-gray-500 mb-1">
+                <span>Progress</span>
+                <span>{progressSteps.filter(s => s.status === 'done').length} / {progressSteps.length} steps</span>
+              </div>
+              <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
+                <div
+                  className="h-2 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 transition-all duration-700"
+                  style={{ width: `${(progressSteps.filter(s => s.status === 'done').length / progressSteps.length) * 100}%` }}
+                />
+              </div>
+            </div>
+
+            <p className="mt-4 text-center text-xs text-gray-400">
+              ✨ Do not close this window while questions are being generated
+            </p>
+          </div>
+        </div>
+      )}
 
       {/* Result Modal */}
       {showResultModal && generationResult && (
@@ -631,7 +808,7 @@ export default function AIQuestionGenerator() {
               <button
                 onClick={() => {
                   setShowResultModal(false)
-                  navigate('/tutor/ai-questions/review')
+                  navigate(`${basePath}/ai-questions/review`)
                 }}
                 className="flex-1 py-2 px-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium"
               >
