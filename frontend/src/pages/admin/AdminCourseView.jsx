@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import { useQuery, useMutation, useQueryClient } from 'react-query'
-import { ArrowLeft, Edit, Calendar, Users, IndianRupee, BookOpen, Clock, Globe, Target, CheckCircle, Plus, Trash2, X } from 'lucide-react'
-import { courseService } from '@/services/apiServices'
+import { ArrowLeft, Edit, Calendar, Users, IndianRupee, BookOpen, Clock, Globe, Target, CheckCircle, Plus, Trash2, X, BarChart2, ChevronDown, ChevronRight, Sparkles, AlertCircle } from 'lucide-react'
+import { courseService, questionService } from '@/services/apiServices'
 import { useAuthStore } from '@/store/authStore'
 import LoadingSpinner from '@/components/common/LoadingSpinner'
 import SEOHead from '@/components/SEO/SEOHead';
@@ -24,6 +24,10 @@ export default function AdminCourseView() {
     learningObjectives: [''],
     estimatedHours: 0
   })
+  // Question snapshot: which chapters are expanded
+  const [expandedChapters, setExpandedChapters] = useState({})
+  const toggleChapter = (chName) =>
+    setExpandedChapters(prev => ({ ...prev, [chName]: !prev[chName] }))
 
   // Redirect if not admin
   if (user?.role !== 'admin') {
@@ -40,6 +44,13 @@ export default function AdminCourseView() {
   )
 
   const course = courseResponse?.course || courseResponse
+
+  // Question snapshot
+  const { data: snapshotData, isLoading: snapshotLoading } = useQuery(
+    ['questionSnapshot', id],
+    () => questionService.getQuestionSnapshot(id),
+    { enabled: !!id, staleTime: 30000 }
+  )
 
   // Mutation to update course
   const updateCourseMutation = useMutation(
@@ -419,6 +430,238 @@ export default function AdminCourseView() {
               </div>
             )}
           </div>
+
+          {/* Question Snapshot */}
+          {(() => {
+            const DIFFICULTIES = ['easy', 'medium', 'hard', 'olympiad']
+            const DIFF_LABELS  = { easy: 'Easy', medium: 'Medium', hard: 'Hard', olympiad: 'Olympiad' }
+            const DIFF_COLORS  = {
+              easy:     'bg-green-100 text-green-800',
+              medium:   'bg-yellow-100 text-yellow-800',
+              hard:     'bg-red-100 text-red-800',
+              olympiad: 'bg-purple-100 text-purple-800'
+            }
+            const TYPE_LABELS = {
+              'mcq-single':   'MCQ (Single)',
+              'mcq-multiple': 'MCQ (Multi)',
+              'true-false':   'True/False',
+              'numerical':    'Numerical',
+              'short-answer': 'Short Ans.',
+              'long-answer':  'Long Ans.',
+              'case-based':   'Case-Based'
+            }
+
+            const snapshot = snapshotData?.snapshot
+            const rows = snapshot?.rows || []
+
+            // Group rows by chapter → topic
+            const grouped = {}
+            rows.forEach(r => {
+              const ch = r.chapterName || 'Uncategorised'
+              const tp = r.topic || 'Uncategorised'
+              if (!grouped[ch]) grouped[ch] = {}
+              if (!grouped[ch][tp]) grouped[ch][tp] = {}
+              if (!grouped[ch][tp][r.difficultyLevel]) grouped[ch][tp][r.difficultyLevel] = {}
+              grouped[ch][tp][r.difficultyLevel][r.type] = r.count
+            })
+
+            // Derive all unique types present in the data
+            const typesPresent = [...new Set(rows.map(r => r.type))].sort()
+
+            return (
+              <div className="bg-white rounded-lg shadow p-6">
+                <div className="flex items-center justify-between mb-5">
+                  <div className="flex items-center gap-2">
+                    <BarChart2 className="h-5 w-5 text-blue-600" />
+                    <h2 className="text-xl font-semibold">Question Snapshot</h2>
+                    {snapshot && (
+                      <span className="ml-2 px-2 py-0.5 rounded-full bg-blue-100 text-blue-800 text-xs font-semibold">
+                        {snapshot.totalQuestions} total
+                      </span>
+                    )}
+                  </div>
+                  <Link
+                    to={`/admin/ai-questions/generate`}
+                    className="flex items-center gap-1 px-3 py-1.5 bg-indigo-600 text-white text-xs font-medium rounded-md hover:bg-indigo-700"
+                  >
+                    <Sparkles className="h-3.5 w-3.5" />
+                    Generate Questions
+                  </Link>
+                </div>
+
+                {snapshotLoading ? (
+                  <div className="flex items-center justify-center py-10 text-gray-500">
+                    <LoadingSpinner />
+                  </div>
+                ) : !snapshot || snapshot.totalQuestions === 0 ? (
+                  <div className="flex flex-col items-center justify-center py-10 text-gray-400">
+                    <AlertCircle className="h-10 w-10 mb-3 text-gray-300" />
+                    <p className="text-sm font-medium">No questions generated yet for this course.</p>
+                    <p className="text-xs mt-1">Use "Generate Questions" to get started with AI-powered question creation.</p>
+                  </div>
+                ) : (
+                  <>
+                    {/* Summary pills */}
+                    <div className="flex flex-wrap gap-3 mb-5">
+                      <div className="text-xs text-gray-500 font-medium self-center">By Difficulty:</div>
+                      {DIFFICULTIES.map(d => snapshot.byDifficulty[d] > 0 && (
+                        <span key={d} className={`px-2.5 py-1 rounded-full text-xs font-semibold ${DIFF_COLORS[d]}`}>
+                          {DIFF_LABELS[d]}: {snapshot.byDifficulty[d]}
+                        </span>
+                      ))}
+                      <div className="ml-3 text-xs text-gray-500 font-medium self-center">By Type:</div>
+                      {typesPresent.map(t => (
+                        <span key={t} className="px-2.5 py-1 rounded-full text-xs font-semibold bg-gray-100 text-gray-700">
+                          {TYPE_LABELS[t] || t}: {snapshot.byType[t] || 0}
+                        </span>
+                      ))}
+                    </div>
+
+                    {/* Detailed breakdown table */}
+                    <div className="overflow-x-auto rounded-lg border border-gray-200">
+                      <table className="min-w-full text-sm">
+                        <thead>
+                          <tr className="bg-gray-50 border-b border-gray-200">
+                            <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider w-52">
+                              Chapter / Topic
+                            </th>
+                            <th className="px-3 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                              Question Type
+                            </th>
+                            {DIFFICULTIES.map(d => (
+                              <th key={d} className={`px-3 py-3 text-center text-xs font-semibold uppercase tracking-wider ${DIFF_COLORS[d]}`}>
+                                {DIFF_LABELS[d]}
+                              </th>
+                            ))}
+                            <th className="px-3 py-3 text-center text-xs font-semibold text-gray-700 uppercase tracking-wider bg-gray-100">
+                              Total
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y divide-gray-100">
+                          {Object.entries(grouped).map(([chapterName, topics]) => {
+                            const chTotal = Object.values(topics).reduce((s, tRows) =>
+                              s + Object.values(tRows).reduce((ss, diffRows) =>
+                                ss + Object.values(diffRows).reduce((sss, c) => sss + c, 0), 0), 0)
+                            const isOpen = !!expandedChapters[chapterName]
+
+                            return [
+                              // Chapter header row
+                              <tr
+                                key={`ch-${chapterName}`}
+                                className="bg-blue-50 cursor-pointer hover:bg-blue-100 transition-colors"
+                                onClick={() => toggleChapter(chapterName)}
+                              >
+                                <td className="px-4 py-2.5 font-semibold text-blue-900 flex items-center gap-1.5" colSpan={2}>
+                                  {isOpen
+                                    ? <ChevronDown className="h-4 w-4 flex-shrink-0" />
+                                    : <ChevronRight className="h-4 w-4 flex-shrink-0" />}
+                                  {chapterName}
+                                </td>
+                                {DIFFICULTIES.map(d => {
+                                  const cnt = Object.values(topics).reduce((s, tRows) =>
+                                    s + Object.values(tRows[d] || {}).reduce((ss, c) => ss + c, 0), 0)
+                                  return (
+                                    <td key={d} className="px-3 py-2.5 text-center">
+                                      {cnt > 0
+                                        ? <span className={`px-2 py-0.5 rounded-full text-xs font-bold ${DIFF_COLORS[d]}`}>{cnt}</span>
+                                        : <span className="text-gray-300 text-xs">—</span>}
+                                    </td>
+                                  )
+                                })}
+                                <td className="px-3 py-2.5 text-center font-bold text-blue-800 bg-blue-100">
+                                  {chTotal}
+                                </td>
+                              </tr>,
+
+                              // Topic rows (visible only when chapter expanded)
+                              ...(isOpen ? Object.entries(topics).flatMap(([topicName, diffRows]) => {
+                                const topicTotal = Object.values(diffRows).reduce((s, typeRows) =>
+                                  s + Object.values(typeRows).reduce((ss, c) => ss + c, 0), 0)
+
+                                // Collect all question types present in this topic
+                                const typesInTopic = [...new Set(
+                                  Object.values(diffRows).flatMap(typeRows => Object.keys(typeRows))
+                                )].sort()
+
+                                return typesInTopic.map((qType, qIdx) => {
+                                  const rowTotal = DIFFICULTIES.reduce((s, d) =>
+                                    s + (diffRows[d]?.[qType] || 0), 0)
+                                  return (
+                                    <tr
+                                      key={`tp-${chapterName}-${topicName}-${qType}`}
+                                      className="hover:bg-gray-50"
+                                    >
+                                      {/* Topic cell — only show on first type row */}
+                                      {qIdx === 0 ? (
+                                        <td
+                                          rowSpan={typesInTopic.length}
+                                          className="px-4 py-2 text-gray-700 border-l-4 border-blue-200 align-top"
+                                        >
+                                          <div className="font-medium text-xs text-gray-800 leading-snug pl-3">
+                                            {topicName}
+                                          </div>
+                                          <div className="pl-3 text-xs text-gray-400 mt-0.5">
+                                            {topicTotal} question{topicTotal !== 1 ? 's' : ''}
+                                          </div>
+                                        </td>
+                                      ) : null}
+                                      {/* Question type */}
+                                      <td className="px-3 py-2 text-xs text-gray-600">
+                                        <span className="px-2 py-0.5 bg-gray-100 text-gray-700 rounded font-medium">
+                                          {TYPE_LABELS[qType] || qType}
+                                        </span>
+                                      </td>
+                                      {/* Per-difficulty counts */}
+                                      {DIFFICULTIES.map(d => {
+                                        const cnt = diffRows[d]?.[qType] || 0
+                                        return (
+                                          <td key={d} className="px-3 py-2 text-center">
+                                            {cnt > 0
+                                              ? <span className={`px-2 py-0.5 rounded text-xs font-semibold ${DIFF_COLORS[d]}`}>{cnt}</span>
+                                              : <span className="text-gray-200 text-xs">—</span>}
+                                          </td>
+                                        )
+                                      })}
+                                      {/* Row total */}
+                                      <td className="px-3 py-2 text-center text-xs font-semibold text-gray-600 bg-gray-50">
+                                        {rowTotal}
+                                      </td>
+                                    </tr>
+                                  )
+                                })
+                              }) : [])
+                            ]
+                          })}
+                        </tbody>
+                        {/* Grand-total footer */}
+                        <tfoot>
+                          <tr className="bg-gray-100 border-t-2 border-gray-300 font-bold">
+                            <td className="px-4 py-3 text-gray-800 text-xs uppercase" colSpan={2}>
+                              Grand Total
+                            </td>
+                            {DIFFICULTIES.map(d => (
+                              <td key={d} className="px-3 py-3 text-center text-sm">
+                                <span className={snapshot.byDifficulty[d] > 0 ? `px-2 py-0.5 rounded-full text-xs font-bold ${DIFF_COLORS[d]}` : 'text-gray-300 text-xs'}>
+                                  {snapshot.byDifficulty[d] > 0 ? snapshot.byDifficulty[d] : '—'}
+                                </span>
+                              </td>
+                            ))}
+                            <td className="px-3 py-3 text-center text-sm font-bold text-gray-900 bg-gray-200">
+                              {snapshot.totalQuestions}
+                            </td>
+                          </tr>
+                        </tfoot>
+                      </table>
+                    </div>
+                    <p className="mt-2 text-xs text-gray-400">
+                      Click a chapter row to expand topic-level breakdown. Only active questions are counted.
+                    </p>
+                  </>
+                )}
+              </div>
+            )
+          })()}
 
           {/* Prerequisites */}
           {course.prerequisites && course.prerequisites.length > 0 && (

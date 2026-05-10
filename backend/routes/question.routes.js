@@ -84,6 +84,16 @@ router.get('/stats/:courseId',
   questionController.getQuestionStats
 );
 
+// Get question snapshot (per chapter/topic/difficulty/type breakdown) for admin
+router.get('/snapshot/:courseId',
+  tutorAdminOnly,
+  [
+    param('courseId').isMongoId().withMessage('Valid course ID required'),
+    validate
+  ],
+  questionController.getQuestionSnapshot
+);
+
 // Get course structure (chapters and topics)
 router.get('/course/:courseId/structure',
   [

@@ -2,6 +2,81 @@ const Question = require('../models/Question.model');
 const Quiz = require('../models/Quiz.model');
 const logger = require('../utils/logger');
 
+// @desc    Get question snapshot: counts per chapter × topic × difficulty × type
+// @route   GET /api/questions/snapshot/:courseId
+// @access  Private (Admin)
+exports.getQuestionSnapshot = async (req, res, next) => {
+  try {
+    const mongoose = require('mongoose');
+    const { courseId } = req.params;
+
+    const rows = await Question.aggregate([
+      {
+        $match: {
+          courseId: new mongoose.Types.ObjectId(courseId),
+          isActive: true
+        }
+      },
+      {
+        $group: {
+          _id: {
+            chapterName: '$chapterName',
+            topic: '$topic',
+            difficultyLevel: '$difficultyLevel',
+            type: '$type'
+          },
+          count: { $sum: 1 }
+        }
+      },
+      {
+        $project: {
+          _id: 0,
+          chapterName: '$_id.chapterName',
+          topic: '$_id.topic',
+          difficultyLevel: '$_id.difficultyLevel',
+          type: '$_id.type',
+          count: 1
+        }
+      },
+      {
+        $sort: { chapterName: 1, topic: 1, difficultyLevel: 1, type: 1 }
+      }
+    ]);
+
+    // Derive summary totals
+    const totalQuestions = rows.reduce((s, r) => s + r.count, 0);
+
+    const byDifficulty = rows.reduce((acc, r) => {
+      acc[r.difficultyLevel] = (acc[r.difficultyLevel] || 0) + r.count;
+      return acc;
+    }, {});
+
+    const byType = rows.reduce((acc, r) => {
+      acc[r.type] = (acc[r.type] || 0) + r.count;
+      return acc;
+    }, {});
+
+    const byChapter = rows.reduce((acc, r) => {
+      const ch = r.chapterName || 'Uncategorised';
+      acc[ch] = (acc[ch] || 0) + r.count;
+      return acc;
+    }, {});
+
+    res.json({
+      success: true,
+      snapshot: {
+        rows,
+        totalQuestions,
+        byDifficulty,
+        byType,
+        byChapter
+      }
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 // @desc    Create a new question
 // @route   POST /api/questions
 // @access  Private (Tutor, Admin)
@@ -331,7 +406,7 @@ exports.getQuestionStats = async (req, res, next) => {
     const mongoose = require('mongoose');
     
     const stats = await Question.aggregate([
-      { $match: { courseId: mongoose.Types.ObjectId(courseId), isActive: true } },
+      { $match: { courseId: new mongoose.Types.ObjectId(courseId), isActive: true } },
       {
         $group: {
           _id: null,

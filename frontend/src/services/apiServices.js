@@ -534,6 +534,12 @@ export const questionService = {
     return data
   },
 
+  // Get question snapshot (chapter × topic × difficulty × type breakdown)
+  getQuestionSnapshot: async (courseId) => {
+    const { data } = await api.get(`/questions/snapshot/${courseId}`)
+    return data
+  },
+
   // Get course structure (chapters and topics)
   getCourseStructure: async (courseId) => {
     const { data } = await api.get(`/questions/course/${courseId}/structure`)
