@@ -38,6 +38,7 @@ const razorpayRoutes = require('./routes/razorpay.routes');
 const featureManagementRoutes = require('./routes/featureManagement.routes');
 const userFeaturesRoutes = require('./routes/userFeatures.routes');
 const reviewRoutes = require('./routes/review.routes');
+const leaderboardRoutes = require('./routes/leaderboard.routes');
 
 const app = express();
 const server = http.createServer(app);
@@ -111,6 +112,7 @@ app.use('/api/questions', questionExportRoutes); // Import/Export endpoints (mer
 app.use('/api/offline-prompts', offlinePromptRoutes);
 app.use('/api/notifications', require('./routes/notification.routes'));
 app.use('/api/reviews', reviewRoutes);
+app.use('/api/leaderboard', leaderboardRoutes);
 app.use('/api/test', testRoutes); // Test endpoints (no auth required)
 // Contact endpoints (public + admin)
 app.use('/api/contact', contactRoutes);

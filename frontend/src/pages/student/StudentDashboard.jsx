@@ -1,4 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from 'react-query'
+import { useEffect } from 'react'
 import { BookOpen, Calendar, TrendingUp, Video, FileText, Play, UserPlus, ArrowRight, Target, Award } from 'lucide-react'
 import { courseService, sessionService, materialService, reportService, algorithmQuizService } from '@/services/apiServices'
 import { useAuthStore } from '@/store/authStore'
@@ -9,10 +10,17 @@ import ErrorMessage from '@/components/common/ErrorMessage'
 import { UpcomingQuizzesWidget } from '@/components/dashboard'
 import { UpgradePrompt, UsageIndicator } from '@/components/common'
 import { useFeatureUsage } from '@/hooks/useFeatureAccess'
+import { useXPStore } from '@/store/xpStore'
+import { useStreakStore } from '@/store/streakStore'
+import StreakWidget from '@/components/dashboard/StreakWidget'
+import DailyMissions from '@/components/dashboard/DailyMissions'
+import LeaderboardWidget from '@/components/dashboard/LeaderboardWidget'
 
 export default function StudentDashboard() {
   const { user } = useAuthStore()
   const queryClient = useQueryClient()
+  const { fetchXPFromServer } = useXPStore()
+  const { fetchStreak, checkIn } = useStreakStore()
 
   // Fetch usage data for upgrade prompts
   const { usageData } = useFeatureUsage()
@@ -68,6 +76,15 @@ export default function StudentDashboard() {
 
   const isLoading = coursesLoading || sessionsLoading || materialsLoading
 
+  // ── Fetch XP + streak from backend when the student dashboard mounts ─────────
+  useEffect(() => {
+    if (user?._id) {
+      fetchXPFromServer()
+      fetchStreak()
+      checkIn()
+    }
+  }, [user?._id, fetchXPFromServer, fetchStreak, checkIn])
+
   // Enrollment mutation
   const enrollMutation = useMutation(
     (sessionId) => sessionService.enrollInSession(sessionId),
@@ -115,14 +132,30 @@ export default function StudentDashboard() {
     <SEOHead title="Student Dashboard - Student" noIndex={true} noFollow={true} />
 
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 space-y-6 sm:space-y-8">
-      {/* Welcome Header with MeriTai Style */}
-      <div className="bg-gradient-to-r from-emerald-600 to-teal-600 p-6 sm:p-8 rounded-2xl text-center text-white shadow-lg">
-        <h1 className="text-2xl sm:text-3xl font-bold text-white mb-2">
-          Welcome back, {user?.name?.split(' ')[0] || 'Student'}! 👋
-        </h1>
-        <p className="text-base sm:text-lg text-white/90 font-medium">
-          Let's make today count! Ready to learn?
-        </p>
+      {/* Welcome Banner + Streak/Missions Grid */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+        {/* Welcome Banner */}
+        <div className="lg:col-span-3 bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 p-5 sm:p-7 rounded-2xl text-white shadow-lg flex items-center justify-between">
+          <div>
+            <h1 className="text-2xl sm:text-3xl font-bold text-white mb-1">
+              Welcome back, {user?.name?.split(' ')[0] || 'Student'}! 👋
+            </h1>
+            <p className="text-sm sm:text-base text-white/80">
+              Level up your skills — your streak is waiting!
+            </p>
+          </div>
+          <div className="hidden sm:block text-5xl select-none">🚀</div>
+        </div>
+
+        {/* Streak Widget */}
+        <div className="lg:col-span-1">
+          <StreakWidget />
+        </div>
+
+        {/* Daily Missions */}
+        <div className="lg:col-span-2">
+          <DailyMissions quizHistory={quizHistory} />
+        </div>
       </div>
 
       {/* Upgrade Banner - Show if approaching limits */}
@@ -166,6 +199,16 @@ export default function StudentDashboard() {
         />
       </div>
 
+      {/* Leaderboard preview */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="md:col-span-1">
+          <LeaderboardWidget />
+        </div>
+        <div className="md:col-span-1">
+          <UpcomingQuizzesWidget />
+        </div>
+      </div>
+
       {/* Upcoming Classes */}
       <div className="card">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-0 mb-4 sm:mb-6">
@@ -200,9 +243,6 @@ export default function StudentDashboard() {
           </div>
         )}
       </div>
-
-      {/* Upcoming Quizzes Widget */}
-      <UpcomingQuizzesWidget />
 
       {/* Usage Statistics - Show top 3 limited features */}
       {usageData && usageData.length > 0 && (

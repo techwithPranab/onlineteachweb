@@ -9,9 +9,27 @@ import ErrorMessage from '@/components/common/ErrorMessage'
 import AchievementBadgeModal from '@/components/common/AchievementBadgeModal'
 import api from '@/services/api'
 
+import { useXPStore } from '@/store/xpStore'
+import { useStreakStore } from '@/store/streakStore'
+
+// All possible badges — locked ones show grayed out with criteria
+const ALL_BADGES = [
+  { id: 'first_quiz',   icon: '🎯', name: 'First Step',     criteria: 'Complete your first quiz',          threshold: 1,    stat: 'quizzesTaken' },
+  { id: 'quiz_10',      icon: '🔟', name: 'Quiz Veteran',   criteria: 'Complete 10 quizzes',               threshold: 10,   stat: 'quizzesTaken' },
+  { id: 'quiz_50',      icon: '💪', name: 'Quiz Machine',   criteria: 'Complete 50 quizzes',               threshold: 50,   stat: 'quizzesTaken' },
+  { id: 'score_90',     icon: '⭐', name: 'Star Performer', criteria: 'Achieve 90%+ average score',        threshold: 90,   stat: 'averageScore' },
+  { id: 'accuracy_80',  icon: '🎯', name: 'Sharp Shooter',  criteria: 'Maintain 80%+ accuracy overall',   threshold: 80,   stat: 'averageAccuracy' },
+  { id: 'streak_3',     icon: '🔥', name: 'On Fire',        criteria: '3-day login streak',                threshold: 3,    stat: 'streak' },
+  { id: 'streak_7',     icon: '🌟', name: 'Week Warrior',   criteria: '7-day login streak',                threshold: 7,    stat: 'streak' },
+  { id: 'streak_30',    icon: '👑', name: 'Month Master',   criteria: '30-day login streak',               threshold: 30,   stat: 'streak' },
+  { id: 'xp_100',       icon: '💎', name: 'XP Hunter',      criteria: 'Earn 100 XP',                      threshold: 100,  stat: 'totalXP' },
+  { id: 'xp_1000',      icon: '🏆', name: 'XP Legend',      criteria: 'Earn 1000 XP',                     threshold: 1000, stat: 'totalXP' },
+]
 export default function ProgressReports() {
   const { user } = useAuthStore()
   const [showBadgeModal, setShowBadgeModal] = useState(false)
+  const { totalXP } = useXPStore()
+  const { currentStreak } = useStreakStore()
 
   // Fetch student performance data
   const { data: performanceData, isLoading: performanceLoading, error: performanceError } = useQuery(
@@ -39,6 +57,26 @@ export default function ProgressReports() {
 
   const studentPerformance = performanceData?.data || {}
   const achievements = Array.isArray(achievementsData?.achievements) ? achievementsData.achievements : []
+
+  // Compute unlocked state for the badge wall
+  const quizzesTaken = studentPerformance.totalQuizzesTaken || 0
+  const avgScore     = studentPerformance.averageScore      || 0
+  const avgAccuracy  = studentPerformance.averageAccuracy   || 0
+
+  const badgeStats = {
+    quizzesTaken,
+    averageScore:    avgScore,
+    averageAccuracy: avgAccuracy,
+    streak:          currentStreak,
+    totalXP,
+  }
+
+  const badgeWall = ALL_BADGES.map(badge => {
+    const val      = badgeStats[badge.stat] || 0
+    const unlocked = val >= badge.threshold
+    const progress = Math.min(100, Math.round((val / badge.threshold) * 100))
+    return { ...badge, unlocked, progress, val }
+  })
 
   // Debug logging
   console.log('Student Performance Data:', studentPerformance)
@@ -227,58 +265,82 @@ export default function ProgressReports() {
         </div>
       </div>
 
-      {/* Achievements */}
+      {/* Badge Gallery — Pokédex style */}
       <div className="genz-card relative overflow-hidden mt-4 sm:mt-6">
-        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-yellow-500 via-orange-500 to-red-500"></div>
+        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500"></div>
         <div className="p-4 sm:p-5 lg:p-6">
-          <div className="flex items-center justify-between mb-3 sm:mb-4">
-            <h3 className="text-lg sm:text-xl font-bold bg-gradient-to-r from-yellow-600 to-orange-600 bg-clip-text text-transparent flex items-center gap-2">
-              🏆 Achievements & Badges
-            </h3>
+          <div className="flex items-center justify-between mb-4">
+            <div>
+              <h3 className="text-xl font-black bg-gradient-to-r from-yellow-600 to-orange-600 bg-clip-text text-transparent">
+                🏅 Badge Gallery
+              </h3>
+              <p className="text-xs text-gray-500 mt-0.5">
+                {badgeWall.filter(b => b.unlocked).length}/{badgeWall.length} unlocked
+              </p>
+            </div>
             <button
               onClick={() => setShowBadgeModal(true)}
-              className="genz-button-secondary text-sm px-3 py-1.5 rounded-lg hover:scale-105 transition-all flex items-center gap-1"
+              className="genz-button-secondary text-xs px-3 py-1.5 rounded-lg"
             >
-              📋 View Rules
+              📋 Earn Rules
             </button>
           </div>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2 sm:gap-3 md:gap-4">
-            {achievements.length > 0 ? achievements.slice(0, 12).map((badge, index) => (
+
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
+            {badgeWall.map(badge => (
               <div
-                key={badge._id || index}
-                className="text-center p-2 sm:p-3 md:p-4 rounded-lg sm:rounded-xl border-2 transition-all hover:scale-105 genz-card border-yellow-300 bg-gradient-to-br from-yellow-50 to-orange-50 shadow-lg"
+                key={badge.id}
+                className={`relative rounded-2xl border-2 p-3 flex flex-col items-center text-center transition-all ${
+                  badge.unlocked
+                    ? 'border-yellow-300 bg-gradient-to-br from-yellow-50 to-orange-50 shadow-md hover:scale-105'
+                    : 'border-gray-200 bg-gray-50 opacity-60'
+                }`}
               >
-                <div className="text-xl sm:text-2xl md:text-3xl mb-1 sm:mb-2 animate-bounce-slow">
-                  {badge.badgeIcon}
+                {/* Icon */}
+                <div className={`text-3xl mb-1.5 ${badge.unlocked ? 'animate-bounce-slow' : 'grayscale'}`}>
+                  {badge.unlocked ? badge.icon : '🔒'}
                 </div>
-                <p className="text-xs sm:text-sm font-bold break-words leading-tight text-gray-800">
-                  {badge.badgeName}
-                </p>
-                <div className="mt-1 space-y-1">
-                  <span className="text-xs bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-1 sm:px-2 py-0.5 sm:py-1 rounded-full font-bold">
+                <div className={`text-xs font-bold leading-tight ${badge.unlocked ? 'text-gray-800' : 'text-gray-400'}`}>
+                  {badge.name}
+                </div>
+                {/* Progress or earned label */}
+                {badge.unlocked ? (
+                  <span className="mt-1.5 text-xs bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-2 py-0.5 rounded-full font-bold">
                     ✅ Earned
                   </span>
-                  <div className="text-xs text-gray-600 font-medium">
-                    {badge.points} pts
+                ) : (
+                  <div className="mt-1.5 w-full">
+                    <div className="w-full h-1 bg-gray-200 rounded-full overflow-hidden mb-1">
+                      <div
+                        className="h-full bg-gradient-to-r from-indigo-400 to-purple-400 rounded-full transition-all"
+                        style={{ width: `${badge.progress}%` }}
+                      />
+                    </div>
+                    <p className="text-[10px] text-gray-400 leading-tight">{badge.criteria}</p>
                   </div>
-                </div>
+                )}
+                {/* XP badge earned indicator */}
+                {badge.unlocked && (
+                  <div className="absolute -top-1.5 -right-1.5 w-5 h-5 bg-emerald-500 rounded-full flex items-center justify-center">
+                    <span className="text-white text-[9px] font-black">✓</span>
+                  </div>
+                )}
               </div>
-            )) : (
-              <div className="col-span-full text-center py-8">
-                <div className="text-4xl mb-2">🏆</div>
-                <p className="text-gray-600 mb-2">No achievements yet</p>
-                <p className="text-sm text-gray-500">Complete quizzes to earn your first badge!</p>
-              </div>
-            )}
+            ))}
           </div>
-          {achievements.length > 12 && (
-            <div className="text-center mt-4">
-              <button
-                onClick={() => setShowBadgeModal(true)}
-                className="genz-button-primary text-sm"
-              >
-                View All {achievements.length} Achievements
-              </button>
+
+          {/* Legacy achievement badges */}
+          {achievements.length > 0 && (
+            <div className="mt-6">
+              <h4 className="text-sm font-bold text-gray-600 mb-3">🎖️ Quiz Achievements</h4>
+              <div className="flex flex-wrap gap-2">
+                {achievements.slice(0, 12).map((badge, i) => (
+                  <div key={badge._id || i} className="flex items-center gap-1.5 bg-amber-50 border border-amber-200 rounded-full px-3 py-1.5">
+                    <span className="text-base">{badge.badgeIcon}</span>
+                    <span className="text-xs font-semibold text-amber-800">{badge.badgeName}</span>
+                  </div>
+                ))}
+              </div>
             </div>
           )}
         </div>

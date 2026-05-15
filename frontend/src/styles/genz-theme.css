@@ -386,6 +386,86 @@
   }
 }
 
+/* ========== XP Bar Styles ========== */
+.xp-bar-strip {
+  transition: background 0.5s ease;
+}
+
+.xp-bar-level-up-flash {
+  animation: xp-flash 0.6s ease-out 2;
+}
+
+@keyframes xp-flash {
+  0%, 100% { background-color: #ffffff; }
+  50%       { background-color: #fef9c3; } /* yellow-50 */
+}
+
+/* Level-up celebration overlay ring burst */
+.levelup-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  opacity: 0.8;
+  animation: levelup-ring-burst 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes levelup-ring-burst {
+  0%   { transform: translate(-50%, -50%) scale(0);   opacity: 0.9; }
+  60%  { opacity: 0.4; }
+  100% { transform: translate(-50%, -50%) scale(18);  opacity: 0; }
+}
+
+/* Level-up card pop-in */
+@keyframes levelUpCardIn {
+  0%   { transform: scale(0.4) rotate(-8deg); opacity: 0; }
+  60%  { transform: scale(1.08) rotate(2deg); opacity: 1; }
+  100% { transform: scale(1)    rotate(0deg); opacity: 1; }
+}
+
+.animate-levelUpCard {
+  animation: levelUpCardIn 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* Fade-in for the overlay backdrop */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.2s ease-out forwards;
+}
+
+/* ========== Phase 3 — Gamified Quiz Animations ========== */
+@keyframes comboSlideIn {
+  from { opacity: 0; transform: translateY(-16px) scale(0.85); }
+  to   { opacity: 1; transform: translateY(0)    scale(1);    }
+}
+
+@keyframes xpFloat {
+  0%   { opacity: 1;   transform: translateY(0)    scale(1);    }
+  60%  { opacity: 1;   transform: translateY(-40px) scale(1.15); }
+  100% { opacity: 0;   transform: translateY(-70px) scale(0.9);  }
+}
+
+@keyframes optionCorrect {
+  0%, 100% { transform: scale(1); }
+  50%       { transform: scale(1.03); }
+}
+
+@keyframes optionWrong {
+  0%, 100%  { transform: translateX(0); }
+  20%, 60%  { transform: translateX(-5px); }
+  40%, 80%  { transform: translateX(5px); }
+}
+
+.option-correct-pulse { animation: optionCorrect 0.4s ease; }
+.option-wrong-shake   { animation: optionWrong   0.4s ease; }
+
 /* ========== MeriTai Specific Styles ========== */
 .meritai-card {
   @apply rounded-2xl bg-white shadow-lg border border-gray-100 transition-all duration-300;

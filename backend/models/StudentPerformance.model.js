@@ -212,7 +212,34 @@ const studentPerformanceSchema = new mongoose.Schema({
     score: Number,
     accuracy: Number,
     completedAt: Date
-  }
+  },
+
+  // ── XP & Gamification ─────────────────────────────────────────────────────
+  totalXP: {
+    type: Number,
+    default: 0,
+    min: 0
+  },
+
+  // ── Streak Tracking ────────────────────────────────────────────────────────
+  currentStreak: {
+    type: Number,
+    default: 0,
+    min: 0
+  },
+  longestStreak: {
+    type: Number,
+    default: 0,
+    min: 0
+  },
+  lastActivityDate: {
+    type: Date,
+    default: null
+  },
+  // Last 90 days of activity (one Date per day, deduped)
+  activityDates: [{
+    type: Date
+  }]
 }, {
   timestamps: true
 });
