@@ -1,6 +1,8 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import api from '../services/api'
+import { useXPStore } from './xpStore'
+import { useStreakStore } from './streakStore'
 
 export const useAuthStore = create(
   persist(
@@ -63,6 +65,9 @@ export const useAuthStore = create(
             isAuthenticated: false,
           })
           delete api.defaults.headers.common['Authorization']
+          // Reset XP store on logout so a new user starts fresh
+          useXPStore.getState().resetXP()
+          useStreakStore.getState().resetStreak()
         }
       },
 

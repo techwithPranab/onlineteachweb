@@ -4,18 +4,23 @@ import { quizService, algorithmQuizService } from '../../services/apiServices'
 import { analyzeQuizResults } from '@/utils/quiz/quizAnalysis'
 import { updateStudentPerformance } from '@/utils/quizAlgorithm'
 import { useAuthStore } from '@/store/authStore'
+import { useXPStore } from '@/store/xpStore'
+import { useStreakStore } from '@/store/streakStore'
 import LoadingSpinner from '../../components/common/LoadingSpinner'
 import SEOHead from '../../components/SEO/SEOHead';
 import ConfirmDialog from '../../components/common/ConfirmDialog'
 import { QuizTimer, QuizProgressBar, QuestionCard } from '../../components/quiz'
 import MeritaiCard from '../../components/ui/MeritaiCard'
+import ComboStreakBanner from '../../components/quiz/ComboStreakBanner'
+import XPEarnPreview from '../../components/quiz/XPEarnPreview'
 
 export default function QuizAttempt() {
   const { quizId } = useParams()
   const navigate = useNavigate()
   const location = useLocation()
   const { user } = useAuthStore()
-  
+  const { addXP } = useXPStore()
+  const { checkIn } = useStreakStore()
   const [session, setSession] = useState(null)
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
   const [answers, setAnswers] = useState({})
@@ -30,6 +35,9 @@ export default function QuizAttempt() {
   const [quizData, setQuizData] = useState(null)
   const [questionTimeTracking, setQuestionTimeTracking] = useState({}) // Track time per question
   const [savingAnswer, setSavingAnswer] = useState(false)
+  const [comboCount, setComboCount] = useState(0)
+  // xpPreview.trigger increments each time an answer is picked → fires XPEarnPreview animation
+  const [xpPreview, setXpPreview] = useState({ xp: 2, trigger: 0 })
   
   const timerRef = useRef(null)
   const questionStartTime = useRef(Date.now())
@@ -321,6 +329,9 @@ export default function QuizAttempt() {
       ...prev,
       [questionId]: answer
     }))
+
+    // Fire floating XP preview (+2 XP per answer selection)
+    setXpPreview(prev => ({ xp: 2, trigger: prev.trigger + 1 }))
   }
 
   // New function to save answer to backend
@@ -453,9 +464,12 @@ export default function QuizAttempt() {
     // Save current answer before moving to next question
     const currentQuestion = session.questions[currentQuestionIndex]
     await saveAnswerToBackend(currentQuestion.questionId)
+
+    // Increment combo if this question was answered (not skipped)
+    const hasAnswer = answers[currentQuestion.questionId] !== undefined
+    setComboCount(prev => hasAnswer ? prev + 1 : 0)
     
     if (currentQuestionIndex < session.questions.length - 1) {
-      // Don't save again in navigateToQuestion since we just saved
       navigateToQuestion(currentQuestionIndex + 1, false)
     }
   }
@@ -464,9 +478,10 @@ export default function QuizAttempt() {
     // Save current answer before moving to previous question
     const currentQuestion = session.questions[currentQuestionIndex]
     await saveAnswerToBackend(currentQuestion.questionId)
+    // Going back resets the combo
+    setComboCount(0)
     
     if (currentQuestionIndex > 0) {
-      // Don't save again in navigateToQuestion since we just saved
       navigateToQuestion(currentQuestionIndex - 1, false)
     }
   }
@@ -540,6 +555,15 @@ export default function QuizAttempt() {
         // Update student performance
         await updateStudentPerformance(user?.id || 'demo', analysis)
 
+        // ── Award XP + record streak check-in ────────────────────────────────
+        const xpEarned = addXP({
+          score: analysis.score || 0,
+          correctAnswers: analysis.correct || analysis.overallAnalysis?.correct || 0,
+          difficulty: quizData.difficulty || 'medium',
+        })
+        console.log(`[XP] Earned ${xpEarned} XP for this quiz`)
+        checkIn().catch(() => {}) // fire-and-forget; backend dedupes same-day calls
+
         // Navigate to results with analysis
         navigate(`/student/quiz/${quizIdForApi}/results`, {
           state: {
@@ -551,6 +575,14 @@ export default function QuizAttempt() {
       } else {
         // For API-based quizzes
         const response = await quizService.submitQuiz(quizId, session._id, answersArray)
+
+        // ── Award XP for completing this quiz ────────────────────────────────
+        addXP({
+          score: response.result?.percentage || response.result?.score || 0,
+          correctAnswers: response.result?.correct || 0,
+          difficulty: 'medium',
+        })
+        checkIn().catch(() => {}) // fire-and-forget streak check-in
         
         // Navigate to results
         navigate(`/student/quiz/${quizId}/results`, {
@@ -748,6 +780,8 @@ export default function QuizAttempt() {
           {/* Main Question Area */}
           <div className="flex-1">
             <div className="bg-white rounded-lg shadow-sm p-4 sm:p-6">
+              {/* Combo banner */}
+              <ComboStreakBanner comboCount={comboCount} />
               {renderQuestion()}
 
               {/* Navigation and Actions */}
@@ -893,6 +927,8 @@ export default function QuizAttempt() {
         disabled={submitting}
       />
     </div>
+    {/* Floating XP earn preview */}
+    <XPEarnPreview xp={xpPreview.xp} trigger={xpPreview.trigger} correct={true} />
     </>
   )
 }

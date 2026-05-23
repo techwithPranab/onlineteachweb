@@ -27,6 +27,7 @@ import CourseDetails from './pages/public/CourseDetails'
 
 // Student Pages
 import StudentDashboard from './pages/student/StudentDashboard'
+import Leaderboard from './pages/student/Leaderboard'
 import CourseListing from './pages/student/CourseListing'
 import CourseDetail from './pages/student/CourseDetail'
 import LiveClassRoom from './pages/student/LiveClassRoom'
@@ -153,6 +154,7 @@ function App() {
             <Route path="quiz/:quizId/attempt" element={<QuizAttempt />} />
             <Route path="quiz/:quizId/results" element={<QuizResults />} />
             <Route path="quiz-history" element={<QuizHistory />} />
+            <Route path="leaderboard" element={<Leaderboard />} />
           </Route>
 
           {/* Tutor Routes */}

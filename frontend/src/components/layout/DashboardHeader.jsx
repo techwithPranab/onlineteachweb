@@ -1,12 +1,28 @@
 import { useAuthStore } from '../../store/authStore'
 import NotificationBell from '../common/NotificationBell'
-import { Menu, Sparkles } from 'lucide-react'
+import { Menu, Sparkles, Sun, Moon } from 'lucide-react'
 import { useSubscriptionFeatures } from '@/hooks/useFeatureAccess'
 import { Link } from 'react-router-dom'
+import { useXPStore } from '@/store/xpStore'
+import { LEVEL_BADGE_BG } from '@/utils/xpSystem'
+import { useState, useEffect } from 'react'
 
 export default function DashboardHeader({ setSidebarOpen }) {
   const { user } = useAuthStore()
   const { plan } = useSubscriptionFeatures()
+  const isStudent = user?.role === 'student'
+
+  // XP / level data — only read for students
+  const { totalXP, levelInfo } = useXPStore()
+  const { currentLevel } = levelInfo
+  const badgeBg = LEVEL_BADGE_BG[currentLevel.level] || LEVEL_BADGE_BG[1]
+
+  // Dark mode toggle
+  const [dark, setDark] = useState(() => localStorage.getItem('darkMode') === 'true')
+  useEffect(() => {
+    document.documentElement.classList.toggle('dark', dark)
+    localStorage.setItem('darkMode', dark)
+  }, [dark])
 
   return (
     <header className="bg-white border-b border-gray-200 px-6 py-4 shadow-sm">
@@ -30,13 +46,31 @@ export default function DashboardHeader({ setSidebarOpen }) {
               )}
               <Sparkles className="h-5 w-5 text-emerald-600" />
             </h1>
-            <p className="text-gray-600 capitalize text-sm font-medium">
-              {user?.role}
-            </p>
+            <div className="flex items-center gap-2">
+              <p className="text-gray-600 capitalize text-sm font-medium">
+                {user?.role}
+              </p>
+              {/* Level badge inline under role label */}
+              {isStudent && (
+                <span className={`inline-flex items-center gap-1 text-xs font-bold px-2 py-0.5 rounded-full border ${badgeBg}`}>
+                  {currentLevel.emoji} {currentLevel.title} · Lv.{currentLevel.level}
+                  <span className="ml-1 text-[10px] font-medium opacity-70">{totalXP.toLocaleString()} XP</span>
+                </span>
+              )}
+            </div>
           </div>
         </div>
 
         <div className="flex items-center space-x-4">
+          {/* Dark mode toggle */}
+          <button
+            onClick={() => setDark(d => !d)}
+            className="p-2 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-600 transition-all"
+            title={dark ? 'Switch to light mode' : 'Switch to dark mode'}
+          >
+            {dark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+          </button>
+
           <NotificationBell />
 
           <div className="flex items-center space-x-3">

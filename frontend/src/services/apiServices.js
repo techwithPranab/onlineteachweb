@@ -1030,3 +1030,61 @@ export const adminReviewService = {
   }
 }
 
+// ─────────────────────────────────────────────────────────────────────────────
+// Streak Service  (maps to /api/student-performance/streak)
+// ─────────────────────────────────────────────────────────────────────────────
+export const streakService = {
+  getStreak: async () => {
+    const { data } = await api.get('/student-performance/streak')
+    return data  // { success, data: { currentStreak, longestStreak, lastActivityDate, activityDates } }
+  },
+  checkIn: async () => {
+    const { data } = await api.post('/student-performance/streak/checkin')
+    return data  // { success, data: { currentStreak, longestStreak, ... } }
+  },
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Leaderboard Service  (maps to /api/leaderboard)
+// ─────────────────────────────────────────────────────────────────────────────
+export const leaderboardService = {
+  getLeaderboard: async (limit = 10) => {
+    const { data } = await api.get('/leaderboard', { params: { limit } })
+    return data  // { success, data: { leaderboard, myRank, myXP, myLevel, myTitle } }
+  },
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// XP Service  (maps to /api/student-performance/xp)
+// ─────────────────────────────────────────────────────────────────────────────
+export const xpService = {
+  /**
+   * Fetch the student's stored XP from the backend.
+   * @returns {{ totalXP: number }}
+   */
+  getXP: async () => {
+    const { data } = await api.get('/student-performance/xp')
+    return data  // { success, data: { totalXP } }
+  },
+
+  /**
+   * Atomically add `delta` XP to the student's total on the backend.
+   * Preferred over overwrite for concurrent safety.
+   * @param {number} delta  XP to add (must be ≥ 0)
+   * @returns {{ totalXP: number, earned: number }}
+   */
+  addXP: async (delta) => {
+    const { data } = await api.post('/student-performance/xp/add', { delta })
+    return data  // { success, data: { totalXP, earned } }
+  },
+
+  /**
+   * Overwrite the student's XP total (use sparingly — prefer addXP).
+   * @param {number} totalXP
+   * @returns {{ totalXP: number }}
+   */
+  setXP: async (totalXP) => {
+    const { data } = await api.patch('/student-performance/xp', { totalXP })
+    return data  // { success, data: { totalXP } }
+  },
+}

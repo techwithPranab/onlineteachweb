@@ -1,6 +1,7 @@
 import { NavLink } from 'react-router-dom'
 import { useState } from 'react'
 import { useAuthStore } from '../../store/authStore'
+import XPBar from '../common/XPBar'
 import {
   LayoutDashboard,
   BookOpen,
@@ -27,6 +28,7 @@ import {
   History,
   LogOut,
   Star,
+  Trophy,
 } from 'lucide-react'
 
 const studentLinks = [
@@ -37,6 +39,7 @@ const studentLinks = [
   { to: '/student/quiz-setup', icon: PenTool, label: 'Quiz Setup' },
   { to: '/student/active-quizzes', icon: ArrowUpDown, label: 'Active Quizzes' },
   { to: '/student/quiz-history', icon: History, label: 'Quiz History' },
+  { to: '/student/leaderboard', icon: Trophy, label: 'Leaderboard' },
   { to: '/student/progress', icon: BarChart3, label: 'Progress' },
   { to: '/student/subscription', icon: CreditCard, label: 'Subscription' },
   { to: '/student/profile', icon: Settings, label: 'Settings' },
@@ -132,13 +135,26 @@ const adminLinks = [
   { type: 'action', icon: LogOut, label: 'Logout', action: 'logout' },
 ]
 
+// Colored icon bg for student links — game-menu vibe
+const STUDENT_ICON_COLORS = {
+  '/student':                'bg-indigo-100 text-indigo-600',
+  '/student/courses':        'bg-blue-100 text-blue-600',
+  '/student/quiz-setup':     'bg-violet-100 text-violet-600',
+  '/student/active-quizzes': 'bg-amber-100 text-amber-600',
+  '/student/quiz-history':   'bg-orange-100 text-orange-600',
+  '/student/leaderboard':    'bg-yellow-100 text-yellow-600',
+  '/student/progress':       'bg-emerald-100 text-emerald-600',
+  '/student/subscription':   'bg-pink-100 text-pink-600',
+  '/student/profile':        'bg-gray-100 text-gray-600',
+}
+
 export default function Sidebar({ sidebarOpen, setSidebarOpen }) {
   const { user, logout } = useAuthStore()
 
-  const links = user?.role === 'student' 
-    ? studentLinks 
-    : user?.role === 'tutor' 
-    ? tutorLinks 
+  const links = user?.role === 'student'
+    ? studentLinks
+    : user?.role === 'tutor'
+    ? tutorLinks
     : adminLinks
 
   // State for collapsible admin menu groups
@@ -236,21 +252,33 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen }) {
               to={link.to}
               end={link.end}
               className={({ isActive }) =>
-                `flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-200 ${
+                `flex items-center space-x-3 px-3 py-2.5 rounded-xl transition-all duration-200 ${
                   isActive
-                    ? 'bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow-md'
-                    : 'text-gray-700 hover:bg-emerald-50 hover:text-emerald-700'
+                    ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-md'
+                    : 'text-gray-700 hover:bg-indigo-50 hover:text-indigo-700'
                 }`
               }
               onClick={() => setSidebarOpen?.(false)}
             >
-              <Icon className="h-5 w-5" />
+              {user?.role === 'student' && STUDENT_ICON_COLORS[link.to] ? (
+                <span className={`w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 ${STUDENT_ICON_COLORS[link.to]}`}>
+                  <Icon className="h-4 w-4" />
+                </span>
+              ) : (
+                <Icon className="h-5 w-5" />
+              )}
               <span className="font-medium">{link.label}</span>
             </NavLink>
           )
         })}
       </nav>
 
+      {/* XP compact card — student only, sits at the bottom of the sidebar */}
+      {user?.role === 'student' && (
+        <div className="border-t border-gray-100 mt-auto">
+          <XPBar compact />
+        </div>
+      )}
     </div>
   )
 
