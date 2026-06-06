@@ -62,7 +62,8 @@ export default function AIQuestionReview() {
   }, [filters.grade, filters.subject])
 
   useEffect(() => {
-    // Reset to first page when filters change
+    // Only re-fetch the list when filters change; stats are always global
+    // and were already loaded on mount.
     fetchDrafts(1)
   }, [filters])
 
@@ -95,7 +96,9 @@ export default function AIQuestionReview() {
 
   const fetchStats = async () => {
     try {
-      const response = await aiQuestionService.getStatistics(filters.courseId || undefined)
+      // Always fetch global stats — no courseId filter — so metrics never
+      // change based on what the user has filtered or just approved/rejected.
+      const response = await aiQuestionService.getStatistics()
       setStats(response.stats)
     } catch (err) {
       console.error('Failed to load stats:', err)
