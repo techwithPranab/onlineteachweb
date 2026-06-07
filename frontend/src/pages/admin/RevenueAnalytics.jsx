@@ -42,72 +42,66 @@ export default function RevenueAnalytics() {
 
   const analytics = analyticsData?.data || {}
 
-  // Use real data from analytics API, fallback to sample data
-  const revenueData = analytics.revenueTrend || [
-    { date: 'Jan 1', revenue: 1200, subscriptions: 800, courses: 400 },
-    { date: 'Jan 8', revenue: 1500, subscriptions: 1000, courses: 500 },
-    { date: 'Jan 15', revenue: 1800, subscriptions: 1200, courses: 600 },
-    { date: 'Jan 22', revenue: 2200, subscriptions: 1500, courses: 700 },
-    { date: 'Jan 29', revenue: 2600, subscriptions: 1800, courses: 800 },
-    { date: 'Feb 5', revenue: 3000, subscriptions: 2000, courses: 1000 },
-  ]
+  // Revenue trend — backend returns { month, revenue, subscriptions, courses }
+  // If no real data yet, show zeroed-out structure (not fake numbers)
+  const revenueData = analytics.revenueTrend?.length
+    ? analytics.revenueTrend
+    : []
 
   const subscriptionBreakdown = analytics.subscriptionData?.map(item => ({
     plan: item.name,
     revenue: item.value,
-    users: item.users ?? Math.floor(item.value / 100)
-  })) || [
-    { plan: 'Basic', revenue: 4200, users: 420 },
-    { plan: 'Standard', revenue: 20400, users: 680 },
-    { plan: 'Premium', revenue: 7400, users: 148 },
-  ]
+    users: item.users ?? Math.round(item.value / 100)
+  })) || []
 
-  const topCourses = analytics.topCourses || [
-    { name: 'Advanced Mathematics', revenue: 5240, students: 68 },
-    { name: 'Physics Fundamentals', revenue: 4580, students: 62 },
-    { name: 'Chemistry Grade 10', revenue: 3920, students: 56 },
-    { name: 'English Literature', revenue: 3450, students: 51 },
-    { name: 'Computer Science', revenue: 3100, students: 48 },
-  ]
+  const topCourses = analytics.topCourses || []
 
-  const monthlyStats = analytics.monthlyStats || [
-    { month: 'Jan', revenue: 28500, growth: 12 },
-    { month: 'Feb', revenue: 32100, growth: 15 },
-    { month: 'Mar', revenue: 29800, growth: 8 },
-    { month: 'Apr', revenue: 38200, growth: 22 },
-    { month: 'May', revenue: 42500, growth: 18 },
-    { month: 'Jun', revenue: 45280, growth: 12 },
-  ]
+  const monthlyStats = analytics.monthlyStats || []
+
+  // Derive change % from monthlyStats: compare last vs second-to-last month
+  const latestGrowth = monthlyStats.length >= 2
+    ? monthlyStats[monthlyStats.length - 1]?.growth
+    : null
+  const fmtChange = (v) => v == null ? '—' : v >= 0 ? `+${v}%` : `${v}%`
+  const growthTrend = (v) => v == null ? 'up' : v >= 0 ? 'up' : 'down'
 
   const stats = [
     {
       label: 'Total Revenue',
-      value: `₹${analytics.totalRevenue?.toLocaleString('en-IN') ?? '45,280'}`,
-      change: '+23%',
-      trend: 'up',
+      value: analytics.totalRevenue != null
+        ? `₹${analytics.totalRevenue.toLocaleString('en-IN')}`
+        : '₹0',
+      change: fmtChange(latestGrowth),
+      trend: growthTrend(latestGrowth),
       icon: DollarSign,
       color: 'green',
     },
     {
       label: 'Subscription Revenue',
-      value: `₹${analytics.subscriptionRevenue?.toLocaleString('en-IN') ?? '32,000'}`,
-      change: '+18%',
+      value: analytics.subscriptionRevenue != null
+        ? `₹${analytics.subscriptionRevenue.toLocaleString('en-IN')}`
+        : '₹0',
+      change: '—',
       trend: 'up',
       icon: CreditCard,
       color: 'blue',
     },
     {
       label: 'Course Sales',
-      value: `₹${analytics.courseRevenue?.toLocaleString('en-IN') ?? '13,280'}`,
-      change: '+35%',
+      value: analytics.courseRevenue != null
+        ? `₹${analytics.courseRevenue.toLocaleString('en-IN')}`
+        : '₹0',
+      change: '—',
       trend: 'up',
       icon: TrendingUp,
       color: 'purple',
     },
     {
       label: 'Active Subscribers',
-      value: analytics.totalUsers?.toLocaleString('en-IN') ?? '1,248',
-      change: '+12%',
+      value: analytics.totalSubscribers != null
+        ? analytics.totalSubscribers.toLocaleString('en-IN')
+        : '0',
+      change: '—',
       trend: 'up',
       icon: Users,
       color: 'yellow',
@@ -213,7 +207,7 @@ export default function RevenueAnalytics() {
             </div>
           </div>
           <ResponsiveContainer width="100%" height={250}>
-            <AreaChart data={revenueData}>
+            <AreaChart data={revenueData.length ? revenueData : [{ month: '', revenue: 0, subscriptions: 0, courses: 0 }]}>
               <defs>
                 <linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1">
                   <stop offset="5%" stopColor="#6366f1" stopOpacity={0.8} />
@@ -221,7 +215,7 @@ export default function RevenueAnalytics() {
                 </linearGradient>
               </defs>
               <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="date" />
+              <XAxis dataKey="month" />
               <YAxis tickFormatter={(v) => `₹${v.toLocaleString('en-IN')}`} />
               <Tooltip formatter={(v) => [`₹${v.toLocaleString('en-IN')}`, '']} />
               <Legend />
@@ -234,6 +228,9 @@ export default function RevenueAnalytics() {
               />
             </AreaChart>
           </ResponsiveContainer>
+          {revenueData.length === 0 && (
+            <p className="text-center text-gray-400 text-sm -mt-2 pb-2">No revenue data for this period</p>
+          )}
         </div>
       </div>
 
@@ -245,7 +242,7 @@ export default function RevenueAnalytics() {
               Revenue by Subscription Plan
             </h2>
             <ResponsiveContainer width="100%" height={200}>
-              <BarChart data={subscriptionBreakdown}>
+              <BarChart data={subscriptionBreakdown.length ? subscriptionBreakdown : [{ plan: '', revenue: 0 }]}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="plan" />
                 <YAxis tickFormatter={(v) => `₹${v.toLocaleString('en-IN')}`} />
@@ -254,6 +251,9 @@ export default function RevenueAnalytics() {
                 <Bar dataKey="revenue" fill="#6366f1" />
               </BarChart>
             </ResponsiveContainer>
+            {subscriptionBreakdown.length === 0 && (
+              <p className="text-center text-gray-400 text-sm mt-1">No subscription payments yet</p>
+            )}
           </div>
         </div>
 
@@ -299,7 +299,13 @@ export default function RevenueAnalytics() {
                 </tr>
               </thead>
               <tbody>
-                {topCourses.map((course, index) => (
+                {topCourses.length === 0 ? (
+                  <tr>
+                    <td colSpan={5} className="py-6 text-center text-gray-400 text-sm">
+                      No course payment data for this period
+                    </td>
+                  </tr>
+                ) : topCourses.map((course, index) => (
                   <tr key={index} className="border-b border-gray-100 hover:bg-gray-50">
                     <td className="py-1 px-2">
                       <span className="w-5 h-5 bg-primary-100 text-primary-600 rounded-full flex items-center justify-center font-semibold text-xs">
@@ -312,7 +318,7 @@ export default function RevenueAnalytics() {
                       ₹{course.revenue.toLocaleString('en-IN')}
                     </td>
                     <td className="py-1 px-2 text-xs text-gray-600">
-                      ₹{(course.revenue / course.students).toFixed(2)}
+                      ₹{course.students > 0 ? (course.revenue / course.students).toFixed(2) : '0.00'}
                     </td>
                   </tr>
                 ))}
@@ -328,12 +334,14 @@ export default function RevenueAnalytics() {
           <div className="p-4">
             <div className="flex items-center gap-2 mb-3">
               <Calendar className="w-6 h-6 text-primary-600" />
-              <h3 className="text-base font-semibold text-gray-900">This Month</h3>
+              <h3 className="text-base font-semibold text-gray-900">This Period</h3>
             </div>
             <p className="text-2xl font-bold text-gray-900 mb-2">
-              ₹{analytics.totalRevenue?.toLocaleString('en-IN') ?? '45,280'}
+              ₹{analytics.totalRevenue != null ? analytics.totalRevenue.toLocaleString('en-IN') : '0'}
             </p>
-            <p className="text-sm text-green-600 font-medium">+23% from last month</p>
+            <p className={`text-sm font-medium ${latestGrowth == null ? 'text-gray-500' : latestGrowth >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+              {fmtChange(latestGrowth)} vs previous month
+            </p>
           </div>
         </div>
 
@@ -344,9 +352,9 @@ export default function RevenueAnalytics() {
               <h3 className="text-base font-semibold text-gray-900">Average Growth</h3>
             </div>
             <p className="text-2xl font-bold text-gray-900 mb-2">
-              {analytics.averageGrowth || 15.8}%
+              {analytics.averageGrowth != null ? `${analytics.averageGrowth}%` : '—'}
             </p>
-            <p className="text-sm text-gray-600">Monthly average</p>
+            <p className="text-sm text-gray-600">Monthly average (6 months)</p>
           </div>
         </div>
 
@@ -357,7 +365,7 @@ export default function RevenueAnalytics() {
               <h3 className="text-base font-semibold text-gray-900">ARPU</h3>
             </div>
             <p className="text-2xl font-bold text-gray-900 mb-2">
-              ₹{analytics.arpu?.toFixed(2) ?? '36.28'}
+              ₹{analytics.arpu != null ? analytics.arpu.toFixed(2) : '0.00'}
             </p>
             <p className="text-sm text-gray-600">Average revenue per user</p>
           </div>

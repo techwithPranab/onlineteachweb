@@ -209,13 +209,35 @@ class DefaultQuestionSelectionStrategy extends QuestionSelectionStrategy {
       });
       
       const additional = this._randomSelect(prioritized, remaining);
-      additional.forEach(q => selectedQuestions.push(q));
+      additional.forEach(q => {
+        selectedQuestions.push(q);
+        usedQuestionIds.add(q._id.toString());
+      });
+    }
+
+    // ── DEDUP + TRIM ────────────────────────────────────────────────────────────
+    // Remove any duplicate question IDs that may have crept in across topic passes,
+    // then trim to exactly totalQuestions so the session never has more Qs than expected.
+    const seenIds = new Set();
+    const dedupedQuestions = [];
+    for (const q of selectedQuestions) {
+      const idStr = q._id.toString();
+      if (!seenIds.has(idStr)) {
+        seenIds.add(idStr);
+        dedupedQuestions.push(q);
+      }
+    }
+    // Trim to the requested count (first-pass overshoot can push count over totalQuestions)
+    const trimmedQuestions = dedupedQuestions.slice(0, totalQuestions);
+
+    if (trimmedQuestions.length < selectedQuestions.length) {
+      logger.warn(`[QuestionSelection] Trimmed from ${selectedQuestions.length} → ${trimmedQuestions.length} (removed ${selectedQuestions.length - trimmedQuestions.length} over-selected/duplicate questions)`);
     }
     
     // Step 3: Apply type distribution if specified
     if (typeDistribution && typeDistribution.size > 0) {
       // Re-balance based on question types
-      selectedQuestions.sort((a, b) => {
+      trimmedQuestions.sort((a, b) => {
         const typeWeights = Object.fromEntries(typeDistribution);
         const aWeight = typeWeights[a.type] || 0;
         const bWeight = typeWeights[b.type] || 0;
@@ -224,7 +246,7 @@ class DefaultQuestionSelectionStrategy extends QuestionSelectionStrategy {
     }
     
     // Step 4: Shuffle if required
-    let orderedQuestions = [...selectedQuestions];
+    let orderedQuestions = [...trimmedQuestions];
     if (settings.shuffleQuestions) {
       orderedQuestions = this._shuffle(orderedQuestions);
     }
@@ -245,7 +267,7 @@ class DefaultQuestionSelectionStrategy extends QuestionSelectionStrategy {
     // Step 6: Prepare final output with order
     const finalQuestions = orderedQuestions.map((q, index) => ({
       questionId: q._id,
-      originalOrder: selectedQuestions.findIndex(sq => sq._id.toString() === q._id.toString()),
+      originalOrder: trimmedQuestions.findIndex(sq => sq._id.toString() === q._id.toString()),
       displayOrder: index,
       snapshot: {
         text: q.text,

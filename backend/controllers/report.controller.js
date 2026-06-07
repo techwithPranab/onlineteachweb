@@ -189,7 +189,7 @@ exports.getAdminAnalytics = async (req, res, next) => {
 
     const totalRevenue = payments.reduce((sum, p) => sum + p.amount, 0);
 
-    // Get revenue trend data (last 6 months)
+    // Get revenue trend data (last 6 months) — broken down by type
     const revenueTrend = [];
     for (let i = 5; i >= 0; i--) {
       const monthStart = new Date(now.getFullYear(), now.getMonth() - i, 1);
@@ -200,11 +200,15 @@ exports.getAdminAnalytics = async (req, res, next) => {
         createdAt: { $gte: monthStart, $lte: monthEnd }
       });
 
-      const monthRevenue = monthPayments.reduce((sum, p) => sum + p.amount, 0);
+      const monthRevenue      = monthPayments.reduce((sum, p) => sum + p.amount, 0);
+      const monthSubscriptions = monthPayments.filter(p => p.type === 'subscription').reduce((sum, p) => sum + p.amount, 0);
+      const monthCourses       = monthPayments.filter(p => p.type === 'course').reduce((sum, p) => sum + p.amount, 0);
 
       revenueTrend.push({
         month: monthStart.toLocaleDateString('en-US', { month: 'short' }),
-        revenue: monthRevenue
+        revenue: monthRevenue,
+        subscriptions: monthSubscriptions,
+        courses: monthCourses,
       });
     }
 
@@ -347,6 +351,14 @@ exports.getAdminAnalytics = async (req, res, next) => {
     const activeUsers = await User.countDocuments({ status: 'active' });
     const arpu = activeUsers > 0 ? totalRevenue / activeUsers : 0;
 
+    // Count unique subscribers in the period
+    const subscriberResult = await Payment.distinct('user', {
+      status: 'completed',
+      type: 'subscription',
+      createdAt: dateFilter
+    });
+    const totalSubscribers = subscriberResult.length;
+
     res.json({
       success: true,
       data: {
@@ -358,6 +370,7 @@ exports.getAdminAnalytics = async (req, res, next) => {
         totalRevenue,
         pendingTutors,
         totalSessions,
+        totalSubscribers,
 
         // Chart data
         revenueTrend,

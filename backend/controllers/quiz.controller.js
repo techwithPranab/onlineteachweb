@@ -617,7 +617,7 @@ exports.startQuiz = async (req, res, next) => {
     const expiresAt = new Date(startedAt.getTime() + quiz.duration * 60 * 1000);
     
     // Process questions with complete details instead of stringified snapshots
-    const processedQuestions = selectedQuestions.map(q => ({
+    const rawProcessed = selectedQuestions.map(q => ({
       questionId: q.questionId,
       originalOrder: q.originalOrder,
       displayOrder: q.displayOrder,
@@ -640,6 +640,19 @@ exports.startQuiz = async (req, res, next) => {
       explanation: q.snapshot.explanation || '',
       metadata: q.snapshot.metadata || {}
     }));
+
+    // Final safety dedup — ensures no duplicate questionId reaches the session
+    // even if a strategy bug somehow slips through.
+    const seenQIds = new Set();
+    const processedQuestions = rawProcessed.filter(q => {
+      const idStr = q.questionId.toString();
+      if (seenQIds.has(idStr)) {
+        logger.warn(`[QuizStart] Duplicate questionId removed before session creation: ${idStr}`);
+        return false;
+      }
+      seenQIds.add(idStr);
+      return true;
+    });
     
     const session = await QuizSession.create({
       activeQuizId: activeQuizAssignment?._id || null, // Link to ActiveQuiz if assigned
