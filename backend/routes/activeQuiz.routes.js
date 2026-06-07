@@ -1303,6 +1303,65 @@ router.put('/:quizId/complete', [
       await StudentPerformance.updateAfterQuiz(userId, quizResultsData);
       
       console.log('StudentPerformance updated successfully for', topicPerformance.length, 'topics');
+
+      // ── Persist correctlyAnsweredQuestionIds ──────────────────────────────────
+      // Read the correctly answered question IDs directly from the session answers
+      // (isCorrect is set by evaluateAnswer() when each answer is saved).
+      // These IDs are used by the question-selection algorithm to exclude already-
+      // mastered questions from future quizzes on the same subject.
+      try {
+        const correctlyAnsweredIds = session.answers
+          .filter(a => a.isCorrect === true)
+          .map(a => a.questionId);
+
+        console.log(`[CompleteQuiz] Correctly answered: ${correctlyAnsweredIds.length} of ${session.answers.length} answers`);
+
+        if (correctlyAnsweredIds.length > 0) {
+          const quizSubject = quiz.subject || 'General';
+          let studentPerf = await StudentPerformance.findOne({ studentId: userId });
+
+          if (!studentPerf) {
+            studentPerf = new StudentPerformance({ studentId: userId });
+          }
+
+          if (!studentPerf.subjectPerformance.has(quizSubject)) {
+            studentPerf.subjectPerformance.set(quizSubject, {
+              subject: quizSubject,
+              totalQuizzes: 0,
+              totalQuestions: 0,
+              correctAnswers: 0,
+              averageScore: 0,
+              averageAccuracy: 0,
+              totalTimeSpent: 0,
+              correctlyAnsweredQuestionIds: [],
+              lastActivity: new Date()
+            });
+          }
+
+          const subjectPerf = studentPerf.subjectPerformance.get(quizSubject);
+          const existingIds = new Set(
+            (subjectPerf.correctlyAnsweredQuestionIds || []).map(id => id.toString())
+          );
+
+          let added = 0;
+          for (const qId of correctlyAnsweredIds) {
+            const idStr = qId.toString();
+            if (!existingIds.has(idStr)) {
+              subjectPerf.correctlyAnsweredQuestionIds.push(qId);
+              existingIds.add(idStr);
+              added++;
+            }
+          }
+
+          subjectPerf.lastActivity = new Date();
+
+          await studentPerf.save();
+          console.log(`[CompleteQuiz] Added ${added} new correctly answered IDs for subject "${quizSubject}" (total: ${subjectPerf.correctlyAnsweredQuestionIds.length})`);
+        }
+      } catch (correctlyAnsweredError) {
+        // Don't fail quiz completion if this tracking step fails
+        console.error('[CompleteQuiz] Error persisting correctlyAnsweredQuestionIds:', correctlyAnsweredError.message);
+      }
     } catch (performanceError) {
       // Log error but don't fail the quiz completion
       console.error('Error updating StudentPerformance:', performanceError);
