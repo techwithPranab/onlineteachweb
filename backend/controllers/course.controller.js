@@ -344,7 +344,7 @@ exports.updateCourse = async (req, res, next) => {
       });
     }
     
-    const { title, description, grade, subject, board, duration, level, language, maxStudents, price, thumbnail, syllabus, topics, status, tags } = req.body;
+    const { title, description, grade, subject, board, duration, level, language, maxStudents, price, thumbnail, syllabus, topics, status, tags, chapters, prerequisites } = req.body;
     
     const updateData = {};
     if (title !== undefined) updateData.title = title;
@@ -362,6 +362,8 @@ exports.updateCourse = async (req, res, next) => {
     if (topics !== undefined) updateData.topics = topics;
     if (status !== undefined) updateData.status = status;
     if (tags !== undefined) updateData.tags = tags;
+    if (chapters !== undefined) updateData.chapters = chapters;
+    if (prerequisites !== undefined) updateData.prerequisites = prerequisites;
     
     const updatedCourse = await Course.findByIdAndUpdate(
       req.params.id,
