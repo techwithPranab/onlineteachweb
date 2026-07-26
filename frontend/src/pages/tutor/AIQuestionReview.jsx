@@ -8,6 +8,7 @@ import ErrorMessage from '../../components/common/ErrorMessage'
 import EmptyState from '../../components/common/EmptyState'
 import Modal from '../../components/common/Modal'
 import ConfirmDialog from '../../components/common/ConfirmDialog'
+import MathDiagram from '../../components/diagrams/MathDiagram'
 
 export default function AIQuestionReview() {
   const navigate = useNavigate()
@@ -426,6 +427,11 @@ export default function AIQuestionReview() {
                       className="text-sm text-gray-900 max-w-md truncate cursor-pointer hover:text-blue-600"
                       onClick={() => setViewDraft(draft)}
                     >
+                      {draft.questionPayload?.diagram?.type && (
+                        <span className="inline-flex items-center gap-1 px-1.5 py-0.5 bg-purple-100 text-purple-700 rounded text-xs font-medium mr-2">
+                          🖼️ {draft.questionPayload.diagram.type}
+                        </span>
+                      )}
                       {draft.questionPayload?.text || 'No text'}
                     </div>
                     <div className="text-xs text-gray-500 mt-1 space-y-1">
@@ -653,6 +659,13 @@ function QuestionPreview({ draft, onApprove, onEdit, onReject }) {
 
   return (
     <div className="space-y-6">
+      {/* Diagram (if image-based question) */}
+      {question.diagram && question.diagram.type && (
+        <div className="flex justify-center">
+          <MathDiagram diagram={question.diagram} size={240} />
+        </div>
+      )}
+
       {/* Question Text */}
       <div>
         <h4 className="font-medium text-gray-700 mb-2">Question</h4>

@@ -102,6 +102,23 @@ const questionSchema = new mongoose.Schema({
     type: String,
     trim: true
   },
+  // SVG diagram metadata (for image-based questions rendered on the frontend)
+  diagram: {
+    type: {
+      type: String,
+      trim: true,
+      // e.g. 'clock', 'fraction', 'rightTriangle', 'angle', 'numberLine',
+      //       'shapes', 'barGraph', 'placeValue', 'pattern', 'coordGrid'
+    },
+    params: {
+      type: mongoose.Schema.Types.Mixed,
+      default: null
+    },
+    caption: {
+      type: String,
+      trim: true
+    }
+  },
   marks: {
     type: Number,
     required: true,

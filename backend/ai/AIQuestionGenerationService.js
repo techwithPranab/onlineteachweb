@@ -9,6 +9,7 @@ const Material = require('../models/Material.model');
 const Question = require('../models/Question.model');
 const QuestionGeneration = require('../models/QuestionGeneration.model');
 const AIQuestionDraft = require('../models/AIQuestionDraft.model');
+const { getDiagramTypesForContext } = require('./diagramTypeMatcher');
 const logger = require('../utils/logger');
 
 /**
@@ -36,7 +37,8 @@ class AIQuestionGenerationService {
     questionTypes = ['mcq-single'],
     questionsPerTopic = 5,
     sources = ['syllabus'],
-    userId
+    userId,
+    imageBased = false
   }) {
     const startTime = Date.now();
     const jobId = this._generateJobId();
@@ -85,7 +87,8 @@ class AIQuestionGenerationService {
                 course,
                 courseId,
                 userId,
-                jobId
+                jobId,
+                imageBased
               });
               
               if (generated && Array.isArray(generated)) {
@@ -167,7 +170,19 @@ class AIQuestionGenerationService {
   /**
    * Generate questions for a single combination
    */
-  async _generateForCombination({ provider, topic, difficulty, type, count, content, course, courseId, userId, jobId }) {
+  async _generateForCombination({ provider, topic, difficulty, type, count, content, course, courseId, userId, jobId, imageBased = false }) {
+    const chapter = (course.chapters || []).find(item => (item.topics || []).includes(topic));
+    const diagramTypes = imageBased
+      ? getDiagramTypesForContext({
+          grade: course.grade,
+          subject: course.subject,
+          courseTitle: course.title,
+          courseTags: course.tags,
+          chapterName: chapter?.name,
+          topic
+        })
+      : [];
+    const generateImageQuestion = imageBased && diagramTypes.length > 0;
     const context = {
       grade: course.grade,
       subject: course.subject,
@@ -183,8 +198,14 @@ class AIQuestionGenerationService {
       difficultyLevel: difficulty,
       questionType: type,
       count,
-      context
+      context,
+      imageBased: generateImageQuestion,
+      diagramTypes
     });
+
+    if (generateImageQuestion) {
+      logger.info(`[IMAGE-BASED] Auto-selected diagram types: [${diagramTypes.join(', ')}] for topic "${topic}"`);
+    }
 
     const finalPrompt = `${systemPrompt}\n\n${userPrompt}`;
     
@@ -223,7 +244,9 @@ class AIQuestionGenerationService {
         difficultyLevel: difficulty,
         questionType: type,
         count,
-        context
+        context,
+        imageBased: generateImageQuestion,
+        diagramTypes
       });
 
       // Update the generation record with success status
@@ -358,6 +381,8 @@ class AIQuestionGenerationService {
         expectedAnswer: question.expectedAnswer,
         keywords: question.keywords,
         caseStudy: question.caseStudy,
+        // SVG diagram metadata for image-based questions
+        diagram: question.diagram || null,
         _metadata: question._metadata
       };
 

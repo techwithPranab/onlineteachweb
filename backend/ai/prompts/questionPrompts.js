@@ -3,7 +3,135 @@
  * Versioned templates for consistent question generation
  */
 
-const PROMPT_VERSION = '1.0.0';
+const PROMPT_VERSION = '1.1.0';
+
+/**
+ * Diagram type prompt instructions – mirrors the frontend diagramCatalog.js
+ * so the AI knows exactly what JSON structure to emit.
+ */
+const DIAGRAM_PROMPT_SPECS = {
+  clock: {
+    label: 'Analog Clock',
+    instruction: `{ "type": "clock", "params": { "hours": <0-12>, "minutes": <0-59>, "showLabels": true }, "caption": "<describe the time>" }`
+  },
+  fraction: {
+    label: 'Fraction',
+    instruction: `{ "type": "fraction", "params": { "numerator": <n>, "denominator": <d>, "style": "pie"|"bar"|"set", "showLabel": true }, "caption": "<fraction description>" }`
+  },
+  rightTriangle: {
+    label: 'Right Triangle',
+    instruction: `{ "type": "rightTriangle", "params": { "base": <n>, "height": <n>, "hypotenuse": <n|null>, "labelBase": "<label>", "labelHeight": "<label>", "labelHyp": "<label>", "angleLabel": "θ", "showLabels": true }, "caption": "..." }`
+  },
+  angle: {
+    label: 'Angle',
+    instruction: `{ "type": "angle", "params": { "degrees": <1-359>, "style": "simple"|"protractor", "label": "<optional>", "showLabel": true }, "caption": "..." }`
+  },
+  numberLine: {
+    label: 'Number Line',
+    instruction: `{ "type": "numberLine", "params": { "start": <n>, "end": <n>, "step": <n>, "marked": [<n>], "highlighted": [<n>], "label": "<optional>" }, "caption": "..." }`
+  },
+  shapes: {
+    label: '2D Shapes',
+    instruction: `{ "type": "shapes", "params": { "shape": "circle"|"rectangle"|"square"|"triangle"|"pentagon"|"hexagon"|"parallelogram", "dimensions": { "width": <n>, "height": <n>, "radius": <n>, "side": <n> }, "showLabels": true, "label": "<optional>" }, "caption": "..." }`
+  },
+  barGraph: {
+    label: 'Bar Graph',
+    instruction: `{ "type": "barGraph", "params": { "data": [{"label": "<string>", "value": <n>}, ...], "title": "<string>", "xLabel": "<string>", "yLabel": "<string>" }, "caption": "..." }`
+  },
+  placeValue: {
+    label: 'Place Value Chart',
+    instruction: `{ "type": "placeValue", "params": { "thousands": <n>, "hundreds": <n>, "tens": <n>, "ones": <n>, "showLabel": true }, "caption": "<describe the number>" }`
+  },
+  pattern: {
+    label: 'Shape Pattern',
+    instruction: `{ "type": "pattern", "params": { "sequence": ["circle"|"square"|"triangle"|"star"|"diamond"|"pentagon", ...], "missingIndex": <index|null>, "colors": ["<hex>", ...], "showIndex": false }, "caption": "What comes next?" }`
+  },
+  coordGrid: {
+    label: 'Coordinate Grid',
+    instruction: `{ "type": "coordGrid", "params": { "xRange": [<min>, <max>], "yRange": [<min>, <max>], "gridStep": 1, "points": [{"x": <n>, "y": <n>, "label": "<string>"}], "segments": [{"from": [x1,y1], "to": [x2,y2]}] }, "caption": "..." }`
+  },
+
+  // ── Class 4 & 5 additions ────────────────────────────────────────────────
+  decimalGrid: {
+    label: 'Decimal Grid (Tenths/Hundredths)',
+    instruction: `{ "type": "decimalGrid", "params": { "value": <0 to 1, e.g. 0.35>, "style": "tenths"|"hundredths", "showLabel": true }, "caption": "..." }`
+  },
+  pieChart: {
+    label: 'Pie Chart',
+    instruction: `{ "type": "pieChart", "params": { "data": [{"label": "<string>", "value": <number>}, ...], "title": "<optional>", "showLegend": true, "showPercent": true }, "caption": "..." }`
+  },
+  lineGraph: {
+    label: 'Line Graph',
+    instruction: `{ "type": "lineGraph", "params": { "data": [{"x": <number or string>, "y": <number>}, ...], "xLabel": "<string>", "yLabel": "<string>", "title": "<string>", "showPoints": true, "showArea": true }, "caption": "..." }`
+  },
+  circleLabeled: {
+    label: 'Labeled Circle (Parts)',
+    instruction: `{ "type": "circleLabeled", "params": { "showRadius": true, "showDiameter": true, "showChord": true, "showArc": true, "showSector": true, "radiusLabel": "<e.g. 7 cm>", "diameterLabel": "<e.g. 14 cm>", "angleForSector": <degrees> }, "caption": "..." }`
+  },
+  factorTree: {
+    label: 'Factor Tree',
+    instruction: `{ "type": "factorTree", "params": { "number": <composite integer e.g. 36> }, "caption": "Factor tree of <number>" }`
+  },
+  shape3d: {
+    label: '3D Shapes',
+    instruction: `{ "type": "shape3d", "params": { "shape": "cube"|"cuboid"|"sphere"|"cylinder"|"cone", "dimensions": { "length": <n>, "width": <n>, "height": <n>, "radius": <n> }, "showLabels": true }, "caption": "..." }`
+  },
+  symmetry: {
+    label: 'Symmetry Diagram',
+    instruction: `{ "type": "symmetry", "params": { "shape": "square"|"rectangle"|"triangle"|"circle"|"hexagon"|"butterfly"|"leaf", "symmetryAxis": "vertical"|"horizontal"|"both"|"all", "showAxis": true, "showLabel": true }, "caption": "..." }`
+  },
+  vennDiagram: {
+    label: 'Venn Diagram',
+    instruction: `{ "type": "vennDiagram", "params": { "setA": { "label": "<e.g. Factors of 12>", "items": ["1","2","3","4","6","12"] }, "setB": { "label": "<e.g. Factors of 18>", "items": ["1","2","3","6","9","18"] }, "intersection": ["1","2","3","6"], "title": "<optional>" }, "caption": "..." }`
+  },
+  moneyIndia: {
+    label: 'Indian Money (₹)',
+    instruction: `{ "type": "moneyIndia", "params": { "amounts": [{"denomination": <2000|500|200|100|50|20|10|5|2|1>, "count": <n>}, ...], "totalLabel": true }, "caption": "<describe the money shown>" }`
+  },
+  ratioBar: {
+    label: 'Ratio Bar (Strip Diagram)',
+    instruction: `{ "type": "ratioBar", "params": { "ratio": [<n>, <n>, ...], "labels": ["<label1>", "<label2>", ...], "total": <number or null>, "showRatio": true, "showValues": true, "title": "<optional>" }, "caption": "..." }`
+  }
+};
+
+/**
+ * Build the image-based prompt section given selected diagram types.
+ */
+function buildImageBasedPromptSection(diagramTypes = []) {
+  const types = diagramTypes.length > 0
+    ? diagramTypes.filter(t => DIAGRAM_PROMPT_SPECS[t])
+    : Object.keys(DIAGRAM_PROMPT_SPECS);
+
+  const lines = types.map(t =>
+    `  • ${DIAGRAM_PROMPT_SPECS[t].label}:\n    ${DIAGRAM_PROMPT_SPECS[t].instruction}`
+  ).join('\n\n');
+
+  return `
+IMAGE-BASED QUESTION REQUIREMENTS:
+Each question MUST include a "diagram" field containing SVG-renderable data.
+The diagram will be rendered by the frontend SVG framework — do NOT use image URLs.
+
+SUPPORTED DIAGRAM FORMATS:
+${lines}
+
+DIAGRAM RULES:
+- Add a top-level "diagram" field to EACH question object
+- The question TEXT must reference the diagram (e.g. "Look at the clock shown...", "In the figure above...")
+- Diagram params must be mathematically valid and consistent with the question
+- For time questions: the clock hours/minutes must match the question's time reference
+- For fraction questions: numerator/denominator must match the fraction in the question
+- For shape questions: dimensions in the diagram must be the same as values used in calculations
+- For pattern questions: use missingIndex to create fill-in-the-blank pattern questions
+- caption field should briefly describe what the diagram shows
+
+DIAGRAM FIELD FORMAT (add inside each question object in the "questions" array):
+"diagram": {
+  "type": "<one of the supported types>",
+  "params": { /* type-specific parameters */ },
+  "caption": "<short description>"
+}
+`;
+}
 
 /**
  * Difficulty definitions for prompts
@@ -119,7 +247,7 @@ CRITICAL RULES:
 /**
  * Generate the main question generation prompt
  */
-function generateQuestionPrompt({ topic, content, difficultyLevel, questionType, count, context }) {
+function generateQuestionPrompt({ topic, content, difficultyLevel, questionType, count, context, imageBased, diagramTypes }) {
   const difficulty = DIFFICULTY_DEFINITIONS[difficultyLevel];
   const typeSpec = QUESTION_TYPE_SPECS[questionType];
   
@@ -136,6 +264,18 @@ ADDITIONAL CONTEXT:
 - Board: ${context.board || 'Not specified'}
 ` : '';
 
+  const imageBasedSection = imageBased
+    ? buildImageBasedPromptSection(diagramTypes || [])
+    : '';
+
+  const diagramField = imageBased
+    ? `      "diagram": {
+        "type": "<diagram type>",
+        "params": { /* see IMAGE-BASED REQUIREMENTS section */ },
+        "caption": "<description of what the diagram shows>"
+      },`
+    : '';
+
   const userPrompt = `Generate exactly ${count} ${typeSpec.name} question(s) about the following topic.
 
 TOPIC: ${topic}
@@ -143,7 +283,7 @@ TOPIC: ${topic}
 SOURCE CONTENT:
 ${content || 'Use your knowledge about this topic.'}
 ${contextSection}
-
+${imageBasedSection}
 DIFFICULTY LEVEL: ${difficultyLevel.toUpperCase()}
 - Description: ${difficulty.description}
 - Cognitive Level: ${difficulty.cognitiveLevel}
@@ -162,6 +302,7 @@ Return a JSON object with a "questions" array. Each question MUST have this exac
       "difficultyLevel": "${difficultyLevel}",
       "type": "${questionType}",
       "topic": "${topic}",
+      ${diagramField}
       ${questionType.startsWith('mcq') || questionType === 'true-false' ? 
         `"options": [
         {"text": "Option A text", "isCorrect": false, "explanation": "Why this option is incorrect"},
@@ -287,7 +428,9 @@ module.exports = {
   DIFFICULTY_DEFINITIONS,
   QUESTION_TYPE_SPECS,
   SYSTEM_PROMPT,
+  DIAGRAM_PROMPT_SPECS,
   generateQuestionPrompt,
+  buildImageBasedPromptSection,
   generateContentExtractionPrompt,
   generateValidationPrompt
 };

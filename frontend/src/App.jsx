@@ -57,6 +57,7 @@ import ManualEvaluation from './pages/tutor/ManualEvaluation'
 import QuizAnalytics from './pages/tutor/QuizAnalytics'
 import AIQuestionGenerator from './pages/tutor/AIQuestionGenerator'
 import AIQuestionReview from './pages/tutor/AIQuestionReview'
+import DiagramGallery from './pages/tutor/DiagramGallery'
 
 // Admin Pages
 import AdminDashboard from './pages/admin/AdminDashboard'
@@ -183,6 +184,7 @@ function App() {
             <Route path="ai-questions" element={<AIQuestionReview />} />
             <Route path="ai-questions/generate" element={<AIQuestionGenerator />} />
             <Route path="ai-questions/review" element={<AIQuestionReview />} />
+            <Route path="diagrams" element={<DiagramGallery />} />
             <Route path="evaluate" element={<ManualEvaluation />} />
             <Route path="evaluate/:sessionId" element={<ManualEvaluation />} />
             <Route path="analytics" element={<QuizAnalytics />} />
@@ -227,6 +229,7 @@ function App() {
             <Route path="ai-questions" element={<AIQuestionReview />} />
             <Route path="ai-questions/generate" element={<AIQuestionGenerator />} />
             <Route path="ai-questions/review" element={<AIQuestionReview />} />
+            <Route path="diagrams" element={<DiagramGallery />} />
             <Route path="quiz-analytics" element={<QuizAnalytics />} />
             <Route path="quiz-analytics/:quizId" element={<QuizAnalytics />} />
             <Route path="evaluate" element={<ManualEvaluation />} />

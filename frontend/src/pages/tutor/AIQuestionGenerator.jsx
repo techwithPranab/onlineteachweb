@@ -41,7 +41,9 @@ export default function AIQuestionGenerator() {
     difficultyLevels: ['easy', 'medium', 'hard', 'olympiad'],
     questionTypes: ['mcq-single'],
     questionsPerTopic: 5,
-    sources: ['syllabus']
+    sources: ['syllabus'],
+    // Image-based option (diagram types are auto-resolved from course topics)
+    imageBased: false
   })
 
   // Course details for cascading dropdowns
@@ -251,11 +253,19 @@ export default function AIQuestionGenerator() {
     try {
       const result = await aiQuestionService.generateQuestions({
         courseId: formData.courseId,
-        topics: formData.topics.length > 0 ? formData.topics : undefined,
+        // An empty selection means every topic in the selected chapter, not
+        // every topic in the course. This lets the server match diagrams per
+        // chapter/topic without any manual diagram input.
+        topics: formData.topics.length > 0
+          ? formData.topics
+          : formData.chapterId
+            ? availableTopics
+            : undefined,
         difficultyLevels: formData.difficultyLevels,
         questionTypes: formData.questionTypes,
         questionsPerTopic: formData.questionsPerTopic,
-        sources: formData.sources
+        sources: formData.sources,
+        imageBased: formData.imageBased
       })
 
       // API returned — advance through validating → saving → done
@@ -598,6 +608,31 @@ export default function AIQuestionGenerator() {
               </label>
             ))}
           </div>
+        </div>
+
+        {/* ── Image Based Section ── */}
+        <div className={`rounded-xl border-2 transition-all ${formData.imageBased ? 'border-purple-400 bg-purple-50' : 'border-dashed border-gray-300 bg-gray-50'} p-4`}>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <span className="text-2xl">🖼️</span>
+              <div>
+                <h3 className="font-semibold text-gray-800 text-sm">Image Based Questions</h3>
+                <p className="text-xs text-gray-500">
+                  AI will embed SVG diagrams relevant to the selected chapter and topics
+                </p>
+              </div>
+            </div>
+            <label className="relative inline-flex items-center cursor-pointer">
+              <input
+                type="checkbox"
+                checked={formData.imageBased}
+                onChange={(e) => setFormData(prev => ({ ...prev, imageBased: e.target.checked }))}
+                className="sr-only peer"
+              />
+              <div className="w-11 h-6 bg-gray-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-600" />
+            </label>
+          </div>
+
         </div>
 
         {/* Generate Button */}
