@@ -29,7 +29,7 @@ export default function FAQs() {
     {
       category: 'general',
       question: 'What is MeritAI?',
-      answer: 'MeritAI is an AI-powered personalized learning platform that identifies your knowledge gaps through intelligent assessments, provides targeted learning resources, and connects you with expert mentors for comprehensive skill development.'
+      answer: 'MeritAI is an AI-powered personalized learning platform that identifies your knowledge gaps through intelligent assessments and provides targeted learning resources for comprehensive skill development.'
     },
     {
       category: 'general',
@@ -44,7 +44,7 @@ export default function FAQs() {
     {
       category: 'general',
       question: 'What makes MeritAI different from other learning platforms?',
-      answer: 'MeritAI combines AI-powered personalized learning with live expert tutoring. Our intelligent quiz system adapts to your learning pace, identifies knowledge gaps, and creates custom practice materials. Plus, you get real-time interaction with qualified tutors, comprehensive progress tracking, and an extensive question bank for unlimited practice.'
+      answer: 'MeritAI combines AI-powered personalized learning with adaptive practice. Our intelligent quiz system adapts to your learning pace, identifies knowledge gaps, and creates custom practice materials. You also get comprehensive progress tracking and an extensive question bank for unlimited practice.'
     },
     {
       category: 'general',
@@ -210,7 +210,7 @@ export default function FAQs() {
     {
       category: 'tutors',
       question: 'How do I become a tutor?',
-      answer: 'Click "Become a Tutor" and complete the application form with your qualifications, experience, and subject expertise. Our team reviews applications within 48 hours. Once approved, you can create courses and start teaching immediately.'
+      answer: 'Click "Become a Tutor" and complete the application form with your qualifications, experience, and subjects taught. Our team reviews applications within 48 hours. Once approved, you can create courses and start teaching immediately.'
     },
     {
       category: 'tutors',

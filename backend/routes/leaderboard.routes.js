@@ -18,7 +18,7 @@ function getLevelNumber(totalXP) {
   }
   return Math.min(level, 10);
 }
-const LEVEL_TITLES = ['Rookie','Explorer','Learner','Scholar','Achiever','Expert','Master','Champion','Elite','Legend'];
+const LEVEL_TITLES = ['Rookie','Explorer','Learner','Scholar','Achiever','Skilled','Master','Champion','Elite','Legend'];
 const LEVEL_EMOJIS = ['🌱','🔍','📖','🎓','⭐','💡','🔥','🏆','💎','👑'];
 
 // @route   GET /api/leaderboard

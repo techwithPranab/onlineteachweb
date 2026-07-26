@@ -105,7 +105,7 @@ export default function QuizListing() {
         <h1 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent mb-3 animate-shimmer">
           🎯 Available Quizzes
         </h1>
-        <p className="text-gray-600 text-lg">Browse and attempt custom quizzes created by our expert tutors! 🚀</p>
+        <p className="text-gray-600 text-lg">Browse and attempt custom quizzes created for your learning goals! 🚀</p>
         {/* Usage Indicator for quiz attempts */}
         <div className="mt-4 flex justify-center">
           <div className="inline-block">

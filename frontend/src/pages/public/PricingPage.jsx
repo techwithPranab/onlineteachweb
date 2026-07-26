@@ -30,10 +30,10 @@ export default function PricingPage() {
 
   const FEATURES_STANDARD = (standardMonthly?.features || standardAnnual?.features) || [
     'Unlimited Quizzes',
-    '1:1 Session with Expert Tutor on Identified Gap',
-    'Expert Study Material',
+    'Personalized Learning Support',
+    'Study Material',
     'Progress Tracking & Analytics',
-    'Personalized Mentorship',
+    'Personalized Learning Plan',
     'Priority Support',
   ]
 
@@ -71,7 +71,7 @@ export default function PricingPage() {
           <h1 className="text-4xl font-bold text-gray-900 mb-4">Pricing Plans</h1>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
             Choose the plan that fits your learning needs. Get started for free or unlock unlimited practice
-            and expert mentorship with Standard.
+            and personalized learning support with Standard.
           </p>
         </div>
 
@@ -142,7 +142,7 @@ export default function PricingPage() {
             {/* Header */}
             <div className="text-center mb-4">
               <h3 className="text-2xl font-bold text-gray-900 mb-1">Standard</h3>
-              <p className="text-sm text-gray-600">For learners who want comprehensive practice and expert mentorship</p>
+              <p className="text-sm text-gray-600">For learners who want comprehensive practice and personalized support</p>
             </div>
 
             {/* Price */}

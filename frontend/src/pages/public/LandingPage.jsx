@@ -30,7 +30,7 @@ import { OrganizationSchema, WebsiteSchema } from '../../components/Schema'
 export default function LandingPage() {
   const seoData = {
     title: 'AI-Powered Personalized Learning & Gap Analysis',
-    description: 'Find your learning gaps with AI precision. Get personalized assessments, expert mentorship, and master every concept with our adaptive learning platform for CBSE & ICSE students.',
+    description: 'Find your learning gaps with AI precision. Get personalized assessments and master every concept with our adaptive learning platform for CBSE & ICSE students.',
     keywords: 'AI learning platform, personalized education, learning gap analysis, online tutoring, CBSE courses, ICSE courses, adaptive learning, online classes for students, AI tutor',
     ogType: 'website',
     canonical: typeof window !== 'undefined' ? window.location.href : 'https://meritai.com'
@@ -94,7 +94,7 @@ function HeroSection() {
           {/* Sub-headline */}
           <p className="text-lg md:text-xl lg:text-2xl mb-10 text-primary-100 leading-relaxed">
             Identify exactly what you don't know through AI-driven quizzes, get personalized 
-            evaluations, and receive expert mentorship to master every concept.
+            evaluations, and follow a personalized learning path to master every concept.
           </p>
           
           {/* CTA Buttons */}
@@ -122,7 +122,7 @@ function HeroSection() {
             </div>
             <div className="flex items-center space-x-2">
               <Users className="h-5 w-5" />
-              <span>Expert Mentors</span>
+              <span>Personalized Learning</span>
             </div>
             <div className="flex items-center space-x-2">
               <TrendingUp className="h-5 w-5" />
@@ -262,8 +262,8 @@ function HowItWorksSection() {
     {
       number: "04",
       icon: <UserCheck className="h-10 w-10" />,
-      title: "Mentorship & Re-Evaluation",
-      description: "Learn with expert tutors through live sessions and track improvement with continuous assessments."
+      title: "Practice & Re-Evaluation",
+      description: "Use targeted practice and continuous assessments to track improvement."
     }
   ]
 
@@ -313,8 +313,8 @@ function KeyFeaturesSection() {
     },
     {
       icon: <Users className="h-10 w-10 text-primary-600" />,
-      title: "1-on-1 Online Mentorship",
-      description: "Connect with experienced tutors for personalized guidance and doubt clearing."
+      title: "Personalized Learning Support",
+      description: "Use tailored resources and practice to strengthen areas that need attention."
     },
     {
       icon: <RefreshCw className="h-10 w-10 text-primary-600" />,
@@ -360,7 +360,7 @@ function LearningJourneySection() {
     { label: "Assess", icon: <Search className="h-8 w-8" />, color: "bg-blue-500" },
     { label: "Analyze", icon: <BarChart3 className="h-8 w-8" />, color: "bg-purple-500" },
     { label: "Learn", icon: <BookOpen className="h-8 w-8" />, color: "bg-green-500" },
-    { label: "Mentor", icon: <Users className="h-8 w-8" />, color: "bg-orange-500" },
+    { label: "Practice", icon: <Users className="h-8 w-8" />, color: "bg-orange-500" },
     { label: "Re-Evaluate", icon: <RefreshCw className="h-8 w-8" />, color: "bg-pink-500" }
   ]
 
@@ -423,7 +423,7 @@ function LearningJourneySection() {
           </h3>
           <p className="text-gray-600 text-center leading-relaxed">
             Students don't just learn once—they continuously improve through repeated assessments, 
-            targeted learning, expert mentorship, and re-evaluation. This cycle ensures deep 
+            targeted learning, focused practice, and re-evaluation. This cycle ensures deep
             understanding and long-term retention of every concept.
           </p>
         </div>

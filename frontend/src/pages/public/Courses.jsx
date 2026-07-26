@@ -84,7 +84,7 @@ export default function Courses() {
             Explore Our Courses
           </h1>
           <p className="text-lg text-gray-600 max-w-xl mx-auto">
-            Discover comprehensive learning paths designed by expert educators to help you excel in your academic journey
+            Discover comprehensive learning paths to help you excel in your academic journey
           </p>
         </div>
 

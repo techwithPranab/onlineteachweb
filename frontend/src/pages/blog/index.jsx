@@ -50,7 +50,7 @@ const blogPosts = [
   {
     id: 'cbse-board-exam-preparation-guide-2025',
     title: 'CBSE Board Exam Preparation Guide 2025',
-    excerpt: 'Complete preparation strategy for CBSE board exams 2025 with timeline, resources, and expert tips.',
+    excerpt: 'Complete preparation strategy for CBSE board exams 2025 with timeline, resources, and practical tips.',
     content: 'Full blog post content here...',
     author: 'MeritAI Team',
     date: '2024-01-08',
@@ -135,8 +135,8 @@ export default function Blog() {
       ? `${selectedCategory} - Education Blog | MeritAI`
       : 'Education Blog & Study Resources | MeritAI',
     description: selectedCategory !== 'All'
-      ? `Read our expert ${selectedCategory.toLowerCase()} articles, guides, and resources for better learning outcomes.`
-      : 'Expert educational content, study tips, subject guides, and resources to help students excel in their academic journey.',
+      ? `Read our ${selectedCategory.toLowerCase()} articles, guides, and resources for better learning outcomes.`
+      : 'Educational content, study tips, subject guides, and resources to help students excel in their academic journey.',
     keywords: `education blog, study tips, ${selectedCategory.toLowerCase()}, academic resources, learning guides, exam preparation`,
     canonical: `/blog${selectedCategory !== 'All' || searchTerm ? '?' : ''}${selectedCategory !== 'All' ? `category=${encodeURIComponent(selectedCategory)}` : ''}${searchTerm ? `${selectedCategory !== 'All' ? '&' : ''}search=${encodeURIComponent(searchTerm)}` : ''}`,
   }
@@ -169,8 +169,8 @@ export default function Blog() {
               </h1>
               <p className="text-xl text-gray-600 max-w-3xl mx-auto">
                 {selectedCategory !== 'All'
-                  ? `Expert insights and resources on ${selectedCategory.toLowerCase()} to help you excel academically.`
-                  : 'Expert educational content, study tips, subject guides, and resources to help students excel in their academic journey.'
+                  ? `Insights and resources on ${selectedCategory.toLowerCase()} to help you excel academically.`
+                  : 'Educational content, study tips, subject guides, and resources to help students excel in their academic journey.'
                 }
               </p>
             </div>

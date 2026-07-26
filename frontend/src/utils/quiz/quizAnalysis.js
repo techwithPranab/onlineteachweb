@@ -466,13 +466,13 @@ export function generateNextActions(improvementAreas, scoreAnalysis) {
     })
   }
   
-  // Talk to mentor
+  // Focused practice recommendation
   if (scoreAnalysis.accuracy < 60 || improvementAreas.weakAreas.length > 2) {
     actions.push({
-      type: 'mentor',
-      icon: '👨‍🏫',
-      title: 'Talk to a Mentor',
-      description: 'Get personalized guidance on your weak areas.',
+      type: 'practice_more',
+      icon: '🎯',
+      title: 'Focus on Weak Areas',
+      description: 'Use targeted practice to strengthen the areas that need attention.',
       priority: 'high'
     })
   }

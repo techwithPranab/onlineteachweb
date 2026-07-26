@@ -87,19 +87,22 @@ const seedDatabase = async () => {
         maxCourses: 0,
         maxLiveSessions: 0,
         priority: 1,
+        currency: 'INR',
         isActive: true
       },
       {
         name: 'Standard (Monthly)',
-        description: 'Standard monthly subscription - unlimited quizzes, tutor session on identified gaps and mentorship',
+        description: 'Standard monthly subscription - unlimited quizzes, study material, progress tracking & analytics, and AI question generation',
         price: 100,
+        currency: 'INR',
         interval: 'month',
         features: [
           'Unlimited Quizzes',
-          'Session with expert tutor on identified gap',
-          'Expert Study Material',
+          'Study Material',
           'Progress Tracking & Analytics',
-          'Personalized Mentorship'
+          'AI Question Generation & Practice',
+          'Detailed Explanations & Solutions',
+          'Full Access to Question Bank'
         ],
         maxCourses: -1,
         maxLiveSessions: -1,
@@ -110,13 +113,15 @@ const seedDatabase = async () => {
         name: 'Standard (Annual)',
         description: 'Standard annual subscription (best value)',
         price: 1000,
+        currency: 'INR',
         interval: 'year',
         features: [
           'Unlimited Quizzes',
-          'Session with expert tutor on identified gap',
-          'Expert Study Material',
+          'Study Material',
           'Progress Tracking & Analytics',
-          'Personalized Mentorship'
+          'AI Question Generation & Practice',
+          'Detailed Explanations & Solutions',
+          'Full Access to Question Bank'
         ],
         maxCourses: -1,
         maxLiveSessions: -1,

@@ -215,8 +215,8 @@ export default function Signup() {
               <li className="flex items-start gap-3">
                 <Check className="h-5 w-5 text-primary-600 mt-1 flex-shrink-0" />
                 <div>
-                  <div className="font-semibold">Mentorship & Progress Tracking</div>
-                  <div className="text-sm text-gray-600">Connect with experts and track measurable improvement.</div>
+                  <div className="font-semibold">Personalized Learning & Progress Tracking</div>
+                  <div className="text-sm text-gray-600">Follow a tailored learning plan and track measurable improvement.</div>
                 </div>
               </li>
             </ul>

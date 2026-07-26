@@ -7,7 +7,7 @@ export const seoConfig = {
   siteTitle: 'MeritAI',
   siteTitleTemplate: '%s | MeritAI',
   defaultTitle: 'MeritAI - AI-Powered Personalized Learning & Gap Analysis',
-  defaultDescription: 'Find your learning gaps with AI precision. Get personalized assessments, expert mentorship, and master every concept with our adaptive learning platform for CBSE & ICSE students.',
+  defaultDescription: 'Find your learning gaps with AI precision. Get personalized assessments, AI practice, and master every concept with our adaptive learning platform for CBSE & ICSE students.',
   siteUrl: 'https://meritai.com',
   siteLogo: '/images/logo.png',
   siteLanguage: 'en',
@@ -48,19 +48,19 @@ export const seoConfig = {
 export const pageMetadata = {
   home: {
     title: 'AI-Powered Personalized Learning & Gap Analysis',
-    description: 'Find your learning gaps with AI precision. Get personalized assessments, expert mentorship, and master every concept with our adaptive learning platform for CBSE & ICSE students.',
+    description: 'Find your learning gaps with AI precision. Get personalized assessments, AI practice, and master every concept with our adaptive learning platform for CBSE & ICSE students.',
     keywords: seoConfig.keywords.homepage
   },
   
   courses: {
     title: 'Online Courses for CBSE & ICSE Students',
-    description: 'Browse 100+ online courses for Grade 1-12 students. Expert-led courses in Math, Science, English and more. AI-powered personalized learning.',
+    description: 'Browse 100+ online courses for Grade 1-12 students in Math, Science, English and more. AI-powered personalized learning.',
     keywords: seoConfig.keywords.courses
   },
   
   forStudents: {
     title: 'For Students - AI-Powered Learning Platform',
-    description: 'Master concepts with AI-driven gap analysis, personalized quizzes, and expert mentorship. Track your progress and achieve academic excellence.',
+    description: 'Master concepts with AI-driven gap analysis, personalized quizzes, and adaptive learning tools. Track your progress and achieve academic excellence.',
     keywords: seoConfig.keywords.students
   },
   

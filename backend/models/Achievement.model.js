@@ -281,7 +281,7 @@ achievementSchema.statics.getBadgeMetadata = function(badgeType) {
       rule: 'Score >90% in 5 quizzes on the same topic (stackable per topic)'
     },
     subject_expert: {
-      name: 'Subject Expert',
+      name: 'Subject Scholar',
       description: 'Excel across all topics in a subject',
       icon: '📖',
       color: '#9C27B0',
