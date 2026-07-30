@@ -1,6 +1,7 @@
 const Material = require('../models/Material.model');
 const Course = require('../models/Course.model');
 const User = require('../models/User.model');
+const featureAccessService = require('../services/featureAccess.service');
 
 // @desc    Get all materials for tutor
 // @route   GET /api/materials
@@ -10,9 +11,12 @@ exports.getMaterialsByTutor = async (req, res, next) => {
     const { courseId, type } = req.query;
     
     const query = { 
-      tutor: req.user._id,
       isActive: true
     };
+
+    if (req.user.role !== 'admin') {
+      query.tutor = req.user._id;
+    }
     
     if (courseId) query.course = courseId;
     if (type) query.type = type;
@@ -257,11 +261,17 @@ exports.getMaterialsByCourse = async (req, res, next) => {
     if (type) query.type = type;
     if (isFree !== undefined) query.isFree = isFree === 'true';
     
-    // Students can access all materials for course details viewing
-    // Enrollment check is handled at the application level for actual access
     if (req.user.role === 'student') {
-      // Allow students to see all materials for course browsing
-      // Individual material access can be controlled by enrollment status
+      const [viewAccess, downloadAccess] = await Promise.all([
+        featureAccessService.checkAccess(req.user._id, 'materials.view'),
+        featureAccessService.checkAccess(req.user._id, 'materials.download')
+      ]);
+
+      const hasFullMaterialAccess = viewAccess.allowed || downloadAccess.allowed;
+
+      if (!hasFullMaterialAccess) {
+        query.isFree = true;
+      }
     }
     
     const materials = await Material.find(query)

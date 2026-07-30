@@ -32,7 +32,6 @@ export default function AdminCourseEdit() {
     duration: '12',
     level: 'beginner',
     language: 'English',
-    maxStudents: '50',
     tags: ''
   })
 
@@ -74,7 +73,6 @@ export default function AdminCourseEdit() {
             duration: course.duration?.toString() || '12',
             level: course.level || 'beginner',
             language: course.language || 'English',
-            maxStudents: course.maxStudents?.toString() || '50',
             tags: Array.isArray(course.tags) ? course.tags.join(', ') : (course.tags || '')
           })
           setPrerequisites(course.prerequisites && course.prerequisites.length > 0 ? course.prerequisites : [''])
@@ -83,6 +81,18 @@ export default function AdminCourseEdit() {
       }
     }
   )
+
+  const {
+    data: materialsData,
+    isLoading: isLoadingMaterials,
+    error: materialsError
+  } = useQuery(
+    ['adminCourseMaterials', id],
+    () => materialService.getMaterials({ courseId: id }),
+    { enabled: !!id && user?.role === 'admin' }
+  )
+
+  const materials = materialsData?.data || []
 
   const updateCourseMutation = useMutation(
     (courseData) => courseService.updateCourse(id, courseData),
@@ -100,6 +110,7 @@ export default function AdminCourseEdit() {
       await materialService.deleteMaterial(materialId)
       // Refresh course data
       queryClient.invalidateQueries(['course', id])
+      queryClient.invalidateQueries(['adminCourseMaterials', id])
     } catch (err) {
       alert(err.response?.data?.message || 'Failed to delete material')
     }
@@ -239,7 +250,6 @@ export default function AdminCourseEdit() {
     const courseData = {
       ...formData,
       grade: parseInt(formData.grade),
-      maxStudents: parseInt(formData.maxStudents),
       syllabus: syllabusArray,
       tags: tagsArray,
       prerequisites: prerequisites.filter(req => req.trim()),
@@ -406,21 +416,6 @@ export default function AdminCourseEdit() {
               />
             </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Max Students *
-              </label>
-              <input
-                type="number"
-                name="maxStudents"
-                value={formData.maxStudents}
-                onChange={handleInputChange}
-                required
-                min="1"
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="50"
-              />
-            </div>
           </div>
 
           <div className="mt-4">
@@ -725,9 +720,15 @@ export default function AdminCourseEdit() {
           </div>
         </div>
 
-        {courseData?.materials && courseData.materials.length > 0 ? (
+        {isLoadingMaterials ? (
+          <div className="flex justify-center py-6">
+            <LoadingSpinner size="sm" />
+          </div>
+        ) : materialsError ? (
+          <p className="text-red-600">Failed to load materials.</p>
+        ) : materials.length > 0 ? (
           <div className="space-y-3">
-            {courseData.materials.map(mat => (
+            {materials.map(mat => (
               <div key={mat._id} className="flex items-center justify-between border rounded p-3">
                 <div>
                   <div className="font-semibold">{mat.title}</div>

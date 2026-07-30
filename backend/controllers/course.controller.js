@@ -291,8 +291,7 @@ exports.getCourseById = async (req, res, next) => {
       });
     }
     
-    // Get materials and sessions
-    const Material = require('../models/Material.model');
+    // Get related course activity.
     const Session = require('../models/Session.model');
     const Question = require('../models/Question.model');
     const QuizSession = require('../models/QuizSession.model');

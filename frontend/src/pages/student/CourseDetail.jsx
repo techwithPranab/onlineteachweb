@@ -22,8 +22,6 @@ import Modal from '@/components/common/Modal'
 import ReviewForm from '@/components/course/ReviewForm'
 import ReviewList from '@/components/course/ReviewList'
 import StarRating from '@/components/course/StarRating'
-import { FeatureButton, FeatureGate, FeatureBadge } from '@/components/common'
-import { useFeatureAccess } from '@/hooks/useFeatureAccess'
 import toast from '@/utils/toast'
 import { useAuthStore } from '@/store/authStore'
 
@@ -50,12 +48,11 @@ export default function CourseDetail() {
     () => courseService.getCourseById(id)
   )
 
-  const { data: materialsData } = useQuery(
+  const { data: materialsData, isLoading: materialsLoading, error: materialsError } = useQuery(
     ['materials', id],
     () => materialService.getMaterialsByCourse(id),
-    { enabled: !!id }
+    { enabled: !!id, retry: false }
   )
-console.log('materialsData: ', materialsData);
 
   const { data: sessionsData } = useQuery(
     ['sessions', id],
@@ -141,6 +138,8 @@ console.log('materialsData: ', materialsData);
   )
 
   const course = courseData?.course
+  const materials = materialsData?.data || []
+  const materialsErrorMessage = materialsError?.response?.data?.message || materialsError?.message
   const myReview = myReviewData?.review
   const reviews = reviewsData?.reviews || []
   const reviewsPagination = reviewsData?.pagination
@@ -441,9 +440,23 @@ console.log('materialsData: ', materialsData);
               <h3 className="text-sm sm:text-base md:text-lg font-semibold mb-3 sm:mb-4 text-gray-900 flex items-center gap-2">
                 📚 Course Materials
               </h3>
-              {materialsData?.data?.length > 0 ? (
+              {materialsLoading ? (
+                <div className="flex justify-center py-8 sm:py-12">
+                  <LoadingSpinner size="md" />
+                </div>
+              ) : materialsError ? (
+                <div className="text-center py-8 sm:py-12">
+                  <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-amber-400 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl sm:text-4xl">
+                    🔒
+                  </div>
+                  <p className="text-gray-900 text-sm sm:text-base md:text-lg font-semibold mb-2">Materials are not available for this account.</p>
+                  <p className="text-gray-600 text-xs sm:text-sm max-w-md mx-auto">
+                    {materialsErrorMessage || 'Please check your subscription access or try again later.'}
+                  </p>
+                </div>
+              ) : materials.length > 0 ? (
                 <div className="space-y-3 sm:space-y-4">
-                  {materialsData.data.map((material) => (
+                  {materials.map((material) => (
                     <div key={material._id} className="genz-card p-3 sm:p-4 md:p-5 active:scale-[0.98] sm:hover:scale-105 transition-all">
                       <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4">
                         <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg self-center sm:self-start">
@@ -565,7 +578,7 @@ console.log('materialsData: ', materialsData);
       isOpen={isMaterialModalOpen} 
       onClose={closeMaterialModal} 
       title={selectedMaterial?.title || 'Material'} 
-      size="md"
+      size="lg"
     >
       {selectedMaterial && <MaterialViewer material={selectedMaterial} showPreview={false} />}
     </Modal>
