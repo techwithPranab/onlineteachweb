@@ -426,6 +426,16 @@ export const adminService = {
     return data
   },
 
+  getAdminMaterials: async (params = {}) => {
+    const { data } = await api.get('/admin/materials', { params })
+    return data
+  },
+
+  getAdminMaterialById: async (id) => {
+    const { data } = await api.get(`/admin/materials/${id}`)
+    return data
+  },
+
   // New: Get detailed performance for a student
   getStudentPerformance: async (studentId) => {
     const { data } = await api.get(`/admin/students/${studentId}/performance`)

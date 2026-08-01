@@ -50,6 +50,10 @@ router.put('/tutors/:id/approve',
 router.get('/courses', adminController.getAllCoursesForAdmin);
 router.get('/courses/stats', adminController.getCourseStats);
 
+// Material management
+router.get('/materials', adminController.getAllMaterialsForAdmin);
+router.get('/materials/:id', adminController.getMaterialForAdmin);
+
 // Payment management
 router.get('/payments', paymentController.getPayments);
 router.get('/payments/stats', paymentController.getPaymentStats);

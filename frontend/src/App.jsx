@@ -67,6 +67,8 @@ import AdminCourseManagement from './pages/admin/AdminCourseManagement'
 import AdminCourseCreation from './pages/admin/AdminCourseCreation'
 import AdminCourseEdit from './pages/admin/AdminCourseEdit'
 import AdminCourseView from './pages/admin/AdminCourseView'
+import MaterialManagement from './pages/admin/MaterialManagement'
+import MaterialEditor from './pages/admin/MaterialEditor'
 import RevenueAnalytics from './pages/admin/RevenueAnalytics'
 import PaymentManagement from './pages/admin/PaymentManagement'
 import SessionManagement from './pages/admin/SessionManagement'
@@ -207,6 +209,8 @@ function App() {
             <Route path="courses/new" element={<AdminCourseCreation />} />
             <Route path="courses/:id/view" element={<AdminCourseView />} />
             <Route path="courses/:id/edit" element={<AdminCourseEdit />} />
+            <Route path="materials" element={<MaterialManagement />} />
+            <Route path="materials/:id/edit" element={<MaterialEditor />} />
             <Route path="payments" element={<PaymentManagement />} />
             <Route path="sessions" element={<SessionManagement />} />
             <Route path="subscriptions" element={<AdminSubscriptionManagement />} />

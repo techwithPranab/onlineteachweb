@@ -132,7 +132,7 @@ exports.uploadMaterial = async (req, res, next) => {
 // @access  Private (Tutor or Admin)
 exports.updateMaterial = async (req, res, next) => {
   try {
-    const { title, description, type, fileUrl, isFree, content, contentFormat, previewContent, difficulty, category } = req.body;
+    const { title, description, type, fileUrl, isFree, isActive, order, content, contentFormat, previewContent, difficulty, category } = req.body;
     
     const material = await Material.findById(req.params.id);
     
@@ -157,6 +157,8 @@ exports.updateMaterial = async (req, res, next) => {
     if (type !== undefined) updatePayload.type = type;
     if (fileUrl !== undefined) updatePayload.fileUrl = fileUrl;
     if (isFree !== undefined) updatePayload.isFree = isFree;
+    if (isActive !== undefined) updatePayload.isActive = isActive;
+    if (order !== undefined) updatePayload.order = order;
     if (content !== undefined) updatePayload.content = content;
     if (contentFormat !== undefined) updatePayload.contentFormat = contentFormat;
     if (previewContent !== undefined) updatePayload.previewContent = previewContent;
