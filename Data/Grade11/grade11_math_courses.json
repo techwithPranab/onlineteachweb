@@ -1,0 +1,874 @@
+[
+  {
+    "_id": {
+      "$oid": "700000000000000000000065"
+    },
+    "title": "Grade 11 Mathematics - Sets, Relations and Functions",
+    "description": "A CBSE and CISCE-aligned Grade 11 Mathematics course covering Sets, Relations and Functions. It follows CBSE Class XI Mathematics and ISC Mathematics with clear theory, visuals, solved examples and practice.",
+    "createdBy": "696d8e8098d47cbd00770abd",
+    "grade": 11,
+    "subject": "Mathematics",
+    "board": [
+      "CBSE",
+      "ICSE"
+    ],
+    "thumbnail": "",
+    "syllabus": [
+      "Set operations",
+      "Venn diagrams",
+      "Mathematical statements",
+      "Reasoning and proof",
+      "Cartesian product",
+      "Domain and range",
+      "Types of functions",
+      "Function graphs"
+    ],
+    "chapters": [
+      {
+        "name": "Sets and Logic",
+        "topics": [
+          "Set operations",
+          "Venn diagrams",
+          "Mathematical statements",
+          "Reasoning and proof"
+        ],
+        "learningObjectives": [
+          "Understand and solve syllabus-aligned problems on Set operations",
+          "Understand and solve syllabus-aligned problems on Venn diagrams",
+          "Understand and solve syllabus-aligned problems on Mathematical statements",
+          "Understand and solve syllabus-aligned problems on Reasoning and proof"
+        ],
+        "estimatedHours": 8
+      },
+      {
+        "name": "Relations and Functions",
+        "topics": [
+          "Cartesian product",
+          "Domain and range",
+          "Types of functions",
+          "Function graphs"
+        ],
+        "learningObjectives": [
+          "Understand and solve syllabus-aligned problems on Cartesian product",
+          "Understand and solve syllabus-aligned problems on Domain and range",
+          "Understand and solve syllabus-aligned problems on Types of functions",
+          "Understand and solve syllabus-aligned problems on Function graphs"
+        ],
+        "estimatedHours": 8
+      }
+    ],
+    "topics": [
+      "Set operations",
+      "Venn diagrams",
+      "Mathematical statements",
+      "Reasoning and proof",
+      "Cartesian product",
+      "Domain and range",
+      "Types of functions",
+      "Function graphs"
+    ],
+    "duration": "10 weeks",
+    "estimatedHours": 16,
+    "level": "advanced",
+    "difficulty": 4,
+    "language": "English",
+    "prerequisites": [
+      "Grade 10 Mathematics foundations",
+      "Arithmetic fluency",
+      "Problem reading skills"
+    ],
+    "learningOutcomes": [
+      "Explain the key CBSE and CISCE ideas in Sets, Relations and Functions",
+      "Use diagrams, tables, equations or graphs to model problems",
+      "Solve graded practice and board-style questions",
+      "Apply the concepts in real-life situations"
+    ],
+    "certificate": true,
+    "status": "published",
+    "enrollmentCount": 0,
+    "averageRating": 0,
+    "totalRatings": 0,
+    "reviewCount": 0,
+    "maxStudents": 50,
+    "tags": [
+      "Grade 11",
+      "Mathematics",
+      "Sets, Relations and Functions",
+      "CBSE",
+      "CISCE",
+      "ISC"
+    ],
+    "isActive": true,
+    "createdAt": {
+      "$date": "2026-07-30T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-07-30T00:00:00.000Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "700000000000000000000069"
+    },
+    "title": "Grade 11 Mathematics - Trigonometric Functions",
+    "description": "A CBSE and CISCE-aligned Grade 11 Mathematics course covering Trigonometric Functions. It follows CBSE Class XI Mathematics and ISC Mathematics with clear theory, visuals, solved examples and practice.",
+    "createdBy": "696d8e8098d47cbd00770abd",
+    "grade": 11,
+    "subject": "Mathematics",
+    "board": [
+      "CBSE",
+      "ICSE"
+    ],
+    "thumbnail": "",
+    "syllabus": [
+      "Angles and radians",
+      "Graphs of trigonometric functions",
+      "Trigonometric signs",
+      "Principal solutions",
+      "Trigonometric identities",
+      "Trigonometric equations",
+      "Transformations of angles",
+      "Applications"
+    ],
+    "chapters": [
+      {
+        "name": "Angles, Radians and Graphs",
+        "topics": [
+          "Angles and radians",
+          "Graphs of trigonometric functions",
+          "Trigonometric signs",
+          "Principal solutions"
+        ],
+        "learningObjectives": [
+          "Understand and solve syllabus-aligned problems on Angles and radians",
+          "Understand and solve syllabus-aligned problems on Graphs of trigonometric functions",
+          "Understand and solve syllabus-aligned problems on Trigonometric signs",
+          "Understand and solve syllabus-aligned problems on Principal solutions"
+        ],
+        "estimatedHours": 8
+      },
+      {
+        "name": "Identities and Equations",
+        "topics": [
+          "Trigonometric identities",
+          "Trigonometric equations",
+          "Transformations of angles",
+          "Applications"
+        ],
+        "learningObjectives": [
+          "Understand and solve syllabus-aligned problems on Trigonometric identities",
+          "Understand and solve syllabus-aligned problems on Trigonometric equations",
+          "Understand and solve syllabus-aligned problems on Transformations of angles",
+          "Understand and solve syllabus-aligned problems on Applications"
+        ],
+        "estimatedHours": 8
+      }
+    ],
+    "topics": [
+      "Angles and radians",
+      "Graphs of trigonometric functions",
+      "Trigonometric signs",
+      "Principal solutions",
+      "Trigonometric identities",
+      "Trigonometric equations",
+      "Transformations of angles",
+      "Applications"
+    ],
+    "duration": "10 weeks",
+    "estimatedHours": 16,
+    "level": "advanced",
+    "difficulty": 4,
+    "language": "English",
+    "prerequisites": [
+      "Grade 10 Mathematics foundations",
+      "Arithmetic fluency",
+      "Problem reading skills"
+    ],
+    "learningOutcomes": [
+      "Explain the key CBSE and CISCE ideas in Trigonometric Functions",
+      "Use diagrams, tables, equations or graphs to model problems",
+      "Solve graded practice and board-style questions",
+      "Apply the concepts in real-life situations"
+    ],
+    "certificate": true,
+    "status": "published",
+    "enrollmentCount": 0,
+    "averageRating": 0,
+    "totalRatings": 0,
+    "reviewCount": 0,
+    "maxStudents": 50,
+    "tags": [
+      "Grade 11",
+      "Mathematics",
+      "Trigonometric Functions",
+      "CBSE",
+      "CISCE",
+      "ISC"
+    ],
+    "isActive": true,
+    "createdAt": {
+      "$date": "2026-07-30T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-07-30T00:00:00.000Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "70000000000000000000006d"
+    },
+    "title": "Grade 11 Mathematics - Algebra, Complex Numbers and Binomial Theorem",
+    "description": "A CBSE and CISCE-aligned Grade 11 Mathematics course covering Algebra, Complex Numbers and Binomial Theorem. It follows CBSE Class XI Mathematics and ISC Mathematics with clear theory, visuals, solved examples and practice.",
+    "createdBy": "696d8e8098d47cbd00770abd",
+    "grade": 11,
+    "subject": "Mathematics",
+    "board": [
+      "CBSE",
+      "ICSE"
+    ],
+    "thumbnail": "",
+    "syllabus": [
+      "Imaginary unit",
+      "Argand plane",
+      "Algebra of complex numbers",
+      "Quadratic roots",
+      "Binomial theorem and general term",
+      "Algebraic expansion",
+      "Middle term",
+      "Applications"
+    ],
+    "chapters": [
+      {
+        "name": "Complex Numbers and Quadratic Equations",
+        "topics": [
+          "Imaginary unit",
+          "Argand plane",
+          "Algebra of complex numbers",
+          "Quadratic roots"
+        ],
+        "learningObjectives": [
+          "Understand and solve syllabus-aligned problems on Imaginary unit",
+          "Understand and solve syllabus-aligned problems on Argand plane",
+          "Understand and solve syllabus-aligned problems on Algebra of complex numbers",
+          "Understand and solve syllabus-aligned problems on Quadratic roots"
+        ],
+        "estimatedHours": 8
+      },
+      {
+        "name": "Binomial Theorem and Algebra",
+        "topics": [
+          "Binomial theorem and general term",
+          "Algebraic expansion",
+          "Middle term",
+          "Applications"
+        ],
+        "learningObjectives": [
+          "Understand and solve syllabus-aligned problems on Binomial theorem and general term",
+          "Understand and solve syllabus-aligned problems on Algebraic expansion",
+          "Understand and solve syllabus-aligned problems on Middle term",
+          "Understand and solve syllabus-aligned problems on Applications"
+        ],
+        "estimatedHours": 8
+      }
+    ],
+    "topics": [
+      "Imaginary unit",
+      "Argand plane",
+      "Algebra of complex numbers",
+      "Quadratic roots",
+      "Binomial theorem and general term",
+      "Algebraic expansion",
+      "Middle term",
+      "Applications"
+    ],
+    "duration": "10 weeks",
+    "estimatedHours": 16,
+    "level": "advanced",
+    "difficulty": 4,
+    "language": "English",
+    "prerequisites": [
+      "Grade 10 Mathematics foundations",
+      "Arithmetic fluency",
+      "Problem reading skills"
+    ],
+    "learningOutcomes": [
+      "Explain the key CBSE and CISCE ideas in Algebra, Complex Numbers and Binomial Theorem",
+      "Use diagrams, tables, equations or graphs to model problems",
+      "Solve graded practice and board-style questions",
+      "Apply the concepts in real-life situations"
+    ],
+    "certificate": true,
+    "status": "published",
+    "enrollmentCount": 0,
+    "averageRating": 0,
+    "totalRatings": 0,
+    "reviewCount": 0,
+    "maxStudents": 50,
+    "tags": [
+      "Grade 11",
+      "Mathematics",
+      "Algebra, Complex Numbers and Binomial Theorem",
+      "CBSE",
+      "CISCE",
+      "ISC"
+    ],
+    "isActive": true,
+    "createdAt": {
+      "$date": "2026-07-30T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-07-30T00:00:00.000Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "700000000000000000000071"
+    },
+    "title": "Grade 11 Mathematics - Sequences, Series, Permutations and Combinations",
+    "description": "A CBSE and CISCE-aligned Grade 11 Mathematics course covering Sequences, Series, Permutations and Combinations. It follows CBSE Class XI Mathematics and ISC Mathematics with clear theory, visuals, solved examples and practice.",
+    "createdBy": "696d8e8098d47cbd00770abd",
+    "grade": 11,
+    "subject": "Mathematics",
+    "board": [
+      "CBSE",
+      "ICSE"
+    ],
+    "thumbnail": "",
+    "syllabus": [
+      "Arithmetic progression",
+      "Geometric progression",
+      "Special series",
+      "Sigma notation",
+      "Fundamental counting principle",
+      "Permutations",
+      "Combinations",
+      "Mathematical induction extension"
+    ],
+    "chapters": [
+      {
+        "name": "Sequences and Series",
+        "topics": [
+          "Arithmetic progression",
+          "Geometric progression",
+          "Special series",
+          "Sigma notation"
+        ],
+        "learningObjectives": [
+          "Understand and solve syllabus-aligned problems on Arithmetic progression",
+          "Understand and solve syllabus-aligned problems on Geometric progression",
+          "Understand and solve syllabus-aligned problems on Special series",
+          "Understand and solve syllabus-aligned problems on Sigma notation"
+        ],
+        "estimatedHours": 8
+      },
+      {
+        "name": "Counting Principles",
+        "topics": [
+          "Fundamental counting principle",
+          "Permutations",
+          "Combinations",
+          "Mathematical induction extension"
+        ],
+        "learningObjectives": [
+          "Understand and solve syllabus-aligned problems on Fundamental counting principle",
+          "Understand and solve syllabus-aligned problems on Permutations",
+          "Understand and solve syllabus-aligned problems on Combinations",
+          "Understand and solve syllabus-aligned problems on Mathematical induction extension"
+        ],
+        "estimatedHours": 8
+      }
+    ],
+    "topics": [
+      "Arithmetic progression",
+      "Geometric progression",
+      "Special series",
+      "Sigma notation",
+      "Fundamental counting principle",
+      "Permutations",
+      "Combinations",
+      "Mathematical induction extension"
+    ],
+    "duration": "10 weeks",
+    "estimatedHours": 16,
+    "level": "advanced",
+    "difficulty": 4,
+    "language": "English",
+    "prerequisites": [
+      "Grade 10 Mathematics foundations",
+      "Arithmetic fluency",
+      "Problem reading skills"
+    ],
+    "learningOutcomes": [
+      "Explain the key CBSE and CISCE ideas in Sequences, Series, Permutations and Combinations",
+      "Use diagrams, tables, equations or graphs to model problems",
+      "Solve graded practice and board-style questions",
+      "Apply the concepts in real-life situations"
+    ],
+    "certificate": true,
+    "status": "published",
+    "enrollmentCount": 0,
+    "averageRating": 0,
+    "totalRatings": 0,
+    "reviewCount": 0,
+    "maxStudents": 50,
+    "tags": [
+      "Grade 11",
+      "Mathematics",
+      "Sequences, Series, Permutations and Combinations",
+      "CBSE",
+      "CISCE",
+      "ISC"
+    ],
+    "isActive": true,
+    "createdAt": {
+      "$date": "2026-07-30T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-07-30T00:00:00.000Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "700000000000000000000075"
+    },
+    "title": "Grade 11 Mathematics - Coordinate Geometry and Conic Sections",
+    "description": "A CBSE and CISCE-aligned Grade 11 Mathematics course covering Coordinate Geometry and Conic Sections. It follows CBSE Class XI Mathematics and ISC Mathematics with clear theory, visuals, solved examples and practice.",
+    "createdBy": "696d8e8098d47cbd00770abd",
+    "grade": 11,
+    "subject": "Mathematics",
+    "board": [
+      "CBSE",
+      "ICSE"
+    ],
+    "thumbnail": "",
+    "syllabus": [
+      "Slope",
+      "Forms of line",
+      "Distance from point to line",
+      "Angle between lines",
+      "Circle equation",
+      "Parabola",
+      "Ellipse",
+      "Hyperbola"
+    ],
+    "chapters": [
+      {
+        "name": "Straight Lines",
+        "topics": [
+          "Slope",
+          "Forms of line",
+          "Distance from point to line",
+          "Angle between lines"
+        ],
+        "learningObjectives": [
+          "Understand and solve syllabus-aligned problems on Slope",
+          "Understand and solve syllabus-aligned problems on Forms of line",
+          "Understand and solve syllabus-aligned problems on Distance from point to line",
+          "Understand and solve syllabus-aligned problems on Angle between lines"
+        ],
+        "estimatedHours": 8
+      },
+      {
+        "name": "Conic Sections",
+        "topics": [
+          "Circle equation",
+          "Parabola",
+          "Ellipse",
+          "Hyperbola"
+        ],
+        "learningObjectives": [
+          "Understand and solve syllabus-aligned problems on Circle equation",
+          "Understand and solve syllabus-aligned problems on Parabola",
+          "Understand and solve syllabus-aligned problems on Ellipse",
+          "Understand and solve syllabus-aligned problems on Hyperbola"
+        ],
+        "estimatedHours": 8
+      }
+    ],
+    "topics": [
+      "Slope",
+      "Forms of line",
+      "Distance from point to line",
+      "Angle between lines",
+      "Circle equation",
+      "Parabola",
+      "Ellipse",
+      "Hyperbola"
+    ],
+    "duration": "10 weeks",
+    "estimatedHours": 16,
+    "level": "advanced",
+    "difficulty": 4,
+    "language": "English",
+    "prerequisites": [
+      "Grade 10 Mathematics foundations",
+      "Arithmetic fluency",
+      "Problem reading skills"
+    ],
+    "learningOutcomes": [
+      "Explain the key CBSE and CISCE ideas in Coordinate Geometry and Conic Sections",
+      "Use diagrams, tables, equations or graphs to model problems",
+      "Solve graded practice and board-style questions",
+      "Apply the concepts in real-life situations"
+    ],
+    "certificate": true,
+    "status": "published",
+    "enrollmentCount": 0,
+    "averageRating": 0,
+    "totalRatings": 0,
+    "reviewCount": 0,
+    "maxStudents": 50,
+    "tags": [
+      "Grade 11",
+      "Mathematics",
+      "Coordinate Geometry and Conic Sections",
+      "CBSE",
+      "CISCE",
+      "ISC"
+    ],
+    "isActive": true,
+    "createdAt": {
+      "$date": "2026-07-30T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-07-30T00:00:00.000Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "730000000000000000002332"
+    },
+    "title": "Grade 11 Mathematics - Three Dimensional Geometry and Vectors Foundation",
+    "description": "A CBSE and CISCE-aligned Grade 11 Mathematics course covering Three Dimensional Geometry and Vectors Foundation. It follows CBSE Class XI Mathematics and ISC Mathematics with clear theory, visuals, solved examples and practice.",
+    "createdBy": "696d8e8098d47cbd00770abd",
+    "grade": 11,
+    "subject": "Mathematics",
+    "board": [
+      "CBSE",
+      "ICSE"
+    ],
+    "thumbnail": "",
+    "syllabus": [
+      "Coordinates in space",
+      "Distance formula in 3D",
+      "Section formula in 3D",
+      "Direction ratios introduction",
+      "Vector notation",
+      "Magnitude and direction",
+      "Position vectors",
+      "Simple vector applications"
+    ],
+    "chapters": [
+      {
+        "name": "Three Dimensional Geometry",
+        "topics": [
+          "Coordinates in space",
+          "Distance formula in 3D",
+          "Section formula in 3D",
+          "Direction ratios introduction"
+        ],
+        "learningObjectives": [
+          "Understand and solve syllabus-aligned problems on Coordinates in space",
+          "Understand and solve syllabus-aligned problems on Distance formula in 3D",
+          "Understand and solve syllabus-aligned problems on Section formula in 3D",
+          "Understand and solve syllabus-aligned problems on Direction ratios introduction"
+        ],
+        "estimatedHours": 8
+      },
+      {
+        "name": "Vectors Foundation - ISC Extension",
+        "topics": [
+          "Vector notation",
+          "Magnitude and direction",
+          "Position vectors",
+          "Simple vector applications"
+        ],
+        "learningObjectives": [
+          "Understand and solve syllabus-aligned problems on Vector notation",
+          "Understand and solve syllabus-aligned problems on Magnitude and direction",
+          "Understand and solve syllabus-aligned problems on Position vectors",
+          "Understand and solve syllabus-aligned problems on Simple vector applications"
+        ],
+        "estimatedHours": 8
+      }
+    ],
+    "topics": [
+      "Coordinates in space",
+      "Distance formula in 3D",
+      "Section formula in 3D",
+      "Direction ratios introduction",
+      "Vector notation",
+      "Magnitude and direction",
+      "Position vectors",
+      "Simple vector applications"
+    ],
+    "duration": "10 weeks",
+    "estimatedHours": 16,
+    "level": "advanced",
+    "difficulty": 4,
+    "language": "English",
+    "prerequisites": [
+      "Grade 10 Mathematics foundations",
+      "Arithmetic fluency",
+      "Problem reading skills"
+    ],
+    "learningOutcomes": [
+      "Explain the key CBSE and CISCE ideas in Three Dimensional Geometry and Vectors Foundation",
+      "Use diagrams, tables, equations or graphs to model problems",
+      "Solve graded practice and board-style questions",
+      "Apply the concepts in real-life situations"
+    ],
+    "certificate": true,
+    "status": "published",
+    "enrollmentCount": 0,
+    "averageRating": 0,
+    "totalRatings": 0,
+    "reviewCount": 0,
+    "maxStudents": 50,
+    "tags": [
+      "Grade 11",
+      "Mathematics",
+      "Three Dimensional Geometry and Vectors Foundation",
+      "CBSE",
+      "CISCE",
+      "ISC"
+    ],
+    "isActive": true,
+    "createdAt": {
+      "$date": "2026-07-30T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-07-30T00:00:00.000Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "730000000000000000002333"
+    },
+    "title": "Grade 11 Mathematics - Calculus Foundations and Mathematical Modelling",
+    "description": "A CBSE and CISCE-aligned Grade 11 Mathematics course covering Calculus Foundations and Mathematical Modelling. It follows CBSE Class XI Mathematics and ISC Mathematics with clear theory, visuals, solved examples and practice.",
+    "createdBy": "696d8e8098d47cbd00770abd",
+    "grade": 11,
+    "subject": "Mathematics",
+    "board": [
+      "CBSE",
+      "ICSE"
+    ],
+    "thumbnail": "",
+    "syllabus": [
+      "Limit intuition",
+      "Algebra of limits",
+      "Derivative as rate",
+      "Basic differentiation",
+      "Forming mathematical models",
+      "Interpreting assumptions",
+      "Model validation",
+      "Real-life applications"
+    ],
+    "chapters": [
+      {
+        "name": "Limits and Derivatives",
+        "topics": [
+          "Limit intuition",
+          "Algebra of limits",
+          "Derivative as rate",
+          "Basic differentiation"
+        ],
+        "learningObjectives": [
+          "Understand and solve syllabus-aligned problems on Limit intuition",
+          "Understand and solve syllabus-aligned problems on Algebra of limits",
+          "Understand and solve syllabus-aligned problems on Derivative as rate",
+          "Understand and solve syllabus-aligned problems on Basic differentiation"
+        ],
+        "estimatedHours": 8
+      },
+      {
+        "name": "Mathematical Modelling",
+        "topics": [
+          "Forming mathematical models",
+          "Interpreting assumptions",
+          "Model validation",
+          "Real-life applications"
+        ],
+        "learningObjectives": [
+          "Understand and solve syllabus-aligned problems on Forming mathematical models",
+          "Understand and solve syllabus-aligned problems on Interpreting assumptions",
+          "Understand and solve syllabus-aligned problems on Model validation",
+          "Understand and solve syllabus-aligned problems on Real-life applications"
+        ],
+        "estimatedHours": 8
+      }
+    ],
+    "topics": [
+      "Limit intuition",
+      "Algebra of limits",
+      "Derivative as rate",
+      "Basic differentiation",
+      "Forming mathematical models",
+      "Interpreting assumptions",
+      "Model validation",
+      "Real-life applications"
+    ],
+    "duration": "10 weeks",
+    "estimatedHours": 16,
+    "level": "advanced",
+    "difficulty": 4,
+    "language": "English",
+    "prerequisites": [
+      "Grade 10 Mathematics foundations",
+      "Arithmetic fluency",
+      "Problem reading skills"
+    ],
+    "learningOutcomes": [
+      "Explain the key CBSE and CISCE ideas in Calculus Foundations and Mathematical Modelling",
+      "Use diagrams, tables, equations or graphs to model problems",
+      "Solve graded practice and board-style questions",
+      "Apply the concepts in real-life situations"
+    ],
+    "certificate": true,
+    "status": "published",
+    "enrollmentCount": 0,
+    "averageRating": 0,
+    "totalRatings": 0,
+    "reviewCount": 0,
+    "maxStudents": 50,
+    "tags": [
+      "Grade 11",
+      "Mathematics",
+      "Calculus Foundations and Mathematical Modelling",
+      "CBSE",
+      "CISCE",
+      "ISC"
+    ],
+    "isActive": true,
+    "createdAt": {
+      "$date": "2026-07-30T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-07-30T00:00:00.000Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "730000000000000000002334"
+    },
+    "title": "Grade 11 Mathematics - Statistics, Probability and ISC Section Choices",
+    "description": "A CBSE and CISCE-aligned Grade 11 Mathematics course covering Statistics, Probability and ISC Section Choices. It follows CBSE Class XI Mathematics and ISC Mathematics with clear theory, visuals, solved examples and practice.",
+    "createdBy": "696d8e8098d47cbd00770abd",
+    "grade": 11,
+    "subject": "Mathematics",
+    "board": [
+      "CBSE",
+      "ICSE"
+    ],
+    "thumbnail": "",
+    "syllabus": [
+      "Measures of dispersion",
+      "Variance",
+      "Standard deviation",
+      "Analysis of frequency distributions",
+      "Random experiments",
+      "Events",
+      "Axiomatic probability",
+      "Addition rule",
+      "Section B advanced mathematics option",
+      "Section C applied mathematics option"
+    ],
+    "chapters": [
+      {
+        "name": "Statistics",
+        "topics": [
+          "Measures of dispersion",
+          "Variance",
+          "Standard deviation",
+          "Analysis of frequency distributions"
+        ],
+        "learningObjectives": [
+          "Understand and solve syllabus-aligned problems on Measures of dispersion",
+          "Understand and solve syllabus-aligned problems on Variance",
+          "Understand and solve syllabus-aligned problems on Standard deviation",
+          "Understand and solve syllabus-aligned problems on Analysis of frequency distributions"
+        ],
+        "estimatedHours": 8
+      },
+      {
+        "name": "Probability and ISC Options",
+        "topics": [
+          "Random experiments",
+          "Events",
+          "Axiomatic probability",
+          "Addition rule",
+          "Section B advanced mathematics option",
+          "Section C applied mathematics option"
+        ],
+        "learningObjectives": [
+          "Understand and solve syllabus-aligned problems on Random experiments",
+          "Understand and solve syllabus-aligned problems on Events",
+          "Understand and solve syllabus-aligned problems on Axiomatic probability",
+          "Understand and solve syllabus-aligned problems on Addition rule",
+          "Understand and solve syllabus-aligned problems on Section B advanced mathematics option",
+          "Understand and solve syllabus-aligned problems on Section C applied mathematics option"
+        ],
+        "estimatedHours": 8
+      }
+    ],
+    "topics": [
+      "Measures of dispersion",
+      "Variance",
+      "Standard deviation",
+      "Analysis of frequency distributions",
+      "Random experiments",
+      "Events",
+      "Axiomatic probability",
+      "Addition rule",
+      "Section B advanced mathematics option",
+      "Section C applied mathematics option"
+    ],
+    "duration": "10 weeks",
+    "estimatedHours": 16,
+    "level": "advanced",
+    "difficulty": 4,
+    "language": "English",
+    "prerequisites": [
+      "Grade 10 Mathematics foundations",
+      "Arithmetic fluency",
+      "Problem reading skills"
+    ],
+    "learningOutcomes": [
+      "Explain the key CBSE and CISCE ideas in Statistics, Probability and ISC Section Choices",
+      "Use diagrams, tables, equations or graphs to model problems",
+      "Solve graded practice and board-style questions",
+      "Apply the concepts in real-life situations"
+    ],
+    "certificate": true,
+    "status": "published",
+    "enrollmentCount": 0,
+    "averageRating": 0,
+    "totalRatings": 0,
+    "reviewCount": 0,
+    "maxStudents": 50,
+    "tags": [
+      "Grade 11",
+      "Mathematics",
+      "Statistics, Probability and ISC Section Choices",
+      "CBSE",
+      "CISCE",
+      "ISC"
+    ],
+    "isActive": true,
+    "createdAt": {
+      "$date": "2026-07-30T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-07-30T00:00:00.000Z"
+    },
+    "__v": 0
+  }
+]

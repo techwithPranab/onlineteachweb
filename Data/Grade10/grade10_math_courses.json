@@ -1,0 +1,874 @@
+[
+  {
+    "_id": {
+      "$oid": "700000000000000000000051"
+    },
+    "title": "Grade 10 Mathematics - Real Numbers and Polynomials",
+    "description": "A CBSE and CISCE-aligned Grade 10 Mathematics course covering Real Numbers and Polynomials. It follows CBSE Class X Mathematics and ICSE Mathematics with clear theory, visuals, solved examples and practice.",
+    "createdBy": "696d8e8098d47cbd00770abd",
+    "grade": 10,
+    "subject": "Mathematics",
+    "board": [
+      "CBSE",
+      "ICSE"
+    ],
+    "thumbnail": "",
+    "syllabus": [
+      "Euclid division lemma",
+      "Fundamental theorem of arithmetic",
+      "Decimal expansion",
+      "HCF and LCM applications",
+      "Zeros and coefficients of polynomials",
+      "Division algorithm",
+      "Graph intuition",
+      "Polynomial applications"
+    ],
+    "chapters": [
+      {
+        "name": "Real Numbers",
+        "topics": [
+          "Euclid division lemma",
+          "Fundamental theorem of arithmetic",
+          "Decimal expansion",
+          "HCF and LCM applications"
+        ],
+        "learningObjectives": [
+          "Understand and solve syllabus-aligned problems on Euclid division lemma",
+          "Understand and solve syllabus-aligned problems on Fundamental theorem of arithmetic",
+          "Understand and solve syllabus-aligned problems on Decimal expansion",
+          "Understand and solve syllabus-aligned problems on HCF and LCM applications"
+        ],
+        "estimatedHours": 6
+      },
+      {
+        "name": "Polynomials",
+        "topics": [
+          "Zeros and coefficients of polynomials",
+          "Division algorithm",
+          "Graph intuition",
+          "Polynomial applications"
+        ],
+        "learningObjectives": [
+          "Understand and solve syllabus-aligned problems on Zeros and coefficients of polynomials",
+          "Understand and solve syllabus-aligned problems on Division algorithm",
+          "Understand and solve syllabus-aligned problems on Graph intuition",
+          "Understand and solve syllabus-aligned problems on Polynomial applications"
+        ],
+        "estimatedHours": 6
+      }
+    ],
+    "topics": [
+      "Euclid division lemma",
+      "Fundamental theorem of arithmetic",
+      "Decimal expansion",
+      "HCF and LCM applications",
+      "Zeros and coefficients of polynomials",
+      "Division algorithm",
+      "Graph intuition",
+      "Polynomial applications"
+    ],
+    "duration": "8 weeks",
+    "estimatedHours": 12,
+    "level": "intermediate",
+    "difficulty": 4,
+    "language": "English",
+    "prerequisites": [
+      "Grade 9 Mathematics foundations",
+      "Arithmetic fluency",
+      "Problem reading skills"
+    ],
+    "learningOutcomes": [
+      "Explain the key CBSE and CISCE ideas in Real Numbers and Polynomials",
+      "Use diagrams, tables, equations or graphs to model problems",
+      "Solve graded practice and board-style questions",
+      "Apply the concepts in real-life situations"
+    ],
+    "certificate": true,
+    "status": "published",
+    "enrollmentCount": 0,
+    "averageRating": 0,
+    "totalRatings": 0,
+    "reviewCount": 0,
+    "maxStudents": 50,
+    "tags": [
+      "Grade 10",
+      "Mathematics",
+      "Real Numbers and Polynomials",
+      "CBSE",
+      "CISCE",
+      "ICSE"
+    ],
+    "isActive": true,
+    "createdAt": {
+      "$date": "2026-07-30T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-07-30T00:00:00.000Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "700000000000000000000055"
+    },
+    "title": "Grade 10 Mathematics - Pair of Linear Equations and ICSE Algebra Extension",
+    "description": "A CBSE and CISCE-aligned Grade 10 Mathematics course covering Pair of Linear Equations and ICSE Algebra Extension. It follows CBSE Class X Mathematics and ICSE Mathematics with clear theory, visuals, solved examples and practice.",
+    "createdBy": "696d8e8098d47cbd00770abd",
+    "grade": 10,
+    "subject": "Mathematics",
+    "board": [
+      "CBSE",
+      "ICSE"
+    ],
+    "thumbnail": "",
+    "syllabus": [
+      "Algebraic methods for linear pairs",
+      "Graphical method for linear pairs",
+      "Consistency of linear pairs",
+      "Application problems",
+      "Matrices basics",
+      "Linear inequations",
+      "Arithmetic with indices",
+      "Logarithms review"
+    ],
+    "chapters": [
+      {
+        "name": "Pair of Linear Equations",
+        "topics": [
+          "Algebraic methods for linear pairs",
+          "Graphical method for linear pairs",
+          "Consistency of linear pairs",
+          "Application problems"
+        ],
+        "learningObjectives": [
+          "Understand and solve syllabus-aligned problems on Algebraic methods for linear pairs",
+          "Understand and solve syllabus-aligned problems on Graphical method for linear pairs",
+          "Understand and solve syllabus-aligned problems on Consistency of linear pairs",
+          "Understand and solve syllabus-aligned problems on Application problems"
+        ],
+        "estimatedHours": 6
+      },
+      {
+        "name": "ICSE Algebra Extension",
+        "topics": [
+          "Matrices basics",
+          "Linear inequations",
+          "Arithmetic with indices",
+          "Logarithms review"
+        ],
+        "learningObjectives": [
+          "Understand and solve syllabus-aligned problems on Matrices basics",
+          "Understand and solve syllabus-aligned problems on Linear inequations",
+          "Understand and solve syllabus-aligned problems on Arithmetic with indices",
+          "Understand and solve syllabus-aligned problems on Logarithms review"
+        ],
+        "estimatedHours": 6
+      }
+    ],
+    "topics": [
+      "Algebraic methods for linear pairs",
+      "Graphical method for linear pairs",
+      "Consistency of linear pairs",
+      "Application problems",
+      "Matrices basics",
+      "Linear inequations",
+      "Arithmetic with indices",
+      "Logarithms review"
+    ],
+    "duration": "8 weeks",
+    "estimatedHours": 12,
+    "level": "intermediate",
+    "difficulty": 4,
+    "language": "English",
+    "prerequisites": [
+      "Grade 9 Mathematics foundations",
+      "Arithmetic fluency",
+      "Problem reading skills"
+    ],
+    "learningOutcomes": [
+      "Explain the key CBSE and CISCE ideas in Pair of Linear Equations and ICSE Algebra Extension",
+      "Use diagrams, tables, equations or graphs to model problems",
+      "Solve graded practice and board-style questions",
+      "Apply the concepts in real-life situations"
+    ],
+    "certificate": true,
+    "status": "published",
+    "enrollmentCount": 0,
+    "averageRating": 0,
+    "totalRatings": 0,
+    "reviewCount": 0,
+    "maxStudents": 50,
+    "tags": [
+      "Grade 10",
+      "Mathematics",
+      "Pair of Linear Equations and ICSE Algebra Extension",
+      "CBSE",
+      "CISCE",
+      "ICSE"
+    ],
+    "isActive": true,
+    "createdAt": {
+      "$date": "2026-07-30T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-07-30T00:00:00.000Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "700000000000000000000059"
+    },
+    "title": "Grade 10 Mathematics - Quadratic Equations and Arithmetic Progressions",
+    "description": "A CBSE and CISCE-aligned Grade 10 Mathematics course covering Quadratic Equations and Arithmetic Progressions. It follows CBSE Class X Mathematics and ICSE Mathematics with clear theory, visuals, solved examples and practice.",
+    "createdBy": "696d8e8098d47cbd00770abd",
+    "grade": 10,
+    "subject": "Mathematics",
+    "board": [
+      "CBSE",
+      "ICSE"
+    ],
+    "thumbnail": "",
+    "syllabus": [
+      "Factorisation method",
+      "Formula method",
+      "Nature of roots",
+      "Quadratic word problems",
+      "nth term",
+      "Sum of AP",
+      "Real-life sequences",
+      "Sequence applications"
+    ],
+    "chapters": [
+      {
+        "name": "Quadratic Equations",
+        "topics": [
+          "Factorisation method",
+          "Formula method",
+          "Nature of roots",
+          "Quadratic word problems"
+        ],
+        "learningObjectives": [
+          "Understand and solve syllabus-aligned problems on Factorisation method",
+          "Understand and solve syllabus-aligned problems on Formula method",
+          "Understand and solve syllabus-aligned problems on Nature of roots",
+          "Understand and solve syllabus-aligned problems on Quadratic word problems"
+        ],
+        "estimatedHours": 6
+      },
+      {
+        "name": "Arithmetic Progressions",
+        "topics": [
+          "nth term",
+          "Sum of AP",
+          "Real-life sequences",
+          "Sequence applications"
+        ],
+        "learningObjectives": [
+          "Understand and solve syllabus-aligned problems on nth term",
+          "Understand and solve syllabus-aligned problems on Sum of AP",
+          "Understand and solve syllabus-aligned problems on Real-life sequences",
+          "Understand and solve syllabus-aligned problems on Sequence applications"
+        ],
+        "estimatedHours": 6
+      }
+    ],
+    "topics": [
+      "Factorisation method",
+      "Formula method",
+      "Nature of roots",
+      "Quadratic word problems",
+      "nth term",
+      "Sum of AP",
+      "Real-life sequences",
+      "Sequence applications"
+    ],
+    "duration": "8 weeks",
+    "estimatedHours": 12,
+    "level": "intermediate",
+    "difficulty": 4,
+    "language": "English",
+    "prerequisites": [
+      "Grade 9 Mathematics foundations",
+      "Arithmetic fluency",
+      "Problem reading skills"
+    ],
+    "learningOutcomes": [
+      "Explain the key CBSE and CISCE ideas in Quadratic Equations and Arithmetic Progressions",
+      "Use diagrams, tables, equations or graphs to model problems",
+      "Solve graded practice and board-style questions",
+      "Apply the concepts in real-life situations"
+    ],
+    "certificate": true,
+    "status": "published",
+    "enrollmentCount": 0,
+    "averageRating": 0,
+    "totalRatings": 0,
+    "reviewCount": 0,
+    "maxStudents": 50,
+    "tags": [
+      "Grade 10",
+      "Mathematics",
+      "Quadratic Equations and Arithmetic Progressions",
+      "CBSE",
+      "CISCE",
+      "ICSE"
+    ],
+    "isActive": true,
+    "createdAt": {
+      "$date": "2026-07-30T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-07-30T00:00:00.000Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "70000000000000000000005d"
+    },
+    "title": "Grade 10 Mathematics - Commercial Mathematics - ICSE",
+    "description": "A CBSE and CISCE-aligned Grade 10 Mathematics course covering Commercial Mathematics - ICSE. It follows CBSE Class X Mathematics and ICSE Mathematics with clear theory, visuals, solved examples and practice.",
+    "createdBy": "696d8e8098d47cbd00770abd",
+    "grade": 10,
+    "subject": "Mathematics",
+    "board": [
+      "CBSE",
+      "ICSE"
+    ],
+    "thumbnail": "",
+    "syllabus": [
+      "Banking",
+      "GST and tax",
+      "Bills and discounts",
+      "Financial statements",
+      "Shares and dividends",
+      "Compound interest",
+      "Profit and loss revision",
+      "Commercial word problems"
+    ],
+    "chapters": [
+      {
+        "name": "Banking and Taxation",
+        "topics": [
+          "Banking",
+          "GST and tax",
+          "Bills and discounts",
+          "Financial statements"
+        ],
+        "learningObjectives": [
+          "Understand and solve syllabus-aligned problems on Banking",
+          "Understand and solve syllabus-aligned problems on GST and tax",
+          "Understand and solve syllabus-aligned problems on Bills and discounts",
+          "Understand and solve syllabus-aligned problems on Financial statements"
+        ],
+        "estimatedHours": 6
+      },
+      {
+        "name": "Investments and Interest",
+        "topics": [
+          "Shares and dividends",
+          "Compound interest",
+          "Profit and loss revision",
+          "Commercial word problems"
+        ],
+        "learningObjectives": [
+          "Understand and solve syllabus-aligned problems on Shares and dividends",
+          "Understand and solve syllabus-aligned problems on Compound interest",
+          "Understand and solve syllabus-aligned problems on Profit and loss revision",
+          "Understand and solve syllabus-aligned problems on Commercial word problems"
+        ],
+        "estimatedHours": 6
+      }
+    ],
+    "topics": [
+      "Banking",
+      "GST and tax",
+      "Bills and discounts",
+      "Financial statements",
+      "Shares and dividends",
+      "Compound interest",
+      "Profit and loss revision",
+      "Commercial word problems"
+    ],
+    "duration": "8 weeks",
+    "estimatedHours": 12,
+    "level": "intermediate",
+    "difficulty": 4,
+    "language": "English",
+    "prerequisites": [
+      "Grade 9 Mathematics foundations",
+      "Arithmetic fluency",
+      "Problem reading skills"
+    ],
+    "learningOutcomes": [
+      "Explain the key CBSE and CISCE ideas in Commercial Mathematics - ICSE",
+      "Use diagrams, tables, equations or graphs to model problems",
+      "Solve graded practice and board-style questions",
+      "Apply the concepts in real-life situations"
+    ],
+    "certificate": true,
+    "status": "published",
+    "enrollmentCount": 0,
+    "averageRating": 0,
+    "totalRatings": 0,
+    "reviewCount": 0,
+    "maxStudents": 50,
+    "tags": [
+      "Grade 10",
+      "Mathematics",
+      "Commercial Mathematics - ICSE",
+      "CBSE",
+      "CISCE",
+      "ICSE"
+    ],
+    "isActive": true,
+    "createdAt": {
+      "$date": "2026-07-30T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-07-30T00:00:00.000Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "700000000000000000000061"
+    },
+    "title": "Grade 10 Mathematics - Geometry, Circles and Loci",
+    "description": "A CBSE and CISCE-aligned Grade 10 Mathematics course covering Geometry, Circles and Loci. It follows CBSE Class X Mathematics and ICSE Mathematics with clear theory, visuals, solved examples and practice.",
+    "createdBy": "696d8e8098d47cbd00770abd",
+    "grade": 10,
+    "subject": "Mathematics",
+    "board": [
+      "CBSE",
+      "ICSE"
+    ],
+    "thumbnail": "",
+    "syllabus": [
+      "AA similarity",
+      "Basic proportionality theorem",
+      "Pythagoras theorem",
+      "Similarity applications",
+      "Tangents",
+      "Secants and chords",
+      "Circle theorems",
+      "Loci and construction"
+    ],
+    "chapters": [
+      {
+        "name": "Triangles and Similarity",
+        "topics": [
+          "AA similarity",
+          "Basic proportionality theorem",
+          "Pythagoras theorem",
+          "Similarity applications"
+        ],
+        "learningObjectives": [
+          "Understand and solve syllabus-aligned problems on AA similarity",
+          "Understand and solve syllabus-aligned problems on Basic proportionality theorem",
+          "Understand and solve syllabus-aligned problems on Pythagoras theorem",
+          "Understand and solve syllabus-aligned problems on Similarity applications"
+        ],
+        "estimatedHours": 6
+      },
+      {
+        "name": "Circles and Loci - ICSE Extension",
+        "topics": [
+          "Tangents",
+          "Secants and chords",
+          "Circle theorems",
+          "Loci and construction"
+        ],
+        "learningObjectives": [
+          "Understand and solve syllabus-aligned problems on Tangents",
+          "Understand and solve syllabus-aligned problems on Secants and chords",
+          "Understand and solve syllabus-aligned problems on Circle theorems",
+          "Understand and solve syllabus-aligned problems on Loci and construction"
+        ],
+        "estimatedHours": 6
+      }
+    ],
+    "topics": [
+      "AA similarity",
+      "Basic proportionality theorem",
+      "Pythagoras theorem",
+      "Similarity applications",
+      "Tangents",
+      "Secants and chords",
+      "Circle theorems",
+      "Loci and construction"
+    ],
+    "duration": "8 weeks",
+    "estimatedHours": 12,
+    "level": "intermediate",
+    "difficulty": 4,
+    "language": "English",
+    "prerequisites": [
+      "Grade 9 Mathematics foundations",
+      "Arithmetic fluency",
+      "Problem reading skills"
+    ],
+    "learningOutcomes": [
+      "Explain the key CBSE and CISCE ideas in Geometry, Circles and Loci",
+      "Use diagrams, tables, equations or graphs to model problems",
+      "Solve graded practice and board-style questions",
+      "Apply the concepts in real-life situations"
+    ],
+    "certificate": true,
+    "status": "published",
+    "enrollmentCount": 0,
+    "averageRating": 0,
+    "totalRatings": 0,
+    "reviewCount": 0,
+    "maxStudents": 50,
+    "tags": [
+      "Grade 10",
+      "Mathematics",
+      "Geometry, Circles and Loci",
+      "CBSE",
+      "CISCE",
+      "ICSE"
+    ],
+    "isActive": true,
+    "createdAt": {
+      "$date": "2026-07-30T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-07-30T00:00:00.000Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "73000000000000000000232e"
+    },
+    "title": "Grade 10 Mathematics - Coordinate Geometry",
+    "description": "A CBSE and CISCE-aligned Grade 10 Mathematics course covering Coordinate Geometry. It follows CBSE Class X Mathematics and ICSE Mathematics with clear theory, visuals, solved examples and practice.",
+    "createdBy": "696d8e8098d47cbd00770abd",
+    "grade": 10,
+    "subject": "Mathematics",
+    "board": [
+      "CBSE",
+      "ICSE"
+    ],
+    "thumbnail": "",
+    "syllabus": [
+      "Distance formula",
+      "Section formula",
+      "Midpoint formula",
+      "Area of triangle",
+      "Collinearity",
+      "Centroid intuition",
+      "Line segment division",
+      "Coordinate word problems"
+    ],
+    "chapters": [
+      {
+        "name": "Coordinate Formulae",
+        "topics": [
+          "Distance formula",
+          "Section formula",
+          "Midpoint formula",
+          "Area of triangle"
+        ],
+        "learningObjectives": [
+          "Understand and solve syllabus-aligned problems on Distance formula",
+          "Understand and solve syllabus-aligned problems on Section formula",
+          "Understand and solve syllabus-aligned problems on Midpoint formula",
+          "Understand and solve syllabus-aligned problems on Area of triangle"
+        ],
+        "estimatedHours": 6
+      },
+      {
+        "name": "Coordinate Applications",
+        "topics": [
+          "Collinearity",
+          "Centroid intuition",
+          "Line segment division",
+          "Coordinate word problems"
+        ],
+        "learningObjectives": [
+          "Understand and solve syllabus-aligned problems on Collinearity",
+          "Understand and solve syllabus-aligned problems on Centroid intuition",
+          "Understand and solve syllabus-aligned problems on Line segment division",
+          "Understand and solve syllabus-aligned problems on Coordinate word problems"
+        ],
+        "estimatedHours": 6
+      }
+    ],
+    "topics": [
+      "Distance formula",
+      "Section formula",
+      "Midpoint formula",
+      "Area of triangle",
+      "Collinearity",
+      "Centroid intuition",
+      "Line segment division",
+      "Coordinate word problems"
+    ],
+    "duration": "8 weeks",
+    "estimatedHours": 12,
+    "level": "intermediate",
+    "difficulty": 4,
+    "language": "English",
+    "prerequisites": [
+      "Grade 9 Mathematics foundations",
+      "Arithmetic fluency",
+      "Problem reading skills"
+    ],
+    "learningOutcomes": [
+      "Explain the key CBSE and CISCE ideas in Coordinate Geometry",
+      "Use diagrams, tables, equations or graphs to model problems",
+      "Solve graded practice and board-style questions",
+      "Apply the concepts in real-life situations"
+    ],
+    "certificate": true,
+    "status": "published",
+    "enrollmentCount": 0,
+    "averageRating": 0,
+    "totalRatings": 0,
+    "reviewCount": 0,
+    "maxStudents": 50,
+    "tags": [
+      "Grade 10",
+      "Mathematics",
+      "Coordinate Geometry",
+      "CBSE",
+      "CISCE",
+      "ICSE"
+    ],
+    "isActive": true,
+    "createdAt": {
+      "$date": "2026-07-30T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-07-30T00:00:00.000Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "73000000000000000000232f"
+    },
+    "title": "Grade 10 Mathematics - Trigonometry and Heights and Distances",
+    "description": "A CBSE and CISCE-aligned Grade 10 Mathematics course covering Trigonometry and Heights and Distances. It follows CBSE Class X Mathematics and ICSE Mathematics with clear theory, visuals, solved examples and practice.",
+    "createdBy": "696d8e8098d47cbd00770abd",
+    "grade": 10,
+    "subject": "Mathematics",
+    "board": [
+      "CBSE",
+      "ICSE"
+    ],
+    "thumbnail": "",
+    "syllabus": [
+      "Sine cosine tangent",
+      "Standard angles",
+      "Reciprocal ratios",
+      "Fundamental identity",
+      "Angle of elevation",
+      "Angle of depression",
+      "Survey applications",
+      "Real-life measurement problems"
+    ],
+    "chapters": [
+      {
+        "name": "Trigonometric Ratios and Identities",
+        "topics": [
+          "Sine cosine tangent",
+          "Standard angles",
+          "Reciprocal ratios",
+          "Fundamental identity"
+        ],
+        "learningObjectives": [
+          "Understand and solve syllabus-aligned problems on Sine cosine tangent",
+          "Understand and solve syllabus-aligned problems on Standard angles",
+          "Understand and solve syllabus-aligned problems on Reciprocal ratios",
+          "Understand and solve syllabus-aligned problems on Fundamental identity"
+        ],
+        "estimatedHours": 6
+      },
+      {
+        "name": "Applications of Trigonometry",
+        "topics": [
+          "Angle of elevation",
+          "Angle of depression",
+          "Survey applications",
+          "Real-life measurement problems"
+        ],
+        "learningObjectives": [
+          "Understand and solve syllabus-aligned problems on Angle of elevation",
+          "Understand and solve syllabus-aligned problems on Angle of depression",
+          "Understand and solve syllabus-aligned problems on Survey applications",
+          "Understand and solve syllabus-aligned problems on Real-life measurement problems"
+        ],
+        "estimatedHours": 6
+      }
+    ],
+    "topics": [
+      "Sine cosine tangent",
+      "Standard angles",
+      "Reciprocal ratios",
+      "Fundamental identity",
+      "Angle of elevation",
+      "Angle of depression",
+      "Survey applications",
+      "Real-life measurement problems"
+    ],
+    "duration": "8 weeks",
+    "estimatedHours": 12,
+    "level": "intermediate",
+    "difficulty": 4,
+    "language": "English",
+    "prerequisites": [
+      "Grade 9 Mathematics foundations",
+      "Arithmetic fluency",
+      "Problem reading skills"
+    ],
+    "learningOutcomes": [
+      "Explain the key CBSE and CISCE ideas in Trigonometry and Heights and Distances",
+      "Use diagrams, tables, equations or graphs to model problems",
+      "Solve graded practice and board-style questions",
+      "Apply the concepts in real-life situations"
+    ],
+    "certificate": true,
+    "status": "published",
+    "enrollmentCount": 0,
+    "averageRating": 0,
+    "totalRatings": 0,
+    "reviewCount": 0,
+    "maxStudents": 50,
+    "tags": [
+      "Grade 10",
+      "Mathematics",
+      "Trigonometry and Heights and Distances",
+      "CBSE",
+      "CISCE",
+      "ICSE"
+    ],
+    "isActive": true,
+    "createdAt": {
+      "$date": "2026-07-30T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-07-30T00:00:00.000Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "730000000000000000002330"
+    },
+    "title": "Grade 10 Mathematics - Mensuration, Statistics and Probability",
+    "description": "A CBSE and CISCE-aligned Grade 10 Mathematics course covering Mensuration, Statistics and Probability. It follows CBSE Class X Mathematics and ICSE Mathematics with clear theory, visuals, solved examples and practice.",
+    "createdBy": "696d8e8098d47cbd00770abd",
+    "grade": 10,
+    "subject": "Mathematics",
+    "board": [
+      "CBSE",
+      "ICSE"
+    ],
+    "thumbnail": "",
+    "syllabus": [
+      "Areas related to circles",
+      "Sector area",
+      "Surface areas and volumes",
+      "Frustum and solids extension",
+      "Grouped mean",
+      "Median and mode",
+      "Cumulative frequency",
+      "Ogive and histogram",
+      "Classical probability",
+      "Simple compound events"
+    ],
+    "chapters": [
+      {
+        "name": "Mensuration",
+        "topics": [
+          "Areas related to circles",
+          "Sector area",
+          "Surface areas and volumes",
+          "Frustum and solids extension"
+        ],
+        "learningObjectives": [
+          "Understand and solve syllabus-aligned problems on Areas related to circles",
+          "Understand and solve syllabus-aligned problems on Sector area",
+          "Understand and solve syllabus-aligned problems on Surface areas and volumes",
+          "Understand and solve syllabus-aligned problems on Frustum and solids extension"
+        ],
+        "estimatedHours": 6
+      },
+      {
+        "name": "Statistics and Probability",
+        "topics": [
+          "Grouped mean",
+          "Median and mode",
+          "Cumulative frequency",
+          "Ogive and histogram",
+          "Classical probability",
+          "Simple compound events"
+        ],
+        "learningObjectives": [
+          "Understand and solve syllabus-aligned problems on Grouped mean",
+          "Understand and solve syllabus-aligned problems on Median and mode",
+          "Understand and solve syllabus-aligned problems on Cumulative frequency",
+          "Understand and solve syllabus-aligned problems on Ogive and histogram",
+          "Understand and solve syllabus-aligned problems on Classical probability",
+          "Understand and solve syllabus-aligned problems on Simple compound events"
+        ],
+        "estimatedHours": 6
+      }
+    ],
+    "topics": [
+      "Areas related to circles",
+      "Sector area",
+      "Surface areas and volumes",
+      "Frustum and solids extension",
+      "Grouped mean",
+      "Median and mode",
+      "Cumulative frequency",
+      "Ogive and histogram",
+      "Classical probability",
+      "Simple compound events"
+    ],
+    "duration": "8 weeks",
+    "estimatedHours": 12,
+    "level": "intermediate",
+    "difficulty": 4,
+    "language": "English",
+    "prerequisites": [
+      "Grade 9 Mathematics foundations",
+      "Arithmetic fluency",
+      "Problem reading skills"
+    ],
+    "learningOutcomes": [
+      "Explain the key CBSE and CISCE ideas in Mensuration, Statistics and Probability",
+      "Use diagrams, tables, equations or graphs to model problems",
+      "Solve graded practice and board-style questions",
+      "Apply the concepts in real-life situations"
+    ],
+    "certificate": true,
+    "status": "published",
+    "enrollmentCount": 0,
+    "averageRating": 0,
+    "totalRatings": 0,
+    "reviewCount": 0,
+    "maxStudents": 50,
+    "tags": [
+      "Grade 10",
+      "Mathematics",
+      "Mensuration, Statistics and Probability",
+      "CBSE",
+      "CISCE",
+      "ICSE"
+    ],
+    "isActive": true,
+    "createdAt": {
+      "$date": "2026-07-30T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-07-30T00:00:00.000Z"
+    },
+    "__v": 0
+  }
+]

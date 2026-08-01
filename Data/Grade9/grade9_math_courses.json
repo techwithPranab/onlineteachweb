@@ -1,0 +1,758 @@
+[
+  {
+    "_id": {
+      "$oid": "70000000000000000000003d"
+    },
+    "title": "Grade 9 Mathematics - Number Systems and Sets",
+    "description": "A CBSE and CISCE-aligned Grade 9 Mathematics course covering Number Systems and Sets. It follows CBSE Class IX Mathematics and ICSE Mathematics with clear theory, visuals, solved examples and practice.",
+    "createdBy": "696d8e8098d47cbd00770abd",
+    "grade": 9,
+    "subject": "Mathematics",
+    "board": [
+      "CBSE",
+      "ICSE"
+    ],
+    "thumbnail": "",
+    "syllabus": [
+      "Natural whole integers rational and irrational numbers",
+      "Real number line",
+      "Surds and rationalisation basics",
+      "Laws of exponents for real numbers",
+      "Set notation",
+      "Venn diagrams",
+      "Operations on sets",
+      "Logarithms basics"
+    ],
+    "chapters": [
+      {
+        "name": "Number Systems",
+        "topics": [
+          "Natural whole integers rational and irrational numbers",
+          "Real number line",
+          "Surds and rationalisation basics",
+          "Laws of exponents for real numbers"
+        ],
+        "learningObjectives": [
+          "Understand and solve syllabus-aligned problems on Natural whole integers rational and irrational numbers",
+          "Understand and solve syllabus-aligned problems on Real number line",
+          "Understand and solve syllabus-aligned problems on Surds and rationalisation basics",
+          "Understand and solve syllabus-aligned problems on Laws of exponents for real numbers"
+        ],
+        "estimatedHours": 6
+      },
+      {
+        "name": "Sets and Logarithms - ICSE Extension",
+        "topics": [
+          "Set notation",
+          "Venn diagrams",
+          "Operations on sets",
+          "Logarithms basics"
+        ],
+        "learningObjectives": [
+          "Understand and solve syllabus-aligned problems on Set notation",
+          "Understand and solve syllabus-aligned problems on Venn diagrams",
+          "Understand and solve syllabus-aligned problems on Operations on sets",
+          "Understand and solve syllabus-aligned problems on Logarithms basics"
+        ],
+        "estimatedHours": 6
+      }
+    ],
+    "topics": [
+      "Natural whole integers rational and irrational numbers",
+      "Real number line",
+      "Surds and rationalisation basics",
+      "Laws of exponents for real numbers",
+      "Set notation",
+      "Venn diagrams",
+      "Operations on sets",
+      "Logarithms basics"
+    ],
+    "duration": "8 weeks",
+    "estimatedHours": 12,
+    "level": "intermediate",
+    "difficulty": 3,
+    "language": "English",
+    "prerequisites": [
+      "Grade 8 Mathematics foundations",
+      "Arithmetic fluency",
+      "Problem reading skills"
+    ],
+    "learningOutcomes": [
+      "Explain the key CBSE and CISCE ideas in Number Systems and Sets",
+      "Use diagrams, tables, equations or graphs to model problems",
+      "Solve graded practice and board-style questions",
+      "Apply the concepts in real-life situations"
+    ],
+    "certificate": true,
+    "status": "published",
+    "enrollmentCount": 0,
+    "averageRating": 0,
+    "totalRatings": 0,
+    "reviewCount": 0,
+    "maxStudents": 50,
+    "tags": [
+      "Grade 9",
+      "Mathematics",
+      "Number Systems and Sets",
+      "CBSE",
+      "CISCE",
+      "ICSE"
+    ],
+    "isActive": true,
+    "createdAt": {
+      "$date": "2026-07-30T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-07-30T00:00:00.000Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "700000000000000000000041"
+    },
+    "title": "Grade 9 Mathematics - Polynomials and Linear Equations",
+    "description": "A CBSE and CISCE-aligned Grade 9 Mathematics course covering Polynomials and Linear Equations. It follows CBSE Class IX Mathematics and ICSE Mathematics with clear theory, visuals, solved examples and practice.",
+    "createdBy": "696d8e8098d47cbd00770abd",
+    "grade": 9,
+    "subject": "Mathematics",
+    "board": [
+      "CBSE",
+      "ICSE"
+    ],
+    "thumbnail": "",
+    "syllabus": [
+      "Polynomials in one variable",
+      "Degree of a polynomial",
+      "Zeros of polynomials",
+      "Remainder and factor theorem",
+      "Linear equations in two variables",
+      "Graph of a linear equation",
+      "Solutions as ordered pairs",
+      "Algebraic applications"
+    ],
+    "chapters": [
+      {
+        "name": "Polynomials",
+        "topics": [
+          "Polynomials in one variable",
+          "Degree of a polynomial",
+          "Zeros of polynomials",
+          "Remainder and factor theorem"
+        ],
+        "learningObjectives": [
+          "Understand and solve syllabus-aligned problems on Polynomials in one variable",
+          "Understand and solve syllabus-aligned problems on Degree of a polynomial",
+          "Understand and solve syllabus-aligned problems on Zeros of polynomials",
+          "Understand and solve syllabus-aligned problems on Remainder and factor theorem"
+        ],
+        "estimatedHours": 6
+      },
+      {
+        "name": "Linear Equations in Two Variables",
+        "topics": [
+          "Linear equations in two variables",
+          "Graph of a linear equation",
+          "Solutions as ordered pairs",
+          "Algebraic applications"
+        ],
+        "learningObjectives": [
+          "Understand and solve syllabus-aligned problems on Linear equations in two variables",
+          "Understand and solve syllabus-aligned problems on Graph of a linear equation",
+          "Understand and solve syllabus-aligned problems on Solutions as ordered pairs",
+          "Understand and solve syllabus-aligned problems on Algebraic applications"
+        ],
+        "estimatedHours": 6
+      }
+    ],
+    "topics": [
+      "Polynomials in one variable",
+      "Degree of a polynomial",
+      "Zeros of polynomials",
+      "Remainder and factor theorem",
+      "Linear equations in two variables",
+      "Graph of a linear equation",
+      "Solutions as ordered pairs",
+      "Algebraic applications"
+    ],
+    "duration": "8 weeks",
+    "estimatedHours": 12,
+    "level": "intermediate",
+    "difficulty": 3,
+    "language": "English",
+    "prerequisites": [
+      "Grade 8 Mathematics foundations",
+      "Arithmetic fluency",
+      "Problem reading skills"
+    ],
+    "learningOutcomes": [
+      "Explain the key CBSE and CISCE ideas in Polynomials and Linear Equations",
+      "Use diagrams, tables, equations or graphs to model problems",
+      "Solve graded practice and board-style questions",
+      "Apply the concepts in real-life situations"
+    ],
+    "certificate": true,
+    "status": "published",
+    "enrollmentCount": 0,
+    "averageRating": 0,
+    "totalRatings": 0,
+    "reviewCount": 0,
+    "maxStudents": 50,
+    "tags": [
+      "Grade 9",
+      "Mathematics",
+      "Polynomials and Linear Equations",
+      "CBSE",
+      "CISCE",
+      "ICSE"
+    ],
+    "isActive": true,
+    "createdAt": {
+      "$date": "2026-07-30T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-07-30T00:00:00.000Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "700000000000000000000045"
+    },
+    "title": "Grade 9 Mathematics - Coordinate Geometry and Graphical Statistics",
+    "description": "A CBSE and CISCE-aligned Grade 9 Mathematics course covering Coordinate Geometry and Graphical Statistics. It follows CBSE Class IX Mathematics and ICSE Mathematics with clear theory, visuals, solved examples and practice.",
+    "createdBy": "696d8e8098d47cbd00770abd",
+    "grade": 9,
+    "subject": "Mathematics",
+    "board": [
+      "CBSE",
+      "ICSE"
+    ],
+    "thumbnail": "",
+    "syllabus": [
+      "Cartesian plane",
+      "Quadrants",
+      "Plotting points",
+      "Reading coordinates",
+      "Bar graphs",
+      "Histograms",
+      "Frequency polygons",
+      "Interpreting change"
+    ],
+    "chapters": [
+      {
+        "name": "Coordinate Geometry",
+        "topics": [
+          "Cartesian plane",
+          "Quadrants",
+          "Plotting points",
+          "Reading coordinates"
+        ],
+        "learningObjectives": [
+          "Understand and solve syllabus-aligned problems on Cartesian plane",
+          "Understand and solve syllabus-aligned problems on Quadrants",
+          "Understand and solve syllabus-aligned problems on Plotting points",
+          "Understand and solve syllabus-aligned problems on Reading coordinates"
+        ],
+        "estimatedHours": 6
+      },
+      {
+        "name": "Graphical Statistics",
+        "topics": [
+          "Bar graphs",
+          "Histograms",
+          "Frequency polygons",
+          "Interpreting change"
+        ],
+        "learningObjectives": [
+          "Understand and solve syllabus-aligned problems on Bar graphs",
+          "Understand and solve syllabus-aligned problems on Histograms",
+          "Understand and solve syllabus-aligned problems on Frequency polygons",
+          "Understand and solve syllabus-aligned problems on Interpreting change"
+        ],
+        "estimatedHours": 6
+      }
+    ],
+    "topics": [
+      "Cartesian plane",
+      "Quadrants",
+      "Plotting points",
+      "Reading coordinates",
+      "Bar graphs",
+      "Histograms",
+      "Frequency polygons",
+      "Interpreting change"
+    ],
+    "duration": "8 weeks",
+    "estimatedHours": 12,
+    "level": "intermediate",
+    "difficulty": 3,
+    "language": "English",
+    "prerequisites": [
+      "Grade 8 Mathematics foundations",
+      "Arithmetic fluency",
+      "Problem reading skills"
+    ],
+    "learningOutcomes": [
+      "Explain the key CBSE and CISCE ideas in Coordinate Geometry and Graphical Statistics",
+      "Use diagrams, tables, equations or graphs to model problems",
+      "Solve graded practice and board-style questions",
+      "Apply the concepts in real-life situations"
+    ],
+    "certificate": true,
+    "status": "published",
+    "enrollmentCount": 0,
+    "averageRating": 0,
+    "totalRatings": 0,
+    "reviewCount": 0,
+    "maxStudents": 50,
+    "tags": [
+      "Grade 9",
+      "Mathematics",
+      "Coordinate Geometry and Graphical Statistics",
+      "CBSE",
+      "CISCE",
+      "ICSE"
+    ],
+    "isActive": true,
+    "createdAt": {
+      "$date": "2026-07-30T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-07-30T00:00:00.000Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "700000000000000000000049"
+    },
+    "title": "Grade 9 Mathematics - Euclidean Geometry and Circles",
+    "description": "A CBSE and CISCE-aligned Grade 9 Mathematics course covering Euclidean Geometry and Circles. It follows CBSE Class IX Mathematics and ICSE Mathematics with clear theory, visuals, solved examples and practice.",
+    "createdBy": "696d8e8098d47cbd00770abd",
+    "grade": 9,
+    "subject": "Mathematics",
+    "board": [
+      "CBSE",
+      "ICSE"
+    ],
+    "thumbnail": "",
+    "syllabus": [
+      "Angle axioms",
+      "Parallel lines",
+      "Triangle congruence",
+      "Inequalities in triangles",
+      "Properties of parallelogram",
+      "Mid-point theorem",
+      "Circle basics",
+      "Cyclic quadrilateral introduction"
+    ],
+    "chapters": [
+      {
+        "name": "Lines, Angles and Triangles",
+        "topics": [
+          "Angle axioms",
+          "Parallel lines",
+          "Triangle congruence",
+          "Inequalities in triangles"
+        ],
+        "learningObjectives": [
+          "Understand and solve syllabus-aligned problems on Angle axioms",
+          "Understand and solve syllabus-aligned problems on Parallel lines",
+          "Understand and solve syllabus-aligned problems on Triangle congruence",
+          "Understand and solve syllabus-aligned problems on Inequalities in triangles"
+        ],
+        "estimatedHours": 6
+      },
+      {
+        "name": "Quadrilaterals and Circles",
+        "topics": [
+          "Properties of parallelogram",
+          "Mid-point theorem",
+          "Circle basics",
+          "Cyclic quadrilateral introduction"
+        ],
+        "learningObjectives": [
+          "Understand and solve syllabus-aligned problems on Properties of parallelogram",
+          "Understand and solve syllabus-aligned problems on Mid-point theorem",
+          "Understand and solve syllabus-aligned problems on Circle basics",
+          "Understand and solve syllabus-aligned problems on Cyclic quadrilateral introduction"
+        ],
+        "estimatedHours": 6
+      }
+    ],
+    "topics": [
+      "Angle axioms",
+      "Parallel lines",
+      "Triangle congruence",
+      "Inequalities in triangles",
+      "Properties of parallelogram",
+      "Mid-point theorem",
+      "Circle basics",
+      "Cyclic quadrilateral introduction"
+    ],
+    "duration": "8 weeks",
+    "estimatedHours": 12,
+    "level": "intermediate",
+    "difficulty": 3,
+    "language": "English",
+    "prerequisites": [
+      "Grade 8 Mathematics foundations",
+      "Arithmetic fluency",
+      "Problem reading skills"
+    ],
+    "learningOutcomes": [
+      "Explain the key CBSE and CISCE ideas in Euclidean Geometry and Circles",
+      "Use diagrams, tables, equations or graphs to model problems",
+      "Solve graded practice and board-style questions",
+      "Apply the concepts in real-life situations"
+    ],
+    "certificate": true,
+    "status": "published",
+    "enrollmentCount": 0,
+    "averageRating": 0,
+    "totalRatings": 0,
+    "reviewCount": 0,
+    "maxStudents": 50,
+    "tags": [
+      "Grade 9",
+      "Mathematics",
+      "Euclidean Geometry and Circles",
+      "CBSE",
+      "CISCE",
+      "ICSE"
+    ],
+    "isActive": true,
+    "createdAt": {
+      "$date": "2026-07-30T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-07-30T00:00:00.000Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "70000000000000000000004d"
+    },
+    "title": "Grade 9 Mathematics - Mensuration",
+    "description": "A CBSE and CISCE-aligned Grade 9 Mathematics course covering Mensuration. It follows CBSE Class IX Mathematics and ICSE Mathematics with clear theory, visuals, solved examples and practice.",
+    "createdBy": "696d8e8098d47cbd00770abd",
+    "grade": 9,
+    "subject": "Mathematics",
+    "board": [
+      "CBSE",
+      "ICSE"
+    ],
+    "thumbnail": "",
+    "syllabus": [
+      "Area of triangle and quadrilateral",
+      "Parallelogram area",
+      "Area on same base and parallels",
+      "Heron formula as extension",
+      "Cube cuboid cylinder",
+      "Cone and sphere introduction",
+      "Composite solids",
+      "Unit conversion"
+    ],
+    "chapters": [
+      {
+        "name": "Areas and Perimeters",
+        "topics": [
+          "Area of triangle and quadrilateral",
+          "Parallelogram area",
+          "Area on same base and parallels",
+          "Heron formula as extension"
+        ],
+        "learningObjectives": [
+          "Understand and solve syllabus-aligned problems on Area of triangle and quadrilateral",
+          "Understand and solve syllabus-aligned problems on Parallelogram area",
+          "Understand and solve syllabus-aligned problems on Area on same base and parallels",
+          "Understand and solve syllabus-aligned problems on Heron formula as extension"
+        ],
+        "estimatedHours": 6
+      },
+      {
+        "name": "Surface Areas and Volumes",
+        "topics": [
+          "Cube cuboid cylinder",
+          "Cone and sphere introduction",
+          "Composite solids",
+          "Unit conversion"
+        ],
+        "learningObjectives": [
+          "Understand and solve syllabus-aligned problems on Cube cuboid cylinder",
+          "Understand and solve syllabus-aligned problems on Cone and sphere introduction",
+          "Understand and solve syllabus-aligned problems on Composite solids",
+          "Understand and solve syllabus-aligned problems on Unit conversion"
+        ],
+        "estimatedHours": 6
+      }
+    ],
+    "topics": [
+      "Area of triangle and quadrilateral",
+      "Parallelogram area",
+      "Area on same base and parallels",
+      "Heron formula as extension",
+      "Cube cuboid cylinder",
+      "Cone and sphere introduction",
+      "Composite solids",
+      "Unit conversion"
+    ],
+    "duration": "8 weeks",
+    "estimatedHours": 12,
+    "level": "intermediate",
+    "difficulty": 3,
+    "language": "English",
+    "prerequisites": [
+      "Grade 8 Mathematics foundations",
+      "Arithmetic fluency",
+      "Problem reading skills"
+    ],
+    "learningOutcomes": [
+      "Explain the key CBSE and CISCE ideas in Mensuration",
+      "Use diagrams, tables, equations or graphs to model problems",
+      "Solve graded practice and board-style questions",
+      "Apply the concepts in real-life situations"
+    ],
+    "certificate": true,
+    "status": "published",
+    "enrollmentCount": 0,
+    "averageRating": 0,
+    "totalRatings": 0,
+    "reviewCount": 0,
+    "maxStudents": 50,
+    "tags": [
+      "Grade 9",
+      "Mathematics",
+      "Mensuration",
+      "CBSE",
+      "CISCE",
+      "ICSE"
+    ],
+    "isActive": true,
+    "createdAt": {
+      "$date": "2026-07-30T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-07-30T00:00:00.000Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "73000000000000000000232c"
+    },
+    "title": "Grade 9 Mathematics - Trigonometry Foundation - ICSE",
+    "description": "A CBSE and CISCE-aligned Grade 9 Mathematics course covering Trigonometry Foundation - ICSE. It follows CBSE Class IX Mathematics and ICSE Mathematics with clear theory, visuals, solved examples and practice.",
+    "createdBy": "696d8e8098d47cbd00770abd",
+    "grade": 9,
+    "subject": "Mathematics",
+    "board": [
+      "CBSE",
+      "ICSE"
+    ],
+    "thumbnail": "",
+    "syllabus": [
+      "Trigonometric ratios in right triangle",
+      "Simple values",
+      "Pythagoras theorem",
+      "Height and distance intuition",
+      "Finding unknown sides",
+      "Angle interpretation",
+      "Survey contexts",
+      "Trigonometry word problems"
+    ],
+    "chapters": [
+      {
+        "name": "Right Triangle Trigonometry",
+        "topics": [
+          "Trigonometric ratios in right triangle",
+          "Simple values",
+          "Pythagoras theorem",
+          "Height and distance intuition"
+        ],
+        "learningObjectives": [
+          "Understand and solve syllabus-aligned problems on Trigonometric ratios in right triangle",
+          "Understand and solve syllabus-aligned problems on Simple values",
+          "Understand and solve syllabus-aligned problems on Pythagoras theorem",
+          "Understand and solve syllabus-aligned problems on Height and distance intuition"
+        ],
+        "estimatedHours": 6
+      },
+      {
+        "name": "Applications",
+        "topics": [
+          "Finding unknown sides",
+          "Angle interpretation",
+          "Survey contexts",
+          "Trigonometry word problems"
+        ],
+        "learningObjectives": [
+          "Understand and solve syllabus-aligned problems on Finding unknown sides",
+          "Understand and solve syllabus-aligned problems on Angle interpretation",
+          "Understand and solve syllabus-aligned problems on Survey contexts",
+          "Understand and solve syllabus-aligned problems on Trigonometry word problems"
+        ],
+        "estimatedHours": 6
+      }
+    ],
+    "topics": [
+      "Trigonometric ratios in right triangle",
+      "Simple values",
+      "Pythagoras theorem",
+      "Height and distance intuition",
+      "Finding unknown sides",
+      "Angle interpretation",
+      "Survey contexts",
+      "Trigonometry word problems"
+    ],
+    "duration": "8 weeks",
+    "estimatedHours": 12,
+    "level": "intermediate",
+    "difficulty": 3,
+    "language": "English",
+    "prerequisites": [
+      "Grade 8 Mathematics foundations",
+      "Arithmetic fluency",
+      "Problem reading skills"
+    ],
+    "learningOutcomes": [
+      "Explain the key CBSE and CISCE ideas in Trigonometry Foundation - ICSE",
+      "Use diagrams, tables, equations or graphs to model problems",
+      "Solve graded practice and board-style questions",
+      "Apply the concepts in real-life situations"
+    ],
+    "certificate": true,
+    "status": "published",
+    "enrollmentCount": 0,
+    "averageRating": 0,
+    "totalRatings": 0,
+    "reviewCount": 0,
+    "maxStudents": 50,
+    "tags": [
+      "Grade 9",
+      "Mathematics",
+      "Trigonometry Foundation - ICSE",
+      "CBSE",
+      "CISCE",
+      "ICSE"
+    ],
+    "isActive": true,
+    "createdAt": {
+      "$date": "2026-07-30T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-07-30T00:00:00.000Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "73000000000000000000232d"
+    },
+    "title": "Grade 9 Mathematics - Statistics, Probability and Commercial Arithmetic",
+    "description": "A CBSE and CISCE-aligned Grade 9 Mathematics course covering Statistics, Probability and Commercial Arithmetic. It follows CBSE Class IX Mathematics and ICSE Mathematics with clear theory, visuals, solved examples and practice.",
+    "createdBy": "696d8e8098d47cbd00770abd",
+    "grade": 9,
+    "subject": "Mathematics",
+    "board": [
+      "CBSE",
+      "ICSE"
+    ],
+    "thumbnail": "",
+    "syllabus": [
+      "Mean median mode",
+      "Frequency distribution",
+      "Empirical probability",
+      "Sample space",
+      "Profit and loss",
+      "Discount",
+      "Simple interest",
+      "Compound interest introduction"
+    ],
+    "chapters": [
+      {
+        "name": "Statistics and Probability",
+        "topics": [
+          "Mean median mode",
+          "Frequency distribution",
+          "Empirical probability",
+          "Sample space"
+        ],
+        "learningObjectives": [
+          "Understand and solve syllabus-aligned problems on Mean median mode",
+          "Understand and solve syllabus-aligned problems on Frequency distribution",
+          "Understand and solve syllabus-aligned problems on Empirical probability",
+          "Understand and solve syllabus-aligned problems on Sample space"
+        ],
+        "estimatedHours": 6
+      },
+      {
+        "name": "Commercial Arithmetic - ICSE Extension",
+        "topics": [
+          "Profit and loss",
+          "Discount",
+          "Simple interest",
+          "Compound interest introduction"
+        ],
+        "learningObjectives": [
+          "Understand and solve syllabus-aligned problems on Profit and loss",
+          "Understand and solve syllabus-aligned problems on Discount",
+          "Understand and solve syllabus-aligned problems on Simple interest",
+          "Understand and solve syllabus-aligned problems on Compound interest introduction"
+        ],
+        "estimatedHours": 6
+      }
+    ],
+    "topics": [
+      "Mean median mode",
+      "Frequency distribution",
+      "Empirical probability",
+      "Sample space",
+      "Profit and loss",
+      "Discount",
+      "Simple interest",
+      "Compound interest introduction"
+    ],
+    "duration": "8 weeks",
+    "estimatedHours": 12,
+    "level": "intermediate",
+    "difficulty": 3,
+    "language": "English",
+    "prerequisites": [
+      "Grade 8 Mathematics foundations",
+      "Arithmetic fluency",
+      "Problem reading skills"
+    ],
+    "learningOutcomes": [
+      "Explain the key CBSE and CISCE ideas in Statistics, Probability and Commercial Arithmetic",
+      "Use diagrams, tables, equations or graphs to model problems",
+      "Solve graded practice and board-style questions",
+      "Apply the concepts in real-life situations"
+    ],
+    "certificate": true,
+    "status": "published",
+    "enrollmentCount": 0,
+    "averageRating": 0,
+    "totalRatings": 0,
+    "reviewCount": 0,
+    "maxStudents": 50,
+    "tags": [
+      "Grade 9",
+      "Mathematics",
+      "Statistics, Probability and Commercial Arithmetic",
+      "CBSE",
+      "CISCE",
+      "ICSE"
+    ],
+    "isActive": true,
+    "createdAt": {
+      "$date": "2026-07-30T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-07-30T00:00:00.000Z"
+    },
+    "__v": 0
+  }
+]

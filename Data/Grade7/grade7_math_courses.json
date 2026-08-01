@@ -1,0 +1,662 @@
+[
+  {
+    "_id": {
+      "$oid": "700000000000000000000015"
+    },
+    "title": "Grade 7 Mathematics - Integers, Fractions, Decimals and Rational Numbers",
+    "description": "A CBSE and CISCE-aligned Grade 7 Mathematics course covering Integers, Fractions, Decimals and Rational Numbers. It follows CBSE/NCERT middle-stage Mathematics and CISCE Upper Primary Mathematics with clear theory, visuals, solved examples and practice.",
+    "createdBy": "696d8e8098d47cbd00770abd",
+    "grade": 7,
+    "subject": "Mathematics",
+    "board": [
+      "CBSE",
+      "ICSE"
+    ],
+    "thumbnail": "",
+    "syllabus": [
+      "Integer addition",
+      "Integer subtraction",
+      "Integer multiplication and division",
+      "Integer word problems",
+      "Multiplication of fractions",
+      "Division of fractions",
+      "Decimal operations",
+      "Representing rational numbers",
+      "Comparing rational numbers"
+    ],
+    "chapters": [
+      {
+        "name": "Integers",
+        "topics": [
+          "Integer addition",
+          "Integer subtraction",
+          "Integer multiplication and division",
+          "Integer word problems"
+        ],
+        "learningObjectives": [
+          "Understand and solve syllabus-aligned problems on Integer addition",
+          "Understand and solve syllabus-aligned problems on Integer subtraction",
+          "Understand and solve syllabus-aligned problems on Integer multiplication and division",
+          "Understand and solve syllabus-aligned problems on Integer word problems"
+        ],
+        "estimatedHours": 5
+      },
+      {
+        "name": "Fractions, Decimals and Rational Numbers",
+        "topics": [
+          "Multiplication of fractions",
+          "Division of fractions",
+          "Decimal operations",
+          "Representing rational numbers",
+          "Comparing rational numbers"
+        ],
+        "learningObjectives": [
+          "Understand and solve syllabus-aligned problems on Multiplication of fractions",
+          "Understand and solve syllabus-aligned problems on Division of fractions",
+          "Understand and solve syllabus-aligned problems on Decimal operations",
+          "Understand and solve syllabus-aligned problems on Representing rational numbers",
+          "Understand and solve syllabus-aligned problems on Comparing rational numbers"
+        ],
+        "estimatedHours": 5
+      }
+    ],
+    "topics": [
+      "Integer addition",
+      "Integer subtraction",
+      "Integer multiplication and division",
+      "Integer word problems",
+      "Multiplication of fractions",
+      "Division of fractions",
+      "Decimal operations",
+      "Representing rational numbers",
+      "Comparing rational numbers"
+    ],
+    "duration": "8 weeks",
+    "estimatedHours": 10,
+    "level": "beginner",
+    "difficulty": 2,
+    "language": "English",
+    "prerequisites": [
+      "Grade 6 Mathematics foundations",
+      "Arithmetic fluency",
+      "Problem reading skills"
+    ],
+    "learningOutcomes": [
+      "Explain the key CBSE and CISCE ideas in Integers, Fractions, Decimals and Rational Numbers",
+      "Use diagrams, tables, equations or graphs to model problems",
+      "Solve graded practice and board-style questions",
+      "Apply the concepts in real-life situations"
+    ],
+    "certificate": true,
+    "status": "published",
+    "enrollmentCount": 0,
+    "averageRating": 0,
+    "totalRatings": 0,
+    "reviewCount": 0,
+    "maxStudents": 50,
+    "tags": [
+      "Grade 7",
+      "Mathematics",
+      "Integers, Fractions, Decimals and Rational Numbers",
+      "CBSE",
+      "CISCE",
+      "Upper Primary"
+    ],
+    "isActive": true,
+    "createdAt": {
+      "$date": "2026-07-30T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-07-30T00:00:00.000Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "700000000000000000000019"
+    },
+    "title": "Grade 7 Mathematics - Ratio, Percentage and Commercial Arithmetic",
+    "description": "A CBSE and CISCE-aligned Grade 7 Mathematics course covering Ratio, Percentage and Commercial Arithmetic. It follows CBSE/NCERT middle-stage Mathematics and CISCE Upper Primary Mathematics with clear theory, visuals, solved examples and practice.",
+    "createdBy": "696d8e8098d47cbd00770abd",
+    "grade": 7,
+    "subject": "Mathematics",
+    "board": [
+      "CBSE",
+      "ICSE"
+    ],
+    "thumbnail": "",
+    "syllabus": [
+      "Equivalent ratios",
+      "Direct proportion",
+      "Unitary method",
+      "Proportional reasoning",
+      "Percent as hundredths",
+      "Percentage increase and decrease",
+      "Converting fractions decimals and percent",
+      "Profit and loss percent",
+      "Simple interest basics"
+    ],
+    "chapters": [
+      {
+        "name": "Ratio and Proportion",
+        "topics": [
+          "Equivalent ratios",
+          "Direct proportion",
+          "Unitary method",
+          "Proportional reasoning"
+        ],
+        "learningObjectives": [
+          "Understand and solve syllabus-aligned problems on Equivalent ratios",
+          "Understand and solve syllabus-aligned problems on Direct proportion",
+          "Understand and solve syllabus-aligned problems on Unitary method",
+          "Understand and solve syllabus-aligned problems on Proportional reasoning"
+        ],
+        "estimatedHours": 5
+      },
+      {
+        "name": "Percentage and Money",
+        "topics": [
+          "Percent as hundredths",
+          "Percentage increase and decrease",
+          "Converting fractions decimals and percent",
+          "Profit and loss percent",
+          "Simple interest basics"
+        ],
+        "learningObjectives": [
+          "Understand and solve syllabus-aligned problems on Percent as hundredths",
+          "Understand and solve syllabus-aligned problems on Percentage increase and decrease",
+          "Understand and solve syllabus-aligned problems on Converting fractions decimals and percent",
+          "Understand and solve syllabus-aligned problems on Profit and loss percent",
+          "Understand and solve syllabus-aligned problems on Simple interest basics"
+        ],
+        "estimatedHours": 5
+      }
+    ],
+    "topics": [
+      "Equivalent ratios",
+      "Direct proportion",
+      "Unitary method",
+      "Proportional reasoning",
+      "Percent as hundredths",
+      "Percentage increase and decrease",
+      "Converting fractions decimals and percent",
+      "Profit and loss percent",
+      "Simple interest basics"
+    ],
+    "duration": "8 weeks",
+    "estimatedHours": 10,
+    "level": "beginner",
+    "difficulty": 2,
+    "language": "English",
+    "prerequisites": [
+      "Grade 6 Mathematics foundations",
+      "Arithmetic fluency",
+      "Problem reading skills"
+    ],
+    "learningOutcomes": [
+      "Explain the key CBSE and CISCE ideas in Ratio, Percentage and Commercial Arithmetic",
+      "Use diagrams, tables, equations or graphs to model problems",
+      "Solve graded practice and board-style questions",
+      "Apply the concepts in real-life situations"
+    ],
+    "certificate": true,
+    "status": "published",
+    "enrollmentCount": 0,
+    "averageRating": 0,
+    "totalRatings": 0,
+    "reviewCount": 0,
+    "maxStudents": 50,
+    "tags": [
+      "Grade 7",
+      "Mathematics",
+      "Ratio, Percentage and Commercial Arithmetic",
+      "CBSE",
+      "CISCE",
+      "Upper Primary"
+    ],
+    "isActive": true,
+    "createdAt": {
+      "$date": "2026-07-30T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-07-30T00:00:00.000Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "70000000000000000000001d"
+    },
+    "title": "Grade 7 Mathematics - Algebraic Expressions, Exponents and Equations",
+    "description": "A CBSE and CISCE-aligned Grade 7 Mathematics course covering Algebraic Expressions, Exponents and Equations. It follows CBSE/NCERT middle-stage Mathematics and CISCE Upper Primary Mathematics with clear theory, visuals, solved examples and practice.",
+    "createdBy": "696d8e8098d47cbd00770abd",
+    "grade": 7,
+    "subject": "Mathematics",
+    "board": [
+      "CBSE",
+      "ICSE"
+    ],
+    "thumbnail": "",
+    "syllabus": [
+      "Terms and coefficients",
+      "Like and unlike terms",
+      "Adding and subtracting expressions",
+      "Forming expressions",
+      "Equation as balance",
+      "Solving equations",
+      "Forming equations from stories",
+      "Index notation",
+      "Laws of exponents"
+    ],
+    "chapters": [
+      {
+        "name": "Algebraic Expressions",
+        "topics": [
+          "Terms and coefficients",
+          "Like and unlike terms",
+          "Adding and subtracting expressions",
+          "Forming expressions"
+        ],
+        "learningObjectives": [
+          "Understand and solve syllabus-aligned problems on Terms and coefficients",
+          "Understand and solve syllabus-aligned problems on Like and unlike terms",
+          "Understand and solve syllabus-aligned problems on Adding and subtracting expressions",
+          "Understand and solve syllabus-aligned problems on Forming expressions"
+        ],
+        "estimatedHours": 5
+      },
+      {
+        "name": "Equations and Exponents",
+        "topics": [
+          "Equation as balance",
+          "Solving equations",
+          "Forming equations from stories",
+          "Index notation",
+          "Laws of exponents"
+        ],
+        "learningObjectives": [
+          "Understand and solve syllabus-aligned problems on Equation as balance",
+          "Understand and solve syllabus-aligned problems on Solving equations",
+          "Understand and solve syllabus-aligned problems on Forming equations from stories",
+          "Understand and solve syllabus-aligned problems on Index notation",
+          "Understand and solve syllabus-aligned problems on Laws of exponents"
+        ],
+        "estimatedHours": 5
+      }
+    ],
+    "topics": [
+      "Terms and coefficients",
+      "Like and unlike terms",
+      "Adding and subtracting expressions",
+      "Forming expressions",
+      "Equation as balance",
+      "Solving equations",
+      "Forming equations from stories",
+      "Index notation",
+      "Laws of exponents"
+    ],
+    "duration": "8 weeks",
+    "estimatedHours": 10,
+    "level": "beginner",
+    "difficulty": 2,
+    "language": "English",
+    "prerequisites": [
+      "Grade 6 Mathematics foundations",
+      "Arithmetic fluency",
+      "Problem reading skills"
+    ],
+    "learningOutcomes": [
+      "Explain the key CBSE and CISCE ideas in Algebraic Expressions, Exponents and Equations",
+      "Use diagrams, tables, equations or graphs to model problems",
+      "Solve graded practice and board-style questions",
+      "Apply the concepts in real-life situations"
+    ],
+    "certificate": true,
+    "status": "published",
+    "enrollmentCount": 0,
+    "averageRating": 0,
+    "totalRatings": 0,
+    "reviewCount": 0,
+    "maxStudents": 50,
+    "tags": [
+      "Grade 7",
+      "Mathematics",
+      "Algebraic Expressions, Exponents and Equations",
+      "CBSE",
+      "CISCE",
+      "Upper Primary"
+    ],
+    "isActive": true,
+    "createdAt": {
+      "$date": "2026-07-30T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-07-30T00:00:00.000Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "700000000000000000000021"
+    },
+    "title": "Grade 7 Mathematics - Lines, Angles and Triangles",
+    "description": "A CBSE and CISCE-aligned Grade 7 Mathematics course covering Lines, Angles and Triangles. It follows CBSE/NCERT middle-stage Mathematics and CISCE Upper Primary Mathematics with clear theory, visuals, solved examples and practice.",
+    "createdBy": "696d8e8098d47cbd00770abd",
+    "grade": 7,
+    "subject": "Mathematics",
+    "board": [
+      "CBSE",
+      "ICSE"
+    ],
+    "thumbnail": "",
+    "syllabus": [
+      "Pairs of angles",
+      "Parallel lines with transversal",
+      "Angle sum around a point",
+      "Complementary and supplementary angles",
+      "Triangle angle sum",
+      "Congruence introduction",
+      "Inequality in triangles",
+      "Properties of triangles"
+    ],
+    "chapters": [
+      {
+        "name": "Lines and Angles",
+        "topics": [
+          "Pairs of angles",
+          "Parallel lines with transversal",
+          "Angle sum around a point",
+          "Complementary and supplementary angles"
+        ],
+        "learningObjectives": [
+          "Understand and solve syllabus-aligned problems on Pairs of angles",
+          "Understand and solve syllabus-aligned problems on Parallel lines with transversal",
+          "Understand and solve syllabus-aligned problems on Angle sum around a point",
+          "Understand and solve syllabus-aligned problems on Complementary and supplementary angles"
+        ],
+        "estimatedHours": 5
+      },
+      {
+        "name": "Triangles",
+        "topics": [
+          "Triangle angle sum",
+          "Congruence introduction",
+          "Inequality in triangles",
+          "Properties of triangles"
+        ],
+        "learningObjectives": [
+          "Understand and solve syllabus-aligned problems on Triangle angle sum",
+          "Understand and solve syllabus-aligned problems on Congruence introduction",
+          "Understand and solve syllabus-aligned problems on Inequality in triangles",
+          "Understand and solve syllabus-aligned problems on Properties of triangles"
+        ],
+        "estimatedHours": 5
+      }
+    ],
+    "topics": [
+      "Pairs of angles",
+      "Parallel lines with transversal",
+      "Angle sum around a point",
+      "Complementary and supplementary angles",
+      "Triangle angle sum",
+      "Congruence introduction",
+      "Inequality in triangles",
+      "Properties of triangles"
+    ],
+    "duration": "8 weeks",
+    "estimatedHours": 10,
+    "level": "beginner",
+    "difficulty": 2,
+    "language": "English",
+    "prerequisites": [
+      "Grade 6 Mathematics foundations",
+      "Arithmetic fluency",
+      "Problem reading skills"
+    ],
+    "learningOutcomes": [
+      "Explain the key CBSE and CISCE ideas in Lines, Angles and Triangles",
+      "Use diagrams, tables, equations or graphs to model problems",
+      "Solve graded practice and board-style questions",
+      "Apply the concepts in real-life situations"
+    ],
+    "certificate": true,
+    "status": "published",
+    "enrollmentCount": 0,
+    "averageRating": 0,
+    "totalRatings": 0,
+    "reviewCount": 0,
+    "maxStudents": 50,
+    "tags": [
+      "Grade 7",
+      "Mathematics",
+      "Lines, Angles and Triangles",
+      "CBSE",
+      "CISCE",
+      "Upper Primary"
+    ],
+    "isActive": true,
+    "createdAt": {
+      "$date": "2026-07-30T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-07-30T00:00:00.000Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "700000000000000000000025"
+    },
+    "title": "Grade 7 Mathematics - Construction, Symmetry and Visual Geometry",
+    "description": "A CBSE and CISCE-aligned Grade 7 Mathematics course covering Construction, Symmetry and Visual Geometry. It follows CBSE/NCERT middle-stage Mathematics and CISCE Upper Primary Mathematics with clear theory, visuals, solved examples and practice.",
+    "createdBy": "696d8e8098d47cbd00770abd",
+    "grade": 7,
+    "subject": "Mathematics",
+    "board": [
+      "CBSE",
+      "ICSE"
+    ],
+    "thumbnail": "",
+    "syllabus": [
+      "Constructing triangles",
+      "Using ruler and compass",
+      "Checking construction",
+      "Drawing perpendiculars and bisectors",
+      "Line symmetry",
+      "Rotational symmetry",
+      "Patterns and tiling",
+      "Visualising solid shapes"
+    ],
+    "chapters": [
+      {
+        "name": "Practical Geometry",
+        "topics": [
+          "Constructing triangles",
+          "Using ruler and compass",
+          "Checking construction",
+          "Drawing perpendiculars and bisectors"
+        ],
+        "learningObjectives": [
+          "Understand and solve syllabus-aligned problems on Constructing triangles",
+          "Understand and solve syllabus-aligned problems on Using ruler and compass",
+          "Understand and solve syllabus-aligned problems on Checking construction",
+          "Understand and solve syllabus-aligned problems on Drawing perpendiculars and bisectors"
+        ],
+        "estimatedHours": 5
+      },
+      {
+        "name": "Symmetry and Solids",
+        "topics": [
+          "Line symmetry",
+          "Rotational symmetry",
+          "Patterns and tiling",
+          "Visualising solid shapes"
+        ],
+        "learningObjectives": [
+          "Understand and solve syllabus-aligned problems on Line symmetry",
+          "Understand and solve syllabus-aligned problems on Rotational symmetry",
+          "Understand and solve syllabus-aligned problems on Patterns and tiling",
+          "Understand and solve syllabus-aligned problems on Visualising solid shapes"
+        ],
+        "estimatedHours": 5
+      }
+    ],
+    "topics": [
+      "Constructing triangles",
+      "Using ruler and compass",
+      "Checking construction",
+      "Drawing perpendiculars and bisectors",
+      "Line symmetry",
+      "Rotational symmetry",
+      "Patterns and tiling",
+      "Visualising solid shapes"
+    ],
+    "duration": "8 weeks",
+    "estimatedHours": 10,
+    "level": "beginner",
+    "difficulty": 2,
+    "language": "English",
+    "prerequisites": [
+      "Grade 6 Mathematics foundations",
+      "Arithmetic fluency",
+      "Problem reading skills"
+    ],
+    "learningOutcomes": [
+      "Explain the key CBSE and CISCE ideas in Construction, Symmetry and Visual Geometry",
+      "Use diagrams, tables, equations or graphs to model problems",
+      "Solve graded practice and board-style questions",
+      "Apply the concepts in real-life situations"
+    ],
+    "certificate": true,
+    "status": "published",
+    "enrollmentCount": 0,
+    "averageRating": 0,
+    "totalRatings": 0,
+    "reviewCount": 0,
+    "maxStudents": 50,
+    "tags": [
+      "Grade 7",
+      "Mathematics",
+      "Construction, Symmetry and Visual Geometry",
+      "CBSE",
+      "CISCE",
+      "Upper Primary"
+    ],
+    "isActive": true,
+    "createdAt": {
+      "$date": "2026-07-30T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-07-30T00:00:00.000Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "730000000000000000002329"
+    },
+    "title": "Grade 7 Mathematics - Mensuration, Data Handling and Chance",
+    "description": "A CBSE and CISCE-aligned Grade 7 Mathematics course covering Mensuration, Data Handling and Chance. It follows CBSE/NCERT middle-stage Mathematics and CISCE Upper Primary Mathematics with clear theory, visuals, solved examples and practice.",
+    "createdBy": "696d8e8098d47cbd00770abd",
+    "grade": 7,
+    "subject": "Mathematics",
+    "board": [
+      "CBSE",
+      "ICSE"
+    ],
+    "thumbnail": "",
+    "syllabus": [
+      "Area of parallelogram",
+      "Area of triangle",
+      "Perimeter in real layouts",
+      "Unit conversion",
+      "Mean median and mode",
+      "Bar graphs",
+      "Chance and probability basics",
+      "Collecting and interpreting data"
+    ],
+    "chapters": [
+      {
+        "name": "Mensuration",
+        "topics": [
+          "Area of parallelogram",
+          "Area of triangle",
+          "Perimeter in real layouts",
+          "Unit conversion"
+        ],
+        "learningObjectives": [
+          "Understand and solve syllabus-aligned problems on Area of parallelogram",
+          "Understand and solve syllabus-aligned problems on Area of triangle",
+          "Understand and solve syllabus-aligned problems on Perimeter in real layouts",
+          "Understand and solve syllabus-aligned problems on Unit conversion"
+        ],
+        "estimatedHours": 5
+      },
+      {
+        "name": "Data and Chance",
+        "topics": [
+          "Mean median and mode",
+          "Bar graphs",
+          "Chance and probability basics",
+          "Collecting and interpreting data"
+        ],
+        "learningObjectives": [
+          "Understand and solve syllabus-aligned problems on Mean median and mode",
+          "Understand and solve syllabus-aligned problems on Bar graphs",
+          "Understand and solve syllabus-aligned problems on Chance and probability basics",
+          "Understand and solve syllabus-aligned problems on Collecting and interpreting data"
+        ],
+        "estimatedHours": 5
+      }
+    ],
+    "topics": [
+      "Area of parallelogram",
+      "Area of triangle",
+      "Perimeter in real layouts",
+      "Unit conversion",
+      "Mean median and mode",
+      "Bar graphs",
+      "Chance and probability basics",
+      "Collecting and interpreting data"
+    ],
+    "duration": "8 weeks",
+    "estimatedHours": 10,
+    "level": "beginner",
+    "difficulty": 2,
+    "language": "English",
+    "prerequisites": [
+      "Grade 6 Mathematics foundations",
+      "Arithmetic fluency",
+      "Problem reading skills"
+    ],
+    "learningOutcomes": [
+      "Explain the key CBSE and CISCE ideas in Mensuration, Data Handling and Chance",
+      "Use diagrams, tables, equations or graphs to model problems",
+      "Solve graded practice and board-style questions",
+      "Apply the concepts in real-life situations"
+    ],
+    "certificate": true,
+    "status": "published",
+    "enrollmentCount": 0,
+    "averageRating": 0,
+    "totalRatings": 0,
+    "reviewCount": 0,
+    "maxStudents": 50,
+    "tags": [
+      "Grade 7",
+      "Mathematics",
+      "Mensuration, Data Handling and Chance",
+      "CBSE",
+      "CISCE",
+      "Upper Primary"
+    ],
+    "isActive": true,
+    "createdAt": {
+      "$date": "2026-07-30T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-07-30T00:00:00.000Z"
+    },
+    "__v": 0
+  }
+]

@@ -1,0 +1,1490 @@
+[
+  {
+    "_id": {
+      "$oid": "700000000000000000000001"
+    },
+    "title": "Grade 6 Mathematics - Number System and Large Numbers",
+    "description": "Builds strong number sense up to 8 digits, including place value, Indian and International systems, comparison, approximation, operations and word problems with unit conversions. Aligned with the supplied Class 6 Mathematics syllabus and suitable for CBSE and CISCE upper-primary learning.",
+    "createdBy": "696d8e8098d47cbd00770abd",
+    "grade": 6,
+    "subject": "Mathematics",
+    "board": [
+      "CBSE",
+      "ICSE"
+    ],
+    "thumbnail": "",
+    "syllabus": [
+      "Numberness up to 5 digits",
+      "Extension to large numbers up to 8 digits",
+      "Indian and International place value systems",
+      "Comparing and ordering large numbers",
+      "Approximation and rounding of large numbers",
+      "Addition, subtraction, multiplication and division of large numbers",
+      "Word problems on large number operations",
+      "Conversions of length and mass from larger to smaller units",
+      "Estimation of outcomes",
+      "Checking reasonableness of answers"
+    ],
+    "chapters": [
+      {
+        "name": "Numbers up to 8 Digits",
+        "topics": [
+          "Numberness up to 5 digits",
+          "Extension to large numbers up to 8 digits",
+          "Indian and International place value systems",
+          "Comparing and ordering large numbers",
+          "Approximation and rounding of large numbers"
+        ],
+        "learningObjectives": [
+          "Understand and solve Class 6 syllabus-aligned problems on Numberness up to 5 digits",
+          "Understand and solve Class 6 syllabus-aligned problems on Extension to large numbers up to 8 digits",
+          "Understand and solve Class 6 syllabus-aligned problems on Indian and International place value systems",
+          "Understand and solve Class 6 syllabus-aligned problems on Comparing and ordering large numbers",
+          "Understand and solve Class 6 syllabus-aligned problems on Approximation and rounding of large numbers"
+        ],
+        "estimatedHours": 6
+      },
+      {
+        "name": "Operations and Estimation with Large Numbers",
+        "topics": [
+          "Addition, subtraction, multiplication and division of large numbers",
+          "Word problems on large number operations",
+          "Conversions of length and mass from larger to smaller units",
+          "Estimation of outcomes",
+          "Checking reasonableness of answers"
+        ],
+        "learningObjectives": [
+          "Understand and solve Class 6 syllabus-aligned problems on Addition, subtraction, multiplication and division of large numbers",
+          "Understand and solve Class 6 syllabus-aligned problems on Word problems on large number operations",
+          "Understand and solve Class 6 syllabus-aligned problems on Conversions of length and mass from larger to smaller units",
+          "Understand and solve Class 6 syllabus-aligned problems on Estimation of outcomes",
+          "Understand and solve Class 6 syllabus-aligned problems on Checking reasonableness of answers"
+        ],
+        "estimatedHours": 6
+      }
+    ],
+    "topics": [
+      "Numberness up to 5 digits",
+      "Extension to large numbers up to 8 digits",
+      "Indian and International place value systems",
+      "Comparing and ordering large numbers",
+      "Approximation and rounding of large numbers",
+      "Addition, subtraction, multiplication and division of large numbers",
+      "Word problems on large number operations",
+      "Conversions of length and mass from larger to smaller units",
+      "Estimation of outcomes",
+      "Checking reasonableness of answers"
+    ],
+    "duration": "5 weeks",
+    "estimatedHours": 12,
+    "level": "beginner",
+    "difficulty": 2,
+    "language": "English",
+    "prerequisites": [
+      "Class 5 arithmetic basics",
+      "Reading simple word problems",
+      "Basic shape and measurement awareness"
+    ],
+    "learningOutcomes": [
+      "Explain the key ideas of Number System and Large Numbers in simple mathematical language",
+      "Use diagrams, tables, number lines or models to understand the concept",
+      "Solve school-level and daily-life word problems accurately",
+      "Check answers using estimation, reverse operations or visual reasoning"
+    ],
+    "certificate": true,
+    "status": "published",
+    "enrollmentCount": 0,
+    "averageRating": 0,
+    "totalRatings": 0,
+    "reviewCount": 0,
+    "maxStudents": 50,
+    "tags": [
+      "Grade 6",
+      "Mathematics",
+      "Number System",
+      "Large Numbers",
+      "Place Value",
+      "Estimation",
+      "CBSE",
+      "CISCE",
+      "Upper Primary"
+    ],
+    "isActive": true,
+    "createdAt": {
+      "$date": "2026-07-31T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-07-31T00:00:00.000Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "700000000000000000000005"
+    },
+    "title": "Grade 6 Mathematics - Natural Numbers, Whole Numbers and Properties",
+    "description": "Covers natural numbers, whole numbers, number line, operation properties and pattern-based rules for numerical operations. Aligned with the supplied Class 6 Mathematics syllabus and suitable for CBSE and CISCE upper-primary learning.",
+    "createdBy": "696d8e8098d47cbd00770abd",
+    "grade": 6,
+    "subject": "Mathematics",
+    "board": [
+      "CBSE",
+      "ICSE"
+    ],
+    "thumbnail": "",
+    "syllabus": [
+      "Natural numbers",
+      "Whole numbers",
+      "Zero and the need for whole numbers",
+      "Representation on number line",
+      "Ordering numbers on number line",
+      "Commutative property",
+      "Associative property",
+      "Distributive property",
+      "Additive identity",
+      "Multiplicative identity",
+      "Seeing patterns and formulating rules"
+    ],
+    "chapters": [
+      {
+        "name": "Natural Numbers, Whole Numbers and Number Line",
+        "topics": [
+          "Natural numbers",
+          "Whole numbers",
+          "Zero and the need for whole numbers",
+          "Representation on number line",
+          "Ordering numbers on number line"
+        ],
+        "learningObjectives": [
+          "Understand and solve Class 6 syllabus-aligned problems on Natural numbers",
+          "Understand and solve Class 6 syllabus-aligned problems on Whole numbers",
+          "Understand and solve Class 6 syllabus-aligned problems on Zero and the need for whole numbers",
+          "Understand and solve Class 6 syllabus-aligned problems on Representation on number line",
+          "Understand and solve Class 6 syllabus-aligned problems on Ordering numbers on number line"
+        ],
+        "estimatedHours": 5
+      },
+      {
+        "name": "Properties of Numbers and Operation Patterns",
+        "topics": [
+          "Commutative property",
+          "Associative property",
+          "Distributive property",
+          "Additive identity",
+          "Multiplicative identity",
+          "Seeing patterns and formulating rules"
+        ],
+        "learningObjectives": [
+          "Understand and solve Class 6 syllabus-aligned problems on Commutative property",
+          "Understand and solve Class 6 syllabus-aligned problems on Associative property",
+          "Understand and solve Class 6 syllabus-aligned problems on Distributive property",
+          "Understand and solve Class 6 syllabus-aligned problems on Additive identity",
+          "Understand and solve Class 6 syllabus-aligned problems on Multiplicative identity",
+          "Understand and solve Class 6 syllabus-aligned problems on Seeing patterns and formulating rules"
+        ],
+        "estimatedHours": 5
+      }
+    ],
+    "topics": [
+      "Natural numbers",
+      "Whole numbers",
+      "Zero and the need for whole numbers",
+      "Representation on number line",
+      "Ordering numbers on number line",
+      "Commutative property",
+      "Associative property",
+      "Distributive property",
+      "Additive identity",
+      "Multiplicative identity",
+      "Seeing patterns and formulating rules"
+    ],
+    "duration": "4 weeks",
+    "estimatedHours": 10,
+    "level": "beginner",
+    "difficulty": 2,
+    "language": "English",
+    "prerequisites": [
+      "Class 5 arithmetic basics",
+      "Reading simple word problems",
+      "Basic shape and measurement awareness"
+    ],
+    "learningOutcomes": [
+      "Explain the key ideas of Natural Numbers, Whole Numbers and Properties in simple mathematical language",
+      "Use diagrams, tables, number lines or models to understand the concept",
+      "Solve school-level and daily-life word problems accurately",
+      "Check answers using estimation, reverse operations or visual reasoning"
+    ],
+    "certificate": true,
+    "status": "published",
+    "enrollmentCount": 0,
+    "averageRating": 0,
+    "totalRatings": 0,
+    "reviewCount": 0,
+    "maxStudents": 50,
+    "tags": [
+      "Grade 6",
+      "Mathematics",
+      "Whole Numbers",
+      "Number Properties",
+      "Number Line",
+      "Patterns",
+      "CBSE",
+      "CISCE",
+      "Upper Primary"
+    ],
+    "isActive": true,
+    "createdAt": {
+      "$date": "2026-07-31T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-07-31T00:00:00.000Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "700000000000000000000009"
+    },
+    "title": "Grade 6 Mathematics - Integers and Sets",
+    "description": "Introduces negative numbers and integers through daily life contexts, then develops the idea of sets, representation, types and cardinality. Aligned with the supplied Class 6 Mathematics syllabus and suitable for CBSE and CISCE upper-primary learning.",
+    "createdBy": "696d8e8098d47cbd00770abd",
+    "grade": 6,
+    "subject": "Mathematics",
+    "board": [
+      "CBSE",
+      "ICSE"
+    ],
+    "thumbnail": "",
+    "syllabus": [
+      "Need for negative numbers",
+      "Negative numbers in daily life",
+      "Integers on the number line",
+      "Ordering and comparing integers",
+      "Addition and subtraction of integers on number line",
+      "Idea of sets",
+      "Representation of sets",
+      "Finite and infinite sets",
+      "Empty set",
+      "Cardinality of a set"
+    ],
+    "chapters": [
+      {
+        "name": "Negative Numbers and Integers",
+        "topics": [
+          "Need for negative numbers",
+          "Negative numbers in daily life",
+          "Integers on the number line",
+          "Ordering and comparing integers",
+          "Addition and subtraction of integers on number line"
+        ],
+        "learningObjectives": [
+          "Understand and solve Class 6 syllabus-aligned problems on Need for negative numbers",
+          "Understand and solve Class 6 syllabus-aligned problems on Negative numbers in daily life",
+          "Understand and solve Class 6 syllabus-aligned problems on Integers on the number line",
+          "Understand and solve Class 6 syllabus-aligned problems on Ordering and comparing integers",
+          "Understand and solve Class 6 syllabus-aligned problems on Addition and subtraction of integers on number line"
+        ],
+        "estimatedHours": 6
+      },
+      {
+        "name": "Sets and Cardinality",
+        "topics": [
+          "Idea of sets",
+          "Representation of sets",
+          "Finite and infinite sets",
+          "Empty set",
+          "Cardinality of a set"
+        ],
+        "learningObjectives": [
+          "Understand and solve Class 6 syllabus-aligned problems on Idea of sets",
+          "Understand and solve Class 6 syllabus-aligned problems on Representation of sets",
+          "Understand and solve Class 6 syllabus-aligned problems on Finite and infinite sets",
+          "Understand and solve Class 6 syllabus-aligned problems on Empty set",
+          "Understand and solve Class 6 syllabus-aligned problems on Cardinality of a set"
+        ],
+        "estimatedHours": 6
+      }
+    ],
+    "topics": [
+      "Need for negative numbers",
+      "Negative numbers in daily life",
+      "Integers on the number line",
+      "Ordering and comparing integers",
+      "Addition and subtraction of integers on number line",
+      "Idea of sets",
+      "Representation of sets",
+      "Finite and infinite sets",
+      "Empty set",
+      "Cardinality of a set"
+    ],
+    "duration": "5 weeks",
+    "estimatedHours": 12,
+    "level": "beginner",
+    "difficulty": 2,
+    "language": "English",
+    "prerequisites": [
+      "Class 5 arithmetic basics",
+      "Reading simple word problems",
+      "Basic shape and measurement awareness"
+    ],
+    "learningOutcomes": [
+      "Explain the key ideas of Integers and Sets in simple mathematical language",
+      "Use diagrams, tables, number lines or models to understand the concept",
+      "Solve school-level and daily-life word problems accurately",
+      "Check answers using estimation, reverse operations or visual reasoning"
+    ],
+    "certificate": true,
+    "status": "published",
+    "enrollmentCount": 0,
+    "averageRating": 0,
+    "totalRatings": 0,
+    "reviewCount": 0,
+    "maxStudents": 50,
+    "tags": [
+      "Grade 6",
+      "Mathematics",
+      "Integers",
+      "Negative Numbers",
+      "Sets",
+      "Cardinality",
+      "CBSE",
+      "CISCE",
+      "Upper Primary"
+    ],
+    "isActive": true,
+    "createdAt": {
+      "$date": "2026-07-31T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-07-31T00:00:00.000Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "70000000000000000000000d"
+    },
+    "title": "Grade 6 Mathematics - Fractions and Decimals",
+    "description": "Develops fractions as parts, division and points on a number line, then connects decimal fractions with money, length, mass and temperature word problems. Aligned with the supplied Class 6 Mathematics syllabus and suitable for CBSE and CISCE upper-primary learning.",
+    "createdBy": "696d8e8098d47cbd00770abd",
+    "grade": 6,
+    "subject": "Mathematics",
+    "board": [
+      "CBSE",
+      "ICSE"
+    ],
+    "thumbnail": "",
+    "syllabus": [
+      "Revision of fractions",
+      "Fraction as part of whole",
+      "Fractions on number line",
+      "Fraction as division",
+      "Proper, improper and mixed fractions",
+      "Equivalent fractions",
+      "Comparison of fractions",
+      "Addition and subtraction of fractions",
+      "Moving towards abstraction in fractions",
+      "Simple word problems on fractions",
+      "Review of decimal fractions",
+      "Decimal place value",
+      "Interconversion of fractions and decimals",
+      "Addition and subtraction of decimals",
+      "Word problems on money, mass, length and temperature"
+    ],
+    "chapters": [
+      {
+        "name": "Fractions as Parts, Division and Number Line",
+        "topics": [
+          "Revision of fractions",
+          "Fraction as part of whole",
+          "Fractions on number line",
+          "Fraction as division",
+          "Proper, improper and mixed fractions"
+        ],
+        "learningObjectives": [
+          "Understand and solve Class 6 syllabus-aligned problems on Revision of fractions",
+          "Understand and solve Class 6 syllabus-aligned problems on Fraction as part of whole",
+          "Understand and solve Class 6 syllabus-aligned problems on Fractions on number line",
+          "Understand and solve Class 6 syllabus-aligned problems on Fraction as division",
+          "Understand and solve Class 6 syllabus-aligned problems on Proper, improper and mixed fractions"
+        ],
+        "estimatedHours": 5
+      },
+      {
+        "name": "Equivalent Fractions, Comparison and Operations",
+        "topics": [
+          "Equivalent fractions",
+          "Comparison of fractions",
+          "Addition and subtraction of fractions",
+          "Moving towards abstraction in fractions",
+          "Simple word problems on fractions"
+        ],
+        "learningObjectives": [
+          "Understand and solve Class 6 syllabus-aligned problems on Equivalent fractions",
+          "Understand and solve Class 6 syllabus-aligned problems on Comparison of fractions",
+          "Understand and solve Class 6 syllabus-aligned problems on Addition and subtraction of fractions",
+          "Understand and solve Class 6 syllabus-aligned problems on Moving towards abstraction in fractions",
+          "Understand and solve Class 6 syllabus-aligned problems on Simple word problems on fractions"
+        ],
+        "estimatedHours": 5
+      },
+      {
+        "name": "Decimal Fractions and Applications",
+        "topics": [
+          "Review of decimal fractions",
+          "Decimal place value",
+          "Interconversion of fractions and decimals",
+          "Addition and subtraction of decimals",
+          "Word problems on money, mass, length and temperature"
+        ],
+        "learningObjectives": [
+          "Understand and solve Class 6 syllabus-aligned problems on Review of decimal fractions",
+          "Understand and solve Class 6 syllabus-aligned problems on Decimal place value",
+          "Understand and solve Class 6 syllabus-aligned problems on Interconversion of fractions and decimals",
+          "Understand and solve Class 6 syllabus-aligned problems on Addition and subtraction of decimals",
+          "Understand and solve Class 6 syllabus-aligned problems on Word problems on money, mass, length and temperature"
+        ],
+        "estimatedHours": 5
+      }
+    ],
+    "topics": [
+      "Revision of fractions",
+      "Fraction as part of whole",
+      "Fractions on number line",
+      "Fraction as division",
+      "Proper, improper and mixed fractions",
+      "Equivalent fractions",
+      "Comparison of fractions",
+      "Addition and subtraction of fractions",
+      "Moving towards abstraction in fractions",
+      "Simple word problems on fractions",
+      "Review of decimal fractions",
+      "Decimal place value",
+      "Interconversion of fractions and decimals",
+      "Addition and subtraction of decimals",
+      "Word problems on money, mass, length and temperature"
+    ],
+    "duration": "6 weeks",
+    "estimatedHours": 14,
+    "level": "beginner",
+    "difficulty": 2,
+    "language": "English",
+    "prerequisites": [
+      "Class 5 arithmetic basics",
+      "Reading simple word problems",
+      "Basic shape and measurement awareness"
+    ],
+    "learningOutcomes": [
+      "Explain the key ideas of Fractions and Decimals in simple mathematical language",
+      "Use diagrams, tables, number lines or models to understand the concept",
+      "Solve school-level and daily-life word problems accurately",
+      "Check answers using estimation, reverse operations or visual reasoning"
+    ],
+    "certificate": true,
+    "status": "published",
+    "enrollmentCount": 0,
+    "averageRating": 0,
+    "totalRatings": 0,
+    "reviewCount": 0,
+    "maxStudents": 50,
+    "tags": [
+      "Grade 6",
+      "Mathematics",
+      "Fractions",
+      "Decimals",
+      "Decimal Place Value",
+      "Money",
+      "CBSE",
+      "CISCE",
+      "Upper Primary"
+    ],
+    "isActive": true,
+    "createdAt": {
+      "$date": "2026-07-31T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-07-31T00:00:00.000Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "700000000000000000000011"
+    },
+    "title": "Grade 6 Mathematics - Playing with Numbers",
+    "description": "Explores brackets, factors, multiples, divisibility rules, prime factorisation, HCF and LCM through patterns and meaningful child-friendly contexts. Aligned with the supplied Class 6 Mathematics syllabus and suitable for CBSE and CISCE upper-primary learning.",
+    "createdBy": "696d8e8098d47cbd00770abd",
+    "grade": 6,
+    "subject": "Mathematics",
+    "board": [
+      "CBSE",
+      "ICSE"
+    ],
+    "thumbnail": "",
+    "syllabus": [
+      "Simplification of brackets",
+      "Multiples and factors",
+      "Divisibility rules of 2, 3, 4, 5, 6, 8, 9, 10 and 11",
+      "Even and odd numbers",
+      "Pattern reasoning for divisibility",
+      "Prime and composite numbers",
+      "Co-prime numbers",
+      "Prime factorisation",
+      "HCF by prime factorisation and division method",
+      "LCM by prime factorisation and division method",
+      "LCM × HCF property for two numbers"
+    ],
+    "chapters": [
+      {
+        "name": "Brackets, Factors, Multiples and Divisibility",
+        "topics": [
+          "Simplification of brackets",
+          "Multiples and factors",
+          "Divisibility rules of 2, 3, 4, 5, 6, 8, 9, 10 and 11",
+          "Even and odd numbers",
+          "Pattern reasoning for divisibility"
+        ],
+        "learningObjectives": [
+          "Understand and solve Class 6 syllabus-aligned problems on Simplification of brackets",
+          "Understand and solve Class 6 syllabus-aligned problems on Multiples and factors",
+          "Understand and solve Class 6 syllabus-aligned problems on Divisibility rules of 2, 3, 4, 5, 6, 8, 9, 10 and 11",
+          "Understand and solve Class 6 syllabus-aligned problems on Even and odd numbers",
+          "Understand and solve Class 6 syllabus-aligned problems on Pattern reasoning for divisibility"
+        ],
+        "estimatedHours": 6
+      },
+      {
+        "name": "Prime Factorisation, HCF and LCM",
+        "topics": [
+          "Prime and composite numbers",
+          "Co-prime numbers",
+          "Prime factorisation",
+          "HCF by prime factorisation and division method",
+          "LCM by prime factorisation and division method",
+          "LCM × HCF property for two numbers"
+        ],
+        "learningObjectives": [
+          "Understand and solve Class 6 syllabus-aligned problems on Prime and composite numbers",
+          "Understand and solve Class 6 syllabus-aligned problems on Co-prime numbers",
+          "Understand and solve Class 6 syllabus-aligned problems on Prime factorisation",
+          "Understand and solve Class 6 syllabus-aligned problems on HCF by prime factorisation and division method",
+          "Understand and solve Class 6 syllabus-aligned problems on LCM by prime factorisation and division method",
+          "Understand and solve Class 6 syllabus-aligned problems on LCM × HCF property for two numbers"
+        ],
+        "estimatedHours": 6
+      }
+    ],
+    "topics": [
+      "Simplification of brackets",
+      "Multiples and factors",
+      "Divisibility rules of 2, 3, 4, 5, 6, 8, 9, 10 and 11",
+      "Even and odd numbers",
+      "Pattern reasoning for divisibility",
+      "Prime and composite numbers",
+      "Co-prime numbers",
+      "Prime factorisation",
+      "HCF by prime factorisation and division method",
+      "LCM by prime factorisation and division method",
+      "LCM × HCF property for two numbers"
+    ],
+    "duration": "5 weeks",
+    "estimatedHours": 12,
+    "level": "beginner",
+    "difficulty": 2,
+    "language": "English",
+    "prerequisites": [
+      "Class 5 arithmetic basics",
+      "Reading simple word problems",
+      "Basic shape and measurement awareness"
+    ],
+    "learningOutcomes": [
+      "Explain the key ideas of Playing with Numbers in simple mathematical language",
+      "Use diagrams, tables, number lines or models to understand the concept",
+      "Solve school-level and daily-life word problems accurately",
+      "Check answers using estimation, reverse operations or visual reasoning"
+    ],
+    "certificate": true,
+    "status": "published",
+    "enrollmentCount": 0,
+    "averageRating": 0,
+    "totalRatings": 0,
+    "reviewCount": 0,
+    "maxStudents": 50,
+    "tags": [
+      "Grade 6",
+      "Mathematics",
+      "Factors",
+      "Multiples",
+      "Divisibility",
+      "HCF",
+      "LCM",
+      "CBSE",
+      "CISCE",
+      "Upper Primary"
+    ],
+    "isActive": true,
+    "createdAt": {
+      "$date": "2026-07-31T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-07-31T00:00:00.000Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "730000000000000000002328"
+    },
+    "title": "Grade 6 Mathematics - Ratio, Proportion, Percent and Speed",
+    "description": "Builds proportional reasoning through ratio, proportion, unitary method, percent and daily-life speed, time and distance problems. Aligned with the supplied Class 6 Mathematics syllabus and suitable for CBSE and CISCE upper-primary learning.",
+    "createdBy": "696d8e8098d47cbd00770abd",
+    "grade": 6,
+    "subject": "Mathematics",
+    "board": [
+      "CBSE",
+      "ICSE"
+    ],
+    "thumbnail": "",
+    "syllabus": [
+      "Difference between ratio and fraction",
+      "Concept of ratio",
+      "Equivalent ratios",
+      "Proportion as equality of two ratios",
+      "Word problems on ratio and proportion",
+      "Idea of percent as fraction with denominator 100",
+      "Converting simple fractions to percent",
+      "Direct variation in unitary method",
+      "Daily-life percent problems",
+      "Checking proportional answers",
+      "Idea of speed",
+      "Relation between speed, time and distance",
+      "Simple daily-life travel problems",
+      "Choosing correct units",
+      "Estimating travel answers"
+    ],
+    "chapters": [
+      {
+        "name": "Ratio and Proportion",
+        "topics": [
+          "Difference between ratio and fraction",
+          "Concept of ratio",
+          "Equivalent ratios",
+          "Proportion as equality of two ratios",
+          "Word problems on ratio and proportion"
+        ],
+        "learningObjectives": [
+          "Understand and solve Class 6 syllabus-aligned problems on Difference between ratio and fraction",
+          "Understand and solve Class 6 syllabus-aligned problems on Concept of ratio",
+          "Understand and solve Class 6 syllabus-aligned problems on Equivalent ratios",
+          "Understand and solve Class 6 syllabus-aligned problems on Proportion as equality of two ratios",
+          "Understand and solve Class 6 syllabus-aligned problems on Word problems on ratio and proportion"
+        ],
+        "estimatedHours": 5
+      },
+      {
+        "name": "Percent and Unitary Method",
+        "topics": [
+          "Idea of percent as fraction with denominator 100",
+          "Converting simple fractions to percent",
+          "Direct variation in unitary method",
+          "Daily-life percent problems",
+          "Checking proportional answers"
+        ],
+        "learningObjectives": [
+          "Understand and solve Class 6 syllabus-aligned problems on Idea of percent as fraction with denominator 100",
+          "Understand and solve Class 6 syllabus-aligned problems on Converting simple fractions to percent",
+          "Understand and solve Class 6 syllabus-aligned problems on Direct variation in unitary method",
+          "Understand and solve Class 6 syllabus-aligned problems on Daily-life percent problems",
+          "Understand and solve Class 6 syllabus-aligned problems on Checking proportional answers"
+        ],
+        "estimatedHours": 5
+      },
+      {
+        "name": "Speed, Time and Distance",
+        "topics": [
+          "Idea of speed",
+          "Relation between speed, time and distance",
+          "Simple daily-life travel problems",
+          "Choosing correct units",
+          "Estimating travel answers"
+        ],
+        "learningObjectives": [
+          "Understand and solve Class 6 syllabus-aligned problems on Idea of speed",
+          "Understand and solve Class 6 syllabus-aligned problems on Relation between speed, time and distance",
+          "Understand and solve Class 6 syllabus-aligned problems on Simple daily-life travel problems",
+          "Understand and solve Class 6 syllabus-aligned problems on Choosing correct units",
+          "Understand and solve Class 6 syllabus-aligned problems on Estimating travel answers"
+        ],
+        "estimatedHours": 5
+      }
+    ],
+    "topics": [
+      "Difference between ratio and fraction",
+      "Concept of ratio",
+      "Equivalent ratios",
+      "Proportion as equality of two ratios",
+      "Word problems on ratio and proportion",
+      "Idea of percent as fraction with denominator 100",
+      "Converting simple fractions to percent",
+      "Direct variation in unitary method",
+      "Daily-life percent problems",
+      "Checking proportional answers",
+      "Idea of speed",
+      "Relation between speed, time and distance",
+      "Simple daily-life travel problems",
+      "Choosing correct units",
+      "Estimating travel answers"
+    ],
+    "duration": "6 weeks",
+    "estimatedHours": 13,
+    "level": "beginner",
+    "difficulty": 2,
+    "language": "English",
+    "prerequisites": [
+      "Class 5 arithmetic basics",
+      "Reading simple word problems",
+      "Basic shape and measurement awareness"
+    ],
+    "learningOutcomes": [
+      "Explain the key ideas of Ratio, Proportion, Percent and Speed in simple mathematical language",
+      "Use diagrams, tables, number lines or models to understand the concept",
+      "Solve school-level and daily-life word problems accurately",
+      "Check answers using estimation, reverse operations or visual reasoning"
+    ],
+    "certificate": true,
+    "status": "published",
+    "enrollmentCount": 0,
+    "averageRating": 0,
+    "totalRatings": 0,
+    "reviewCount": 0,
+    "maxStudents": 50,
+    "tags": [
+      "Grade 6",
+      "Mathematics",
+      "Ratio",
+      "Proportion",
+      "Percent",
+      "Unitary Method",
+      "Speed",
+      "CBSE",
+      "CISCE",
+      "Upper Primary"
+    ],
+    "isActive": true,
+    "createdAt": {
+      "$date": "2026-07-31T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-07-31T00:00:00.000Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "760000000000000000000001"
+    },
+    "title": "Grade 6 Mathematics - Algebra and Patterns",
+    "description": "Introduces variables, constants, unknowns, algebraic expressions and simple linear equations through patterns, stories and generalisations. Aligned with the supplied Class 6 Mathematics syllabus and suitable for CBSE and CISCE upper-primary learning.",
+    "createdBy": "696d8e8098d47cbd00770abd",
+    "grade": 6,
+    "subject": "Mathematics",
+    "board": [
+      "CBSE",
+      "ICSE"
+    ],
+    "thumbnail": "",
+    "syllabus": [
+      "Number and shape patterns",
+      "Constants and variables",
+      "Unknowns in simple contexts",
+      "Generalising patterns",
+      "Sum of odd numbers pattern",
+      "Literal numbers",
+      "Terms and expressions",
+      "Factors and coefficients",
+      "Like and unlike terms",
+      "Polynomials and degree at an introductory level",
+      "Evaluation by substitution",
+      "Meaning of equation",
+      "Linear equation in one variable",
+      "Solving simple one-step equations",
+      "Checking solutions",
+      "Framing equations from word problems"
+    ],
+    "chapters": [
+      {
+        "name": "Patterns, Constants, Variables and Unknowns",
+        "topics": [
+          "Number and shape patterns",
+          "Constants and variables",
+          "Unknowns in simple contexts",
+          "Generalising patterns",
+          "Sum of odd numbers pattern"
+        ],
+        "learningObjectives": [
+          "Understand and solve Class 6 syllabus-aligned problems on Number and shape patterns",
+          "Understand and solve Class 6 syllabus-aligned problems on Constants and variables",
+          "Understand and solve Class 6 syllabus-aligned problems on Unknowns in simple contexts",
+          "Understand and solve Class 6 syllabus-aligned problems on Generalising patterns",
+          "Understand and solve Class 6 syllabus-aligned problems on Sum of odd numbers pattern"
+        ],
+        "estimatedHours": 4
+      },
+      {
+        "name": "Expressions, Terms and Evaluation",
+        "topics": [
+          "Literal numbers",
+          "Terms and expressions",
+          "Factors and coefficients",
+          "Like and unlike terms",
+          "Polynomials and degree at an introductory level",
+          "Evaluation by substitution"
+        ],
+        "learningObjectives": [
+          "Understand and solve Class 6 syllabus-aligned problems on Literal numbers",
+          "Understand and solve Class 6 syllabus-aligned problems on Terms and expressions",
+          "Understand and solve Class 6 syllabus-aligned problems on Factors and coefficients",
+          "Understand and solve Class 6 syllabus-aligned problems on Like and unlike terms",
+          "Understand and solve Class 6 syllabus-aligned problems on Polynomials and degree at an introductory level",
+          "Understand and solve Class 6 syllabus-aligned problems on Evaluation by substitution"
+        ],
+        "estimatedHours": 4
+      },
+      {
+        "name": "Linear Equations in One Variable",
+        "topics": [
+          "Meaning of equation",
+          "Linear equation in one variable",
+          "Solving simple one-step equations",
+          "Checking solutions",
+          "Framing equations from word problems"
+        ],
+        "learningObjectives": [
+          "Understand and solve Class 6 syllabus-aligned problems on Meaning of equation",
+          "Understand and solve Class 6 syllabus-aligned problems on Linear equation in one variable",
+          "Understand and solve Class 6 syllabus-aligned problems on Solving simple one-step equations",
+          "Understand and solve Class 6 syllabus-aligned problems on Checking solutions",
+          "Understand and solve Class 6 syllabus-aligned problems on Framing equations from word problems"
+        ],
+        "estimatedHours": 4
+      }
+    ],
+    "topics": [
+      "Number and shape patterns",
+      "Constants and variables",
+      "Unknowns in simple contexts",
+      "Generalising patterns",
+      "Sum of odd numbers pattern",
+      "Literal numbers",
+      "Terms and expressions",
+      "Factors and coefficients",
+      "Like and unlike terms",
+      "Polynomials and degree at an introductory level",
+      "Evaluation by substitution",
+      "Meaning of equation",
+      "Linear equation in one variable",
+      "Solving simple one-step equations",
+      "Checking solutions",
+      "Framing equations from word problems"
+    ],
+    "duration": "5 weeks",
+    "estimatedHours": 12,
+    "level": "beginner",
+    "difficulty": 2,
+    "language": "English",
+    "prerequisites": [
+      "Class 5 arithmetic basics",
+      "Reading simple word problems",
+      "Basic shape and measurement awareness"
+    ],
+    "learningOutcomes": [
+      "Explain the key ideas of Algebra and Patterns in simple mathematical language",
+      "Use diagrams, tables, number lines or models to understand the concept",
+      "Solve school-level and daily-life word problems accurately",
+      "Check answers using estimation, reverse operations or visual reasoning"
+    ],
+    "certificate": true,
+    "status": "published",
+    "enrollmentCount": 0,
+    "averageRating": 0,
+    "totalRatings": 0,
+    "reviewCount": 0,
+    "maxStudents": 50,
+    "tags": [
+      "Grade 6",
+      "Mathematics",
+      "Algebra",
+      "Variables",
+      "Expressions",
+      "Linear Equations",
+      "Patterns",
+      "CBSE",
+      "CISCE",
+      "Upper Primary"
+    ],
+    "isActive": true,
+    "createdAt": {
+      "$date": "2026-07-31T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-07-31T00:00:00.000Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "760000000000000000000002"
+    },
+    "title": "Grade 6 Mathematics - Geometry: Basic Ideas, Shapes and Symmetry",
+    "description": "Connects geometry with everyday experiences and develops 2-D ideas, elementary shapes, 3-D solids, nets and reflection symmetry. Aligned with the supplied Class 6 Mathematics syllabus and suitable for CBSE and CISCE upper-primary learning.",
+    "createdBy": "696d8e8098d47cbd00770abd",
+    "grade": 6,
+    "subject": "Mathematics",
+    "board": [
+      "CBSE",
+      "ICSE"
+    ],
+    "thumbnail": "",
+    "syllabus": [
+      "Line, line segment and ray",
+      "Open and closed figures",
+      "Interior and exterior of closed figures",
+      "Curvilinear and linear boundaries",
+      "Angles with arms and vertex",
+      "Triangles, quadrilaterals and circles with parts",
+      "Measuring line segments",
+      "Measuring angles",
+      "Intersecting, perpendicular and parallel lines",
+      "Types of angles",
+      "Classification of triangles by sides and angles",
+      "Types of quadrilaterals",
+      "Cubes, cuboids, cylinders, spheres, cones, prisms and pyramids",
+      "Faces, edges and vertices",
+      "Nets of cube, cuboid, cylinder, cone and tetrahedron",
+      "Observation of symmetrical 2-D objects",
+      "Mirror images of simple 2-D objects",
+      "Recognising reflection symmetry",
+      "Identifying axes of symmetry",
+      "Symmetry in patterns and surroundings"
+    ],
+    "chapters": [
+      {
+        "name": "Basic Geometrical Ideas",
+        "topics": [
+          "Line, line segment and ray",
+          "Open and closed figures",
+          "Interior and exterior of closed figures",
+          "Curvilinear and linear boundaries",
+          "Angles with arms and vertex",
+          "Triangles, quadrilaterals and circles with parts"
+        ],
+        "learningObjectives": [
+          "Understand and solve Class 6 syllabus-aligned problems on Line, line segment and ray",
+          "Understand and solve Class 6 syllabus-aligned problems on Open and closed figures",
+          "Understand and solve Class 6 syllabus-aligned problems on Interior and exterior of closed figures",
+          "Understand and solve Class 6 syllabus-aligned problems on Curvilinear and linear boundaries",
+          "Understand and solve Class 6 syllabus-aligned problems on Angles with arms and vertex",
+          "Understand and solve Class 6 syllabus-aligned problems on Triangles, quadrilaterals and circles with parts"
+        ],
+        "estimatedHours": 6
+      },
+      {
+        "name": "Elementary 2-D and 3-D Shapes",
+        "topics": [
+          "Measuring line segments",
+          "Measuring angles",
+          "Intersecting, perpendicular and parallel lines",
+          "Types of angles",
+          "Classification of triangles by sides and angles",
+          "Types of quadrilaterals",
+          "Cubes, cuboids, cylinders, spheres, cones, prisms and pyramids",
+          "Faces, edges and vertices",
+          "Nets of cube, cuboid, cylinder, cone and tetrahedron"
+        ],
+        "learningObjectives": [
+          "Understand and solve Class 6 syllabus-aligned problems on Measuring line segments",
+          "Understand and solve Class 6 syllabus-aligned problems on Measuring angles",
+          "Understand and solve Class 6 syllabus-aligned problems on Intersecting, perpendicular and parallel lines",
+          "Understand and solve Class 6 syllabus-aligned problems on Types of angles",
+          "Understand and solve Class 6 syllabus-aligned problems on Classification of triangles by sides and angles",
+          "Understand and solve Class 6 syllabus-aligned problems on Types of quadrilaterals",
+          "Understand and solve Class 6 syllabus-aligned problems on Cubes, cuboids, cylinders, spheres, cones, prisms and pyramids",
+          "Understand and solve Class 6 syllabus-aligned problems on Faces, edges and vertices",
+          "Understand and solve Class 6 syllabus-aligned problems on Nets of cube, cuboid, cylinder, cone and tetrahedron"
+        ],
+        "estimatedHours": 6
+      },
+      {
+        "name": "Reflection Symmetry",
+        "topics": [
+          "Observation of symmetrical 2-D objects",
+          "Mirror images of simple 2-D objects",
+          "Recognising reflection symmetry",
+          "Identifying axes of symmetry",
+          "Symmetry in patterns and surroundings"
+        ],
+        "learningObjectives": [
+          "Understand and solve Class 6 syllabus-aligned problems on Observation of symmetrical 2-D objects",
+          "Understand and solve Class 6 syllabus-aligned problems on Mirror images of simple 2-D objects",
+          "Understand and solve Class 6 syllabus-aligned problems on Recognising reflection symmetry",
+          "Understand and solve Class 6 syllabus-aligned problems on Identifying axes of symmetry",
+          "Understand and solve Class 6 syllabus-aligned problems on Symmetry in patterns and surroundings"
+        ],
+        "estimatedHours": 6
+      }
+    ],
+    "topics": [
+      "Line, line segment and ray",
+      "Open and closed figures",
+      "Interior and exterior of closed figures",
+      "Curvilinear and linear boundaries",
+      "Angles with arms and vertex",
+      "Triangles, quadrilaterals and circles with parts",
+      "Measuring line segments",
+      "Measuring angles",
+      "Intersecting, perpendicular and parallel lines",
+      "Types of angles",
+      "Classification of triangles by sides and angles",
+      "Types of quadrilaterals",
+      "Cubes, cuboids, cylinders, spheres, cones, prisms and pyramids",
+      "Faces, edges and vertices",
+      "Nets of cube, cuboid, cylinder, cone and tetrahedron",
+      "Observation of symmetrical 2-D objects",
+      "Mirror images of simple 2-D objects",
+      "Recognising reflection symmetry",
+      "Identifying axes of symmetry",
+      "Symmetry in patterns and surroundings"
+    ],
+    "duration": "7 weeks",
+    "estimatedHours": 16,
+    "level": "beginner",
+    "difficulty": 2,
+    "language": "English",
+    "prerequisites": [
+      "Class 5 arithmetic basics",
+      "Reading simple word problems",
+      "Basic shape and measurement awareness"
+    ],
+    "learningOutcomes": [
+      "Explain the key ideas of Geometry: Basic Ideas, Shapes and Symmetry in simple mathematical language",
+      "Use diagrams, tables, number lines or models to understand the concept",
+      "Solve school-level and daily-life word problems accurately",
+      "Check answers using estimation, reverse operations or visual reasoning"
+    ],
+    "certificate": true,
+    "status": "published",
+    "enrollmentCount": 0,
+    "averageRating": 0,
+    "totalRatings": 0,
+    "reviewCount": 0,
+    "maxStudents": 50,
+    "tags": [
+      "Grade 6",
+      "Mathematics",
+      "Geometry",
+      "2D Shapes",
+      "3D Shapes",
+      "Symmetry",
+      "Nets",
+      "CBSE",
+      "CISCE",
+      "Upper Primary"
+    ],
+    "isActive": true,
+    "createdAt": {
+      "$date": "2026-07-31T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-07-31T00:00:00.000Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "760000000000000000000003"
+    },
+    "title": "Grade 6 Mathematics - Geometrical Constructions",
+    "description": "Develops careful construction skills using straight edge, ruler, protractor and compasses for line segments, perpendiculars, angles, bisectors and circles. Aligned with the supplied Class 6 Mathematics syllabus and suitable for CBSE and CISCE upper-primary learning.",
+    "createdBy": "696d8e8098d47cbd00770abd",
+    "grade": 6,
+    "subject": "Mathematics",
+    "board": [
+      "CBSE",
+      "ICSE"
+    ],
+    "thumbnail": "",
+    "syllabus": [
+      "Drawing a line segment",
+      "Perpendicular bisector",
+      "Drawing a perpendicular from a point on a line",
+      "Drawing a perpendicular from a point outside a line",
+      "Construction of a circle",
+      "Construction of angles using protractor",
+      "Constructing 60° and 120° using compasses",
+      "Angle bisector",
+      "Making 30°, 45° and 90° angles",
+      "Copying an angle equal to a given angle"
+    ],
+    "chapters": [
+      {
+        "name": "Line Segments, Perpendiculars and Circles",
+        "topics": [
+          "Drawing a line segment",
+          "Perpendicular bisector",
+          "Drawing a perpendicular from a point on a line",
+          "Drawing a perpendicular from a point outside a line",
+          "Construction of a circle"
+        ],
+        "learningObjectives": [
+          "Understand and solve Class 6 syllabus-aligned problems on Drawing a line segment",
+          "Understand and solve Class 6 syllabus-aligned problems on Perpendicular bisector",
+          "Understand and solve Class 6 syllabus-aligned problems on Drawing a perpendicular from a point on a line",
+          "Understand and solve Class 6 syllabus-aligned problems on Drawing a perpendicular from a point outside a line",
+          "Understand and solve Class 6 syllabus-aligned problems on Construction of a circle"
+        ],
+        "estimatedHours": 5
+      },
+      {
+        "name": "Angle Constructions and Bisectors",
+        "topics": [
+          "Construction of angles using protractor",
+          "Constructing 60° and 120° using compasses",
+          "Angle bisector",
+          "Making 30°, 45° and 90° angles",
+          "Copying an angle equal to a given angle"
+        ],
+        "learningObjectives": [
+          "Understand and solve Class 6 syllabus-aligned problems on Construction of angles using protractor",
+          "Understand and solve Class 6 syllabus-aligned problems on Constructing 60° and 120° using compasses",
+          "Understand and solve Class 6 syllabus-aligned problems on Angle bisector",
+          "Understand and solve Class 6 syllabus-aligned problems on Making 30°, 45° and 90° angles",
+          "Understand and solve Class 6 syllabus-aligned problems on Copying an angle equal to a given angle"
+        ],
+        "estimatedHours": 5
+      }
+    ],
+    "topics": [
+      "Drawing a line segment",
+      "Perpendicular bisector",
+      "Drawing a perpendicular from a point on a line",
+      "Drawing a perpendicular from a point outside a line",
+      "Construction of a circle",
+      "Construction of angles using protractor",
+      "Constructing 60° and 120° using compasses",
+      "Angle bisector",
+      "Making 30°, 45° and 90° angles",
+      "Copying an angle equal to a given angle"
+    ],
+    "duration": "4 weeks",
+    "estimatedHours": 10,
+    "level": "beginner",
+    "difficulty": 2,
+    "language": "English",
+    "prerequisites": [
+      "Class 5 arithmetic basics",
+      "Reading simple word problems",
+      "Basic shape and measurement awareness"
+    ],
+    "learningOutcomes": [
+      "Explain the key ideas of Geometrical Constructions in simple mathematical language",
+      "Use diagrams, tables, number lines or models to understand the concept",
+      "Solve school-level and daily-life word problems accurately",
+      "Check answers using estimation, reverse operations or visual reasoning"
+    ],
+    "certificate": true,
+    "status": "published",
+    "enrollmentCount": 0,
+    "averageRating": 0,
+    "totalRatings": 0,
+    "reviewCount": 0,
+    "maxStudents": 50,
+    "tags": [
+      "Grade 6",
+      "Mathematics",
+      "Constructions",
+      "Compass",
+      "Protractor",
+      "Angle Bisector",
+      "Perpendicular",
+      "CBSE",
+      "CISCE",
+      "Upper Primary"
+    ],
+    "isActive": true,
+    "createdAt": {
+      "$date": "2026-07-31T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-07-31T00:00:00.000Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "760000000000000000000004"
+    },
+    "title": "Grade 6 Mathematics - Mensuration and Measurement",
+    "description": "Builds the ideas of perimeter, area and unit conversion through grids, shapes, counterexamples and daily measurement contexts. Aligned with the supplied Class 6 Mathematics syllabus and suitable for CBSE and CISCE upper-primary learning.",
+    "createdBy": "696d8e8098d47cbd00770abd",
+    "grade": 6,
+    "subject": "Mathematics",
+    "board": [
+      "CBSE",
+      "ICSE"
+    ],
+    "thumbnail": "",
+    "syllabus": [
+      "General idea of perimeter",
+      "Different shapes with same perimeter",
+      "Perimeter of rectangle",
+      "Perimeter of square",
+      "Deducing formulas through patterns",
+      "Concept of area",
+      "Counting squares",
+      "Area of rectangle",
+      "Area of square",
+      "Counterexamples about perimeter and area misconceptions",
+      "Conversion of mass units",
+      "Conversion of time units",
+      "Conversion of money units",
+      "Conversion of capacity units",
+      "Conversion from smaller to larger and larger to smaller units"
+    ],
+    "chapters": [
+      {
+        "name": "Perimeter of Shapes, Rectangles and Squares",
+        "topics": [
+          "General idea of perimeter",
+          "Different shapes with same perimeter",
+          "Perimeter of rectangle",
+          "Perimeter of square",
+          "Deducing formulas through patterns"
+        ],
+        "learningObjectives": [
+          "Understand and solve Class 6 syllabus-aligned problems on General idea of perimeter",
+          "Understand and solve Class 6 syllabus-aligned problems on Different shapes with same perimeter",
+          "Understand and solve Class 6 syllabus-aligned problems on Perimeter of rectangle",
+          "Understand and solve Class 6 syllabus-aligned problems on Perimeter of square",
+          "Understand and solve Class 6 syllabus-aligned problems on Deducing formulas through patterns"
+        ],
+        "estimatedHours": 4
+      },
+      {
+        "name": "Area of Rectangles and Squares",
+        "topics": [
+          "Concept of area",
+          "Counting squares",
+          "Area of rectangle",
+          "Area of square",
+          "Counterexamples about perimeter and area misconceptions"
+        ],
+        "learningObjectives": [
+          "Understand and solve Class 6 syllabus-aligned problems on Concept of area",
+          "Understand and solve Class 6 syllabus-aligned problems on Counting squares",
+          "Understand and solve Class 6 syllabus-aligned problems on Area of rectangle",
+          "Understand and solve Class 6 syllabus-aligned problems on Area of square",
+          "Understand and solve Class 6 syllabus-aligned problems on Counterexamples about perimeter and area misconceptions"
+        ],
+        "estimatedHours": 4
+      },
+      {
+        "name": "Measurement Unit Conversion",
+        "topics": [
+          "Conversion of mass units",
+          "Conversion of time units",
+          "Conversion of money units",
+          "Conversion of capacity units",
+          "Conversion from smaller to larger and larger to smaller units"
+        ],
+        "learningObjectives": [
+          "Understand and solve Class 6 syllabus-aligned problems on Conversion of mass units",
+          "Understand and solve Class 6 syllabus-aligned problems on Conversion of time units",
+          "Understand and solve Class 6 syllabus-aligned problems on Conversion of money units",
+          "Understand and solve Class 6 syllabus-aligned problems on Conversion of capacity units",
+          "Understand and solve Class 6 syllabus-aligned problems on Conversion from smaller to larger and larger to smaller units"
+        ],
+        "estimatedHours": 4
+      }
+    ],
+    "topics": [
+      "General idea of perimeter",
+      "Different shapes with same perimeter",
+      "Perimeter of rectangle",
+      "Perimeter of square",
+      "Deducing formulas through patterns",
+      "Concept of area",
+      "Counting squares",
+      "Area of rectangle",
+      "Area of square",
+      "Counterexamples about perimeter and area misconceptions",
+      "Conversion of mass units",
+      "Conversion of time units",
+      "Conversion of money units",
+      "Conversion of capacity units",
+      "Conversion from smaller to larger and larger to smaller units"
+    ],
+    "duration": "5 weeks",
+    "estimatedHours": 12,
+    "level": "beginner",
+    "difficulty": 2,
+    "language": "English",
+    "prerequisites": [
+      "Class 5 arithmetic basics",
+      "Reading simple word problems",
+      "Basic shape and measurement awareness"
+    ],
+    "learningOutcomes": [
+      "Explain the key ideas of Mensuration and Measurement in simple mathematical language",
+      "Use diagrams, tables, number lines or models to understand the concept",
+      "Solve school-level and daily-life word problems accurately",
+      "Check answers using estimation, reverse operations or visual reasoning"
+    ],
+    "certificate": true,
+    "status": "published",
+    "enrollmentCount": 0,
+    "averageRating": 0,
+    "totalRatings": 0,
+    "reviewCount": 0,
+    "maxStudents": 50,
+    "tags": [
+      "Grade 6",
+      "Mathematics",
+      "Mensuration",
+      "Perimeter",
+      "Area",
+      "Measurement",
+      "Unit Conversion",
+      "CBSE",
+      "CISCE",
+      "Upper Primary"
+    ],
+    "isActive": true,
+    "createdAt": {
+      "$date": "2026-07-31T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-07-31T00:00:00.000Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "760000000000000000000005"
+    },
+    "title": "Grade 6 Mathematics - Data Handling and Presentation",
+    "description": "Teaches how to collect, organise, represent and interpret data using tally tables, pictographs, bar graphs and mean for small data sets. Aligned with the supplied Class 6 Mathematics syllabus and suitable for CBSE and CISCE upper-primary learning.",
+    "createdBy": "696d8e8098d47cbd00770abd",
+    "grade": 6,
+    "subject": "Mathematics",
+    "board": [
+      "CBSE",
+      "ICSE"
+    ],
+    "thumbnail": "",
+    "syllabus": [
+      "Collection of data to examine a hypothesis",
+      "Organisation of data in tally bars",
+      "Tables for data",
+      "Need for scaling in pictographs",
+      "Interpretation and construction of pictographs",
+      "Construction of bar graphs for given data",
+      "Interpreting bar graphs",
+      "Mean of data with not more than ten observations",
+      "Choosing a suitable scale",
+      "Using data to answer questions"
+    ],
+    "chapters": [
+      {
+        "name": "Collecting Data, Tally Tables and Pictographs",
+        "topics": [
+          "Collection of data to examine a hypothesis",
+          "Organisation of data in tally bars",
+          "Tables for data",
+          "Need for scaling in pictographs",
+          "Interpretation and construction of pictographs"
+        ],
+        "learningObjectives": [
+          "Understand and solve Class 6 syllabus-aligned problems on Collection of data to examine a hypothesis",
+          "Understand and solve Class 6 syllabus-aligned problems on Organisation of data in tally bars",
+          "Understand and solve Class 6 syllabus-aligned problems on Tables for data",
+          "Understand and solve Class 6 syllabus-aligned problems on Need for scaling in pictographs",
+          "Understand and solve Class 6 syllabus-aligned problems on Interpretation and construction of pictographs"
+        ],
+        "estimatedHours": 5
+      },
+      {
+        "name": "Bar Graphs and Mean",
+        "topics": [
+          "Construction of bar graphs for given data",
+          "Interpreting bar graphs",
+          "Mean of data with not more than ten observations",
+          "Choosing a suitable scale",
+          "Using data to answer questions"
+        ],
+        "learningObjectives": [
+          "Understand and solve Class 6 syllabus-aligned problems on Construction of bar graphs for given data",
+          "Understand and solve Class 6 syllabus-aligned problems on Interpreting bar graphs",
+          "Understand and solve Class 6 syllabus-aligned problems on Mean of data with not more than ten observations",
+          "Understand and solve Class 6 syllabus-aligned problems on Choosing a suitable scale",
+          "Understand and solve Class 6 syllabus-aligned problems on Using data to answer questions"
+        ],
+        "estimatedHours": 5
+      }
+    ],
+    "topics": [
+      "Collection of data to examine a hypothesis",
+      "Organisation of data in tally bars",
+      "Tables for data",
+      "Need for scaling in pictographs",
+      "Interpretation and construction of pictographs",
+      "Construction of bar graphs for given data",
+      "Interpreting bar graphs",
+      "Mean of data with not more than ten observations",
+      "Choosing a suitable scale",
+      "Using data to answer questions"
+    ],
+    "duration": "4 weeks",
+    "estimatedHours": 10,
+    "level": "beginner",
+    "difficulty": 2,
+    "language": "English",
+    "prerequisites": [
+      "Class 5 arithmetic basics",
+      "Reading simple word problems",
+      "Basic shape and measurement awareness"
+    ],
+    "learningOutcomes": [
+      "Explain the key ideas of Data Handling and Presentation in simple mathematical language",
+      "Use diagrams, tables, number lines or models to understand the concept",
+      "Solve school-level and daily-life word problems accurately",
+      "Check answers using estimation, reverse operations or visual reasoning"
+    ],
+    "certificate": true,
+    "status": "published",
+    "enrollmentCount": 0,
+    "averageRating": 0,
+    "totalRatings": 0,
+    "reviewCount": 0,
+    "maxStudents": 50,
+    "tags": [
+      "Grade 6",
+      "Mathematics",
+      "Data Handling",
+      "Tally Table",
+      "Pictograph",
+      "Bar Graph",
+      "Mean",
+      "CBSE",
+      "CISCE",
+      "Upper Primary"
+    ],
+    "isActive": true,
+    "createdAt": {
+      "$date": "2026-07-31T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-07-31T00:00:00.000Z"
+    },
+    "__v": 0
+  }
+]

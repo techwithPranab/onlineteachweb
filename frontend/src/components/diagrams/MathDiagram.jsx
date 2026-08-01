@@ -12,6 +12,13 @@
  *   decimalGrid  | pieChart     | lineGraph     | circleLabeled
  *   factorTree   | shape3d      | symmetry      | vennDiagram
  *   moneyIndia   | ratioBar
+ *   -- Class 6 to 12 additions --
+ *   functionGraph | conicSections | calculus | matrix
+ *   vector3d      | probabilityTree
+ *   algebraTiles  | equationBalance | integerChips | histogram
+ *   boxPlot       | complexPlane    | linearProgramming | slopeField
+ *   mapping       | unitCircle      | inequalityNumberLine | ogive
+ *   locus
  */
 import ClockDiagram from './diagrams/ClockDiagram'
 import FractionDiagram from './diagrams/FractionDiagram'
@@ -34,6 +41,30 @@ import SymmetryDiagram from './diagrams/SymmetryDiagram'
 import VennDiagramDiagram from './diagrams/VennDiagramDiagram'
 import MoneyIndiaDiagram from './diagrams/MoneyIndiaDiagram'
 import RatioBarDiagram from './diagrams/RatioBarDiagram'
+import FunctionGraphDiagram from './diagrams/FunctionGraphDiagram'
+import ConicSectionsDiagram from './diagrams/ConicSectionsDiagram'
+import CalculusDiagram from './diagrams/CalculusDiagram'
+import MatrixDiagram from './diagrams/MatrixDiagram'
+import Vector3DDiagram from './diagrams/Vector3DDiagram'
+import ProbabilityTreeDiagram from './diagrams/ProbabilityTreeDiagram'
+import IntegerChipsDiagram from './diagrams/IntegerChipsDiagram'
+import AlgebraTilesDiagram from './diagrams/AlgebraTilesDiagram'
+import EquationBalanceDiagram from './diagrams/EquationBalanceDiagram'
+import ParallelLinesDiagram from './diagrams/ParallelLinesDiagram'
+import CircleTheoremDiagram from './diagrams/CircleTheoremDiagram'
+import SolidNetDiagram from './diagrams/SolidNetDiagram'
+import HistogramDiagram from './diagrams/HistogramDiagram'
+import BoxPlotDiagram from './diagrams/BoxPlotDiagram'
+import ComplexPlaneDiagram from './diagrams/ComplexPlaneDiagram'
+import LinearProgrammingDiagram from './diagrams/LinearProgrammingDiagram'
+import SlopeFieldDiagram from './diagrams/SlopeFieldDiagram'
+import SequenceDiagram from './diagrams/SequenceDiagram'
+import TransformationGridDiagram from './diagrams/TransformationGridDiagram'
+import MappingDiagram from './diagrams/MappingDiagram'
+import UnitCircleDiagram from './diagrams/UnitCircleDiagram'
+import InequalityNumberLineDiagram from './diagrams/InequalityNumberLineDiagram'
+import OgiveDiagram from './diagrams/OgiveDiagram'
+import LocusDiagram from './diagrams/LocusDiagram'
 
 /** Registry: maps diagram type → component */
 const DIAGRAM_REGISTRY = {
@@ -80,6 +111,68 @@ const DIAGRAM_REGISTRY = {
   ratioBar:        RatioBarDiagram,
   ratiobar:        RatioBarDiagram,
   ratio:           RatioBarDiagram,
+  // Class 6 to 12 additions
+  functionGraph:   FunctionGraphDiagram,
+  functiongraph:   FunctionGraphDiagram,
+  graphFunction:   FunctionGraphDiagram,
+  conicSections:   ConicSectionsDiagram,
+  conicsections:   ConicSectionsDiagram,
+  conic:           ConicSectionsDiagram,
+  calculus:        CalculusDiagram,
+  derivative:      CalculusDiagram,
+  integral:        CalculusDiagram,
+  matrix:          MatrixDiagram,
+  matrices:        MatrixDiagram,
+  vector3d:        Vector3DDiagram,
+  vector3D:        Vector3DDiagram,
+  vector:          Vector3DDiagram,
+  probabilityTree: ProbabilityTreeDiagram,
+  probabilitytree: ProbabilityTreeDiagram,
+  probability:     ProbabilityTreeDiagram,
+  integerChips:    IntegerChipsDiagram,
+  integerchips:    IntegerChipsDiagram,
+  algebraTiles:    AlgebraTilesDiagram,
+  algebratiles:    AlgebraTilesDiagram,
+  equationBalance: EquationBalanceDiagram,
+  equationbalance: EquationBalanceDiagram,
+  balance:         EquationBalanceDiagram,
+  parallelLines:   ParallelLinesDiagram,
+  parallellines:   ParallelLinesDiagram,
+  circleTheorem:   CircleTheoremDiagram,
+  circletheorem:   CircleTheoremDiagram,
+  solidNet:        SolidNetDiagram,
+  solidnet:        SolidNetDiagram,
+  net:             SolidNetDiagram,
+  histogram:       HistogramDiagram,
+  boxPlot:         BoxPlotDiagram,
+  boxplot:         BoxPlotDiagram,
+  complexPlane:    ComplexPlaneDiagram,
+  complexplane:    ComplexPlaneDiagram,
+  argandPlane:     ComplexPlaneDiagram,
+  argandplane:     ComplexPlaneDiagram,
+  linearProgramming: LinearProgrammingDiagram,
+  linearprogramming: LinearProgrammingDiagram,
+  slopeField:      SlopeFieldDiagram,
+  slopefield:      SlopeFieldDiagram,
+  sequence:        SequenceDiagram,
+  sequenceDiagram: SequenceDiagram,
+  transformationGrid: TransformationGridDiagram,
+  transformationgrid: TransformationGridDiagram,
+  transformation:  TransformationGridDiagram,
+  mapping:         MappingDiagram,
+  mappingDiagram:  MappingDiagram,
+  mappingdiagram:  MappingDiagram,
+  unitCircle:      UnitCircleDiagram,
+  unitcircle:      UnitCircleDiagram,
+  inequalityNumberLine: InequalityNumberLineDiagram,
+  inequalitynumberline: InequalityNumberLineDiagram,
+  inequality:      InequalityNumberLineDiagram,
+  ogive:           OgiveDiagram,
+  cumulativeFrequency: OgiveDiagram,
+  cumulativefrequency: OgiveDiagram,
+  locus:           LocusDiagram,
+  locusDiagram:    LocusDiagram,
+  locusdiagram:    LocusDiagram,
 }
 
 /**
@@ -138,5 +231,29 @@ export {
   SymmetryDiagram,
   VennDiagramDiagram,
   MoneyIndiaDiagram,
-  RatioBarDiagram
+  RatioBarDiagram,
+  FunctionGraphDiagram,
+  ConicSectionsDiagram,
+  CalculusDiagram,
+  MatrixDiagram,
+  Vector3DDiagram,
+  ProbabilityTreeDiagram,
+  IntegerChipsDiagram,
+  AlgebraTilesDiagram,
+  EquationBalanceDiagram,
+  ParallelLinesDiagram,
+  CircleTheoremDiagram,
+  SolidNetDiagram,
+  HistogramDiagram,
+  BoxPlotDiagram,
+  ComplexPlaneDiagram,
+  LinearProgrammingDiagram,
+  SlopeFieldDiagram,
+  SequenceDiagram,
+  TransformationGridDiagram,
+  MappingDiagram,
+  UnitCircleDiagram,
+  InequalityNumberLineDiagram,
+  OgiveDiagram,
+  LocusDiagram
 }

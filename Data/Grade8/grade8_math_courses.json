@@ -1,0 +1,766 @@
+[
+  {
+    "_id": {
+      "$oid": "700000000000000000000029"
+    },
+    "title": "Grade 8 Mathematics - Rational Numbers and Exponents",
+    "description": "A CBSE and CISCE-aligned Grade 8 Mathematics course covering Rational Numbers and Exponents. It follows CBSE/NCERT middle-stage Mathematics and CISCE Upper Primary Mathematics with clear theory, visuals, solved examples and practice.",
+    "createdBy": "696d8e8098d47cbd00770abd",
+    "grade": 8,
+    "subject": "Mathematics",
+    "board": [
+      "CBSE",
+      "ICSE"
+    ],
+    "thumbnail": "",
+    "syllabus": [
+      "Closure and properties",
+      "Rational numbers between two numbers",
+      "Operations with rational numbers",
+      "Representation on number line",
+      "Laws of exponents",
+      "Negative exponents introduction",
+      "Standard form",
+      "Large and small numbers"
+    ],
+    "chapters": [
+      {
+        "name": "Rational Numbers",
+        "topics": [
+          "Closure and properties",
+          "Rational numbers between two numbers",
+          "Operations with rational numbers",
+          "Representation on number line"
+        ],
+        "learningObjectives": [
+          "Understand and solve syllabus-aligned problems on Closure and properties",
+          "Understand and solve syllabus-aligned problems on Rational numbers between two numbers",
+          "Understand and solve syllabus-aligned problems on Operations with rational numbers",
+          "Understand and solve syllabus-aligned problems on Representation on number line"
+        ],
+        "estimatedHours": 5
+      },
+      {
+        "name": "Exponents and Standard Form",
+        "topics": [
+          "Laws of exponents",
+          "Negative exponents introduction",
+          "Standard form",
+          "Large and small numbers"
+        ],
+        "learningObjectives": [
+          "Understand and solve syllabus-aligned problems on Laws of exponents",
+          "Understand and solve syllabus-aligned problems on Negative exponents introduction",
+          "Understand and solve syllabus-aligned problems on Standard form",
+          "Understand and solve syllabus-aligned problems on Large and small numbers"
+        ],
+        "estimatedHours": 5
+      }
+    ],
+    "topics": [
+      "Closure and properties",
+      "Rational numbers between two numbers",
+      "Operations with rational numbers",
+      "Representation on number line",
+      "Laws of exponents",
+      "Negative exponents introduction",
+      "Standard form",
+      "Large and small numbers"
+    ],
+    "duration": "8 weeks",
+    "estimatedHours": 10,
+    "level": "intermediate",
+    "difficulty": 3,
+    "language": "English",
+    "prerequisites": [
+      "Grade 7 Mathematics foundations",
+      "Arithmetic fluency",
+      "Problem reading skills"
+    ],
+    "learningOutcomes": [
+      "Explain the key CBSE and CISCE ideas in Rational Numbers and Exponents",
+      "Use diagrams, tables, equations or graphs to model problems",
+      "Solve graded practice and board-style questions",
+      "Apply the concepts in real-life situations"
+    ],
+    "certificate": true,
+    "status": "published",
+    "enrollmentCount": 0,
+    "averageRating": 0,
+    "totalRatings": 0,
+    "reviewCount": 0,
+    "maxStudents": 50,
+    "tags": [
+      "Grade 8",
+      "Mathematics",
+      "Rational Numbers and Exponents",
+      "CBSE",
+      "CISCE",
+      "Upper Primary"
+    ],
+    "isActive": true,
+    "createdAt": {
+      "$date": "2026-07-30T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-07-30T00:00:00.000Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "70000000000000000000002d"
+    },
+    "title": "Grade 8 Mathematics - Squares, Cubes and Roots",
+    "description": "A CBSE and CISCE-aligned Grade 8 Mathematics course covering Squares, Cubes and Roots. It follows CBSE/NCERT middle-stage Mathematics and CISCE Upper Primary Mathematics with clear theory, visuals, solved examples and practice.",
+    "createdBy": "696d8e8098d47cbd00770abd",
+    "grade": 8,
+    "subject": "Mathematics",
+    "board": [
+      "CBSE",
+      "ICSE"
+    ],
+    "thumbnail": "",
+    "syllabus": [
+      "Squares and square roots",
+      "Estimation of square roots",
+      "Pythagorean triples",
+      "Square root applications",
+      "Cubes and cube roots",
+      "Cube root estimation",
+      "Volume connections",
+      "Root word problems"
+    ],
+    "chapters": [
+      {
+        "name": "Squares and Square Roots",
+        "topics": [
+          "Squares and square roots",
+          "Estimation of square roots",
+          "Pythagorean triples",
+          "Square root applications"
+        ],
+        "learningObjectives": [
+          "Understand and solve syllabus-aligned problems on Squares and square roots",
+          "Understand and solve syllabus-aligned problems on Estimation of square roots",
+          "Understand and solve syllabus-aligned problems on Pythagorean triples",
+          "Understand and solve syllabus-aligned problems on Square root applications"
+        ],
+        "estimatedHours": 5
+      },
+      {
+        "name": "Cubes and Cube Roots",
+        "topics": [
+          "Cubes and cube roots",
+          "Cube root estimation",
+          "Volume connections",
+          "Root word problems"
+        ],
+        "learningObjectives": [
+          "Understand and solve syllabus-aligned problems on Cubes and cube roots",
+          "Understand and solve syllabus-aligned problems on Cube root estimation",
+          "Understand and solve syllabus-aligned problems on Volume connections",
+          "Understand and solve syllabus-aligned problems on Root word problems"
+        ],
+        "estimatedHours": 5
+      }
+    ],
+    "topics": [
+      "Squares and square roots",
+      "Estimation of square roots",
+      "Pythagorean triples",
+      "Square root applications",
+      "Cubes and cube roots",
+      "Cube root estimation",
+      "Volume connections",
+      "Root word problems"
+    ],
+    "duration": "8 weeks",
+    "estimatedHours": 10,
+    "level": "intermediate",
+    "difficulty": 3,
+    "language": "English",
+    "prerequisites": [
+      "Grade 7 Mathematics foundations",
+      "Arithmetic fluency",
+      "Problem reading skills"
+    ],
+    "learningOutcomes": [
+      "Explain the key CBSE and CISCE ideas in Squares, Cubes and Roots",
+      "Use diagrams, tables, equations or graphs to model problems",
+      "Solve graded practice and board-style questions",
+      "Apply the concepts in real-life situations"
+    ],
+    "certificate": true,
+    "status": "published",
+    "enrollmentCount": 0,
+    "averageRating": 0,
+    "totalRatings": 0,
+    "reviewCount": 0,
+    "maxStudents": 50,
+    "tags": [
+      "Grade 8",
+      "Mathematics",
+      "Squares, Cubes and Roots",
+      "CBSE",
+      "CISCE",
+      "Upper Primary"
+    ],
+    "isActive": true,
+    "createdAt": {
+      "$date": "2026-07-30T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-07-30T00:00:00.000Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "700000000000000000000031"
+    },
+    "title": "Grade 8 Mathematics - Algebra, Identities and Factorisation",
+    "description": "A CBSE and CISCE-aligned Grade 8 Mathematics course covering Algebra, Identities and Factorisation. It follows CBSE/NCERT middle-stage Mathematics and CISCE Upper Primary Mathematics with clear theory, visuals, solved examples and practice.",
+    "createdBy": "696d8e8098d47cbd00770abd",
+    "grade": 8,
+    "subject": "Mathematics",
+    "board": [
+      "CBSE",
+      "ICSE"
+    ],
+    "thumbnail": "",
+    "syllabus": [
+      "Multiplication of expressions",
+      "Standard identities",
+      "Using identities",
+      "Special products",
+      "Common factor",
+      "Factorisation by identities",
+      "Division of algebraic expressions",
+      "Solving by factorisation ideas"
+    ],
+    "chapters": [
+      {
+        "name": "Algebraic Expressions and Identities",
+        "topics": [
+          "Multiplication of expressions",
+          "Standard identities",
+          "Using identities",
+          "Special products"
+        ],
+        "learningObjectives": [
+          "Understand and solve syllabus-aligned problems on Multiplication of expressions",
+          "Understand and solve syllabus-aligned problems on Standard identities",
+          "Understand and solve syllabus-aligned problems on Using identities",
+          "Understand and solve syllabus-aligned problems on Special products"
+        ],
+        "estimatedHours": 5
+      },
+      {
+        "name": "Factorisation and Division",
+        "topics": [
+          "Common factor",
+          "Factorisation by identities",
+          "Division of algebraic expressions",
+          "Solving by factorisation ideas"
+        ],
+        "learningObjectives": [
+          "Understand and solve syllabus-aligned problems on Common factor",
+          "Understand and solve syllabus-aligned problems on Factorisation by identities",
+          "Understand and solve syllabus-aligned problems on Division of algebraic expressions",
+          "Understand and solve syllabus-aligned problems on Solving by factorisation ideas"
+        ],
+        "estimatedHours": 5
+      }
+    ],
+    "topics": [
+      "Multiplication of expressions",
+      "Standard identities",
+      "Using identities",
+      "Special products",
+      "Common factor",
+      "Factorisation by identities",
+      "Division of algebraic expressions",
+      "Solving by factorisation ideas"
+    ],
+    "duration": "8 weeks",
+    "estimatedHours": 10,
+    "level": "intermediate",
+    "difficulty": 3,
+    "language": "English",
+    "prerequisites": [
+      "Grade 7 Mathematics foundations",
+      "Arithmetic fluency",
+      "Problem reading skills"
+    ],
+    "learningOutcomes": [
+      "Explain the key CBSE and CISCE ideas in Algebra, Identities and Factorisation",
+      "Use diagrams, tables, equations or graphs to model problems",
+      "Solve graded practice and board-style questions",
+      "Apply the concepts in real-life situations"
+    ],
+    "certificate": true,
+    "status": "published",
+    "enrollmentCount": 0,
+    "averageRating": 0,
+    "totalRatings": 0,
+    "reviewCount": 0,
+    "maxStudents": 50,
+    "tags": [
+      "Grade 8",
+      "Mathematics",
+      "Algebra, Identities and Factorisation",
+      "CBSE",
+      "CISCE",
+      "Upper Primary"
+    ],
+    "isActive": true,
+    "createdAt": {
+      "$date": "2026-07-30T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-07-30T00:00:00.000Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "700000000000000000000035"
+    },
+    "title": "Grade 8 Mathematics - Linear Equations and Graphs",
+    "description": "A CBSE and CISCE-aligned Grade 8 Mathematics course covering Linear Equations and Graphs. It follows CBSE/NCERT middle-stage Mathematics and CISCE Upper Primary Mathematics with clear theory, visuals, solved examples and practice.",
+    "createdBy": "696d8e8098d47cbd00770abd",
+    "grade": 8,
+    "subject": "Mathematics",
+    "board": [
+      "CBSE",
+      "ICSE"
+    ],
+    "thumbnail": "",
+    "syllabus": [
+      "Equations in one variable",
+      "Equations with brackets",
+      "Application problems",
+      "Transposition method",
+      "Plotting points",
+      "Reading simple line graphs",
+      "Direct variation graphs",
+      "Linear graphs introduction"
+    ],
+    "chapters": [
+      {
+        "name": "Linear Equations",
+        "topics": [
+          "Equations in one variable",
+          "Equations with brackets",
+          "Application problems",
+          "Transposition method"
+        ],
+        "learningObjectives": [
+          "Understand and solve syllabus-aligned problems on Equations in one variable",
+          "Understand and solve syllabus-aligned problems on Equations with brackets",
+          "Understand and solve syllabus-aligned problems on Application problems",
+          "Understand and solve syllabus-aligned problems on Transposition method"
+        ],
+        "estimatedHours": 5
+      },
+      {
+        "name": "Coordinate Graphs",
+        "topics": [
+          "Plotting points",
+          "Reading simple line graphs",
+          "Direct variation graphs",
+          "Linear graphs introduction"
+        ],
+        "learningObjectives": [
+          "Understand and solve syllabus-aligned problems on Plotting points",
+          "Understand and solve syllabus-aligned problems on Reading simple line graphs",
+          "Understand and solve syllabus-aligned problems on Direct variation graphs",
+          "Understand and solve syllabus-aligned problems on Linear graphs introduction"
+        ],
+        "estimatedHours": 5
+      }
+    ],
+    "topics": [
+      "Equations in one variable",
+      "Equations with brackets",
+      "Application problems",
+      "Transposition method",
+      "Plotting points",
+      "Reading simple line graphs",
+      "Direct variation graphs",
+      "Linear graphs introduction"
+    ],
+    "duration": "8 weeks",
+    "estimatedHours": 10,
+    "level": "intermediate",
+    "difficulty": 3,
+    "language": "English",
+    "prerequisites": [
+      "Grade 7 Mathematics foundations",
+      "Arithmetic fluency",
+      "Problem reading skills"
+    ],
+    "learningOutcomes": [
+      "Explain the key CBSE and CISCE ideas in Linear Equations and Graphs",
+      "Use diagrams, tables, equations or graphs to model problems",
+      "Solve graded practice and board-style questions",
+      "Apply the concepts in real-life situations"
+    ],
+    "certificate": true,
+    "status": "published",
+    "enrollmentCount": 0,
+    "averageRating": 0,
+    "totalRatings": 0,
+    "reviewCount": 0,
+    "maxStudents": 50,
+    "tags": [
+      "Grade 8",
+      "Mathematics",
+      "Linear Equations and Graphs",
+      "CBSE",
+      "CISCE",
+      "Upper Primary"
+    ],
+    "isActive": true,
+    "createdAt": {
+      "$date": "2026-07-30T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-07-30T00:00:00.000Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "700000000000000000000039"
+    },
+    "title": "Grade 8 Mathematics - Geometry and Constructions",
+    "description": "A CBSE and CISCE-aligned Grade 8 Mathematics course covering Geometry and Constructions. It follows CBSE/NCERT middle-stage Mathematics and CISCE Upper Primary Mathematics with clear theory, visuals, solved examples and practice.",
+    "createdBy": "696d8e8098d47cbd00770abd",
+    "grade": 8,
+    "subject": "Mathematics",
+    "board": [
+      "CBSE",
+      "ICSE"
+    ],
+    "thumbnail": "",
+    "syllabus": [
+      "Polygon angle sum",
+      "Properties of parallelogram",
+      "Special quadrilaterals",
+      "Exterior angles",
+      "Constructing quadrilaterals",
+      "Diagonals and side data",
+      "Construction checks",
+      "Transformations on grid"
+    ],
+    "chapters": [
+      {
+        "name": "Quadrilaterals",
+        "topics": [
+          "Polygon angle sum",
+          "Properties of parallelogram",
+          "Special quadrilaterals",
+          "Exterior angles"
+        ],
+        "learningObjectives": [
+          "Understand and solve syllabus-aligned problems on Polygon angle sum",
+          "Understand and solve syllabus-aligned problems on Properties of parallelogram",
+          "Understand and solve syllabus-aligned problems on Special quadrilaterals",
+          "Understand and solve syllabus-aligned problems on Exterior angles"
+        ],
+        "estimatedHours": 5
+      },
+      {
+        "name": "Constructions and Transformations",
+        "topics": [
+          "Constructing quadrilaterals",
+          "Diagonals and side data",
+          "Construction checks",
+          "Transformations on grid"
+        ],
+        "learningObjectives": [
+          "Understand and solve syllabus-aligned problems on Constructing quadrilaterals",
+          "Understand and solve syllabus-aligned problems on Diagonals and side data",
+          "Understand and solve syllabus-aligned problems on Construction checks",
+          "Understand and solve syllabus-aligned problems on Transformations on grid"
+        ],
+        "estimatedHours": 5
+      }
+    ],
+    "topics": [
+      "Polygon angle sum",
+      "Properties of parallelogram",
+      "Special quadrilaterals",
+      "Exterior angles",
+      "Constructing quadrilaterals",
+      "Diagonals and side data",
+      "Construction checks",
+      "Transformations on grid"
+    ],
+    "duration": "8 weeks",
+    "estimatedHours": 10,
+    "level": "intermediate",
+    "difficulty": 3,
+    "language": "English",
+    "prerequisites": [
+      "Grade 7 Mathematics foundations",
+      "Arithmetic fluency",
+      "Problem reading skills"
+    ],
+    "learningOutcomes": [
+      "Explain the key CBSE and CISCE ideas in Geometry and Constructions",
+      "Use diagrams, tables, equations or graphs to model problems",
+      "Solve graded practice and board-style questions",
+      "Apply the concepts in real-life situations"
+    ],
+    "certificate": true,
+    "status": "published",
+    "enrollmentCount": 0,
+    "averageRating": 0,
+    "totalRatings": 0,
+    "reviewCount": 0,
+    "maxStudents": 50,
+    "tags": [
+      "Grade 8",
+      "Mathematics",
+      "Geometry and Constructions",
+      "CBSE",
+      "CISCE",
+      "Upper Primary"
+    ],
+    "isActive": true,
+    "createdAt": {
+      "$date": "2026-07-30T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-07-30T00:00:00.000Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "73000000000000000000232a"
+    },
+    "title": "Grade 8 Mathematics - Mensuration",
+    "description": "A CBSE and CISCE-aligned Grade 8 Mathematics course covering Mensuration. It follows CBSE/NCERT middle-stage Mathematics and CISCE Upper Primary Mathematics with clear theory, visuals, solved examples and practice.",
+    "createdBy": "696d8e8098d47cbd00770abd",
+    "grade": 8,
+    "subject": "Mathematics",
+    "board": [
+      "CBSE",
+      "ICSE"
+    ],
+    "thumbnail": "",
+    "syllabus": [
+      "Area of trapezium",
+      "Area of polygons",
+      "Composite figures",
+      "Area and perimeter applications",
+      "Cuboid and cube",
+      "Cylinder introduction",
+      "Unit conversion",
+      "Volume and capacity"
+    ],
+    "chapters": [
+      {
+        "name": "Plane Mensuration",
+        "topics": [
+          "Area of trapezium",
+          "Area of polygons",
+          "Composite figures",
+          "Area and perimeter applications"
+        ],
+        "learningObjectives": [
+          "Understand and solve syllabus-aligned problems on Area of trapezium",
+          "Understand and solve syllabus-aligned problems on Area of polygons",
+          "Understand and solve syllabus-aligned problems on Composite figures",
+          "Understand and solve syllabus-aligned problems on Area and perimeter applications"
+        ],
+        "estimatedHours": 5
+      },
+      {
+        "name": "Solid Mensuration",
+        "topics": [
+          "Cuboid and cube",
+          "Cylinder introduction",
+          "Unit conversion",
+          "Volume and capacity"
+        ],
+        "learningObjectives": [
+          "Understand and solve syllabus-aligned problems on Cuboid and cube",
+          "Understand and solve syllabus-aligned problems on Cylinder introduction",
+          "Understand and solve syllabus-aligned problems on Unit conversion",
+          "Understand and solve syllabus-aligned problems on Volume and capacity"
+        ],
+        "estimatedHours": 5
+      }
+    ],
+    "topics": [
+      "Area of trapezium",
+      "Area of polygons",
+      "Composite figures",
+      "Area and perimeter applications",
+      "Cuboid and cube",
+      "Cylinder introduction",
+      "Unit conversion",
+      "Volume and capacity"
+    ],
+    "duration": "8 weeks",
+    "estimatedHours": 10,
+    "level": "intermediate",
+    "difficulty": 3,
+    "language": "English",
+    "prerequisites": [
+      "Grade 7 Mathematics foundations",
+      "Arithmetic fluency",
+      "Problem reading skills"
+    ],
+    "learningOutcomes": [
+      "Explain the key CBSE and CISCE ideas in Mensuration",
+      "Use diagrams, tables, equations or graphs to model problems",
+      "Solve graded practice and board-style questions",
+      "Apply the concepts in real-life situations"
+    ],
+    "certificate": true,
+    "status": "published",
+    "enrollmentCount": 0,
+    "averageRating": 0,
+    "totalRatings": 0,
+    "reviewCount": 0,
+    "maxStudents": 50,
+    "tags": [
+      "Grade 8",
+      "Mathematics",
+      "Mensuration",
+      "CBSE",
+      "CISCE",
+      "Upper Primary"
+    ],
+    "isActive": true,
+    "createdAt": {
+      "$date": "2026-07-30T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-07-30T00:00:00.000Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "73000000000000000000232b"
+    },
+    "title": "Grade 8 Mathematics - Data, Probability and Commercial Mathematics",
+    "description": "A CBSE and CISCE-aligned Grade 8 Mathematics course covering Data, Probability and Commercial Mathematics. It follows CBSE/NCERT middle-stage Mathematics and CISCE Upper Primary Mathematics with clear theory, visuals, solved examples and practice.",
+    "createdBy": "696d8e8098d47cbd00770abd",
+    "grade": 8,
+    "subject": "Mathematics",
+    "board": [
+      "CBSE",
+      "ICSE"
+    ],
+    "thumbnail": "",
+    "syllabus": [
+      "Grouped data introduction",
+      "Pie charts",
+      "Choosing graph types",
+      "Frequency distribution",
+      "Simple probability",
+      "Experimental probability",
+      "Discount",
+      "Tax and bills",
+      "Compound interest introduction",
+      "Profit and loss revision"
+    ],
+    "chapters": [
+      {
+        "name": "Data and Probability",
+        "topics": [
+          "Grouped data introduction",
+          "Pie charts",
+          "Choosing graph types",
+          "Frequency distribution",
+          "Simple probability",
+          "Experimental probability"
+        ],
+        "learningObjectives": [
+          "Understand and solve syllabus-aligned problems on Grouped data introduction",
+          "Understand and solve syllabus-aligned problems on Pie charts",
+          "Understand and solve syllabus-aligned problems on Choosing graph types",
+          "Understand and solve syllabus-aligned problems on Frequency distribution",
+          "Understand and solve syllabus-aligned problems on Simple probability",
+          "Understand and solve syllabus-aligned problems on Experimental probability"
+        ],
+        "estimatedHours": 5
+      },
+      {
+        "name": "Commercial Mathematics",
+        "topics": [
+          "Discount",
+          "Tax and bills",
+          "Compound interest introduction",
+          "Profit and loss revision"
+        ],
+        "learningObjectives": [
+          "Understand and solve syllabus-aligned problems on Discount",
+          "Understand and solve syllabus-aligned problems on Tax and bills",
+          "Understand and solve syllabus-aligned problems on Compound interest introduction",
+          "Understand and solve syllabus-aligned problems on Profit and loss revision"
+        ],
+        "estimatedHours": 5
+      }
+    ],
+    "topics": [
+      "Grouped data introduction",
+      "Pie charts",
+      "Choosing graph types",
+      "Frequency distribution",
+      "Simple probability",
+      "Experimental probability",
+      "Discount",
+      "Tax and bills",
+      "Compound interest introduction",
+      "Profit and loss revision"
+    ],
+    "duration": "8 weeks",
+    "estimatedHours": 10,
+    "level": "intermediate",
+    "difficulty": 3,
+    "language": "English",
+    "prerequisites": [
+      "Grade 7 Mathematics foundations",
+      "Arithmetic fluency",
+      "Problem reading skills"
+    ],
+    "learningOutcomes": [
+      "Explain the key CBSE and CISCE ideas in Data, Probability and Commercial Mathematics",
+      "Use diagrams, tables, equations or graphs to model problems",
+      "Solve graded practice and board-style questions",
+      "Apply the concepts in real-life situations"
+    ],
+    "certificate": true,
+    "status": "published",
+    "enrollmentCount": 0,
+    "averageRating": 0,
+    "totalRatings": 0,
+    "reviewCount": 0,
+    "maxStudents": 50,
+    "tags": [
+      "Grade 8",
+      "Mathematics",
+      "Data, Probability and Commercial Mathematics",
+      "CBSE",
+      "CISCE",
+      "Upper Primary"
+    ],
+    "isActive": true,
+    "createdAt": {
+      "$date": "2026-07-30T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-07-30T00:00:00.000Z"
+    },
+    "__v": 0
+  }
+]
