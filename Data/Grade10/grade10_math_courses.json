@@ -3,85 +3,108 @@
     "_id": {
       "$oid": "700000000000000000000051"
     },
-    "title": "Grade 10 Mathematics - Real Numbers and Polynomials",
-    "description": "A CBSE and CISCE-aligned Grade 10 Mathematics course covering Real Numbers and Polynomials. It follows CBSE Class X Mathematics and ICSE Mathematics with clear theory, visuals, solved examples and practice.",
+    "title": "Grade 10 Mathematics - Commercial Mathematics",
+    "description": "Understand money decisions through GST bills, banking calculations, shares and dividends using ICSE Class 10 style examples.",
     "createdBy": "696d8e8098d47cbd00770abd",
     "grade": 10,
     "subject": "Mathematics",
     "board": [
-      "CBSE",
       "ICSE"
     ],
     "thumbnail": "",
     "syllabus": [
-      "Euclid division lemma",
-      "Fundamental theorem of arithmetic",
-      "Decimal expansion",
-      "HCF and LCM applications",
-      "Zeros and coefficients of polynomials",
-      "Division algorithm",
-      "Graph intuition",
-      "Polynomial applications"
+      "Taxable value",
+      "CGST and SGST",
+      "Input tax credit idea",
+      "Invoice total",
+      "Savings account",
+      "Recurring deposit idea",
+      "Interest and maturity value",
+      "Passbook interpretation",
+      "Face value and market value",
+      "Dividend percent",
+      "Income from shares",
+      "Rate of return"
     ],
     "chapters": [
       {
-        "name": "Real Numbers",
+        "name": "Goods and Services Tax (GST)",
         "topics": [
-          "Euclid division lemma",
-          "Fundamental theorem of arithmetic",
-          "Decimal expansion",
-          "HCF and LCM applications"
+          "Taxable value",
+          "CGST and SGST",
+          "Input tax credit idea",
+          "Invoice total"
         ],
         "learningObjectives": [
-          "Understand and solve syllabus-aligned problems on Euclid division lemma",
-          "Understand and solve syllabus-aligned problems on Fundamental theorem of arithmetic",
-          "Understand and solve syllabus-aligned problems on Decimal expansion",
-          "Understand and solve syllabus-aligned problems on HCF and LCM applications"
+          "Understand and solve ICSE Class 10 problems on Taxable value",
+          "Understand and solve ICSE Class 10 problems on CGST and SGST",
+          "Understand and solve ICSE Class 10 problems on Input tax credit idea",
+          "Understand and solve ICSE Class 10 problems on Invoice total"
         ],
         "estimatedHours": 6
       },
       {
-        "name": "Polynomials",
+        "name": "Banking",
         "topics": [
-          "Zeros and coefficients of polynomials",
-          "Division algorithm",
-          "Graph intuition",
-          "Polynomial applications"
+          "Savings account",
+          "Recurring deposit idea",
+          "Interest and maturity value",
+          "Passbook interpretation"
         ],
         "learningObjectives": [
-          "Understand and solve syllabus-aligned problems on Zeros and coefficients of polynomials",
-          "Understand and solve syllabus-aligned problems on Division algorithm",
-          "Understand and solve syllabus-aligned problems on Graph intuition",
-          "Understand and solve syllabus-aligned problems on Polynomial applications"
+          "Understand and solve ICSE Class 10 problems on Savings account",
+          "Understand and solve ICSE Class 10 problems on Recurring deposit idea",
+          "Understand and solve ICSE Class 10 problems on Interest and maturity value",
+          "Understand and solve ICSE Class 10 problems on Passbook interpretation"
+        ],
+        "estimatedHours": 6
+      },
+      {
+        "name": "Shares and Dividends",
+        "topics": [
+          "Face value and market value",
+          "Dividend percent",
+          "Income from shares",
+          "Rate of return"
+        ],
+        "learningObjectives": [
+          "Understand and solve ICSE Class 10 problems on Face value and market value",
+          "Understand and solve ICSE Class 10 problems on Dividend percent",
+          "Understand and solve ICSE Class 10 problems on Income from shares",
+          "Understand and solve ICSE Class 10 problems on Rate of return"
         ],
         "estimatedHours": 6
       }
     ],
     "topics": [
-      "Euclid division lemma",
-      "Fundamental theorem of arithmetic",
-      "Decimal expansion",
-      "HCF and LCM applications",
-      "Zeros and coefficients of polynomials",
-      "Division algorithm",
-      "Graph intuition",
-      "Polynomial applications"
+      "Taxable value",
+      "CGST and SGST",
+      "Input tax credit idea",
+      "Invoice total",
+      "Savings account",
+      "Recurring deposit idea",
+      "Interest and maturity value",
+      "Passbook interpretation",
+      "Face value and market value",
+      "Dividend percent",
+      "Income from shares",
+      "Rate of return"
     ],
-    "duration": "8 weeks",
-    "estimatedHours": 12,
+    "duration": "18 hours",
+    "estimatedHours": 18,
     "level": "intermediate",
-    "difficulty": 4,
+    "difficulty": 3,
     "language": "English",
     "prerequisites": [
-      "Grade 9 Mathematics foundations",
-      "Arithmetic fluency",
-      "Problem reading skills"
+      "Grade 9 algebra and geometry basics",
+      "Clear arithmetic with fractions, decimals and percentages",
+      "Comfort with drawing simple diagrams"
     ],
     "learningOutcomes": [
-      "Explain the key CBSE and CISCE ideas in Real Numbers and Polynomials",
-      "Use diagrams, tables, equations or graphs to model problems",
-      "Solve graded practice and board-style questions",
-      "Apply the concepts in real-life situations"
+      "Explain the key ideas of Commercial Mathematics",
+      "Solve ICSE-style questions from Commercial Mathematics",
+      "Use diagrams, formulae and checking methods to avoid common errors",
+      "Apply the concept in real-life Indian classroom contexts"
     ],
     "certificate": true,
     "status": "published",
@@ -91,105 +114,101 @@
     "reviewCount": 0,
     "maxStudents": 50,
     "tags": [
-      "Grade 10",
-      "Mathematics",
-      "Real Numbers and Polynomials",
-      "CBSE",
+      "ICSE",
       "CISCE",
-      "ICSE"
+      "Grade 10",
+      "Commercial Mathematics",
+      "GST",
+      "Banking",
+      "Shares"
     ],
     "isActive": true,
-    "createdAt": {
-      "$date": "2026-07-30T00:00:00.000Z"
-    },
-    "updatedAt": {
-      "$date": "2026-07-30T00:00:00.000Z"
-    },
+    "createdAt": "2026-08-01T00:00:00.000Z",
+    "updatedAt": "2026-08-01T00:00:00.000Z",
     "__v": 0
   },
   {
     "_id": {
       "$oid": "700000000000000000000055"
     },
-    "title": "Grade 10 Mathematics - Pair of Linear Equations and ICSE Algebra Extension",
-    "description": "A CBSE and CISCE-aligned Grade 10 Mathematics course covering Pair of Linear Equations and ICSE Algebra Extension. It follows CBSE Class X Mathematics and ICSE Mathematics with clear theory, visuals, solved examples and practice.",
+    "title": "Grade 10 Mathematics - Linear Inequations, Ratio and Proportion",
+    "description": "Build confidence with inequations, number-line solution sets, ratio reasoning and proportional comparison.",
     "createdBy": "696d8e8098d47cbd00770abd",
     "grade": 10,
     "subject": "Mathematics",
     "board": [
-      "CBSE",
       "ICSE"
     ],
     "thumbnail": "",
     "syllabus": [
-      "Algebraic methods for linear pairs",
-      "Graphical method for linear pairs",
-      "Consistency of linear pairs",
-      "Application problems",
-      "Matrices basics",
-      "Linear inequations",
-      "Arithmetic with indices",
-      "Logarithms review"
+      "Inequality symbols <, >, ≤, ≥",
+      "Solving one-variable inequations",
+      "Graphing solution sets",
+      "Integer solutions",
+      "Equivalent ratios",
+      "Continued proportion",
+      "Direct comparison",
+      "Board-style proportion problems"
     ],
     "chapters": [
       {
-        "name": "Pair of Linear Equations",
+        "name": "Linear Inequations",
         "topics": [
-          "Algebraic methods for linear pairs",
-          "Graphical method for linear pairs",
-          "Consistency of linear pairs",
-          "Application problems"
+          "Inequality symbols <, >, ≤, ≥",
+          "Solving one-variable inequations",
+          "Graphing solution sets",
+          "Integer solutions"
         ],
         "learningObjectives": [
-          "Understand and solve syllabus-aligned problems on Algebraic methods for linear pairs",
-          "Understand and solve syllabus-aligned problems on Graphical method for linear pairs",
-          "Understand and solve syllabus-aligned problems on Consistency of linear pairs",
-          "Understand and solve syllabus-aligned problems on Application problems"
+          "Understand and solve ICSE Class 10 problems on Inequality symbols <, >, ≤, ≥",
+          "Understand and solve ICSE Class 10 problems on Solving one-variable inequations",
+          "Understand and solve ICSE Class 10 problems on Graphing solution sets",
+          "Understand and solve ICSE Class 10 problems on Integer solutions"
         ],
         "estimatedHours": 6
       },
       {
-        "name": "ICSE Algebra Extension",
+        "name": "Ratio and Proportion",
         "topics": [
-          "Matrices basics",
-          "Linear inequations",
-          "Arithmetic with indices",
-          "Logarithms review"
+          "Equivalent ratios",
+          "Continued proportion",
+          "Direct comparison",
+          "Board-style proportion problems"
         ],
         "learningObjectives": [
-          "Understand and solve syllabus-aligned problems on Matrices basics",
-          "Understand and solve syllabus-aligned problems on Linear inequations",
-          "Understand and solve syllabus-aligned problems on Arithmetic with indices",
-          "Understand and solve syllabus-aligned problems on Logarithms review"
+          "Understand and solve ICSE Class 10 problems on Equivalent ratios",
+          "Understand and solve ICSE Class 10 problems on Continued proportion",
+          "Understand and solve ICSE Class 10 problems on Direct comparison",
+          "Understand and solve ICSE Class 10 problems on Board-style proportion problems"
         ],
         "estimatedHours": 6
       }
     ],
     "topics": [
-      "Algebraic methods for linear pairs",
-      "Graphical method for linear pairs",
-      "Consistency of linear pairs",
-      "Application problems",
-      "Matrices basics",
-      "Linear inequations",
-      "Arithmetic with indices",
-      "Logarithms review"
+      "Inequality symbols <, >, ≤, ≥",
+      "Solving one-variable inequations",
+      "Graphing solution sets",
+      "Integer solutions",
+      "Equivalent ratios",
+      "Continued proportion",
+      "Direct comparison",
+      "Board-style proportion problems"
     ],
-    "duration": "8 weeks",
+    "duration": "12 hours",
     "estimatedHours": 12,
     "level": "intermediate",
-    "difficulty": 4,
+    "difficulty": 3,
     "language": "English",
     "prerequisites": [
-      "Grade 9 Mathematics foundations",
-      "Arithmetic fluency",
-      "Problem reading skills"
+      "Grade 9 algebra and geometry basics",
+      "Clear arithmetic with fractions, decimals and percentages",
+      "Comfort with drawing simple diagrams"
     ],
     "learningOutcomes": [
-      "Explain the key CBSE and CISCE ideas in Pair of Linear Equations and ICSE Algebra Extension",
-      "Use diagrams, tables, equations or graphs to model problems",
-      "Solve graded practice and board-style questions",
-      "Apply the concepts in real-life situations"
+      "Explain the key ideas of Linear Inequations, Ratio and Proportion",
+      "Solve ICSE-style questions from Linear Inequations, Ratio and Proportion",
+      "Use diagrams, formulae and checking methods to avoid common errors",
+      "Apply the concept in real-life Indian classroom contexts"
     ],
     "certificate": true,
     "status": "published",
@@ -199,105 +218,100 @@
     "reviewCount": 0,
     "maxStudents": 50,
     "tags": [
-      "Grade 10",
-      "Mathematics",
-      "Pair of Linear Equations and ICSE Algebra Extension",
-      "CBSE",
+      "ICSE",
       "CISCE",
-      "ICSE"
+      "Grade 10",
+      "Inequations",
+      "Ratio",
+      "Proportion"
     ],
     "isActive": true,
-    "createdAt": {
-      "$date": "2026-07-30T00:00:00.000Z"
-    },
-    "updatedAt": {
-      "$date": "2026-07-30T00:00:00.000Z"
-    },
+    "createdAt": "2026-08-01T00:00:00.000Z",
+    "updatedAt": "2026-08-01T00:00:00.000Z",
     "__v": 0
   },
   {
     "_id": {
       "$oid": "700000000000000000000059"
     },
-    "title": "Grade 10 Mathematics - Quadratic Equations and Arithmetic Progressions",
-    "description": "A CBSE and CISCE-aligned Grade 10 Mathematics course covering Quadratic Equations and Arithmetic Progressions. It follows CBSE Class X Mathematics and ICSE Mathematics with clear theory, visuals, solved examples and practice.",
+    "title": "Grade 10 Mathematics - Quadratic Equations and Polynomial Factorisation",
+    "description": "Learn to solve quadratic equations, factor polynomials and connect algebraic symbols with visual structure.",
     "createdBy": "696d8e8098d47cbd00770abd",
     "grade": 10,
     "subject": "Mathematics",
     "board": [
-      "CBSE",
       "ICSE"
     ],
     "thumbnail": "",
     "syllabus": [
-      "Factorisation method",
+      "Standard form ax² + bx + c = 0",
+      "Factor method",
       "Formula method",
-      "Nature of roots",
-      "Quadratic word problems",
-      "nth term",
-      "Sum of AP",
-      "Real-life sequences",
-      "Sequence applications"
+      "Discriminant and nature of roots",
+      "Common factor",
+      "Grouping",
+      "Identities",
+      "Remainder and factor idea"
     ],
     "chapters": [
       {
-        "name": "Quadratic Equations",
+        "name": "Quadratic Equations in One Variable",
         "topics": [
-          "Factorisation method",
+          "Standard form ax² + bx + c = 0",
+          "Factor method",
           "Formula method",
-          "Nature of roots",
-          "Quadratic word problems"
+          "Discriminant and nature of roots"
         ],
         "learningObjectives": [
-          "Understand and solve syllabus-aligned problems on Factorisation method",
-          "Understand and solve syllabus-aligned problems on Formula method",
-          "Understand and solve syllabus-aligned problems on Nature of roots",
-          "Understand and solve syllabus-aligned problems on Quadratic word problems"
+          "Understand and solve ICSE Class 10 problems on Standard form ax² + bx + c = 0",
+          "Understand and solve ICSE Class 10 problems on Factor method",
+          "Understand and solve ICSE Class 10 problems on Formula method",
+          "Understand and solve ICSE Class 10 problems on Discriminant and nature of roots"
         ],
         "estimatedHours": 6
       },
       {
-        "name": "Arithmetic Progressions",
+        "name": "Factorisation of Polynomials",
         "topics": [
-          "nth term",
-          "Sum of AP",
-          "Real-life sequences",
-          "Sequence applications"
+          "Common factor",
+          "Grouping",
+          "Identities",
+          "Remainder and factor idea"
         ],
         "learningObjectives": [
-          "Understand and solve syllabus-aligned problems on nth term",
-          "Understand and solve syllabus-aligned problems on Sum of AP",
-          "Understand and solve syllabus-aligned problems on Real-life sequences",
-          "Understand and solve syllabus-aligned problems on Sequence applications"
+          "Understand and solve ICSE Class 10 problems on Common factor",
+          "Understand and solve ICSE Class 10 problems on Grouping",
+          "Understand and solve ICSE Class 10 problems on Identities",
+          "Understand and solve ICSE Class 10 problems on Remainder and factor idea"
         ],
         "estimatedHours": 6
       }
     ],
     "topics": [
-      "Factorisation method",
+      "Standard form ax² + bx + c = 0",
+      "Factor method",
       "Formula method",
-      "Nature of roots",
-      "Quadratic word problems",
-      "nth term",
-      "Sum of AP",
-      "Real-life sequences",
-      "Sequence applications"
+      "Discriminant and nature of roots",
+      "Common factor",
+      "Grouping",
+      "Identities",
+      "Remainder and factor idea"
     ],
-    "duration": "8 weeks",
+    "duration": "12 hours",
     "estimatedHours": 12,
     "level": "intermediate",
     "difficulty": 4,
     "language": "English",
     "prerequisites": [
-      "Grade 9 Mathematics foundations",
-      "Arithmetic fluency",
-      "Problem reading skills"
+      "Grade 9 algebra and geometry basics",
+      "Clear arithmetic with fractions, decimals and percentages",
+      "Comfort with drawing simple diagrams"
     ],
     "learningOutcomes": [
-      "Explain the key CBSE and CISCE ideas in Quadratic Equations and Arithmetic Progressions",
-      "Use diagrams, tables, equations or graphs to model problems",
-      "Solve graded practice and board-style questions",
-      "Apply the concepts in real-life situations"
+      "Explain the key ideas of Quadratic Equations and Polynomial Factorisation",
+      "Solve ICSE-style questions from Quadratic Equations and Polynomial Factorisation",
+      "Use diagrams, formulae and checking methods to avoid common errors",
+      "Apply the concept in real-life Indian classroom contexts"
     ],
     "certificate": true,
     "status": "published",
@@ -307,105 +321,124 @@
     "reviewCount": 0,
     "maxStudents": 50,
     "tags": [
-      "Grade 10",
-      "Mathematics",
-      "Quadratic Equations and Arithmetic Progressions",
-      "CBSE",
+      "ICSE",
       "CISCE",
-      "ICSE"
+      "Grade 10",
+      "Quadratic Equations",
+      "Factorisation",
+      "Polynomials"
     ],
     "isActive": true,
-    "createdAt": {
-      "$date": "2026-07-30T00:00:00.000Z"
-    },
-    "updatedAt": {
-      "$date": "2026-07-30T00:00:00.000Z"
-    },
+    "createdAt": "2026-08-01T00:00:00.000Z",
+    "updatedAt": "2026-08-01T00:00:00.000Z",
     "__v": 0
   },
   {
     "_id": {
       "$oid": "70000000000000000000005d"
     },
-    "title": "Grade 10 Mathematics - Commercial Mathematics - ICSE",
-    "description": "A CBSE and CISCE-aligned Grade 10 Mathematics course covering Commercial Mathematics - ICSE. It follows CBSE Class X Mathematics and ICSE Mathematics with clear theory, visuals, solved examples and practice.",
+    "title": "Grade 10 Mathematics - Matrices and Progressions",
+    "description": "Represent information with matrices and study arithmetic and geometric progressions using patterns and formulae.",
     "createdBy": "696d8e8098d47cbd00770abd",
     "grade": 10,
     "subject": "Mathematics",
     "board": [
-      "CBSE",
       "ICSE"
     ],
     "thumbnail": "",
     "syllabus": [
-      "Banking",
-      "GST and tax",
-      "Bills and discounts",
-      "Financial statements",
-      "Shares and dividends",
-      "Compound interest",
-      "Profit and loss revision",
-      "Commercial word problems"
+      "Order of a matrix",
+      "Matrix addition and subtraction",
+      "Scalar multiplication",
+      "Matrix multiplication basics",
+      "Common difference",
+      "nth term",
+      "Sum of AP",
+      "Word problems",
+      "Common ratio",
+      "nth term",
+      "Geometric pattern",
+      "Simple applications"
     ],
     "chapters": [
       {
-        "name": "Banking and Taxation",
+        "name": "Matrices",
         "topics": [
-          "Banking",
-          "GST and tax",
-          "Bills and discounts",
-          "Financial statements"
+          "Order of a matrix",
+          "Matrix addition and subtraction",
+          "Scalar multiplication",
+          "Matrix multiplication basics"
         ],
         "learningObjectives": [
-          "Understand and solve syllabus-aligned problems on Banking",
-          "Understand and solve syllabus-aligned problems on GST and tax",
-          "Understand and solve syllabus-aligned problems on Bills and discounts",
-          "Understand and solve syllabus-aligned problems on Financial statements"
+          "Understand and solve ICSE Class 10 problems on Order of a matrix",
+          "Understand and solve ICSE Class 10 problems on Matrix addition and subtraction",
+          "Understand and solve ICSE Class 10 problems on Scalar multiplication",
+          "Understand and solve ICSE Class 10 problems on Matrix multiplication basics"
         ],
         "estimatedHours": 6
       },
       {
-        "name": "Investments and Interest",
+        "name": "Arithmetic Progression",
         "topics": [
-          "Shares and dividends",
-          "Compound interest",
-          "Profit and loss revision",
-          "Commercial word problems"
+          "Common difference",
+          "nth term",
+          "Sum of AP",
+          "Word problems"
         ],
         "learningObjectives": [
-          "Understand and solve syllabus-aligned problems on Shares and dividends",
-          "Understand and solve syllabus-aligned problems on Compound interest",
-          "Understand and solve syllabus-aligned problems on Profit and loss revision",
-          "Understand and solve syllabus-aligned problems on Commercial word problems"
+          "Understand and solve ICSE Class 10 problems on Common difference",
+          "Understand and solve ICSE Class 10 problems on nth term",
+          "Understand and solve ICSE Class 10 problems on Sum of AP",
+          "Understand and solve ICSE Class 10 problems on Word problems"
+        ],
+        "estimatedHours": 6
+      },
+      {
+        "name": "Geometric Progression",
+        "topics": [
+          "Common ratio",
+          "nth term",
+          "Geometric pattern",
+          "Simple applications"
+        ],
+        "learningObjectives": [
+          "Understand and solve ICSE Class 10 problems on Common ratio",
+          "Understand and solve ICSE Class 10 problems on nth term",
+          "Understand and solve ICSE Class 10 problems on Geometric pattern",
+          "Understand and solve ICSE Class 10 problems on Simple applications"
         ],
         "estimatedHours": 6
       }
     ],
     "topics": [
-      "Banking",
-      "GST and tax",
-      "Bills and discounts",
-      "Financial statements",
-      "Shares and dividends",
-      "Compound interest",
-      "Profit and loss revision",
-      "Commercial word problems"
+      "Order of a matrix",
+      "Matrix addition and subtraction",
+      "Scalar multiplication",
+      "Matrix multiplication basics",
+      "Common difference",
+      "nth term",
+      "Sum of AP",
+      "Word problems",
+      "Common ratio",
+      "nth term",
+      "Geometric pattern",
+      "Simple applications"
     ],
-    "duration": "8 weeks",
-    "estimatedHours": 12,
+    "duration": "18 hours",
+    "estimatedHours": 18,
     "level": "intermediate",
     "difficulty": 4,
     "language": "English",
     "prerequisites": [
-      "Grade 9 Mathematics foundations",
-      "Arithmetic fluency",
-      "Problem reading skills"
+      "Grade 9 algebra and geometry basics",
+      "Clear arithmetic with fractions, decimals and percentages",
+      "Comfort with drawing simple diagrams"
     ],
     "learningOutcomes": [
-      "Explain the key CBSE and CISCE ideas in Commercial Mathematics - ICSE",
-      "Use diagrams, tables, equations or graphs to model problems",
-      "Solve graded practice and board-style questions",
-      "Apply the concepts in real-life situations"
+      "Explain the key ideas of Matrices and Progressions",
+      "Solve ICSE-style questions from Matrices and Progressions",
+      "Use diagrams, formulae and checking methods to avoid common errors",
+      "Apply the concept in real-life Indian classroom contexts"
     ],
     "certificate": true,
     "status": "published",
@@ -415,213 +448,125 @@
     "reviewCount": 0,
     "maxStudents": 50,
     "tags": [
-      "Grade 10",
-      "Mathematics",
-      "Commercial Mathematics - ICSE",
-      "CBSE",
+      "ICSE",
       "CISCE",
-      "ICSE"
+      "Grade 10",
+      "Matrices",
+      "AP",
+      "GP",
+      "Progression"
     ],
     "isActive": true,
-    "createdAt": {
-      "$date": "2026-07-30T00:00:00.000Z"
-    },
-    "updatedAt": {
-      "$date": "2026-07-30T00:00:00.000Z"
-    },
+    "createdAt": "2026-08-01T00:00:00.000Z",
+    "updatedAt": "2026-08-01T00:00:00.000Z",
     "__v": 0
   },
   {
     "_id": {
       "$oid": "700000000000000000000061"
     },
-    "title": "Grade 10 Mathematics - Geometry, Circles and Loci",
-    "description": "A CBSE and CISCE-aligned Grade 10 Mathematics course covering Geometry, Circles and Loci. It follows CBSE Class X Mathematics and ICSE Mathematics with clear theory, visuals, solved examples and practice.",
+    "title": "Grade 10 Mathematics - Coordinate Geometry",
+    "description": "Use the Cartesian plane to locate points, measure distance, find midpoints and solve geometry problems with coordinates.",
     "createdBy": "696d8e8098d47cbd00770abd",
     "grade": 10,
     "subject": "Mathematics",
     "board": [
-      "CBSE",
       "ICSE"
     ],
     "thumbnail": "",
     "syllabus": [
-      "AA similarity",
-      "Basic proportionality theorem",
-      "Pythagoras theorem",
-      "Similarity applications",
-      "Tangents",
-      "Secants and chords",
-      "Circle theorems",
-      "Loci and construction"
+      "Axes and quadrants",
+      "Plotting points",
+      "Reading coordinates",
+      "Scale on graph paper",
+      "Distance formula",
+      "Midpoint formula",
+      "Section formula",
+      "Collinearity checks",
+      "Area of triangle by coordinates",
+      "Slope intuition",
+      "Graphical solution links",
+      "Real map problems"
     ],
     "chapters": [
       {
-        "name": "Triangles and Similarity",
+        "name": "Cartesian Plane and Plotting",
         "topics": [
-          "AA similarity",
-          "Basic proportionality theorem",
-          "Pythagoras theorem",
-          "Similarity applications"
+          "Axes and quadrants",
+          "Plotting points",
+          "Reading coordinates",
+          "Scale on graph paper"
         ],
         "learningObjectives": [
-          "Understand and solve syllabus-aligned problems on AA similarity",
-          "Understand and solve syllabus-aligned problems on Basic proportionality theorem",
-          "Understand and solve syllabus-aligned problems on Pythagoras theorem",
-          "Understand and solve syllabus-aligned problems on Similarity applications"
+          "Understand and solve ICSE Class 10 problems on Axes and quadrants",
+          "Understand and solve ICSE Class 10 problems on Plotting points",
+          "Understand and solve ICSE Class 10 problems on Reading coordinates",
+          "Understand and solve ICSE Class 10 problems on Scale on graph paper"
         ],
         "estimatedHours": 6
       },
       {
-        "name": "Circles and Loci - ICSE Extension",
-        "topics": [
-          "Tangents",
-          "Secants and chords",
-          "Circle theorems",
-          "Loci and construction"
-        ],
-        "learningObjectives": [
-          "Understand and solve syllabus-aligned problems on Tangents",
-          "Understand and solve syllabus-aligned problems on Secants and chords",
-          "Understand and solve syllabus-aligned problems on Circle theorems",
-          "Understand and solve syllabus-aligned problems on Loci and construction"
-        ],
-        "estimatedHours": 6
-      }
-    ],
-    "topics": [
-      "AA similarity",
-      "Basic proportionality theorem",
-      "Pythagoras theorem",
-      "Similarity applications",
-      "Tangents",
-      "Secants and chords",
-      "Circle theorems",
-      "Loci and construction"
-    ],
-    "duration": "8 weeks",
-    "estimatedHours": 12,
-    "level": "intermediate",
-    "difficulty": 4,
-    "language": "English",
-    "prerequisites": [
-      "Grade 9 Mathematics foundations",
-      "Arithmetic fluency",
-      "Problem reading skills"
-    ],
-    "learningOutcomes": [
-      "Explain the key CBSE and CISCE ideas in Geometry, Circles and Loci",
-      "Use diagrams, tables, equations or graphs to model problems",
-      "Solve graded practice and board-style questions",
-      "Apply the concepts in real-life situations"
-    ],
-    "certificate": true,
-    "status": "published",
-    "enrollmentCount": 0,
-    "averageRating": 0,
-    "totalRatings": 0,
-    "reviewCount": 0,
-    "maxStudents": 50,
-    "tags": [
-      "Grade 10",
-      "Mathematics",
-      "Geometry, Circles and Loci",
-      "CBSE",
-      "CISCE",
-      "ICSE"
-    ],
-    "isActive": true,
-    "createdAt": {
-      "$date": "2026-07-30T00:00:00.000Z"
-    },
-    "updatedAt": {
-      "$date": "2026-07-30T00:00:00.000Z"
-    },
-    "__v": 0
-  },
-  {
-    "_id": {
-      "$oid": "73000000000000000000232e"
-    },
-    "title": "Grade 10 Mathematics - Coordinate Geometry",
-    "description": "A CBSE and CISCE-aligned Grade 10 Mathematics course covering Coordinate Geometry. It follows CBSE Class X Mathematics and ICSE Mathematics with clear theory, visuals, solved examples and practice.",
-    "createdBy": "696d8e8098d47cbd00770abd",
-    "grade": 10,
-    "subject": "Mathematics",
-    "board": [
-      "CBSE",
-      "ICSE"
-    ],
-    "thumbnail": "",
-    "syllabus": [
-      "Distance formula",
-      "Section formula",
-      "Midpoint formula",
-      "Area of triangle",
-      "Collinearity",
-      "Centroid intuition",
-      "Line segment division",
-      "Coordinate word problems"
-    ],
-    "chapters": [
-      {
-        "name": "Coordinate Formulae",
+        "name": "Distance and Section Formula",
         "topics": [
           "Distance formula",
-          "Section formula",
           "Midpoint formula",
-          "Area of triangle"
+          "Section formula",
+          "Collinearity checks"
         ],
         "learningObjectives": [
-          "Understand and solve syllabus-aligned problems on Distance formula",
-          "Understand and solve syllabus-aligned problems on Section formula",
-          "Understand and solve syllabus-aligned problems on Midpoint formula",
-          "Understand and solve syllabus-aligned problems on Area of triangle"
+          "Understand and solve ICSE Class 10 problems on Distance formula",
+          "Understand and solve ICSE Class 10 problems on Midpoint formula",
+          "Understand and solve ICSE Class 10 problems on Section formula",
+          "Understand and solve ICSE Class 10 problems on Collinearity checks"
         ],
         "estimatedHours": 6
       },
       {
         "name": "Coordinate Applications",
         "topics": [
-          "Collinearity",
-          "Centroid intuition",
-          "Line segment division",
-          "Coordinate word problems"
+          "Area of triangle by coordinates",
+          "Slope intuition",
+          "Graphical solution links",
+          "Real map problems"
         ],
         "learningObjectives": [
-          "Understand and solve syllabus-aligned problems on Collinearity",
-          "Understand and solve syllabus-aligned problems on Centroid intuition",
-          "Understand and solve syllabus-aligned problems on Line segment division",
-          "Understand and solve syllabus-aligned problems on Coordinate word problems"
+          "Understand and solve ICSE Class 10 problems on Area of triangle by coordinates",
+          "Understand and solve ICSE Class 10 problems on Slope intuition",
+          "Understand and solve ICSE Class 10 problems on Graphical solution links",
+          "Understand and solve ICSE Class 10 problems on Real map problems"
         ],
         "estimatedHours": 6
       }
     ],
     "topics": [
+      "Axes and quadrants",
+      "Plotting points",
+      "Reading coordinates",
+      "Scale on graph paper",
       "Distance formula",
-      "Section formula",
       "Midpoint formula",
-      "Area of triangle",
-      "Collinearity",
-      "Centroid intuition",
-      "Line segment division",
-      "Coordinate word problems"
+      "Section formula",
+      "Collinearity checks",
+      "Area of triangle by coordinates",
+      "Slope intuition",
+      "Graphical solution links",
+      "Real map problems"
     ],
-    "duration": "8 weeks",
-    "estimatedHours": 12,
+    "duration": "18 hours",
+    "estimatedHours": 18,
     "level": "intermediate",
-    "difficulty": 4,
+    "difficulty": 3,
     "language": "English",
     "prerequisites": [
-      "Grade 9 Mathematics foundations",
-      "Arithmetic fluency",
-      "Problem reading skills"
+      "Grade 9 algebra and geometry basics",
+      "Clear arithmetic with fractions, decimals and percentages",
+      "Comfort with drawing simple diagrams"
     ],
     "learningOutcomes": [
-      "Explain the key CBSE and CISCE ideas in Coordinate Geometry",
-      "Use diagrams, tables, equations or graphs to model problems",
-      "Solve graded practice and board-style questions",
-      "Apply the concepts in real-life situations"
+      "Explain the key ideas of Coordinate Geometry",
+      "Solve ICSE-style questions from Coordinate Geometry",
+      "Use diagrams, formulae and checking methods to avoid common errors",
+      "Apply the concept in real-life Indian classroom contexts"
     ],
     "certificate": true,
     "status": "published",
@@ -631,105 +576,274 @@
     "reviewCount": 0,
     "maxStudents": 50,
     "tags": [
-      "Grade 10",
-      "Mathematics",
-      "Coordinate Geometry",
-      "CBSE",
+      "ICSE",
       "CISCE",
-      "ICSE"
+      "Grade 10",
+      "Coordinate Geometry",
+      "Cartesian Plane"
     ],
     "isActive": true,
-    "createdAt": {
-      "$date": "2026-07-30T00:00:00.000Z"
+    "createdAt": "2026-08-01T00:00:00.000Z",
+    "updatedAt": "2026-08-01T00:00:00.000Z",
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "73000000000000000000232e"
     },
-    "updatedAt": {
-      "$date": "2026-07-30T00:00:00.000Z"
-    },
+    "title": "Grade 10 Mathematics - Similarity and Loci",
+    "description": "Understand similar triangles and loci using visual proofs, construction thinking and precise geometry language.",
+    "createdBy": "696d8e8098d47cbd00770abd",
+    "grade": 10,
+    "subject": "Mathematics",
+    "board": [
+      "ICSE"
+    ],
+    "thumbnail": "",
+    "syllabus": [
+      "Meaning of similarity",
+      "AAA condition",
+      "SSS proportionality",
+      "SAS similarity",
+      "Meaning of locus",
+      "Equidistant from a point",
+      "Equidistant from two points",
+      "Equidistant from two lines",
+      "Perpendicular bisector locus",
+      "Angle bisector locus",
+      "Circle as locus",
+      "Construction-based reasoning"
+    ],
+    "chapters": [
+      {
+        "name": "Similarity of Triangles",
+        "topics": [
+          "Meaning of similarity",
+          "AAA condition",
+          "SSS proportionality",
+          "SAS similarity"
+        ],
+        "learningObjectives": [
+          "Understand and solve ICSE Class 10 problems on Meaning of similarity",
+          "Understand and solve ICSE Class 10 problems on AAA condition",
+          "Understand and solve ICSE Class 10 problems on SSS proportionality",
+          "Understand and solve ICSE Class 10 problems on SAS similarity"
+        ],
+        "estimatedHours": 6
+      },
+      {
+        "name": "Loci Theorems",
+        "topics": [
+          "Meaning of locus",
+          "Equidistant from a point",
+          "Equidistant from two points",
+          "Equidistant from two lines"
+        ],
+        "learningObjectives": [
+          "Understand and solve ICSE Class 10 problems on Meaning of locus",
+          "Understand and solve ICSE Class 10 problems on Equidistant from a point",
+          "Understand and solve ICSE Class 10 problems on Equidistant from two points",
+          "Understand and solve ICSE Class 10 problems on Equidistant from two lines"
+        ],
+        "estimatedHours": 6
+      },
+      {
+        "name": "Loci Constructions",
+        "topics": [
+          "Perpendicular bisector locus",
+          "Angle bisector locus",
+          "Circle as locus",
+          "Construction-based reasoning"
+        ],
+        "learningObjectives": [
+          "Understand and solve ICSE Class 10 problems on Perpendicular bisector locus",
+          "Understand and solve ICSE Class 10 problems on Angle bisector locus",
+          "Understand and solve ICSE Class 10 problems on Circle as locus",
+          "Understand and solve ICSE Class 10 problems on Construction-based reasoning"
+        ],
+        "estimatedHours": 6
+      }
+    ],
+    "topics": [
+      "Meaning of similarity",
+      "AAA condition",
+      "SSS proportionality",
+      "SAS similarity",
+      "Meaning of locus",
+      "Equidistant from a point",
+      "Equidistant from two points",
+      "Equidistant from two lines",
+      "Perpendicular bisector locus",
+      "Angle bisector locus",
+      "Circle as locus",
+      "Construction-based reasoning"
+    ],
+    "duration": "18 hours",
+    "estimatedHours": 18,
+    "level": "intermediate",
+    "difficulty": 4,
+    "language": "English",
+    "prerequisites": [
+      "Grade 9 algebra and geometry basics",
+      "Clear arithmetic with fractions, decimals and percentages",
+      "Comfort with drawing simple diagrams"
+    ],
+    "learningOutcomes": [
+      "Explain the key ideas of Similarity and Loci",
+      "Solve ICSE-style questions from Similarity and Loci",
+      "Use diagrams, formulae and checking methods to avoid common errors",
+      "Apply the concept in real-life Indian classroom contexts"
+    ],
+    "certificate": true,
+    "status": "published",
+    "enrollmentCount": 0,
+    "averageRating": 0,
+    "totalRatings": 0,
+    "reviewCount": 0,
+    "maxStudents": 50,
+    "tags": [
+      "ICSE",
+      "CISCE",
+      "Grade 10",
+      "Similarity",
+      "Loci",
+      "Constructions"
+    ],
+    "isActive": true,
+    "createdAt": "2026-08-01T00:00:00.000Z",
+    "updatedAt": "2026-08-01T00:00:00.000Z",
     "__v": 0
   },
   {
     "_id": {
       "$oid": "73000000000000000000232f"
     },
-    "title": "Grade 10 Mathematics - Trigonometry and Heights and Distances",
-    "description": "A CBSE and CISCE-aligned Grade 10 Mathematics course covering Trigonometry and Heights and Distances. It follows CBSE Class X Mathematics and ICSE Mathematics with clear theory, visuals, solved examples and practice.",
+    "title": "Grade 10 Mathematics - Circle Geometry and Constructions",
+    "description": "Master ICSE circle theorems, cyclic quadrilaterals, tangent-secant ideas and accurate circle constructions.",
     "createdBy": "696d8e8098d47cbd00770abd",
     "grade": 10,
     "subject": "Mathematics",
     "board": [
-      "CBSE",
       "ICSE"
     ],
     "thumbnail": "",
     "syllabus": [
-      "Sine cosine tangent",
-      "Standard angles",
-      "Reciprocal ratios",
-      "Fundamental identity",
-      "Angle of elevation",
-      "Angle of depression",
-      "Survey applications",
-      "Real-life measurement problems"
+      "Angle at centre",
+      "Angle in same segment",
+      "Angle in semicircle",
+      "Chord subtended angles",
+      "Cyclic quadrilateral",
+      "Opposite angles supplementary",
+      "Exterior angle property",
+      "Finding unknown angles",
+      "Radius perpendicular tangent",
+      "Tangents from external point",
+      "Tangent-chord theorem idea",
+      "Secant relationships",
+      "Tangents to a circle",
+      "Inscribed shapes",
+      "Using compass accurately",
+      "Construction verification"
     ],
     "chapters": [
       {
-        "name": "Trigonometric Ratios and Identities",
+        "name": "Circle Angle Properties",
         "topics": [
-          "Sine cosine tangent",
-          "Standard angles",
-          "Reciprocal ratios",
-          "Fundamental identity"
+          "Angle at centre",
+          "Angle in same segment",
+          "Angle in semicircle",
+          "Chord subtended angles"
         ],
         "learningObjectives": [
-          "Understand and solve syllabus-aligned problems on Sine cosine tangent",
-          "Understand and solve syllabus-aligned problems on Standard angles",
-          "Understand and solve syllabus-aligned problems on Reciprocal ratios",
-          "Understand and solve syllabus-aligned problems on Fundamental identity"
+          "Understand and solve ICSE Class 10 problems on Angle at centre",
+          "Understand and solve ICSE Class 10 problems on Angle in same segment",
+          "Understand and solve ICSE Class 10 problems on Angle in semicircle",
+          "Understand and solve ICSE Class 10 problems on Chord subtended angles"
         ],
         "estimatedHours": 6
       },
       {
-        "name": "Applications of Trigonometry",
+        "name": "Cyclic Properties",
         "topics": [
-          "Angle of elevation",
-          "Angle of depression",
-          "Survey applications",
-          "Real-life measurement problems"
+          "Cyclic quadrilateral",
+          "Opposite angles supplementary",
+          "Exterior angle property",
+          "Finding unknown angles"
         ],
         "learningObjectives": [
-          "Understand and solve syllabus-aligned problems on Angle of elevation",
-          "Understand and solve syllabus-aligned problems on Angle of depression",
-          "Understand and solve syllabus-aligned problems on Survey applications",
-          "Understand and solve syllabus-aligned problems on Real-life measurement problems"
+          "Understand and solve ICSE Class 10 problems on Cyclic quadrilateral",
+          "Understand and solve ICSE Class 10 problems on Opposite angles supplementary",
+          "Understand and solve ICSE Class 10 problems on Exterior angle property",
+          "Understand and solve ICSE Class 10 problems on Finding unknown angles"
+        ],
+        "estimatedHours": 6
+      },
+      {
+        "name": "Tangent and Secant Properties",
+        "topics": [
+          "Radius perpendicular tangent",
+          "Tangents from external point",
+          "Tangent-chord theorem idea",
+          "Secant relationships"
+        ],
+        "learningObjectives": [
+          "Understand and solve ICSE Class 10 problems on Radius perpendicular tangent",
+          "Understand and solve ICSE Class 10 problems on Tangents from external point",
+          "Understand and solve ICSE Class 10 problems on Tangent-chord theorem idea",
+          "Understand and solve ICSE Class 10 problems on Secant relationships"
+        ],
+        "estimatedHours": 6
+      },
+      {
+        "name": "Circle Constructions",
+        "topics": [
+          "Tangents to a circle",
+          "Inscribed shapes",
+          "Using compass accurately",
+          "Construction verification"
+        ],
+        "learningObjectives": [
+          "Understand and solve ICSE Class 10 problems on Tangents to a circle",
+          "Understand and solve ICSE Class 10 problems on Inscribed shapes",
+          "Understand and solve ICSE Class 10 problems on Using compass accurately",
+          "Understand and solve ICSE Class 10 problems on Construction verification"
         ],
         "estimatedHours": 6
       }
     ],
     "topics": [
-      "Sine cosine tangent",
-      "Standard angles",
-      "Reciprocal ratios",
-      "Fundamental identity",
-      "Angle of elevation",
-      "Angle of depression",
-      "Survey applications",
-      "Real-life measurement problems"
+      "Angle at centre",
+      "Angle in same segment",
+      "Angle in semicircle",
+      "Chord subtended angles",
+      "Cyclic quadrilateral",
+      "Opposite angles supplementary",
+      "Exterior angle property",
+      "Finding unknown angles",
+      "Radius perpendicular tangent",
+      "Tangents from external point",
+      "Tangent-chord theorem idea",
+      "Secant relationships",
+      "Tangents to a circle",
+      "Inscribed shapes",
+      "Using compass accurately",
+      "Construction verification"
     ],
-    "duration": "8 weeks",
-    "estimatedHours": 12,
+    "duration": "24 hours",
+    "estimatedHours": 24,
     "level": "intermediate",
     "difficulty": 4,
     "language": "English",
     "prerequisites": [
-      "Grade 9 Mathematics foundations",
-      "Arithmetic fluency",
-      "Problem reading skills"
+      "Grade 9 algebra and geometry basics",
+      "Clear arithmetic with fractions, decimals and percentages",
+      "Comfort with drawing simple diagrams"
     ],
     "learningOutcomes": [
-      "Explain the key CBSE and CISCE ideas in Trigonometry and Heights and Distances",
-      "Use diagrams, tables, equations or graphs to model problems",
-      "Solve graded practice and board-style questions",
-      "Apply the concepts in real-life situations"
+      "Explain the key ideas of Circle Geometry and Constructions",
+      "Solve ICSE-style questions from Circle Geometry and Constructions",
+      "Use diagrams, formulae and checking methods to avoid common errors",
+      "Apply the concept in real-life Indian classroom contexts"
     ],
     "certificate": true,
     "status": "published",
@@ -739,113 +853,124 @@
     "reviewCount": 0,
     "maxStudents": 50,
     "tags": [
-      "Grade 10",
-      "Mathematics",
-      "Trigonometry and Heights and Distances",
-      "CBSE",
+      "ICSE",
       "CISCE",
-      "ICSE"
+      "Grade 10",
+      "Circle Geometry",
+      "Tangents",
+      "Cyclic Quadrilateral"
     ],
     "isActive": true,
-    "createdAt": {
-      "$date": "2026-07-30T00:00:00.000Z"
-    },
-    "updatedAt": {
-      "$date": "2026-07-30T00:00:00.000Z"
-    },
+    "createdAt": "2026-08-01T00:00:00.000Z",
+    "updatedAt": "2026-08-01T00:00:00.000Z",
     "__v": 0
   },
   {
     "_id": {
       "$oid": "730000000000000000002330"
     },
-    "title": "Grade 10 Mathematics - Mensuration, Statistics and Probability",
-    "description": "A CBSE and CISCE-aligned Grade 10 Mathematics course covering Mensuration, Statistics and Probability. It follows CBSE Class X Mathematics and ICSE Mathematics with clear theory, visuals, solved examples and practice.",
+    "title": "Grade 10 Mathematics - Mensuration of Solids",
+    "description": "Visualise and calculate curved surface area, total surface area and volume of cylinders, cones and spheres.",
     "createdBy": "696d8e8098d47cbd00770abd",
     "grade": 10,
     "subject": "Mathematics",
     "board": [
-      "CBSE",
       "ICSE"
     ],
     "thumbnail": "",
     "syllabus": [
-      "Areas related to circles",
-      "Sector area",
-      "Surface areas and volumes",
-      "Frustum and solids extension",
-      "Grouped mean",
-      "Median and mode",
-      "Cumulative frequency",
-      "Ogive and histogram",
-      "Classical probability",
-      "Simple compound events"
+      "Curved surface area",
+      "Total surface area",
+      "Volume",
+      "Capacity connection",
+      "Slant height",
+      "Curved surface area",
+      "Total surface area",
+      "Volume",
+      "Surface area of sphere",
+      "Volume of sphere",
+      "Hemisphere formulae",
+      "Mixed solid problems"
     ],
     "chapters": [
       {
-        "name": "Mensuration",
+        "name": "Cylinder",
         "topics": [
-          "Areas related to circles",
-          "Sector area",
-          "Surface areas and volumes",
-          "Frustum and solids extension"
+          "Curved surface area",
+          "Total surface area",
+          "Volume",
+          "Capacity connection"
         ],
         "learningObjectives": [
-          "Understand and solve syllabus-aligned problems on Areas related to circles",
-          "Understand and solve syllabus-aligned problems on Sector area",
-          "Understand and solve syllabus-aligned problems on Surface areas and volumes",
-          "Understand and solve syllabus-aligned problems on Frustum and solids extension"
+          "Understand and solve ICSE Class 10 problems on Curved surface area",
+          "Understand and solve ICSE Class 10 problems on Total surface area",
+          "Understand and solve ICSE Class 10 problems on Volume",
+          "Understand and solve ICSE Class 10 problems on Capacity connection"
         ],
         "estimatedHours": 6
       },
       {
-        "name": "Statistics and Probability",
+        "name": "Cone",
         "topics": [
-          "Grouped mean",
-          "Median and mode",
-          "Cumulative frequency",
-          "Ogive and histogram",
-          "Classical probability",
-          "Simple compound events"
+          "Slant height",
+          "Curved surface area",
+          "Total surface area",
+          "Volume"
         ],
         "learningObjectives": [
-          "Understand and solve syllabus-aligned problems on Grouped mean",
-          "Understand and solve syllabus-aligned problems on Median and mode",
-          "Understand and solve syllabus-aligned problems on Cumulative frequency",
-          "Understand and solve syllabus-aligned problems on Ogive and histogram",
-          "Understand and solve syllabus-aligned problems on Classical probability",
-          "Understand and solve syllabus-aligned problems on Simple compound events"
+          "Understand and solve ICSE Class 10 problems on Slant height",
+          "Understand and solve ICSE Class 10 problems on Curved surface area",
+          "Understand and solve ICSE Class 10 problems on Total surface area",
+          "Understand and solve ICSE Class 10 problems on Volume"
+        ],
+        "estimatedHours": 6
+      },
+      {
+        "name": "Sphere and Hemisphere",
+        "topics": [
+          "Surface area of sphere",
+          "Volume of sphere",
+          "Hemisphere formulae",
+          "Mixed solid problems"
+        ],
+        "learningObjectives": [
+          "Understand and solve ICSE Class 10 problems on Surface area of sphere",
+          "Understand and solve ICSE Class 10 problems on Volume of sphere",
+          "Understand and solve ICSE Class 10 problems on Hemisphere formulae",
+          "Understand and solve ICSE Class 10 problems on Mixed solid problems"
         ],
         "estimatedHours": 6
       }
     ],
     "topics": [
-      "Areas related to circles",
-      "Sector area",
-      "Surface areas and volumes",
-      "Frustum and solids extension",
-      "Grouped mean",
-      "Median and mode",
-      "Cumulative frequency",
-      "Ogive and histogram",
-      "Classical probability",
-      "Simple compound events"
+      "Curved surface area",
+      "Total surface area",
+      "Volume",
+      "Capacity connection",
+      "Slant height",
+      "Curved surface area",
+      "Total surface area",
+      "Volume",
+      "Surface area of sphere",
+      "Volume of sphere",
+      "Hemisphere formulae",
+      "Mixed solid problems"
     ],
-    "duration": "8 weeks",
-    "estimatedHours": 12,
+    "duration": "18 hours",
+    "estimatedHours": 18,
     "level": "intermediate",
     "difficulty": 4,
     "language": "English",
     "prerequisites": [
-      "Grade 9 Mathematics foundations",
-      "Arithmetic fluency",
-      "Problem reading skills"
+      "Grade 9 algebra and geometry basics",
+      "Clear arithmetic with fractions, decimals and percentages",
+      "Comfort with drawing simple diagrams"
     ],
     "learningOutcomes": [
-      "Explain the key CBSE and CISCE ideas in Mensuration, Statistics and Probability",
-      "Use diagrams, tables, equations or graphs to model problems",
-      "Solve graded practice and board-style questions",
-      "Apply the concepts in real-life situations"
+      "Explain the key ideas of Mensuration of Solids",
+      "Solve ICSE-style questions from Mensuration of Solids",
+      "Use diagrams, formulae and checking methods to avoid common errors",
+      "Apply the concept in real-life Indian classroom contexts"
     ],
     "certificate": true,
     "status": "published",
@@ -855,20 +980,295 @@
     "reviewCount": 0,
     "maxStudents": 50,
     "tags": [
-      "Grade 10",
-      "Mathematics",
-      "Mensuration, Statistics and Probability",
-      "CBSE",
+      "ICSE",
       "CISCE",
-      "ICSE"
+      "Grade 10",
+      "Mensuration",
+      "Cylinder",
+      "Cone",
+      "Sphere"
     ],
     "isActive": true,
-    "createdAt": {
-      "$date": "2026-07-30T00:00:00.000Z"
+    "createdAt": "2026-08-01T00:00:00.000Z",
+    "updatedAt": "2026-08-01T00:00:00.000Z",
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "7a0000000000000000000a01"
     },
-    "updatedAt": {
-      "$date": "2026-07-30T00:00:00.000Z"
+    "title": "Grade 10 Mathematics - Trigonometry",
+    "description": "Learn trigonometric ratios, standard angles, complementary angles and right-triangle applications.",
+    "createdBy": "696d8e8098d47cbd00770abd",
+    "grade": 10,
+    "subject": "Mathematics",
+    "board": [
+      "ICSE"
+    ],
+    "thumbnail": "",
+    "syllabus": [
+      "sin θ, cos θ, tan θ",
+      "Reciprocal ratios",
+      "Right-triangle labelling",
+      "Ratio calculation",
+      "0°, 30°, 45°, 60°, 90° values",
+      "Complementary ratio identities",
+      "Using tables",
+      "Exact values",
+      "Heights and distances",
+      "Angle of elevation",
+      "Angle of depression",
+      "One right-triangle problems"
+    ],
+    "chapters": [
+      {
+        "name": "Trigonometric Ratios",
+        "topics": [
+          "sin θ, cos θ, tan θ",
+          "Reciprocal ratios",
+          "Right-triangle labelling",
+          "Ratio calculation"
+        ],
+        "learningObjectives": [
+          "Understand and solve ICSE Class 10 problems on sin θ, cos θ, tan θ",
+          "Understand and solve ICSE Class 10 problems on Reciprocal ratios",
+          "Understand and solve ICSE Class 10 problems on Right-triangle labelling",
+          "Understand and solve ICSE Class 10 problems on Ratio calculation"
+        ],
+        "estimatedHours": 6
+      },
+      {
+        "name": "Standard Angles and Complementary Angles",
+        "topics": [
+          "0°, 30°, 45°, 60°, 90° values",
+          "Complementary ratio identities",
+          "Using tables",
+          "Exact values"
+        ],
+        "learningObjectives": [
+          "Understand and solve ICSE Class 10 problems on 0°, 30°, 45°, 60°, 90° values",
+          "Understand and solve ICSE Class 10 problems on Complementary ratio identities",
+          "Understand and solve ICSE Class 10 problems on Using tables",
+          "Understand and solve ICSE Class 10 problems on Exact values"
+        ],
+        "estimatedHours": 6
+      },
+      {
+        "name": "2D Applications of Trigonometry",
+        "topics": [
+          "Heights and distances",
+          "Angle of elevation",
+          "Angle of depression",
+          "One right-triangle problems"
+        ],
+        "learningObjectives": [
+          "Understand and solve ICSE Class 10 problems on Heights and distances",
+          "Understand and solve ICSE Class 10 problems on Angle of elevation",
+          "Understand and solve ICSE Class 10 problems on Angle of depression",
+          "Understand and solve ICSE Class 10 problems on One right-triangle problems"
+        ],
+        "estimatedHours": 6
+      }
+    ],
+    "topics": [
+      "sin θ, cos θ, tan θ",
+      "Reciprocal ratios",
+      "Right-triangle labelling",
+      "Ratio calculation",
+      "0°, 30°, 45°, 60°, 90° values",
+      "Complementary ratio identities",
+      "Using tables",
+      "Exact values",
+      "Heights and distances",
+      "Angle of elevation",
+      "Angle of depression",
+      "One right-triangle problems"
+    ],
+    "duration": "18 hours",
+    "estimatedHours": 18,
+    "level": "intermediate",
+    "difficulty": 4,
+    "language": "English",
+    "prerequisites": [
+      "Grade 9 algebra and geometry basics",
+      "Clear arithmetic with fractions, decimals and percentages",
+      "Comfort with drawing simple diagrams"
+    ],
+    "learningOutcomes": [
+      "Explain the key ideas of Trigonometry",
+      "Solve ICSE-style questions from Trigonometry",
+      "Use diagrams, formulae and checking methods to avoid common errors",
+      "Apply the concept in real-life Indian classroom contexts"
+    ],
+    "certificate": true,
+    "status": "published",
+    "enrollmentCount": 0,
+    "averageRating": 0,
+    "totalRatings": 0,
+    "reviewCount": 0,
+    "maxStudents": 50,
+    "tags": [
+      "ICSE",
+      "CISCE",
+      "Grade 10",
+      "Trigonometry",
+      "Heights and Distances"
+    ],
+    "isActive": true,
+    "createdAt": "2026-08-01T00:00:00.000Z",
+    "updatedAt": "2026-08-01T00:00:00.000Z",
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "7a0000000000000000000a02"
     },
+    "title": "Grade 10 Mathematics - Statistics and Probability",
+    "description": "Summarise data using averages, histograms, ogives and basic probability for ICSE Class 10.",
+    "createdBy": "696d8e8098d47cbd00770abd",
+    "grade": 10,
+    "subject": "Mathematics",
+    "board": [
+      "ICSE"
+    ],
+    "thumbnail": "",
+    "syllabus": [
+      "Raw data",
+      "Frequency table",
+      "Mean",
+      "Median and mode",
+      "Grouped data",
+      "Class intervals",
+      "Frequency density idea",
+      "Reading histogram bars",
+      "Cumulative frequency",
+      "Less-than ogive",
+      "Median from ogive",
+      "Interpreting curve",
+      "Random experiment",
+      "Sample space",
+      "Favourable outcomes",
+      "P(E) = favourable/total"
+    ],
+    "chapters": [
+      {
+        "name": "Mean, Median and Mode",
+        "topics": [
+          "Raw data",
+          "Frequency table",
+          "Mean",
+          "Median and mode"
+        ],
+        "learningObjectives": [
+          "Understand and solve ICSE Class 10 problems on Raw data",
+          "Understand and solve ICSE Class 10 problems on Frequency table",
+          "Understand and solve ICSE Class 10 problems on Mean",
+          "Understand and solve ICSE Class 10 problems on Median and mode"
+        ],
+        "estimatedHours": 6
+      },
+      {
+        "name": "Histograms",
+        "topics": [
+          "Grouped data",
+          "Class intervals",
+          "Frequency density idea",
+          "Reading histogram bars"
+        ],
+        "learningObjectives": [
+          "Understand and solve ICSE Class 10 problems on Grouped data",
+          "Understand and solve ICSE Class 10 problems on Class intervals",
+          "Understand and solve ICSE Class 10 problems on Frequency density idea",
+          "Understand and solve ICSE Class 10 problems on Reading histogram bars"
+        ],
+        "estimatedHours": 6
+      },
+      {
+        "name": "Ogive",
+        "topics": [
+          "Cumulative frequency",
+          "Less-than ogive",
+          "Median from ogive",
+          "Interpreting curve"
+        ],
+        "learningObjectives": [
+          "Understand and solve ICSE Class 10 problems on Cumulative frequency",
+          "Understand and solve ICSE Class 10 problems on Less-than ogive",
+          "Understand and solve ICSE Class 10 problems on Median from ogive",
+          "Understand and solve ICSE Class 10 problems on Interpreting curve"
+        ],
+        "estimatedHours": 6
+      },
+      {
+        "name": "Probability",
+        "topics": [
+          "Random experiment",
+          "Sample space",
+          "Favourable outcomes",
+          "P(E) = favourable/total"
+        ],
+        "learningObjectives": [
+          "Understand and solve ICSE Class 10 problems on Random experiment",
+          "Understand and solve ICSE Class 10 problems on Sample space",
+          "Understand and solve ICSE Class 10 problems on Favourable outcomes",
+          "Understand and solve ICSE Class 10 problems on P(E) = favourable/total"
+        ],
+        "estimatedHours": 6
+      }
+    ],
+    "topics": [
+      "Raw data",
+      "Frequency table",
+      "Mean",
+      "Median and mode",
+      "Grouped data",
+      "Class intervals",
+      "Frequency density idea",
+      "Reading histogram bars",
+      "Cumulative frequency",
+      "Less-than ogive",
+      "Median from ogive",
+      "Interpreting curve",
+      "Random experiment",
+      "Sample space",
+      "Favourable outcomes",
+      "P(E) = favourable/total"
+    ],
+    "duration": "24 hours",
+    "estimatedHours": 24,
+    "level": "intermediate",
+    "difficulty": 3,
+    "language": "English",
+    "prerequisites": [
+      "Grade 9 algebra and geometry basics",
+      "Clear arithmetic with fractions, decimals and percentages",
+      "Comfort with drawing simple diagrams"
+    ],
+    "learningOutcomes": [
+      "Explain the key ideas of Statistics and Probability",
+      "Solve ICSE-style questions from Statistics and Probability",
+      "Use diagrams, formulae and checking methods to avoid common errors",
+      "Apply the concept in real-life Indian classroom contexts"
+    ],
+    "certificate": true,
+    "status": "published",
+    "enrollmentCount": 0,
+    "averageRating": 0,
+    "totalRatings": 0,
+    "reviewCount": 0,
+    "maxStudents": 50,
+    "tags": [
+      "ICSE",
+      "CISCE",
+      "Grade 10",
+      "Statistics",
+      "Histogram",
+      "Ogive",
+      "Probability"
+    ],
+    "isActive": true,
+    "createdAt": "2026-08-01T00:00:00.000Z",
+    "updatedAt": "2026-08-01T00:00:00.000Z",
     "__v": 0
   }
 ]

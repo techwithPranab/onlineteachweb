@@ -3,85 +3,92 @@
     "_id": {
       "$oid": "70000000000000000000003d"
     },
-    "title": "Grade 9 Mathematics - Number Systems and Sets",
-    "description": "A CBSE and CISCE-aligned Grade 9 Mathematics course covering Number Systems and Sets. It follows CBSE Class IX Mathematics and ICSE Mathematics with clear theory, visuals, solved examples and practice.",
+    "title": "Grade 9 Mathematics - Pure Arithmetic and Number Systems",
+    "description": "ICSE Class 9 Mathematics course on Pure Arithmetic and Number Systems, distributed into syllabus-aligned chapters with concept-first learning and visual practice.",
     "createdBy": "696d8e8098d47cbd00770abd",
     "grade": 9,
     "subject": "Mathematics",
     "board": [
-      "CBSE",
       "ICSE"
     ],
     "thumbnail": "",
     "syllabus": [
-      "Natural whole integers rational and irrational numbers",
-      "Real number line",
-      "Surds and rationalisation basics",
-      "Laws of exponents for real numbers",
-      "Set notation",
-      "Venn diagrams",
-      "Operations on sets",
-      "Logarithms basics"
+      "Rational numbers",
+      "Decimal representation of rational numbers",
+      "Terminating decimals",
+      "Recurring decimals",
+      "Classifying rational numbers",
+      "Irrational numbers",
+      "Non-terminating non-recurring decimals",
+      "Locating irrational numbers on number line",
+      "Rational and irrational comparison",
+      "Pure arithmetic word problems"
     ],
     "chapters": [
       {
-        "name": "Number Systems",
+        "name": "Rational Numbers and Decimal Representation",
         "topics": [
-          "Natural whole integers rational and irrational numbers",
-          "Real number line",
-          "Surds and rationalisation basics",
-          "Laws of exponents for real numbers"
+          "Rational numbers",
+          "Decimal representation of rational numbers",
+          "Terminating decimals",
+          "Recurring decimals",
+          "Classifying rational numbers"
         ],
         "learningObjectives": [
-          "Understand and solve syllabus-aligned problems on Natural whole integers rational and irrational numbers",
-          "Understand and solve syllabus-aligned problems on Real number line",
-          "Understand and solve syllabus-aligned problems on Surds and rationalisation basics",
-          "Understand and solve syllabus-aligned problems on Laws of exponents for real numbers"
+          "Understand and solve ICSE Grade 9 problems on Rational numbers",
+          "Understand and solve ICSE Grade 9 problems on Decimal representation of rational numbers",
+          "Understand and solve ICSE Grade 9 problems on Terminating decimals",
+          "Understand and solve ICSE Grade 9 problems on Recurring decimals",
+          "Understand and solve ICSE Grade 9 problems on Classifying rational numbers"
         ],
-        "estimatedHours": 6
+        "estimatedHours": 5
       },
       {
-        "name": "Sets and Logarithms - ICSE Extension",
+        "name": "Irrational Numbers and Number Line",
         "topics": [
-          "Set notation",
-          "Venn diagrams",
-          "Operations on sets",
-          "Logarithms basics"
+          "Irrational numbers",
+          "Non-terminating non-recurring decimals",
+          "Locating irrational numbers on number line",
+          "Rational and irrational comparison",
+          "Pure arithmetic word problems"
         ],
         "learningObjectives": [
-          "Understand and solve syllabus-aligned problems on Set notation",
-          "Understand and solve syllabus-aligned problems on Venn diagrams",
-          "Understand and solve syllabus-aligned problems on Operations on sets",
-          "Understand and solve syllabus-aligned problems on Logarithms basics"
+          "Understand and solve ICSE Grade 9 problems on Irrational numbers",
+          "Understand and solve ICSE Grade 9 problems on Non-terminating non-recurring decimals",
+          "Understand and solve ICSE Grade 9 problems on Locating irrational numbers on number line",
+          "Understand and solve ICSE Grade 9 problems on Rational and irrational comparison",
+          "Understand and solve ICSE Grade 9 problems on Pure arithmetic word problems"
         ],
-        "estimatedHours": 6
+        "estimatedHours": 5
       }
     ],
     "topics": [
-      "Natural whole integers rational and irrational numbers",
-      "Real number line",
-      "Surds and rationalisation basics",
-      "Laws of exponents for real numbers",
-      "Set notation",
-      "Venn diagrams",
-      "Operations on sets",
-      "Logarithms basics"
+      "Rational numbers",
+      "Decimal representation of rational numbers",
+      "Terminating decimals",
+      "Recurring decimals",
+      "Classifying rational numbers",
+      "Irrational numbers",
+      "Non-terminating non-recurring decimals",
+      "Locating irrational numbers on number line",
+      "Rational and irrational comparison",
+      "Pure arithmetic word problems"
     ],
-    "duration": "8 weeks",
-    "estimatedHours": 12,
+    "duration": "5 weeks",
+    "estimatedHours": 10,
     "level": "intermediate",
     "difficulty": 3,
     "language": "English",
     "prerequisites": [
-      "Grade 8 Mathematics foundations",
-      "Arithmetic fluency",
-      "Problem reading skills"
+      "Grade 8 rational numbers and algebra",
+      "Basic geometry and mensuration",
+      "Basic graph reading"
     ],
     "learningOutcomes": [
-      "Explain the key CBSE and CISCE ideas in Number Systems and Sets",
-      "Use diagrams, tables, equations or graphs to model problems",
-      "Solve graded practice and board-style questions",
-      "Apply the concepts in real-life situations"
+      "Explain key ICSE Class 9 concepts in Pure Arithmetic and Number Systems",
+      "Use diagrams or graphs to reason before solving",
+      "Solve numerical, algebraic, geometric and statistical problems",
+      "Check answers using substitution, theorem conditions, estimation or visual reasoning"
     ],
     "certificate": true,
     "status": "published",
@@ -93,17 +100,16 @@
     "tags": [
       "Grade 9",
       "Mathematics",
-      "Number Systems and Sets",
-      "CBSE",
+      "ICSE",
       "CISCE",
-      "ICSE"
+      "Pure Arithmetic and Number Systems"
     ],
     "isActive": true,
     "createdAt": {
-      "$date": "2026-07-30T00:00:00.000Z"
+      "$date": "2026-08-01T00:00:00.000Z"
     },
     "updatedAt": {
-      "$date": "2026-07-30T00:00:00.000Z"
+      "$date": "2026-08-01T00:00:00.000Z"
     },
     "__v": 0
   },
@@ -111,85 +117,92 @@
     "_id": {
       "$oid": "700000000000000000000041"
     },
-    "title": "Grade 9 Mathematics - Polynomials and Linear Equations",
-    "description": "A CBSE and CISCE-aligned Grade 9 Mathematics course covering Polynomials and Linear Equations. It follows CBSE Class IX Mathematics and ICSE Mathematics with clear theory, visuals, solved examples and practice.",
+    "title": "Grade 9 Mathematics - Commercial Mathematics",
+    "description": "ICSE Class 9 Mathematics course on Commercial Mathematics, distributed into syllabus-aligned chapters with concept-first learning and visual practice.",
     "createdBy": "696d8e8098d47cbd00770abd",
     "grade": 9,
     "subject": "Mathematics",
     "board": [
-      "CBSE",
       "ICSE"
     ],
     "thumbnail": "",
     "syllabus": [
-      "Polynomials in one variable",
-      "Degree of a polynomial",
-      "Zeros of polynomials",
-      "Remainder and factor theorem",
-      "Linear equations in two variables",
-      "Graph of a linear equation",
-      "Solutions as ordered pairs",
-      "Algebraic applications"
+      "Compound interest meaning",
+      "Amount and interest",
+      "Compound interest yearly",
+      "Difference between simple and compound interest",
+      "One-year compound interest problems",
+      "Compound interest for multiple years",
+      "Successive growth of amount",
+      "Compound interest word problems",
+      "Finding amount from principal rate and time",
+      "Comparing investment options"
     ],
     "chapters": [
       {
-        "name": "Polynomials",
+        "name": "Compound Interest Basics",
         "topics": [
-          "Polynomials in one variable",
-          "Degree of a polynomial",
-          "Zeros of polynomials",
-          "Remainder and factor theorem"
+          "Compound interest meaning",
+          "Amount and interest",
+          "Compound interest yearly",
+          "Difference between simple and compound interest",
+          "One-year compound interest problems"
         ],
         "learningObjectives": [
-          "Understand and solve syllabus-aligned problems on Polynomials in one variable",
-          "Understand and solve syllabus-aligned problems on Degree of a polynomial",
-          "Understand and solve syllabus-aligned problems on Zeros of polynomials",
-          "Understand and solve syllabus-aligned problems on Remainder and factor theorem"
+          "Understand and solve ICSE Grade 9 problems on Compound interest meaning",
+          "Understand and solve ICSE Grade 9 problems on Amount and interest",
+          "Understand and solve ICSE Grade 9 problems on Compound interest yearly",
+          "Understand and solve ICSE Grade 9 problems on Difference between simple and compound interest",
+          "Understand and solve ICSE Grade 9 problems on One-year compound interest problems"
         ],
-        "estimatedHours": 6
+        "estimatedHours": 5
       },
       {
-        "name": "Linear Equations in Two Variables",
+        "name": "Compound Interest Applications",
         "topics": [
-          "Linear equations in two variables",
-          "Graph of a linear equation",
-          "Solutions as ordered pairs",
-          "Algebraic applications"
+          "Compound interest for multiple years",
+          "Successive growth of amount",
+          "Compound interest word problems",
+          "Finding amount from principal rate and time",
+          "Comparing investment options"
         ],
         "learningObjectives": [
-          "Understand and solve syllabus-aligned problems on Linear equations in two variables",
-          "Understand and solve syllabus-aligned problems on Graph of a linear equation",
-          "Understand and solve syllabus-aligned problems on Solutions as ordered pairs",
-          "Understand and solve syllabus-aligned problems on Algebraic applications"
+          "Understand and solve ICSE Grade 9 problems on Compound interest for multiple years",
+          "Understand and solve ICSE Grade 9 problems on Successive growth of amount",
+          "Understand and solve ICSE Grade 9 problems on Compound interest word problems",
+          "Understand and solve ICSE Grade 9 problems on Finding amount from principal rate and time",
+          "Understand and solve ICSE Grade 9 problems on Comparing investment options"
         ],
-        "estimatedHours": 6
+        "estimatedHours": 5
       }
     ],
     "topics": [
-      "Polynomials in one variable",
-      "Degree of a polynomial",
-      "Zeros of polynomials",
-      "Remainder and factor theorem",
-      "Linear equations in two variables",
-      "Graph of a linear equation",
-      "Solutions as ordered pairs",
-      "Algebraic applications"
+      "Compound interest meaning",
+      "Amount and interest",
+      "Compound interest yearly",
+      "Difference between simple and compound interest",
+      "One-year compound interest problems",
+      "Compound interest for multiple years",
+      "Successive growth of amount",
+      "Compound interest word problems",
+      "Finding amount from principal rate and time",
+      "Comparing investment options"
     ],
-    "duration": "8 weeks",
-    "estimatedHours": 12,
+    "duration": "5 weeks",
+    "estimatedHours": 10,
     "level": "intermediate",
     "difficulty": 3,
     "language": "English",
     "prerequisites": [
-      "Grade 8 Mathematics foundations",
-      "Arithmetic fluency",
-      "Problem reading skills"
+      "Grade 8 rational numbers and algebra",
+      "Basic geometry and mensuration",
+      "Basic graph reading"
     ],
     "learningOutcomes": [
-      "Explain the key CBSE and CISCE ideas in Polynomials and Linear Equations",
-      "Use diagrams, tables, equations or graphs to model problems",
-      "Solve graded practice and board-style questions",
-      "Apply the concepts in real-life situations"
+      "Explain key ICSE Class 9 concepts in Commercial Mathematics",
+      "Use diagrams or graphs to reason before solving",
+      "Solve numerical, algebraic, geometric and statistical problems",
+      "Check answers using substitution, theorem conditions, estimation or visual reasoning"
     ],
     "certificate": true,
     "status": "published",
@@ -201,17 +214,16 @@
     "tags": [
       "Grade 9",
       "Mathematics",
-      "Polynomials and Linear Equations",
-      "CBSE",
+      "ICSE",
       "CISCE",
-      "ICSE"
+      "Commercial Mathematics"
     ],
     "isActive": true,
     "createdAt": {
-      "$date": "2026-07-30T00:00:00.000Z"
+      "$date": "2026-08-01T00:00:00.000Z"
     },
     "updatedAt": {
-      "$date": "2026-07-30T00:00:00.000Z"
+      "$date": "2026-08-01T00:00:00.000Z"
     },
     "__v": 0
   },
@@ -219,85 +231,148 @@
     "_id": {
       "$oid": "700000000000000000000045"
     },
-    "title": "Grade 9 Mathematics - Coordinate Geometry and Graphical Statistics",
-    "description": "A CBSE and CISCE-aligned Grade 9 Mathematics course covering Coordinate Geometry and Graphical Statistics. It follows CBSE Class IX Mathematics and ICSE Mathematics with clear theory, visuals, solved examples and practice.",
+    "title": "Grade 9 Mathematics - Algebra: Expansions, Factorisation, Indices and Logarithms",
+    "description": "ICSE Class 9 Mathematics course on Algebra: Expansions, Factorisation, Indices and Logarithms, distributed into syllabus-aligned chapters with concept-first learning and visual practice.",
     "createdBy": "696d8e8098d47cbd00770abd",
     "grade": 9,
     "subject": "Mathematics",
     "board": [
-      "CBSE",
       "ICSE"
     ],
     "thumbnail": "",
     "syllabus": [
-      "Cartesian plane",
-      "Quadrants",
-      "Plotting points",
-      "Reading coordinates",
-      "Bar graphs",
-      "Histograms",
-      "Frequency polygons",
-      "Interpreting change"
+      "Expansion of algebraic expressions",
+      "Identity (a + b)^2",
+      "Identity (a - b)^2",
+      "Identity a^2 - b^2",
+      "Using identities in simplification",
+      "Common factor method",
+      "Factorisation using identities",
+      "Factorisation of quadratic trinomials",
+      "Difference of squares",
+      "Simple application problems",
+      "Laws of indices",
+      "Positive integral indices",
+      "Negative integral indices",
+      "Zero index",
+      "Simplification using exponent laws",
+      "Meaning of logarithm",
+      "Logarithm as inverse of exponent",
+      "Common logarithms introduction",
+      "Laws of logarithms",
+      "Simple logarithm calculations"
     ],
     "chapters": [
       {
-        "name": "Coordinate Geometry",
+        "name": "Expansions and Algebraic Identities",
         "topics": [
-          "Cartesian plane",
-          "Quadrants",
-          "Plotting points",
-          "Reading coordinates"
+          "Expansion of algebraic expressions",
+          "Identity (a + b)^2",
+          "Identity (a - b)^2",
+          "Identity a^2 - b^2",
+          "Using identities in simplification"
         ],
         "learningObjectives": [
-          "Understand and solve syllabus-aligned problems on Cartesian plane",
-          "Understand and solve syllabus-aligned problems on Quadrants",
-          "Understand and solve syllabus-aligned problems on Plotting points",
-          "Understand and solve syllabus-aligned problems on Reading coordinates"
+          "Understand and solve ICSE Grade 9 problems on Expansion of algebraic expressions",
+          "Understand and solve ICSE Grade 9 problems on Identity (a + b)^2",
+          "Understand and solve ICSE Grade 9 problems on Identity (a - b)^2",
+          "Understand and solve ICSE Grade 9 problems on Identity a^2 - b^2",
+          "Understand and solve ICSE Grade 9 problems on Using identities in simplification"
         ],
         "estimatedHours": 6
       },
       {
-        "name": "Graphical Statistics",
+        "name": "Factorisation",
         "topics": [
-          "Bar graphs",
-          "Histograms",
-          "Frequency polygons",
-          "Interpreting change"
+          "Common factor method",
+          "Factorisation using identities",
+          "Factorisation of quadratic trinomials",
+          "Difference of squares",
+          "Simple application problems"
         ],
         "learningObjectives": [
-          "Understand and solve syllabus-aligned problems on Bar graphs",
-          "Understand and solve syllabus-aligned problems on Histograms",
-          "Understand and solve syllabus-aligned problems on Frequency polygons",
-          "Understand and solve syllabus-aligned problems on Interpreting change"
+          "Understand and solve ICSE Grade 9 problems on Common factor method",
+          "Understand and solve ICSE Grade 9 problems on Factorisation using identities",
+          "Understand and solve ICSE Grade 9 problems on Factorisation of quadratic trinomials",
+          "Understand and solve ICSE Grade 9 problems on Difference of squares",
+          "Understand and solve ICSE Grade 9 problems on Simple application problems"
+        ],
+        "estimatedHours": 6
+      },
+      {
+        "name": "Indices and Exponents",
+        "topics": [
+          "Laws of indices",
+          "Positive integral indices",
+          "Negative integral indices",
+          "Zero index",
+          "Simplification using exponent laws"
+        ],
+        "learningObjectives": [
+          "Understand and solve ICSE Grade 9 problems on Laws of indices",
+          "Understand and solve ICSE Grade 9 problems on Positive integral indices",
+          "Understand and solve ICSE Grade 9 problems on Negative integral indices",
+          "Understand and solve ICSE Grade 9 problems on Zero index",
+          "Understand and solve ICSE Grade 9 problems on Simplification using exponent laws"
+        ],
+        "estimatedHours": 6
+      },
+      {
+        "name": "Logarithms",
+        "topics": [
+          "Meaning of logarithm",
+          "Logarithm as inverse of exponent",
+          "Common logarithms introduction",
+          "Laws of logarithms",
+          "Simple logarithm calculations"
+        ],
+        "learningObjectives": [
+          "Understand and solve ICSE Grade 9 problems on Meaning of logarithm",
+          "Understand and solve ICSE Grade 9 problems on Logarithm as inverse of exponent",
+          "Understand and solve ICSE Grade 9 problems on Common logarithms introduction",
+          "Understand and solve ICSE Grade 9 problems on Laws of logarithms",
+          "Understand and solve ICSE Grade 9 problems on Simple logarithm calculations"
         ],
         "estimatedHours": 6
       }
     ],
     "topics": [
-      "Cartesian plane",
-      "Quadrants",
-      "Plotting points",
-      "Reading coordinates",
-      "Bar graphs",
-      "Histograms",
-      "Frequency polygons",
-      "Interpreting change"
+      "Expansion of algebraic expressions",
+      "Identity (a + b)^2",
+      "Identity (a - b)^2",
+      "Identity a^2 - b^2",
+      "Using identities in simplification",
+      "Common factor method",
+      "Factorisation using identities",
+      "Factorisation of quadratic trinomials",
+      "Difference of squares",
+      "Simple application problems",
+      "Laws of indices",
+      "Positive integral indices",
+      "Negative integral indices",
+      "Zero index",
+      "Simplification using exponent laws",
+      "Meaning of logarithm",
+      "Logarithm as inverse of exponent",
+      "Common logarithms introduction",
+      "Laws of logarithms",
+      "Simple logarithm calculations"
     ],
-    "duration": "8 weeks",
-    "estimatedHours": 12,
+    "duration": "12 weeks",
+    "estimatedHours": 24,
     "level": "intermediate",
     "difficulty": 3,
     "language": "English",
     "prerequisites": [
-      "Grade 8 Mathematics foundations",
-      "Arithmetic fluency",
-      "Problem reading skills"
+      "Grade 8 rational numbers and algebra",
+      "Basic geometry and mensuration",
+      "Basic graph reading"
     ],
     "learningOutcomes": [
-      "Explain the key CBSE and CISCE ideas in Coordinate Geometry and Graphical Statistics",
-      "Use diagrams, tables, equations or graphs to model problems",
-      "Solve graded practice and board-style questions",
-      "Apply the concepts in real-life situations"
+      "Explain key ICSE Class 9 concepts in Algebra: Expansions, Factorisation, Indices and Logarithms",
+      "Use diagrams or graphs to reason before solving",
+      "Solve numerical, algebraic, geometric and statistical problems",
+      "Check answers using substitution, theorem conditions, estimation or visual reasoning"
     ],
     "certificate": true,
     "status": "published",
@@ -309,17 +384,16 @@
     "tags": [
       "Grade 9",
       "Mathematics",
-      "Coordinate Geometry and Graphical Statistics",
-      "CBSE",
+      "ICSE",
       "CISCE",
-      "ICSE"
+      "Algebra: Expansions, Factorisation, Indices and Logarithms"
     ],
     "isActive": true,
     "createdAt": {
-      "$date": "2026-07-30T00:00:00.000Z"
+      "$date": "2026-08-01T00:00:00.000Z"
     },
     "updatedAt": {
-      "$date": "2026-07-30T00:00:00.000Z"
+      "$date": "2026-08-01T00:00:00.000Z"
     },
     "__v": 0
   },
@@ -327,85 +401,92 @@
     "_id": {
       "$oid": "700000000000000000000049"
     },
-    "title": "Grade 9 Mathematics - Euclidean Geometry and Circles",
-    "description": "A CBSE and CISCE-aligned Grade 9 Mathematics course covering Euclidean Geometry and Circles. It follows CBSE Class IX Mathematics and ICSE Mathematics with clear theory, visuals, solved examples and practice.",
+    "title": "Grade 9 Mathematics - Simultaneous Linear Equations",
+    "description": "ICSE Class 9 Mathematics course on Simultaneous Linear Equations, distributed into syllabus-aligned chapters with concept-first learning and visual practice.",
     "createdBy": "696d8e8098d47cbd00770abd",
     "grade": 9,
     "subject": "Mathematics",
     "board": [
-      "CBSE",
       "ICSE"
     ],
     "thumbnail": "",
     "syllabus": [
-      "Angle axioms",
-      "Parallel lines",
-      "Triangle congruence",
-      "Inequalities in triangles",
-      "Properties of parallelogram",
-      "Mid-point theorem",
-      "Circle basics",
-      "Cyclic quadrilateral introduction"
+      "Linear equations in two variables",
+      "Numerical coefficients only",
+      "Elimination method",
+      "Substitution method",
+      "Checking ordered pair solutions",
+      "Graphical meaning of simultaneous equations",
+      "Intersection point as solution",
+      "Word problems on simultaneous equations",
+      "Choosing variables",
+      "Verifying solutions in context"
     ],
     "chapters": [
       {
-        "name": "Lines, Angles and Triangles",
+        "name": "Algebraic Solution of Simultaneous Equations",
         "topics": [
-          "Angle axioms",
-          "Parallel lines",
-          "Triangle congruence",
-          "Inequalities in triangles"
+          "Linear equations in two variables",
+          "Numerical coefficients only",
+          "Elimination method",
+          "Substitution method",
+          "Checking ordered pair solutions"
         ],
         "learningObjectives": [
-          "Understand and solve syllabus-aligned problems on Angle axioms",
-          "Understand and solve syllabus-aligned problems on Parallel lines",
-          "Understand and solve syllabus-aligned problems on Triangle congruence",
-          "Understand and solve syllabus-aligned problems on Inequalities in triangles"
+          "Understand and solve ICSE Grade 9 problems on Linear equations in two variables",
+          "Understand and solve ICSE Grade 9 problems on Numerical coefficients only",
+          "Understand and solve ICSE Grade 9 problems on Elimination method",
+          "Understand and solve ICSE Grade 9 problems on Substitution method",
+          "Understand and solve ICSE Grade 9 problems on Checking ordered pair solutions"
         ],
-        "estimatedHours": 6
+        "estimatedHours": 5
       },
       {
-        "name": "Quadrilaterals and Circles",
+        "name": "Graphical Meaning and Word Problems",
         "topics": [
-          "Properties of parallelogram",
-          "Mid-point theorem",
-          "Circle basics",
-          "Cyclic quadrilateral introduction"
+          "Graphical meaning of simultaneous equations",
+          "Intersection point as solution",
+          "Word problems on simultaneous equations",
+          "Choosing variables",
+          "Verifying solutions in context"
         ],
         "learningObjectives": [
-          "Understand and solve syllabus-aligned problems on Properties of parallelogram",
-          "Understand and solve syllabus-aligned problems on Mid-point theorem",
-          "Understand and solve syllabus-aligned problems on Circle basics",
-          "Understand and solve syllabus-aligned problems on Cyclic quadrilateral introduction"
+          "Understand and solve ICSE Grade 9 problems on Graphical meaning of simultaneous equations",
+          "Understand and solve ICSE Grade 9 problems on Intersection point as solution",
+          "Understand and solve ICSE Grade 9 problems on Word problems on simultaneous equations",
+          "Understand and solve ICSE Grade 9 problems on Choosing variables",
+          "Understand and solve ICSE Grade 9 problems on Verifying solutions in context"
         ],
-        "estimatedHours": 6
+        "estimatedHours": 5
       }
     ],
     "topics": [
-      "Angle axioms",
-      "Parallel lines",
-      "Triangle congruence",
-      "Inequalities in triangles",
-      "Properties of parallelogram",
-      "Mid-point theorem",
-      "Circle basics",
-      "Cyclic quadrilateral introduction"
+      "Linear equations in two variables",
+      "Numerical coefficients only",
+      "Elimination method",
+      "Substitution method",
+      "Checking ordered pair solutions",
+      "Graphical meaning of simultaneous equations",
+      "Intersection point as solution",
+      "Word problems on simultaneous equations",
+      "Choosing variables",
+      "Verifying solutions in context"
     ],
-    "duration": "8 weeks",
-    "estimatedHours": 12,
+    "duration": "5 weeks",
+    "estimatedHours": 10,
     "level": "intermediate",
     "difficulty": 3,
     "language": "English",
     "prerequisites": [
-      "Grade 8 Mathematics foundations",
-      "Arithmetic fluency",
-      "Problem reading skills"
+      "Grade 8 rational numbers and algebra",
+      "Basic geometry and mensuration",
+      "Basic graph reading"
     ],
     "learningOutcomes": [
-      "Explain the key CBSE and CISCE ideas in Euclidean Geometry and Circles",
-      "Use diagrams, tables, equations or graphs to model problems",
-      "Solve graded practice and board-style questions",
-      "Apply the concepts in real-life situations"
+      "Explain key ICSE Class 9 concepts in Simultaneous Linear Equations",
+      "Use diagrams or graphs to reason before solving",
+      "Solve numerical, algebraic, geometric and statistical problems",
+      "Check answers using substitution, theorem conditions, estimation or visual reasoning"
     ],
     "certificate": true,
     "status": "published",
@@ -417,17 +498,16 @@
     "tags": [
       "Grade 9",
       "Mathematics",
-      "Euclidean Geometry and Circles",
-      "CBSE",
+      "ICSE",
       "CISCE",
-      "ICSE"
+      "Simultaneous Linear Equations"
     ],
     "isActive": true,
     "createdAt": {
-      "$date": "2026-07-30T00:00:00.000Z"
+      "$date": "2026-08-01T00:00:00.000Z"
     },
     "updatedAt": {
-      "$date": "2026-07-30T00:00:00.000Z"
+      "$date": "2026-08-01T00:00:00.000Z"
     },
     "__v": 0
   },
@@ -435,85 +515,120 @@
     "_id": {
       "$oid": "70000000000000000000004d"
     },
-    "title": "Grade 9 Mathematics - Mensuration",
-    "description": "A CBSE and CISCE-aligned Grade 9 Mathematics course covering Mensuration. It follows CBSE Class IX Mathematics and ICSE Mathematics with clear theory, visuals, solved examples and practice.",
+    "title": "Grade 9 Mathematics - Triangle Geometry",
+    "description": "ICSE Class 9 Mathematics course on Triangle Geometry, distributed into syllabus-aligned chapters with concept-first learning and visual practice.",
     "createdBy": "696d8e8098d47cbd00770abd",
     "grade": 9,
     "subject": "Mathematics",
     "board": [
-      "CBSE",
       "ICSE"
     ],
     "thumbnail": "",
     "syllabus": [
-      "Area of triangle and quadrilateral",
-      "Parallelogram area",
-      "Area on same base and parallels",
-      "Heron formula as extension",
-      "Cube cuboid cylinder",
-      "Cone and sphere introduction",
-      "Composite solids",
-      "Unit conversion"
+      "Congruency of triangles",
+      "SSS congruency",
+      "SAS congruency",
+      "AAS congruency",
+      "RHS congruency and simple applications",
+      "Angles opposite equal sides are equal",
+      "Converse of isosceles triangle theorem",
+      "Greater side greater opposite angle",
+      "Triangle inequality property",
+      "Perpendicular as shortest distance",
+      "Mid-point theorem",
+      "Converse of mid-point theorem",
+      "Equal intercept theorem",
+      "Pythagoras theorem",
+      "Applications of Pythagoras theorem"
     ],
     "chapters": [
       {
-        "name": "Areas and Perimeters",
+        "name": "Triangle Congruency",
         "topics": [
-          "Area of triangle and quadrilateral",
-          "Parallelogram area",
-          "Area on same base and parallels",
-          "Heron formula as extension"
+          "Congruency of triangles",
+          "SSS congruency",
+          "SAS congruency",
+          "AAS congruency",
+          "RHS congruency and simple applications"
         ],
         "learningObjectives": [
-          "Understand and solve syllabus-aligned problems on Area of triangle and quadrilateral",
-          "Understand and solve syllabus-aligned problems on Parallelogram area",
-          "Understand and solve syllabus-aligned problems on Area on same base and parallels",
-          "Understand and solve syllabus-aligned problems on Heron formula as extension"
+          "Understand and solve ICSE Grade 9 problems on Congruency of triangles",
+          "Understand and solve ICSE Grade 9 problems on SSS congruency",
+          "Understand and solve ICSE Grade 9 problems on SAS congruency",
+          "Understand and solve ICSE Grade 9 problems on AAS congruency",
+          "Understand and solve ICSE Grade 9 problems on RHS congruency and simple applications"
         ],
-        "estimatedHours": 6
+        "estimatedHours": 7
       },
       {
-        "name": "Surface Areas and Volumes",
+        "name": "Inequalities and Properties of Triangles",
         "topics": [
-          "Cube cuboid cylinder",
-          "Cone and sphere introduction",
-          "Composite solids",
-          "Unit conversion"
+          "Angles opposite equal sides are equal",
+          "Converse of isosceles triangle theorem",
+          "Greater side greater opposite angle",
+          "Triangle inequality property",
+          "Perpendicular as shortest distance"
         ],
         "learningObjectives": [
-          "Understand and solve syllabus-aligned problems on Cube cuboid cylinder",
-          "Understand and solve syllabus-aligned problems on Cone and sphere introduction",
-          "Understand and solve syllabus-aligned problems on Composite solids",
-          "Understand and solve syllabus-aligned problems on Unit conversion"
+          "Understand and solve ICSE Grade 9 problems on Angles opposite equal sides are equal",
+          "Understand and solve ICSE Grade 9 problems on Converse of isosceles triangle theorem",
+          "Understand and solve ICSE Grade 9 problems on Greater side greater opposite angle",
+          "Understand and solve ICSE Grade 9 problems on Triangle inequality property",
+          "Understand and solve ICSE Grade 9 problems on Perpendicular as shortest distance"
         ],
-        "estimatedHours": 6
+        "estimatedHours": 7
+      },
+      {
+        "name": "Mid-Point, Equal Intercept and Pythagoras Theorems",
+        "topics": [
+          "Mid-point theorem",
+          "Converse of mid-point theorem",
+          "Equal intercept theorem",
+          "Pythagoras theorem",
+          "Applications of Pythagoras theorem"
+        ],
+        "learningObjectives": [
+          "Understand and solve ICSE Grade 9 problems on Mid-point theorem",
+          "Understand and solve ICSE Grade 9 problems on Converse of mid-point theorem",
+          "Understand and solve ICSE Grade 9 problems on Equal intercept theorem",
+          "Understand and solve ICSE Grade 9 problems on Pythagoras theorem",
+          "Understand and solve ICSE Grade 9 problems on Applications of Pythagoras theorem"
+        ],
+        "estimatedHours": 7
       }
     ],
     "topics": [
-      "Area of triangle and quadrilateral",
-      "Parallelogram area",
-      "Area on same base and parallels",
-      "Heron formula as extension",
-      "Cube cuboid cylinder",
-      "Cone and sphere introduction",
-      "Composite solids",
-      "Unit conversion"
+      "Congruency of triangles",
+      "SSS congruency",
+      "SAS congruency",
+      "AAS congruency",
+      "RHS congruency and simple applications",
+      "Angles opposite equal sides are equal",
+      "Converse of isosceles triangle theorem",
+      "Greater side greater opposite angle",
+      "Triangle inequality property",
+      "Perpendicular as shortest distance",
+      "Mid-point theorem",
+      "Converse of mid-point theorem",
+      "Equal intercept theorem",
+      "Pythagoras theorem",
+      "Applications of Pythagoras theorem"
     ],
-    "duration": "8 weeks",
-    "estimatedHours": 12,
+    "duration": "10 weeks",
+    "estimatedHours": 20,
     "level": "intermediate",
     "difficulty": 3,
     "language": "English",
     "prerequisites": [
-      "Grade 8 Mathematics foundations",
-      "Arithmetic fluency",
-      "Problem reading skills"
+      "Grade 8 rational numbers and algebra",
+      "Basic geometry and mensuration",
+      "Basic graph reading"
     ],
     "learningOutcomes": [
-      "Explain the key CBSE and CISCE ideas in Mensuration",
-      "Use diagrams, tables, equations or graphs to model problems",
-      "Solve graded practice and board-style questions",
-      "Apply the concepts in real-life situations"
+      "Explain key ICSE Class 9 concepts in Triangle Geometry",
+      "Use diagrams or graphs to reason before solving",
+      "Solve numerical, algebraic, geometric and statistical problems",
+      "Check answers using substitution, theorem conditions, estimation or visual reasoning"
     ],
     "certificate": true,
     "status": "published",
@@ -525,17 +640,16 @@
     "tags": [
       "Grade 9",
       "Mathematics",
-      "Mensuration",
-      "CBSE",
+      "ICSE",
       "CISCE",
-      "ICSE"
+      "Triangle Geometry"
     ],
     "isActive": true,
     "createdAt": {
-      "$date": "2026-07-30T00:00:00.000Z"
+      "$date": "2026-08-01T00:00:00.000Z"
     },
     "updatedAt": {
-      "$date": "2026-07-30T00:00:00.000Z"
+      "$date": "2026-08-01T00:00:00.000Z"
     },
     "__v": 0
   },
@@ -543,85 +657,120 @@
     "_id": {
       "$oid": "73000000000000000000232c"
     },
-    "title": "Grade 9 Mathematics - Trigonometry Foundation - ICSE",
-    "description": "A CBSE and CISCE-aligned Grade 9 Mathematics course covering Trigonometry Foundation - ICSE. It follows CBSE Class IX Mathematics and ICSE Mathematics with clear theory, visuals, solved examples and practice.",
+    "title": "Grade 9 Mathematics - Rectilinear Figures, Polygons and Area Theorems",
+    "description": "ICSE Class 9 Mathematics course on Rectilinear Figures, Polygons and Area Theorems, distributed into syllabus-aligned chapters with concept-first learning and visual practice.",
     "createdBy": "696d8e8098d47cbd00770abd",
     "grade": 9,
     "subject": "Mathematics",
     "board": [
-      "CBSE",
       "ICSE"
     ],
     "thumbnail": "",
     "syllabus": [
-      "Trigonometric ratios in right triangle",
-      "Simple values",
-      "Pythagoras theorem",
-      "Height and distance intuition",
-      "Finding unknown sides",
-      "Angle interpretation",
-      "Survey contexts",
-      "Trigonometry word problems"
+      "Proof of parallelogram theorems",
+      "Opposite sides and angles of parallelogram",
+      "Diagonals of parallelogram",
+      "Use of parallelogram theorems",
+      "Problems on rectilinear figures",
+      "Construction of polygons",
+      "Constructing quadrilaterals",
+      "Constructing regular-looking polygons with given data",
+      "Rough diagram before construction",
+      "Checking constructed figure",
+      "Area of parallelograms on same base",
+      "Area between same parallels",
+      "Area comparison of triangles and parallelograms",
+      "Using area theorems in proofs",
+      "Numerical applications of area theorems"
     ],
     "chapters": [
       {
-        "name": "Right Triangle Trigonometry",
+        "name": "Parallelogram Theorems",
         "topics": [
-          "Trigonometric ratios in right triangle",
-          "Simple values",
-          "Pythagoras theorem",
-          "Height and distance intuition"
+          "Proof of parallelogram theorems",
+          "Opposite sides and angles of parallelogram",
+          "Diagonals of parallelogram",
+          "Use of parallelogram theorems",
+          "Problems on rectilinear figures"
         ],
         "learningObjectives": [
-          "Understand and solve syllabus-aligned problems on Trigonometric ratios in right triangle",
-          "Understand and solve syllabus-aligned problems on Simple values",
-          "Understand and solve syllabus-aligned problems on Pythagoras theorem",
-          "Understand and solve syllabus-aligned problems on Height and distance intuition"
+          "Understand and solve ICSE Grade 9 problems on Proof of parallelogram theorems",
+          "Understand and solve ICSE Grade 9 problems on Opposite sides and angles of parallelogram",
+          "Understand and solve ICSE Grade 9 problems on Diagonals of parallelogram",
+          "Understand and solve ICSE Grade 9 problems on Use of parallelogram theorems",
+          "Understand and solve ICSE Grade 9 problems on Problems on rectilinear figures"
         ],
         "estimatedHours": 6
       },
       {
-        "name": "Applications",
+        "name": "Constructions of Polygons",
         "topics": [
-          "Finding unknown sides",
-          "Angle interpretation",
-          "Survey contexts",
-          "Trigonometry word problems"
+          "Construction of polygons",
+          "Constructing quadrilaterals",
+          "Constructing regular-looking polygons with given data",
+          "Rough diagram before construction",
+          "Checking constructed figure"
         ],
         "learningObjectives": [
-          "Understand and solve syllabus-aligned problems on Finding unknown sides",
-          "Understand and solve syllabus-aligned problems on Angle interpretation",
-          "Understand and solve syllabus-aligned problems on Survey contexts",
-          "Understand and solve syllabus-aligned problems on Trigonometry word problems"
+          "Understand and solve ICSE Grade 9 problems on Construction of polygons",
+          "Understand and solve ICSE Grade 9 problems on Constructing quadrilaterals",
+          "Understand and solve ICSE Grade 9 problems on Constructing regular-looking polygons with given data",
+          "Understand and solve ICSE Grade 9 problems on Rough diagram before construction",
+          "Understand and solve ICSE Grade 9 problems on Checking constructed figure"
+        ],
+        "estimatedHours": 6
+      },
+      {
+        "name": "Area Theorems on Parallelograms",
+        "topics": [
+          "Area of parallelograms on same base",
+          "Area between same parallels",
+          "Area comparison of triangles and parallelograms",
+          "Using area theorems in proofs",
+          "Numerical applications of area theorems"
+        ],
+        "learningObjectives": [
+          "Understand and solve ICSE Grade 9 problems on Area of parallelograms on same base",
+          "Understand and solve ICSE Grade 9 problems on Area between same parallels",
+          "Understand and solve ICSE Grade 9 problems on Area comparison of triangles and parallelograms",
+          "Understand and solve ICSE Grade 9 problems on Using area theorems in proofs",
+          "Understand and solve ICSE Grade 9 problems on Numerical applications of area theorems"
         ],
         "estimatedHours": 6
       }
     ],
     "topics": [
-      "Trigonometric ratios in right triangle",
-      "Simple values",
-      "Pythagoras theorem",
-      "Height and distance intuition",
-      "Finding unknown sides",
-      "Angle interpretation",
-      "Survey contexts",
-      "Trigonometry word problems"
+      "Proof of parallelogram theorems",
+      "Opposite sides and angles of parallelogram",
+      "Diagonals of parallelogram",
+      "Use of parallelogram theorems",
+      "Problems on rectilinear figures",
+      "Construction of polygons",
+      "Constructing quadrilaterals",
+      "Constructing regular-looking polygons with given data",
+      "Rough diagram before construction",
+      "Checking constructed figure",
+      "Area of parallelograms on same base",
+      "Area between same parallels",
+      "Area comparison of triangles and parallelograms",
+      "Using area theorems in proofs",
+      "Numerical applications of area theorems"
     ],
-    "duration": "8 weeks",
-    "estimatedHours": 12,
+    "duration": "9 weeks",
+    "estimatedHours": 18,
     "level": "intermediate",
     "difficulty": 3,
     "language": "English",
     "prerequisites": [
-      "Grade 8 Mathematics foundations",
-      "Arithmetic fluency",
-      "Problem reading skills"
+      "Grade 8 rational numbers and algebra",
+      "Basic geometry and mensuration",
+      "Basic graph reading"
     ],
     "learningOutcomes": [
-      "Explain the key CBSE and CISCE ideas in Trigonometry Foundation - ICSE",
-      "Use diagrams, tables, equations or graphs to model problems",
-      "Solve graded practice and board-style questions",
-      "Apply the concepts in real-life situations"
+      "Explain key ICSE Class 9 concepts in Rectilinear Figures, Polygons and Area Theorems",
+      "Use diagrams or graphs to reason before solving",
+      "Solve numerical, algebraic, geometric and statistical problems",
+      "Check answers using substitution, theorem conditions, estimation or visual reasoning"
     ],
     "certificate": true,
     "status": "published",
@@ -633,17 +782,16 @@
     "tags": [
       "Grade 9",
       "Mathematics",
-      "Trigonometry Foundation - ICSE",
-      "CBSE",
+      "ICSE",
       "CISCE",
-      "ICSE"
+      "Rectilinear Figures, Polygons and Area Theorems"
     ],
     "isActive": true,
     "createdAt": {
-      "$date": "2026-07-30T00:00:00.000Z"
+      "$date": "2026-08-01T00:00:00.000Z"
     },
     "updatedAt": {
-      "$date": "2026-07-30T00:00:00.000Z"
+      "$date": "2026-08-01T00:00:00.000Z"
     },
     "__v": 0
   },
@@ -651,85 +799,92 @@
     "_id": {
       "$oid": "73000000000000000000232d"
     },
-    "title": "Grade 9 Mathematics - Statistics, Probability and Commercial Arithmetic",
-    "description": "A CBSE and CISCE-aligned Grade 9 Mathematics course covering Statistics, Probability and Commercial Arithmetic. It follows CBSE Class IX Mathematics and ICSE Mathematics with clear theory, visuals, solved examples and practice.",
+    "title": "Grade 9 Mathematics - Circle Geometry",
+    "description": "ICSE Class 9 Mathematics course on Circle Geometry, distributed into syllabus-aligned chapters with concept-first learning and visual practice.",
     "createdBy": "696d8e8098d47cbd00770abd",
     "grade": 9,
     "subject": "Mathematics",
     "board": [
-      "CBSE",
       "ICSE"
     ],
     "thumbnail": "",
     "syllabus": [
-      "Mean median mode",
-      "Frequency distribution",
-      "Empirical probability",
-      "Sample space",
-      "Profit and loss",
-      "Discount",
-      "Simple interest",
-      "Compound interest introduction"
+      "Circle basics",
+      "Chord properties",
+      "Perpendicular from centre to chord",
+      "Distance of chord from centre",
+      "Numerical chord problems",
+      "Arc and chord properties",
+      "Equal chords and equal arcs",
+      "Relationship between arcs and chords",
+      "Circle vocabulary in diagrams",
+      "Simple circle theorem applications"
     ],
     "chapters": [
       {
-        "name": "Statistics and Probability",
+        "name": "Chord Properties",
         "topics": [
-          "Mean median mode",
-          "Frequency distribution",
-          "Empirical probability",
-          "Sample space"
+          "Circle basics",
+          "Chord properties",
+          "Perpendicular from centre to chord",
+          "Distance of chord from centre",
+          "Numerical chord problems"
         ],
         "learningObjectives": [
-          "Understand and solve syllabus-aligned problems on Mean median mode",
-          "Understand and solve syllabus-aligned problems on Frequency distribution",
-          "Understand and solve syllabus-aligned problems on Empirical probability",
-          "Understand and solve syllabus-aligned problems on Sample space"
+          "Understand and solve ICSE Grade 9 problems on Circle basics",
+          "Understand and solve ICSE Grade 9 problems on Chord properties",
+          "Understand and solve ICSE Grade 9 problems on Perpendicular from centre to chord",
+          "Understand and solve ICSE Grade 9 problems on Distance of chord from centre",
+          "Understand and solve ICSE Grade 9 problems on Numerical chord problems"
         ],
-        "estimatedHours": 6
+        "estimatedHours": 5
       },
       {
-        "name": "Commercial Arithmetic - ICSE Extension",
+        "name": "Arc and Chord Properties",
         "topics": [
-          "Profit and loss",
-          "Discount",
-          "Simple interest",
-          "Compound interest introduction"
+          "Arc and chord properties",
+          "Equal chords and equal arcs",
+          "Relationship between arcs and chords",
+          "Circle vocabulary in diagrams",
+          "Simple circle theorem applications"
         ],
         "learningObjectives": [
-          "Understand and solve syllabus-aligned problems on Profit and loss",
-          "Understand and solve syllabus-aligned problems on Discount",
-          "Understand and solve syllabus-aligned problems on Simple interest",
-          "Understand and solve syllabus-aligned problems on Compound interest introduction"
+          "Understand and solve ICSE Grade 9 problems on Arc and chord properties",
+          "Understand and solve ICSE Grade 9 problems on Equal chords and equal arcs",
+          "Understand and solve ICSE Grade 9 problems on Relationship between arcs and chords",
+          "Understand and solve ICSE Grade 9 problems on Circle vocabulary in diagrams",
+          "Understand and solve ICSE Grade 9 problems on Simple circle theorem applications"
         ],
-        "estimatedHours": 6
+        "estimatedHours": 5
       }
     ],
     "topics": [
-      "Mean median mode",
-      "Frequency distribution",
-      "Empirical probability",
-      "Sample space",
-      "Profit and loss",
-      "Discount",
-      "Simple interest",
-      "Compound interest introduction"
+      "Circle basics",
+      "Chord properties",
+      "Perpendicular from centre to chord",
+      "Distance of chord from centre",
+      "Numerical chord problems",
+      "Arc and chord properties",
+      "Equal chords and equal arcs",
+      "Relationship between arcs and chords",
+      "Circle vocabulary in diagrams",
+      "Simple circle theorem applications"
     ],
-    "duration": "8 weeks",
-    "estimatedHours": 12,
+    "duration": "5 weeks",
+    "estimatedHours": 10,
     "level": "intermediate",
     "difficulty": 3,
     "language": "English",
     "prerequisites": [
-      "Grade 8 Mathematics foundations",
-      "Arithmetic fluency",
-      "Problem reading skills"
+      "Grade 8 rational numbers and algebra",
+      "Basic geometry and mensuration",
+      "Basic graph reading"
     ],
     "learningOutcomes": [
-      "Explain the key CBSE and CISCE ideas in Statistics, Probability and Commercial Arithmetic",
-      "Use diagrams, tables, equations or graphs to model problems",
-      "Solve graded practice and board-style questions",
-      "Apply the concepts in real-life situations"
+      "Explain key ICSE Class 9 concepts in Circle Geometry",
+      "Use diagrams or graphs to reason before solving",
+      "Solve numerical, algebraic, geometric and statistical problems",
+      "Check answers using substitution, theorem conditions, estimation or visual reasoning"
     ],
     "certificate": true,
     "status": "published",
@@ -741,17 +896,472 @@
     "tags": [
       "Grade 9",
       "Mathematics",
-      "Statistics, Probability and Commercial Arithmetic",
-      "CBSE",
+      "ICSE",
       "CISCE",
-      "ICSE"
+      "Circle Geometry"
     ],
     "isActive": true,
     "createdAt": {
-      "$date": "2026-07-30T00:00:00.000Z"
+      "$date": "2026-08-01T00:00:00.000Z"
     },
     "updatedAt": {
-      "$date": "2026-07-30T00:00:00.000Z"
+      "$date": "2026-08-01T00:00:00.000Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "790000000000000000000001"
+    },
+    "title": "Grade 9 Mathematics - Statistics",
+    "description": "ICSE Class 9 Mathematics course on Statistics, distributed into syllabus-aligned chapters with concept-first learning and visual practice.",
+    "createdBy": "696d8e8098d47cbd00770abd",
+    "grade": 9,
+    "subject": "Mathematics",
+    "board": [
+      "ICSE"
+    ],
+    "thumbnail": "",
+    "syllabus": [
+      "Introduction to statistics",
+      "Collection of data",
+      "Presentation of data",
+      "Tabular representation",
+      "Graphical representation of data",
+      "Mean of ungrouped data",
+      "Median of ungrouped data",
+      "Arranging data",
+      "Choosing mean or median",
+      "Interpreting averages"
+    ],
+    "chapters": [
+      {
+        "name": "Data Collection and Presentation",
+        "topics": [
+          "Introduction to statistics",
+          "Collection of data",
+          "Presentation of data",
+          "Tabular representation",
+          "Graphical representation of data"
+        ],
+        "learningObjectives": [
+          "Understand and solve ICSE Grade 9 problems on Introduction to statistics",
+          "Understand and solve ICSE Grade 9 problems on Collection of data",
+          "Understand and solve ICSE Grade 9 problems on Presentation of data",
+          "Understand and solve ICSE Grade 9 problems on Tabular representation",
+          "Understand and solve ICSE Grade 9 problems on Graphical representation of data"
+        ],
+        "estimatedHours": 6
+      },
+      {
+        "name": "Mean and Median of Ungrouped Data",
+        "topics": [
+          "Mean of ungrouped data",
+          "Median of ungrouped data",
+          "Arranging data",
+          "Choosing mean or median",
+          "Interpreting averages"
+        ],
+        "learningObjectives": [
+          "Understand and solve ICSE Grade 9 problems on Mean of ungrouped data",
+          "Understand and solve ICSE Grade 9 problems on Median of ungrouped data",
+          "Understand and solve ICSE Grade 9 problems on Arranging data",
+          "Understand and solve ICSE Grade 9 problems on Choosing mean or median",
+          "Understand and solve ICSE Grade 9 problems on Interpreting averages"
+        ],
+        "estimatedHours": 6
+      }
+    ],
+    "topics": [
+      "Introduction to statistics",
+      "Collection of data",
+      "Presentation of data",
+      "Tabular representation",
+      "Graphical representation of data",
+      "Mean of ungrouped data",
+      "Median of ungrouped data",
+      "Arranging data",
+      "Choosing mean or median",
+      "Interpreting averages"
+    ],
+    "duration": "6 weeks",
+    "estimatedHours": 12,
+    "level": "intermediate",
+    "difficulty": 3,
+    "language": "English",
+    "prerequisites": [
+      "Grade 8 rational numbers and algebra",
+      "Basic geometry and mensuration",
+      "Basic graph reading"
+    ],
+    "learningOutcomes": [
+      "Explain key ICSE Class 9 concepts in Statistics",
+      "Use diagrams or graphs to reason before solving",
+      "Solve numerical, algebraic, geometric and statistical problems",
+      "Check answers using substitution, theorem conditions, estimation or visual reasoning"
+    ],
+    "certificate": true,
+    "status": "published",
+    "enrollmentCount": 0,
+    "averageRating": 0,
+    "totalRatings": 0,
+    "reviewCount": 0,
+    "maxStudents": 50,
+    "tags": [
+      "Grade 9",
+      "Mathematics",
+      "ICSE",
+      "CISCE",
+      "Statistics"
+    ],
+    "isActive": true,
+    "createdAt": {
+      "$date": "2026-08-01T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-08-01T00:00:00.000Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "790000000000000000000002"
+    },
+    "title": "Grade 9 Mathematics - Mensuration",
+    "description": "ICSE Class 9 Mathematics course on Mensuration, distributed into syllabus-aligned chapters with concept-first learning and visual practice.",
+    "createdBy": "696d8e8098d47cbd00770abd",
+    "grade": 9,
+    "subject": "Mathematics",
+    "board": [
+      "ICSE"
+    ],
+    "thumbnail": "",
+    "syllabus": [
+      "Area of triangle",
+      "Perimeter of triangle",
+      "Area of circle",
+      "Circumference of circle",
+      "Mixed plane mensuration problems",
+      "Surface area of cube",
+      "Surface area of cuboid",
+      "Volume of cube",
+      "Volume of cuboid",
+      "Real-life packing and storage problems"
+    ],
+    "chapters": [
+      {
+        "name": "Area and Perimeter of Triangle and Circle",
+        "topics": [
+          "Area of triangle",
+          "Perimeter of triangle",
+          "Area of circle",
+          "Circumference of circle",
+          "Mixed plane mensuration problems"
+        ],
+        "learningObjectives": [
+          "Understand and solve ICSE Grade 9 problems on Area of triangle",
+          "Understand and solve ICSE Grade 9 problems on Perimeter of triangle",
+          "Understand and solve ICSE Grade 9 problems on Area of circle",
+          "Understand and solve ICSE Grade 9 problems on Circumference of circle",
+          "Understand and solve ICSE Grade 9 problems on Mixed plane mensuration problems"
+        ],
+        "estimatedHours": 7
+      },
+      {
+        "name": "Surface Area and Volume of Cube and Cuboid",
+        "topics": [
+          "Surface area of cube",
+          "Surface area of cuboid",
+          "Volume of cube",
+          "Volume of cuboid",
+          "Real-life packing and storage problems"
+        ],
+        "learningObjectives": [
+          "Understand and solve ICSE Grade 9 problems on Surface area of cube",
+          "Understand and solve ICSE Grade 9 problems on Surface area of cuboid",
+          "Understand and solve ICSE Grade 9 problems on Volume of cube",
+          "Understand and solve ICSE Grade 9 problems on Volume of cuboid",
+          "Understand and solve ICSE Grade 9 problems on Real-life packing and storage problems"
+        ],
+        "estimatedHours": 7
+      }
+    ],
+    "topics": [
+      "Area of triangle",
+      "Perimeter of triangle",
+      "Area of circle",
+      "Circumference of circle",
+      "Mixed plane mensuration problems",
+      "Surface area of cube",
+      "Surface area of cuboid",
+      "Volume of cube",
+      "Volume of cuboid",
+      "Real-life packing and storage problems"
+    ],
+    "duration": "7 weeks",
+    "estimatedHours": 14,
+    "level": "intermediate",
+    "difficulty": 3,
+    "language": "English",
+    "prerequisites": [
+      "Grade 8 rational numbers and algebra",
+      "Basic geometry and mensuration",
+      "Basic graph reading"
+    ],
+    "learningOutcomes": [
+      "Explain key ICSE Class 9 concepts in Mensuration",
+      "Use diagrams or graphs to reason before solving",
+      "Solve numerical, algebraic, geometric and statistical problems",
+      "Check answers using substitution, theorem conditions, estimation or visual reasoning"
+    ],
+    "certificate": true,
+    "status": "published",
+    "enrollmentCount": 0,
+    "averageRating": 0,
+    "totalRatings": 0,
+    "reviewCount": 0,
+    "maxStudents": 50,
+    "tags": [
+      "Grade 9",
+      "Mathematics",
+      "ICSE",
+      "CISCE",
+      "Mensuration"
+    ],
+    "isActive": true,
+    "createdAt": {
+      "$date": "2026-08-01T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-08-01T00:00:00.000Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "790000000000000000000003"
+    },
+    "title": "Grade 9 Mathematics - Trigonometry",
+    "description": "ICSE Class 9 Mathematics course on Trigonometry, distributed into syllabus-aligned chapters with concept-first learning and visual practice.",
+    "createdBy": "696d8e8098d47cbd00770abd",
+    "grade": 9,
+    "subject": "Mathematics",
+    "board": [
+      "ICSE"
+    ],
+    "thumbnail": "",
+    "syllabus": [
+      "Right angled triangle",
+      "Sine cosine and tangent",
+      "Reciprocal trigonometric ratios",
+      "Finding ratios from sides",
+      "Simple ratio problems",
+      "Trigonometric ratios of standard angles",
+      "Using 0°, 30°, 45°, 60° and 90° values",
+      "Complementary angle relations",
+      "Direct applications of complementary angles",
+      "Simple 2-D right triangle problems"
+    ],
+    "chapters": [
+      {
+        "name": "Trigonometric Ratios",
+        "topics": [
+          "Right angled triangle",
+          "Sine cosine and tangent",
+          "Reciprocal trigonometric ratios",
+          "Finding ratios from sides",
+          "Simple ratio problems"
+        ],
+        "learningObjectives": [
+          "Understand and solve ICSE Grade 9 problems on Right angled triangle",
+          "Understand and solve ICSE Grade 9 problems on Sine cosine and tangent",
+          "Understand and solve ICSE Grade 9 problems on Reciprocal trigonometric ratios",
+          "Understand and solve ICSE Grade 9 problems on Finding ratios from sides",
+          "Understand and solve ICSE Grade 9 problems on Simple ratio problems"
+        ],
+        "estimatedHours": 8
+      },
+      {
+        "name": "Standard and Complementary Angles",
+        "topics": [
+          "Trigonometric ratios of standard angles",
+          "Using 0°, 30°, 45°, 60° and 90° values",
+          "Complementary angle relations",
+          "Direct applications of complementary angles",
+          "Simple 2-D right triangle problems"
+        ],
+        "learningObjectives": [
+          "Understand and solve ICSE Grade 9 problems on Trigonometric ratios of standard angles",
+          "Understand and solve ICSE Grade 9 problems on Using 0°, 30°, 45°, 60° and 90° values",
+          "Understand and solve ICSE Grade 9 problems on Complementary angle relations",
+          "Understand and solve ICSE Grade 9 problems on Direct applications of complementary angles",
+          "Understand and solve ICSE Grade 9 problems on Simple 2-D right triangle problems"
+        ],
+        "estimatedHours": 8
+      }
+    ],
+    "topics": [
+      "Right angled triangle",
+      "Sine cosine and tangent",
+      "Reciprocal trigonometric ratios",
+      "Finding ratios from sides",
+      "Simple ratio problems",
+      "Trigonometric ratios of standard angles",
+      "Using 0°, 30°, 45°, 60° and 90° values",
+      "Complementary angle relations",
+      "Direct applications of complementary angles",
+      "Simple 2-D right triangle problems"
+    ],
+    "duration": "8 weeks",
+    "estimatedHours": 16,
+    "level": "intermediate",
+    "difficulty": 3,
+    "language": "English",
+    "prerequisites": [
+      "Grade 8 rational numbers and algebra",
+      "Basic geometry and mensuration",
+      "Basic graph reading"
+    ],
+    "learningOutcomes": [
+      "Explain key ICSE Class 9 concepts in Trigonometry",
+      "Use diagrams or graphs to reason before solving",
+      "Solve numerical, algebraic, geometric and statistical problems",
+      "Check answers using substitution, theorem conditions, estimation or visual reasoning"
+    ],
+    "certificate": true,
+    "status": "published",
+    "enrollmentCount": 0,
+    "averageRating": 0,
+    "totalRatings": 0,
+    "reviewCount": 0,
+    "maxStudents": 50,
+    "tags": [
+      "Grade 9",
+      "Mathematics",
+      "ICSE",
+      "CISCE",
+      "Trigonometry"
+    ],
+    "isActive": true,
+    "createdAt": {
+      "$date": "2026-08-01T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-08-01T00:00:00.000Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "790000000000000000000004"
+    },
+    "title": "Grade 9 Mathematics - Coordinate Geometry",
+    "description": "ICSE Class 9 Mathematics course on Coordinate Geometry, distributed into syllabus-aligned chapters with concept-first learning and visual practice.",
+    "createdBy": "696d8e8098d47cbd00770abd",
+    "grade": 9,
+    "subject": "Mathematics",
+    "board": [
+      "ICSE"
+    ],
+    "thumbnail": "",
+    "syllabus": [
+      "Cartesian plane",
+      "x-axis and y-axis",
+      "Quadrants",
+      "Plotting points from coordinates",
+      "Reading coordinates from graph",
+      "Graphical solution of simultaneous linear equations",
+      "Intersection point as solution",
+      "Distance between two points",
+      "Distance formula",
+      "Coordinate geometry word problems"
+    ],
+    "chapters": [
+      {
+        "name": "Cartesian System and Plotting Points",
+        "topics": [
+          "Cartesian plane",
+          "x-axis and y-axis",
+          "Quadrants",
+          "Plotting points from coordinates",
+          "Reading coordinates from graph"
+        ],
+        "learningObjectives": [
+          "Understand and solve ICSE Grade 9 problems on Cartesian plane",
+          "Understand and solve ICSE Grade 9 problems on x-axis and y-axis",
+          "Understand and solve ICSE Grade 9 problems on Quadrants",
+          "Understand and solve ICSE Grade 9 problems on Plotting points from coordinates",
+          "Understand and solve ICSE Grade 9 problems on Reading coordinates from graph"
+        ],
+        "estimatedHours": 8
+      },
+      {
+        "name": "Graphical Solution and Distance Formula",
+        "topics": [
+          "Graphical solution of simultaneous linear equations",
+          "Intersection point as solution",
+          "Distance between two points",
+          "Distance formula",
+          "Coordinate geometry word problems"
+        ],
+        "learningObjectives": [
+          "Understand and solve ICSE Grade 9 problems on Graphical solution of simultaneous linear equations",
+          "Understand and solve ICSE Grade 9 problems on Intersection point as solution",
+          "Understand and solve ICSE Grade 9 problems on Distance between two points",
+          "Understand and solve ICSE Grade 9 problems on Distance formula",
+          "Understand and solve ICSE Grade 9 problems on Coordinate geometry word problems"
+        ],
+        "estimatedHours": 8
+      }
+    ],
+    "topics": [
+      "Cartesian plane",
+      "x-axis and y-axis",
+      "Quadrants",
+      "Plotting points from coordinates",
+      "Reading coordinates from graph",
+      "Graphical solution of simultaneous linear equations",
+      "Intersection point as solution",
+      "Distance between two points",
+      "Distance formula",
+      "Coordinate geometry word problems"
+    ],
+    "duration": "8 weeks",
+    "estimatedHours": 16,
+    "level": "intermediate",
+    "difficulty": 3,
+    "language": "English",
+    "prerequisites": [
+      "Grade 8 rational numbers and algebra",
+      "Basic geometry and mensuration",
+      "Basic graph reading"
+    ],
+    "learningOutcomes": [
+      "Explain key ICSE Class 9 concepts in Coordinate Geometry",
+      "Use diagrams or graphs to reason before solving",
+      "Solve numerical, algebraic, geometric and statistical problems",
+      "Check answers using substitution, theorem conditions, estimation or visual reasoning"
+    ],
+    "certificate": true,
+    "status": "published",
+    "enrollmentCount": 0,
+    "averageRating": 0,
+    "totalRatings": 0,
+    "reviewCount": 0,
+    "maxStudents": 50,
+    "tags": [
+      "Grade 9",
+      "Mathematics",
+      "ICSE",
+      "CISCE",
+      "Coordinate Geometry"
+    ],
+    "isActive": true,
+    "createdAt": {
+      "$date": "2026-08-01T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-08-01T00:00:00.000Z"
     },
     "__v": 0
   }

@@ -19,6 +19,10 @@
  *   boxPlot       | complexPlane    | linearProgramming | slopeField
  *   mapping       | unitCircle      | inequalityNumberLine | ogive
  *   locus
+ *   rotationalSymmetry | congruence
+ *   quadrilateralProperties | surfaceVolume
+ *   logarithmScale
+ *   similarTriangles | commercialMath
  */
 import ClockDiagram from './diagrams/ClockDiagram'
 import FractionDiagram from './diagrams/FractionDiagram'
@@ -65,6 +69,13 @@ import UnitCircleDiagram from './diagrams/UnitCircleDiagram'
 import InequalityNumberLineDiagram from './diagrams/InequalityNumberLineDiagram'
 import OgiveDiagram from './diagrams/OgiveDiagram'
 import LocusDiagram from './diagrams/LocusDiagram'
+import RotationalSymmetryDiagram from './diagrams/RotationalSymmetryDiagram'
+import CongruenceDiagram from './diagrams/CongruenceDiagram'
+import QuadrilateralPropertiesDiagram from './diagrams/QuadrilateralPropertiesDiagram'
+import SurfaceVolumeDiagram from './diagrams/SurfaceVolumeDiagram'
+import LogarithmScaleDiagram from './diagrams/LogarithmScaleDiagram'
+import SimilarTrianglesDiagram from './diagrams/SimilarTrianglesDiagram'
+import CommercialMathDiagram from './diagrams/CommercialMathDiagram'
 
 /** Registry: maps diagram type → component */
 const DIAGRAM_REGISTRY = {
@@ -173,6 +184,30 @@ const DIAGRAM_REGISTRY = {
   locus:           LocusDiagram,
   locusDiagram:    LocusDiagram,
   locusdiagram:    LocusDiagram,
+  rotationalSymmetry: RotationalSymmetryDiagram,
+  rotationalsymmetry: RotationalSymmetryDiagram,
+  rotational:      RotationalSymmetryDiagram,
+  congruence:      CongruenceDiagram,
+  congruentTriangles: CongruenceDiagram,
+  congruenttriangles: CongruenceDiagram,
+  quadrilateralProperties: QuadrilateralPropertiesDiagram,
+  quadrilateralproperties: QuadrilateralPropertiesDiagram,
+  quadrilateral:   QuadrilateralPropertiesDiagram,
+  surfaceVolume:   SurfaceVolumeDiagram,
+  surfacevolume:   SurfaceVolumeDiagram,
+  mensuration3d:   SurfaceVolumeDiagram,
+  logarithmScale:  LogarithmScaleDiagram,
+  logarithmscale:  LogarithmScaleDiagram,
+  logarithm:       LogarithmScaleDiagram,
+  logScale:        LogarithmScaleDiagram,
+  similarTriangles: SimilarTrianglesDiagram,
+  similartriangles: SimilarTrianglesDiagram,
+  similarity:      SimilarTrianglesDiagram,
+  commercialMath:  CommercialMathDiagram,
+  commercialmath:  CommercialMathDiagram,
+  gst:             CommercialMathDiagram,
+  banking:         CommercialMathDiagram,
+  shares:          CommercialMathDiagram,
 }
 
 /**
@@ -255,5 +290,10 @@ export {
   UnitCircleDiagram,
   InequalityNumberLineDiagram,
   OgiveDiagram,
-  LocusDiagram
+  LocusDiagram,
+  RotationalSymmetryDiagram,
+  CongruenceDiagram,
+  QuadrilateralPropertiesDiagram,
+  SurfaceVolumeDiagram,
+  LogarithmScaleDiagram
 }

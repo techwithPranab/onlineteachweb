@@ -267,7 +267,7 @@ export const DIAGRAM_CATALOG = [
     label: 'Matrix / Determinant',
     emoji: '▦',
     description: 'Display matrices, highlighted entries and determinant notes',
-    grades: [11, 12],
+    grades: [10, 11, 12],
     subjects: ['Mathematics'],
     topics: ['Matrices', 'Determinants', 'Matrix operations', 'Transpose', 'Inverse method', 'Linear Systems'],
     exampleParams: { matrix: [[1, 2], [3, 4]], determinant: -2, title: '2 by 2 determinant' },
@@ -492,6 +492,83 @@ export const DIAGRAM_CATALOG = [
     topics: ['Loci and construction', 'Loci', 'Construction checks', 'Ruler and compass constructions', 'Playing with constructions', 'Perpendicular bisectors', 'Circle construction'],
     exampleParams: { kind: 'perpendicularBisector', title: 'Locus of points equidistant from A and B' },
     aiInstruction: '{ "type": "locus", "params": { "kind": "perpendicularBisector"|"circle", "pointA": {"x": <n>, "y": <n>, "label": "A"}, "pointB": {"x": <n>, "y": <n>, "label": "B"}, "title": "<label>" }, "caption": "..." }'
+  },
+  {
+    type: 'rotationalSymmetry',
+    label: 'Rotational Symmetry',
+    emoji: '⟳',
+    description: 'Show a shape after repeated turns around a centre',
+    grades: [7, 8, 9],
+    subjects: ['Mathematics'],
+    topics: ['Rotational symmetry', 'Order of rotational symmetry', 'Angle of rotation', 'Symmetry', '2-D objects'],
+    exampleParams: { shape: 'triangle', angle: 120, order: 3, title: 'Order 3 rotational symmetry', showCopies: true },
+    aiInstruction: '{ "type": "rotationalSymmetry", "params": { "shape": "triangle"|"square"|"rectangle"|"pinwheel", "angle": <degrees>, "order": <n>, "showCopies": true, "title": "<label>" }, "caption": "..." }'
+  },
+  {
+    type: 'congruence',
+    label: 'Congruence Criteria',
+    emoji: '≅',
+    description: 'Compare two triangles with matching side and angle marks',
+    grades: [7, 8, 9],
+    subjects: ['Mathematics'],
+    topics: ['Congruence', 'Congruence of triangles', 'SSS', 'SAS', 'ASA', 'RHS', 'Superimposition', 'Criteria of congruence'],
+    exampleParams: { criterion: 'SSS', title: 'Congruent triangles by SSS', showLabels: true },
+    aiInstruction: '{ "type": "congruence", "params": { "criterion": "SSS"|"SAS"|"ASA"|"RHS", "title": "<label>", "showLabels": true }, "caption": "..." }'
+  },
+  {
+    type: 'quadrilateralProperties',
+    label: 'Quadrilateral Properties',
+    emoji: '▱',
+    description: 'Show quadrilateral angle sum, diagonals and parallelogram-family properties',
+    grades: [8, 9],
+    subjects: ['Mathematics'],
+    topics: ['Quadrilaterals', 'Properties of quadrilaterals', 'Parallelogram properties', 'Diagonals of rectangle', 'Diagonals of rhombus', 'Diagonals of square', 'Angle Sum property'],
+    exampleParams: { kind: 'parallelogram', property: 'diagonalsBisect', title: 'Diagonals bisect each other', showLabels: true },
+    aiInstruction: '{ "type": "quadrilateralProperties", "params": { "kind": "parallelogram"|"rectangle"|"rhombus"|"square"|"trapezium", "property": "angleSum"|"oppositeSidesEqual"|"oppositeAnglesEqual"|"diagonalsBisect"|"rectangleDiagonals"|"rhombusDiagonals"|"squareDiagonals", "title": "<label>", "showLabels": true }, "caption": "..." }'
+  },
+  {
+    type: 'surfaceVolume',
+    label: 'Surface Area and Volume',
+    emoji: '▣',
+    description: 'Model cube, cuboid, cylinder, cone and sphere dimensions for TSA, CSA and volume',
+    grades: [8, 9, 10],
+    subjects: ['Mathematics'],
+    topics: ['Surface area', 'Total surface area', 'Curved surface area', 'Volume', 'Volume of cube', 'Volume of cuboid', 'Volume of cylinder', 'Volume of cone', 'Volume of sphere', 'Cylinder cone and sphere', 'Capacity', 'Mensuration'],
+    exampleParams: { solid: 'cone', mode: 'volume', dimensions: { radius: 3, height: 7 }, title: 'Volume of cone' },
+    aiInstruction: '{ "type": "surfaceVolume", "params": { "solid": "cube"|"cuboid"|"cylinder"|"cone"|"sphere", "mode": "volume"|"totalSurface"|"curvedSurface", "dimensions": {"length": <n>, "width": <n>, "height": <n>, "radius": <n>, "side": <n>}, "title": "<label>" }, "caption": "..." }'
+  },
+  {
+    type: 'logarithmScale',
+    label: 'Logarithm Scale',
+    emoji: 'log',
+    description: 'Connect powers, indices and logarithms on a scale',
+    grades: [9, 10],
+    subjects: ['Mathematics'],
+    topics: ['Logarithms', 'Indices', 'Exponents', 'Laws of logarithms', 'Logarithm as inverse of exponent'],
+    exampleParams: { base: 10, powers: [-2, -1, 0, 1, 2, 3], title: 'Powers and logarithms' },
+    aiInstruction: '{ "type": "logarithmScale", "params": { "base": <number>, "powers": [<integers>], "title": "<label>" }, "caption": "..." }'
+  },
+  {
+    type: 'similarTriangles',
+    label: 'Similar Triangles',
+    emoji: '△∼△',
+    description: 'Compare two similar triangles with matching angles and proportional sides',
+    grades: [9, 10],
+    subjects: ['Mathematics'],
+    topics: ['Similarity', 'Similar triangles', 'Conditions of similar triangles', 'AAA similarity', 'SSS similarity', 'SAS similarity', 'Scale factor', 'Corresponding sides'],
+    exampleParams: { criterion: 'AAA', scaleFactor: 1.5, title: 'Similar triangles' },
+    aiInstruction: '{ "type": "similarTriangles", "params": { "criterion": "AAA"|"SSS"|"SAS", "scaleFactor": <number>, "title": "<label>", "showLabels": true }, "caption": "..." }'
+  },
+  {
+    type: 'commercialMath',
+    label: 'Commercial Mathematics',
+    emoji: '₹%',
+    description: 'Flow cards for GST invoices, banking interest, shares and dividends',
+    grades: [10],
+    subjects: ['Mathematics'],
+    topics: ['Commercial Mathematics', 'GST', 'Banking', 'Shares and Dividends', 'Tax invoices', 'Dividend', 'Interest'],
+    exampleParams: { mode: 'gst', base: 1000, rate: 9, extraRate: 9, title: 'GST bill' },
+    aiInstruction: '{ "type": "commercialMath", "params": { "mode": "gst"|"banking"|"shares", "base": <number>, "rate": <number>, "extraRate": <number>, "faceValue": <number>, "shares": <number>, "title": "<label>" }, "caption": "..." }'
   }
 ]
 
