@@ -18,7 +18,6 @@ export default function FAQs() {
     { id: 'all', name: 'All Questions' },
     { id: 'general', name: 'General' },
     { id: 'students', name: 'For Students' },
-    { id: 'tutors', name: 'For Tutors' },
     { id: 'quizzes', name: 'Quiz & Assessment' },
     { id: 'billing', name: 'Billing & Payments' },
     { id: 'technical', name: 'Technical' }
@@ -33,13 +32,8 @@ export default function FAQs() {
     },
     {
       category: 'general',
-      question: 'How does the platform work?',
-      answer: 'Students can browse courses, enroll in subjects they\'re interested in, and attend live video classes with tutors. Tutors create courses, upload materials, schedule sessions, and teach students in real-time. All interactions happen through our secure, easy-to-use platform.'
-    },
-    {
-      category: 'general',
       question: 'Do I need to download any software?',
-      answer: 'No downloads required! Our platform works directly in your web browser. However, you\'ll need a stable internet connection, a device with a camera and microphone, and a modern web browser (Chrome, Firefox, Safari, or Edge).'
+      answer: 'No downloads are required. MeritAI works directly in a modern web browser such as Chrome, Firefox, Safari, or Edge. You only need a stable internet connection and a supported computer, tablet, or smartphone.'
     },
     {
       category: 'general',
@@ -66,27 +60,7 @@ export default function FAQs() {
     {
       category: 'students',
       question: 'How do I enroll in a course?',
-      answer: 'After creating your account, browse the course catalog, select a course you\'re interested in, and click "Enroll Now". You\'ll need an active subscription to access courses. Once enrolled, you can attend scheduled classes and access all course materials.'
-    },
-    {
-      category: 'students',
-      question: 'Can I attend classes on my mobile device?',
-      answer: 'Yes! Our platform is fully responsive and works on smartphones and tablets. However, for the best experience with screen sharing and interactive features, we recommend using a laptop or desktop computer.'
-    },
-    {
-      category: 'students',
-      question: 'What if I miss a live class?',
-      answer: 'While we recommend attending live classes for the best interactive experience, recordings may be available depending on the tutor\'s settings. You can also access all course materials, assignments, and reach out to your tutor for catch-up support.'
-    },
-    {
-      category: 'students',
-      question: 'How do I contact my tutor?',
-      answer: 'You can message your tutor directly through the platform using our built-in messaging system. Tutors typically respond within 24 hours. You can also ask questions during live class sessions.'
-    },
-    {
-      category: 'students',
-      question: 'Can I switch tutors or courses?',
-      answer: 'Yes, you can unenroll from a course and enroll in a different one at any time during your subscription period. However, please note that refunds are subject to our refund policy.'
+      answer: 'After creating your account, browse the course catalog, select a course you are interested in, and click "Enroll Now". An active subscription may be required to access the complete course and its study materials.'
     },
     {
       category: 'students',
@@ -98,12 +72,6 @@ export default function FAQs() {
       question: 'Can I study multiple subjects at once?',
       answer: 'Absolutely! Your subscription allows you to enroll in multiple courses across different subjects and grade levels simultaneously. You can create quizzes for any enrolled course and track your progress separately for each subject. This flexibility lets you learn at your own pace across multiple areas.'
     },
-    {
-      category: 'students',
-      question: 'What is the recommended study schedule?',
-      answer: 'We recommend spending 30-60 minutes daily on the platform: attend 2-3 live classes per week, take 1-2 practice quizzes per subject weekly, review weak topics identified by the AI, and spend 15 minutes reviewing quiz results and recommendations. Consistency is key to better learning outcomes!'
-    },
-
     // Quiz & Assessment
     {
       category: 'quizzes',
@@ -182,18 +150,8 @@ export default function FAQs() {
     },
     {
       category: 'quizzes',
-      question: 'Can tutors create quizzes for students?',
-      answer: 'Yes! Tutors have access to advanced quiz creation tools. They can create custom quizzes manually or use AI to generate questions. Tutors can also use our AI Question Generator to bulk-create questions by uploading course materials (PDFs, DOC, TXT files). Generated questions can be reviewed, edited, and added to the question bank.'
-    },
-    {
-      category: 'quizzes',
-      question: 'How does AI question generation work for tutors?',
-      answer: 'Tutors can upload course materials (lecture notes, textbooks, PDFs), and our AI analyzes the content to generate relevant questions across all difficulty levels. The AI creates MCQs, True/False, and descriptive questions with proper answers and explanations. Tutors can review, edit, approve, or reject each question before adding them to their question bank.'
-    },
-    {
-      category: 'quizzes',
       question: 'Is there a question bank I can practice from?',
-      answer: 'Yes! The platform has an extensive question bank organized by grade, subject, topic, and difficulty. Students can create quizzes from this bank, and tutors can contribute by adding their own questions or using AI to generate new ones. The question bank is constantly growing with high-quality, verified questions.'
+      answer: 'Yes! The platform has an extensive question bank organized by grade, subject, topic, and difficulty. Students can create targeted quizzes from this bank and receive fresh questions for continued practice.'
     },
     {
       category: 'quizzes',
@@ -206,63 +164,11 @@ export default function FAQs() {
       answer: 'Yes! You can export your quiz results as PDF reports from the Quiz History page. The export includes your score, detailed question-by-question analysis, performance metrics, and recommendations. This is useful for tracking progress, sharing with parents/teachers, or maintaining personal study records.'
     },
 
-    // For Tutors
-    {
-      category: 'tutors',
-      question: 'How do I become a tutor?',
-      answer: 'Click "Become a Tutor" and complete the application form with your qualifications, experience, and subjects taught. Our team reviews applications within 48 hours. Once approved, you can create courses and start teaching immediately.'
-    },
-    {
-      category: 'tutors',
-      question: 'What are the requirements to teach?',
-      answer: 'You need: (1) A bachelor\'s degree or relevant certification, (2) At least 1 year of teaching/tutoring experience, (3) Reliable internet connection, (4) Computer with webcam and microphone, (5) Quiet teaching environment, and (6) Passion for teaching!'
-    },
-    {
-      category: 'tutors',
-      question: 'How much can I earn as a tutor?',
-      answer: 'Tutors keep 80% of their course revenue. Earnings vary based on your rates, number of students, and hours taught. Beginner tutors typically earn ₹500-₹1,500/month part-time, while experienced tutors can earn ₹2,000-₹5,000+ monthly.'
-    },
-    {
-      category: 'tutors',
-      question: 'When and how do I get paid?',
-      answer: 'Payments are processed weekly via direct deposit or PayPal. You can track your earnings in real-time through your tutor dashboard. A minimum balance of ₹50 is required for withdrawal.'
-    },
-    {
-      category: 'tutors',
-      question: 'Can I set my own schedule?',
-      answer: 'Absolutely! You have complete control over your schedule. Create sessions at times that work for you, and students will book based on your availability. You can update your schedule anytime.'
-    },
-    {
-      category: 'tutors',
-      question: 'How do I create and manage quizzes for my students?',
-      answer: 'Access the Quiz Management section from your tutor dashboard. You can: (1) Create custom quizzes manually by selecting questions from the bank, (2) Use AI to generate questions from your uploaded course materials, (3) Review and approve AI-generated questions, (4) Set quiz parameters (time, difficulty, topics), (5) Track student quiz performance, and (6) Analyze class-wide quiz statistics to adjust your teaching.'
-    },
-    {
-      category: 'tutors',
-      question: 'Can I see how my students perform on quizzes?',
-      answer: 'Yes! The tutor dashboard provides comprehensive quiz analytics: view average scores by class and subject, identify common weak topics across students, track quiz completion rates, see time-on-task metrics, compare performance across different difficulty levels, and access individual student quiz histories to provide personalized support.'
-    },
-    {
-      category: 'tutors',
-      question: 'How does the AI Question Generator help me?',
-      answer: 'Upload your teaching materials (PDFs, Word docs, lecture notes, textbooks) and our AI automatically generates relevant quiz questions. The AI creates questions across all difficulty levels, provides correct answers and explanations, categorizes by topics, and ensures alignment with the curriculum. You review and approve questions before they\'re added to your question bank.'
-    },
-    {
-      category: 'tutors',
-      question: 'Can I reuse questions across different courses?',
-      answer: 'Yes! Questions you create or approve are added to your personal question bank and can be reused in any course you teach. You can also filter questions by grade, subject, topic, difficulty, and question type to quickly build targeted quizzes. The platform also supports importing/exporting questions in standard formats.'
-    },
-    {
-      category: 'tutors',
-      question: 'How many students can attend my classes?',
-      answer: 'This depends on your course setup. You can offer one-on-one tutoring, small group classes (up to 10 students), or larger sessions (up to 50 students). You set the maximum class size when creating your course.'
-    },
-
     // Billing & Payments
     {
       category: 'billing',
       question: 'What subscription plans are available?',
-      answer: 'We offer three plans: Basic (₹19/month for 5 courses), Standard (₹39/month for 15 courses), and Premium (₹79/month for unlimited courses). All plans include access to live classes, materials, and progress tracking.'
+      answer: 'We offer plans with different levels of access to courses, study materials, quizzes, and progress tracking. Visit the Pricing page for the currently available plans, limits, and prices.'
     },
     {
       category: 'billing',
@@ -282,7 +188,7 @@ export default function FAQs() {
     {
       category: 'billing',
       question: 'Is there a free trial?',
-      answer: 'Yes! New users get a 7-day free trial with access to all features. No credit card required to start. You can explore courses, attend classes, and experience the platform before subscribing.'
+      answer: 'Any currently available trial or introductory access will be shown on the Pricing and Signup pages. Review those pages for the latest eligibility, duration, and included features.'
     },
     {
       category: 'billing',
@@ -293,23 +199,8 @@ export default function FAQs() {
     // Technical
     {
       category: 'technical',
-      question: 'What are the system requirements?',
-      answer: 'You need: (1) Internet connection with 5+ Mbps speed, (2) Modern web browser (Chrome 90+, Firefox 88+, Safari 14+, or Edge 90+), (3) Webcam and microphone for video classes, (4) Speakers or headphones, and (5) Windows 10+, macOS 10.14+, or recent Linux distribution.'
-    },
-    {
-      category: 'technical',
-      question: 'I\'m having video/audio issues. What should I do?',
-      answer: 'First, check your internet connection and refresh the page. Ensure your browser has permission to access your camera and microphone. Try closing other applications and tabs. If issues persist, contact our technical support team.'
-    },
-    {
-      category: 'technical',
-      question: 'How do I enable camera and microphone permissions?',
-      answer: 'When you join a class, your browser will prompt you to allow camera and microphone access. Click "Allow". If you previously denied access, go to your browser settings, find site permissions, and enable camera/microphone for our domain.'
-    },
-    {
-      category: 'technical',
       question: 'Can I download course materials?',
-      answer: 'Yes! Tutors can upload PDFs, documents, presentations, and other materials that students can download and access offline. Look for the download button on each material in your course dashboard.'
+      answer: 'Downloadable PDFs, documents, presentations, and other resources can be saved for offline study. Look for the download button beside an eligible material in your course dashboard.'
     },
     {
       category: 'technical',
@@ -334,7 +225,7 @@ export default function FAQs() {
     {
       category: 'technical',
       question: 'Can I access MeritAI offline?',
-      answer: 'The platform requires internet connection for live classes, quiz synchronization, and real-time features. However, you can download course materials (PDFs, documents) for offline study. Active quizzes require internet but your progress is auto-saved, so you can resume if disconnected.'
+      answer: 'An internet connection is required for quizzes, synchronization, and account features. Downloadable course materials can be saved for offline study when a download option is available.'
     },
     {
       category: 'technical',
@@ -354,7 +245,7 @@ export default function FAQs() {
     {
       category: 'technical',
       question: 'How do I update my profile information?',
-      answer: 'Click on your profile icon in the top right corner, select "Profile Settings", and you can update your name, email, phone number, avatar, bio, grade (for students), subjects (for tutors), and notification preferences. Changes are saved automatically. Some changes like email may require verification.'
+      answer: 'Click your profile icon, select "Profile Settings", and update your name, email, phone number, avatar, grade, and notification preferences. Some changes, such as a new email address, may require verification.'
     },
     {
       category: 'technical',
@@ -377,7 +268,7 @@ export default function FAQs() {
 
   const seoData = {
     title: 'Frequently Asked Questions (FAQs)',
-    description: 'Find answers to common questions about MeritAI - our courses, pricing, quizzes, live classes, and more. Get help with student and tutor queries.',
+    description: 'Find answers to common questions about MeritAI, including courses, study materials, pricing, quizzes, billing, and technical support.',
     keywords: 'FAQs, frequently asked questions, help, support, online learning help, quiz help, course help'
   };
 

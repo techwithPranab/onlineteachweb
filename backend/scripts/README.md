@@ -33,6 +33,29 @@ the terminal environment. Back up the database before running it. This script de
 all courses and materials, including courses outside Grades 4-10 and non-Mathematics
 courses, before inserting the validated Grade 4-10 Mathematics data.
 
+## Grade 4-10 student accounts
+
+`seed-grade4-10-students.js` creates 10 active, email-verified student accounts for
+each Grade 4 through Grade 10 (70 accounts total). It is safe to rerun: generated
+accounts are matched by email and updated instead of duplicated.
+
+```bash
+# Validate and preview without changing MongoDB
+cd backend && npm run seed:students:grade4-10:check
+
+# Create or update all 70 students
+cd backend && npm run seed:students:grade4-10
+
+# Override the default password
+node backend/scripts/seed-grade4-10-students.js --yes --password=YourSecurePassword
+```
+
+The fallback password is `MeritAI@123`. Set `DEFAULT_STUDENT_PASSWORD` in
+`backend/.env` or pass `--password=...` to override it. Generated emails follow the
+pattern `student-grade4-01@meritai.test` through `student-grade10-10@meritai.test`.
+These shared-password accounts are intended for testing or demonstrations; use unique
+credentials for real students.
+
 ## 📋 Available Scripts
 
 ### 1. `seedFeaturesAndPlans.js`
