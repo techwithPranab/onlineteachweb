@@ -12,7 +12,10 @@ export default function Courses() {
   const [selectedGrade, setSelectedGrade] = useState('')
   const [selectedSubject, setSelectedSubject] = useState('')
 
-  const { data: courses, isLoading, error } = useQuery('courses', courseService.getPublicCourses)
+  const { data: courses, isLoading, error } = useQuery(
+    ['public-courses', 'all'],
+    () => courseService.getAllPublicCourses()
+  )
 
   useEffect(() => {
     if (courses) {

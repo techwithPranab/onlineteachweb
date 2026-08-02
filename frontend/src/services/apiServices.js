@@ -1,5 +1,23 @@
 import api from './api'
 
+const sortPublicCourses = courses => courses.sort((first, second) => {
+  const gradeDifference = Number(first.grade) - Number(second.grade)
+  if (gradeDifference !== 0) return gradeDifference
+
+  const subjectDifference = String(first.subject || '').localeCompare(
+    String(second.subject || ''),
+    undefined,
+    { sensitivity: 'base' }
+  )
+  if (subjectDifference !== 0) return subjectDifference
+
+  return String(first.title || '').localeCompare(
+    String(second.title || ''),
+    undefined,
+    { numeric: true, sensitivity: 'base' }
+  )
+})
+
 export const authService = {
   login: async (email, password) => {
     const { data } = await api.post('/auth/login', { email, password })
@@ -58,6 +76,34 @@ export const courseService = {
     const { data } = await api.get('/courses/public', { params })
     console.log('Public courses data:', data);
     return data.courses || data
+  },
+
+  getAllPublicCourses: async (params = {}) => {
+    const pageSize = 100
+    const queryParams = { ...params, page: 1, limit: pageSize }
+    const { data: firstPage } = await api.get('/courses/public', { params: queryParams })
+
+    // Retain compatibility if the endpoint ever returns an unpaginated array.
+    if (Array.isArray(firstPage)) return sortPublicCourses(firstPage)
+
+    const courses = firstPage.courses || []
+    const totalPages = Math.max(Number(firstPage.pages) || 1, 1)
+
+    if (totalPages > 1) {
+      const remainingPages = await Promise.all(
+        Array.from({ length: totalPages - 1 }, (_, index) =>
+          api.get('/courses/public', {
+            params: { ...params, page: index + 2, limit: pageSize }
+          })
+        )
+      )
+
+      remainingPages.forEach(({ data }) => {
+        courses.push(...(data.courses || []))
+      })
+    }
+
+    return sortPublicCourses(courses)
   },
 
   getCourseById: async (id) => {

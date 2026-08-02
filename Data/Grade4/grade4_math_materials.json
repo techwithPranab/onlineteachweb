@@ -1,0 +1,1060 @@
+[
+  {
+    "_id": {
+      "$oid": "74a000000000000000000001"
+    },
+    "course": {
+      "$oid": "740000000000000000000001"
+    },
+    "tutor": {
+      "$oid": "696d8e8098d47cbd00770ac0"
+    },
+    "title": "4-Digit Numbers - Complete Study Material",
+    "description": "Grade 4 comprehensive lesson for 4-Digit Numbers, including concept explanations, visual learning, worked examples, differentiated practice, a quiz, and complete guidance.",
+    "type": "article",
+    "content": "# 4-Digit Numbers\n\nThis Grade 4 lesson develops the ideas in **Number System and Place Value** through explanations, visual reasoning, worked examples, practice, and reflection.\n\n## Learning Goals\n\n- Read and write 4-digit numbers correctly\n- Identify place value of each digit\n- Understand face value vs place value\n- Convert between number words and figures\n\n## Key Vocabulary\n\nReading numbers up to 9999 · Writing numbers in words and figures · Place value: thousands, hundreds, tens, ones · Face value concept · Indian number system · International number system\n\n## Concept Guide\n\n- **Reading numbers up to 9999:** A digit’s face value is the digit itself; its place value is the digit multiplied by the value of its position. Use a place-value chart to move between numerals, number words, and expanded form.\n- **Writing numbers in words and figures:** A digit’s face value is the digit itself; its place value is the digit multiplied by the value of its position. Use a place-value chart to move between numerals, number words, and expanded form.\n- **Place value: thousands, hundreds, tens, ones:** A digit’s face value is the digit itself; its place value is the digit multiplied by the value of its position. Use a place-value chart to move between numerals, number words, and expanded form.\n- **Face value concept:** A digit’s face value is the digit itself; its place value is the digit multiplied by the value of its position. Use a place-value chart to move between numerals, number words, and expanded form.\n- **Indian number system:** A digit’s face value is the digit itself; its place value is the digit multiplied by the value of its position. Use a place-value chart to move between numerals, number words, and expanded form.\n- **International number system:** A digit’s face value is the digit itself; its place value is the digit multiplied by the value of its position. Use a place-value chart to move between numerals, number words, and expanded form.\n\n### A reliable problem-solving routine\n\n1. Read the question twice and underline the quantities and units.\n2. Represent the information with a model, table, number sentence, or labelled sketch.\n3. Choose a rule or operation and explain why it fits.\n4. Work in clear steps and keep place values or units aligned.\n5. Check with estimation, an inverse operation, or a second representation.\n\n## Visual Learning\n\n```math-diagram\n{\n  \"type\": \"placeValue\",\n  \"params\": {\n    \"thousands\": 4,\n    \"hundreds\": 3,\n    \"tens\": 8,\n    \"ones\": 6,\n    \"showLabel\": true\n  },\n  \"caption\": \"The number 4,386 organized by place value.\"\n}\n```\n\nAsk yourself: What do the labels mean? Which parts are equal? What changes when a value changes? How does the picture support the calculation?\n\n## Worked Examples\n\n### Example 1 — Model and calculate\n\n**Question:** What is the value of 7 in 47,326?\n\n**Solution:** The 7 is in the thousands place, so its value is $7,000$.\n\n**Answer:** 7,000\n\n### Example 2 — Explain the reasoning\n\nUse one topic from this chapter in a daily-life situation. Draw or describe a model, write the mathematical statement, solve it, and check whether the answer is reasonable. A complete solution must include the correct unit or label.\n\n### Common Mistakes\n\n- Using a rule without checking what the question asks.\n- Mixing place values, units, or unequal parts.\n- Leaving a diagram unlabelled.\n- Writing only an answer without showing the reasoning.\n- Forgetting to check whether the result is sensible.\n\n## Guided Practice\n\n- **Q1.** Explain reading numbers up to 9999 with a labelled example of your own.\n- **Q2.** Explain writing numbers in words and figures with a labelled example of your own.\n- **Q3.** Explain place value: thousands, hundreds, tens, ones with a labelled example of your own.\n- **Q4.** Explain face value concept with a labelled example of your own.\n- **Q5.** Explain indian number system with a labelled example of your own.\n\n## Independent Practice\n\n### Easy\n\n1. Define two important words from this chapter.\n2. Draw a simple model that represents one chapter idea.\n3. State the rule or method you would use for the worked example.\n4. Estimate whether the worked-example answer should be small or large.\n5. Write one real-life situation where this mathematics is useful.\n\n### Medium\n\n1. Change one value in the worked example and solve the new problem.\n2. Solve the worked example by a second method or representation.\n3. Write a one-step word problem using a topic from the chapter, then solve it.\n4. Compare two examples and explain what stays the same.\n5. Find and correct this claim: “A numerical answer never needs a unit or label.”\n\n### Challenge\n\n1. Create a two-step problem combining this chapter with an earlier Grade 4 topic.\n2. Give an example and a non-example of one key concept and explain the difference.\n3. Make a visual puzzle whose solution uses reading numbers up to 9999.\n4. Describe how estimation or inverse operations can verify a solution.\n5. Teach the hardest chapter idea in four clear sentences.\n\n## Quick Quiz\n\n1. **Multiple choice:** What should you do first? A) Guess B) Identify the information and goal C) Ignore units D) Copy a rule\n2. **True or false:** A labelled visual can help explain mathematical reasoning.\n3. **Fill in the blank:** A final measurement answer needs a number and a ______.\n4. **Short answer:** Why is checking useful?\n5. **Application:** Solve: What is the value of 7 in 47,326?\n\n## Answer Key\n\n### Guided Practice\n\n- **Q1.** A correct response should define reading numbers up to 9999, show the relevant steps or model, and check the result.\n- **Q2.** A correct response should define writing numbers in words and figures, show the relevant steps or model, and check the result.\n- **Q3.** A correct response should define place value: thousands, hundreds, tens, ones, show the relevant steps or model, and check the result.\n- **Q4.** A correct response should define face value concept, show the relevant steps or model, and check the result.\n- **Q5.** A correct response should define indian number system, show the relevant steps or model, and check the result.\n\n### Independent Practice\n\nResponses are open-ended. Check that each answer is mathematically correct, shows a suitable model or steps, uses accurate vocabulary, and includes units where needed. For Medium 5, the claim is false because units and labels give a number its context.\n\n### Quick Quiz\n\n1. **B** — identify the given information and the goal.\n2. **True.**\n3. **unit** (or an appropriate label).\n4. Checking catches calculation, unit, and interpretation errors and shows whether an answer is reasonable.\n5. 7,000 — The 7 is in the thousands place, so its value is $7,000$.\n\n## Mastery Checklist\n\n- [ ] I can explain the important vocabulary.\n- [ ] I can represent an idea visually.\n- [ ] I can choose and apply a suitable method.\n- [ ] I can solve a word problem and label the answer.\n- [ ] I can check and explain my reasoning.\n",
+    "previewContent": "Learn 4-Digit Numbers through clear explanations, a visual model, worked examples, three levels of practice, a quiz, and answer guidance.",
+    "contentFormat": "markdown",
+    "difficulty": "basic",
+    "category": "lesson",
+    "isFree": true,
+    "downloadCount": 0,
+    "viewCount": 0,
+    "order": 1,
+    "tags": [
+      "Grade 4",
+      "Mathematics",
+      "4-Digit Numbers",
+      "Reading numbers up to 9999",
+      "Writing numbers in words and figures",
+      "Place value: thousands, hundreds, tens, ones",
+      "Face value concept",
+      "Indian number system",
+      "International number system",
+      "CBSE",
+      "ICSE",
+      "CISCE",
+      "Primary Mathematics"
+    ],
+    "isActive": true,
+    "createdAt": {
+      "$date": "2026-08-02T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-08-02T00:00:00.000Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "74a000000000000000000002"
+    },
+    "course": {
+      "$oid": "740000000000000000000001"
+    },
+    "tutor": {
+      "$oid": "696d8e8098d47cbd00770ac0"
+    },
+    "title": "Number Operations and Comparison - Complete Study Material",
+    "description": "Grade 4 comprehensive lesson for Number Operations and Comparison, including concept explanations, visual learning, worked examples, differentiated practice, a quiz, and complete guidance.",
+    "type": "article",
+    "content": "# Number Operations and Comparison\n\nThis Grade 4 lesson develops the ideas in **Number System and Place Value** through explanations, visual reasoning, worked examples, practice, and reflection.\n\n## Learning Goals\n\n- Form numbers systematically using digits\n- Compare and order numbers correctly\n- Use number line for visualization\n- Round numbers to nearest 10 and 100\n\n## Key Vocabulary\n\nForming largest and smallest numbers · Comparing numbers using symbols · Arranging numbers in ascending/descending order · Number line representation · Rounding off numbers · Finding successor and predecessor\n\n## Concept Guide\n\n- **Forming largest and smallest numbers:** Represent the information clearly, choose an operation or rule, solve in small steps, and check the result with estimation or an inverse operation.\n- **Comparing numbers using symbols:** Compare the number of digits first, then compare equal place values from left to right. On a number line, values increase as you move right.\n- **Arranging numbers in ascending/descending order:** Compare the number of digits first, then compare equal place values from left to right. On a number line, values increase as you move right.\n- **Number line representation:** Observe, measure, and name the defining properties. A careful labelled sketch helps separate what looks true from what is mathematically true.\n- **Rounding off numbers:** Locate the rounding place, inspect the digit immediately to its right, and decide which nearby multiple is closer. Use the rounded result to check reasonableness.\n- **Finding successor and predecessor:** The successor is one more and the predecessor is one less. Show both on a number line to make the relationship visible.\n\n### A reliable problem-solving routine\n\n1. Read the question twice and underline the quantities and units.\n2. Represent the information with a model, table, number sentence, or labelled sketch.\n3. Choose a rule or operation and explain why it fits.\n4. Work in clear steps and keep place values or units aligned.\n5. Check with estimation, an inverse operation, or a second representation.\n\n## Visual Learning\n\n```math-diagram\n{\n  \"type\": \"placeValue\",\n  \"params\": {\n    \"thousands\": 4,\n    \"hundreds\": 3,\n    \"tens\": 8,\n    \"ones\": 6,\n    \"showLabel\": true\n  },\n  \"caption\": \"The number 4,386 organized by place value.\"\n}\n```\n\nAsk yourself: What do the labels mean? Which parts are equal? What changes when a value changes? How does the picture support the calculation?\n\n## Worked Examples\n\n### Example 1 — Model and calculate\n\n**Question:** Red and blue beads are in the ratio $2:3$. If there are 8 red beads, how many blue?\n\n**Solution:** The scale factor is $8 \\div 2 = 4$, so blue beads $=3 \\times 4=12$.\n\n**Answer:** 12 blue beads\n\n### Example 2 — Explain the reasoning\n\nUse one topic from this chapter in a daily-life situation. Draw or describe a model, write the mathematical statement, solve it, and check whether the answer is reasonable. A complete solution must include the correct unit or label.\n\n### Common Mistakes\n\n- Using a rule without checking what the question asks.\n- Mixing place values, units, or unequal parts.\n- Leaving a diagram unlabelled.\n- Writing only an answer without showing the reasoning.\n- Forgetting to check whether the result is sensible.\n\n## Guided Practice\n\n- **Q1.** Explain forming largest and smallest numbers with a labelled example of your own.\n- **Q2.** Explain comparing numbers using symbols with a labelled example of your own.\n- **Q3.** Explain arranging numbers in ascending/descending order with a labelled example of your own.\n- **Q4.** Explain number line representation with a labelled example of your own.\n- **Q5.** Explain rounding off numbers with a labelled example of your own.\n\n## Independent Practice\n\n### Easy\n\n1. Define two important words from this chapter.\n2. Draw a simple model that represents one chapter idea.\n3. State the rule or method you would use for the worked example.\n4. Estimate whether the worked-example answer should be small or large.\n5. Write one real-life situation where this mathematics is useful.\n\n### Medium\n\n1. Change one value in the worked example and solve the new problem.\n2. Solve the worked example by a second method or representation.\n3. Write a one-step word problem using a topic from the chapter, then solve it.\n4. Compare two examples and explain what stays the same.\n5. Find and correct this claim: “A numerical answer never needs a unit or label.”\n\n### Challenge\n\n1. Create a two-step problem combining this chapter with an earlier Grade 4 topic.\n2. Give an example and a non-example of one key concept and explain the difference.\n3. Make a visual puzzle whose solution uses forming largest and smallest numbers.\n4. Describe how estimation or inverse operations can verify a solution.\n5. Teach the hardest chapter idea in four clear sentences.\n\n## Quick Quiz\n\n1. **Multiple choice:** What should you do first? A) Guess B) Identify the information and goal C) Ignore units D) Copy a rule\n2. **True or false:** A labelled visual can help explain mathematical reasoning.\n3. **Fill in the blank:** A final measurement answer needs a number and a ______.\n4. **Short answer:** Why is checking useful?\n5. **Application:** Solve: Red and blue beads are in the ratio $2:3$. If there are 8 red beads, how many blue?\n\n## Answer Key\n\n### Guided Practice\n\n- **Q1.** A correct response should define forming largest and smallest numbers, show the relevant steps or model, and check the result.\n- **Q2.** A correct response should define comparing numbers using symbols, show the relevant steps or model, and check the result.\n- **Q3.** A correct response should define arranging numbers in ascending/descending order, show the relevant steps or model, and check the result.\n- **Q4.** A correct response should define number line representation, show the relevant steps or model, and check the result.\n- **Q5.** A correct response should define rounding off numbers, show the relevant steps or model, and check the result.\n\n### Independent Practice\n\nResponses are open-ended. Check that each answer is mathematically correct, shows a suitable model or steps, uses accurate vocabulary, and includes units where needed. For Medium 5, the claim is false because units and labels give a number its context.\n\n### Quick Quiz\n\n1. **B** — identify the given information and the goal.\n2. **True.**\n3. **unit** (or an appropriate label).\n4. Checking catches calculation, unit, and interpretation errors and shows whether an answer is reasonable.\n5. 12 blue beads — The scale factor is $8 \\div 2 = 4$, so blue beads $=3 \\times 4=12$.\n\n## Mastery Checklist\n\n- [ ] I can explain the important vocabulary.\n- [ ] I can represent an idea visually.\n- [ ] I can choose and apply a suitable method.\n- [ ] I can solve a word problem and label the answer.\n- [ ] I can check and explain my reasoning.\n",
+    "previewContent": "Learn Number Operations and Comparison through clear explanations, a visual model, worked examples, three levels of practice, a quiz, and answer guidance.",
+    "contentFormat": "markdown",
+    "difficulty": "intermediate",
+    "category": "lesson",
+    "isFree": false,
+    "downloadCount": 0,
+    "viewCount": 0,
+    "order": 2,
+    "tags": [
+      "Grade 4",
+      "Mathematics",
+      "Number Operations and Comparison",
+      "Forming largest and smallest numbers",
+      "Comparing numbers using symbols",
+      "Arranging numbers in ascending/descending order",
+      "Number line representation",
+      "Rounding off numbers",
+      "Finding successor and predecessor",
+      "CBSE",
+      "ICSE",
+      "CISCE",
+      "Primary Mathematics"
+    ],
+    "isActive": true,
+    "createdAt": {
+      "$date": "2026-08-02T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-08-02T00:00:00.000Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "74a000000000000000000003"
+    },
+    "course": {
+      "$oid": "740000000000000000000002"
+    },
+    "tutor": {
+      "$oid": "696d8e8098d47cbd00770ac0"
+    },
+    "title": "Addition - Complete Study Material",
+    "description": "Grade 4 comprehensive lesson for Addition, including concept explanations, visual learning, worked examples, differentiated practice, a quiz, and complete guidance.",
+    "type": "article",
+    "content": "# Addition\n\nThis Grade 4 lesson develops the ideas in **Addition and Subtraction** through explanations, visual reasoning, worked examples, practice, and reflection.\n\n## Learning Goals\n\n- Add numbers with and without regrouping\n- Apply properties of addition\n- Use mental math strategies effectively\n- Solve addition word problems\n\n## Key Vocabulary\n\nAddition without regrouping · Addition with regrouping · Adding 3-digit and 4-digit numbers · Properties of addition · Mental addition strategies · Estimation in addition\n\n## Concept Guide\n\n- **Addition without regrouping:** Line up equal place values, add from right to left, and regroup whenever a column totals 10 or more.\n- **Addition with regrouping (carrying):** Line up equal place values, add from right to left, and regroup whenever a column totals 10 or more.\n- **Adding 3-digit and 4-digit numbers:** Represent the information clearly, choose an operation or rule, solve in small steps, and check the result with estimation or an inverse operation.\n- **Properties of addition (commutative, associative):** Line up equal place values, add from right to left, and regroup whenever a column totals 10 or more.\n- **Mental addition strategies:** Line up equal place values, add from right to left, and regroup whenever a column totals 10 or more.\n- **Estimation in addition:** Locate the rounding place, inspect the digit immediately to its right, and decide which nearby multiple is closer. Use the rounded result to check reasonableness.\n- **Word problems on addition:** Line up equal place values, add from right to left, and regroup whenever a column totals 10 or more.\n\n### A reliable problem-solving routine\n\n1. Read the question twice and underline the quantities and units.\n2. Represent the information with a model, table, number sentence, or labelled sketch.\n3. Choose a rule or operation and explain why it fits.\n4. Work in clear steps and keep place values or units aligned.\n5. Check with estimation, an inverse operation, or a second representation.\n\n## Visual Learning\n\n```math-diagram\n{\n  \"type\": \"numberLine\",\n  \"params\": {\n    \"start\": 0,\n    \"end\": 10,\n    \"step\": 1,\n    \"marked\": [\n      2,\n      5,\n      8\n    ]\n  },\n  \"caption\": \"A number line for ordering and estimating values.\"\n}\n```\n\nAsk yourself: What do the labels mean? Which parts are equal? What changes when a value changes? How does the picture support the calculation?\n\n## Worked Examples\n\n### Example 1 — Model and calculate\n\n**Question:** Find $2,478 + 1,356$.\n\n**Solution:** $2,478 + 1,356 = 3,834$. Add by place value and regroup tens and hundreds.\n\n**Answer:** 3,834\n\n### Example 2 — Explain the reasoning\n\nUse one topic from this chapter in a daily-life situation. Draw or describe a model, write the mathematical statement, solve it, and check whether the answer is reasonable. A complete solution must include the correct unit or label.\n\n### Common Mistakes\n\n- Using a rule without checking what the question asks.\n- Mixing place values, units, or unequal parts.\n- Leaving a diagram unlabelled.\n- Writing only an answer without showing the reasoning.\n- Forgetting to check whether the result is sensible.\n\n## Guided Practice\n\n- **Q1.** Explain addition without regrouping with a labelled example of your own.\n- **Q2.** Explain addition with regrouping with a labelled example of your own.\n- **Q3.** Explain adding 3-digit and 4-digit numbers with a labelled example of your own.\n- **Q4.** Explain properties of addition with a labelled example of your own.\n- **Q5.** Explain mental addition strategies with a labelled example of your own.\n\n## Independent Practice\n\n### Easy\n\n1. Define two important words from this chapter.\n2. Draw a simple model that represents one chapter idea.\n3. State the rule or method you would use for the worked example.\n4. Estimate whether the worked-example answer should be small or large.\n5. Write one real-life situation where this mathematics is useful.\n\n### Medium\n\n1. Change one value in the worked example and solve the new problem.\n2. Solve the worked example by a second method or representation.\n3. Write a one-step word problem using a topic from the chapter, then solve it.\n4. Compare two examples and explain what stays the same.\n5. Find and correct this claim: “A numerical answer never needs a unit or label.”\n\n### Challenge\n\n1. Create a two-step problem combining this chapter with an earlier Grade 4 topic.\n2. Give an example and a non-example of one key concept and explain the difference.\n3. Make a visual puzzle whose solution uses addition without regrouping.\n4. Describe how estimation or inverse operations can verify a solution.\n5. Teach the hardest chapter idea in four clear sentences.\n\n## Quick Quiz\n\n1. **Multiple choice:** What should you do first? A) Guess B) Identify the information and goal C) Ignore units D) Copy a rule\n2. **True or false:** A labelled visual can help explain mathematical reasoning.\n3. **Fill in the blank:** A final measurement answer needs a number and a ______.\n4. **Short answer:** Why is checking useful?\n5. **Application:** Solve: Find $2,478 + 1,356$.\n\n## Answer Key\n\n### Guided Practice\n\n- **Q1.** A correct response should define addition without regrouping, show the relevant steps or model, and check the result.\n- **Q2.** A correct response should define addition with regrouping, show the relevant steps or model, and check the result.\n- **Q3.** A correct response should define adding 3-digit and 4-digit numbers, show the relevant steps or model, and check the result.\n- **Q4.** A correct response should define properties of addition, show the relevant steps or model, and check the result.\n- **Q5.** A correct response should define mental addition strategies, show the relevant steps or model, and check the result.\n\n### Independent Practice\n\nResponses are open-ended. Check that each answer is mathematically correct, shows a suitable model or steps, uses accurate vocabulary, and includes units where needed. For Medium 5, the claim is false because units and labels give a number its context.\n\n### Quick Quiz\n\n1. **B** — identify the given information and the goal.\n2. **True.**\n3. **unit** (or an appropriate label).\n4. Checking catches calculation, unit, and interpretation errors and shows whether an answer is reasonable.\n5. 3,834 — $2,478 + 1,356 = 3,834$. Add by place value and regroup tens and hundreds.\n\n## Mastery Checklist\n\n- [ ] I can explain the important vocabulary.\n- [ ] I can represent an idea visually.\n- [ ] I can choose and apply a suitable method.\n- [ ] I can solve a word problem and label the answer.\n- [ ] I can check and explain my reasoning.\n",
+    "previewContent": "Learn Addition through clear explanations, a visual model, worked examples, three levels of practice, a quiz, and answer guidance.",
+    "contentFormat": "markdown",
+    "difficulty": "basic",
+    "category": "lesson",
+    "isFree": true,
+    "downloadCount": 0,
+    "viewCount": 0,
+    "order": 1,
+    "tags": [
+      "Grade 4",
+      "Mathematics",
+      "Addition",
+      "Addition without regrouping",
+      "Addition with regrouping (carrying)",
+      "Adding 3-digit and 4-digit numbers",
+      "Properties of addition (commutative, associative)",
+      "Mental addition strategies",
+      "Estimation in addition",
+      "CBSE",
+      "ICSE",
+      "CISCE",
+      "Primary Mathematics"
+    ],
+    "isActive": true,
+    "createdAt": {
+      "$date": "2026-08-02T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-08-02T00:00:00.000Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "74a000000000000000000004"
+    },
+    "course": {
+      "$oid": "740000000000000000000002"
+    },
+    "tutor": {
+      "$oid": "696d8e8098d47cbd00770ac0"
+    },
+    "title": "Subtraction - Complete Study Material",
+    "description": "Grade 4 comprehensive lesson for Subtraction, including concept explanations, visual learning, worked examples, differentiated practice, a quiz, and complete guidance.",
+    "type": "article",
+    "content": "# Subtraction\n\nThis Grade 4 lesson develops the ideas in **Addition and Subtraction** through explanations, visual reasoning, worked examples, practice, and reflection.\n\n## Learning Goals\n\n- Subtract numbers with and without regrouping\n- Use inverse relationship to check answers\n- Apply mental subtraction techniques\n- Solve subtraction word problems\n\n## Key Vocabulary\n\nSubtraction without regrouping · Subtraction with regrouping · Subtracting from 3-digit and 4-digit numbers · Relationship between addition and subtraction · Mental subtraction strategies · Estimation in subtraction\n\n## Concept Guide\n\n- **Subtraction without regrouping:** Line up equal place values, subtract from right to left, and exchange one unit from the next place when needed.\n- **Subtraction with regrouping (borrowing):** Line up equal place values, subtract from right to left, and exchange one unit from the next place when needed.\n- **Subtracting from 3-digit and 4-digit numbers:** Represent the information clearly, choose an operation or rule, solve in small steps, and check the result with estimation or an inverse operation.\n- **Relationship between addition and subtraction:** Line up equal place values, add from right to left, and regroup whenever a column totals 10 or more.\n- **Mental subtraction strategies:** Line up equal place values, subtract from right to left, and exchange one unit from the next place when needed.\n- **Estimation in subtraction:** Locate the rounding place, inspect the digit immediately to its right, and decide which nearby multiple is closer. Use the rounded result to check reasonableness.\n- **Word problems on subtraction:** Line up equal place values, subtract from right to left, and exchange one unit from the next place when needed.\n\n### A reliable problem-solving routine\n\n1. Read the question twice and underline the quantities and units.\n2. Represent the information with a model, table, number sentence, or labelled sketch.\n3. Choose a rule or operation and explain why it fits.\n4. Work in clear steps and keep place values or units aligned.\n5. Check with estimation, an inverse operation, or a second representation.\n\n## Visual Learning\n\n```math-diagram\n{\n  \"type\": \"numberLine\",\n  \"params\": {\n    \"start\": 0,\n    \"end\": 10,\n    \"step\": 1,\n    \"marked\": [\n      2,\n      5,\n      8\n    ]\n  },\n  \"caption\": \"A number line for ordering and estimating values.\"\n}\n```\n\nAsk yourself: What do the labels mean? Which parts are equal? What changes when a value changes? How does the picture support the calculation?\n\n## Worked Examples\n\n### Example 1 — Model and calculate\n\n**Question:** Find $2,478 + 1,356$.\n\n**Solution:** $2,478 + 1,356 = 3,834$. Add by place value and regroup tens and hundreds.\n\n**Answer:** 3,834\n\n### Example 2 — Explain the reasoning\n\nUse one topic from this chapter in a daily-life situation. Draw or describe a model, write the mathematical statement, solve it, and check whether the answer is reasonable. A complete solution must include the correct unit or label.\n\n### Common Mistakes\n\n- Using a rule without checking what the question asks.\n- Mixing place values, units, or unequal parts.\n- Leaving a diagram unlabelled.\n- Writing only an answer without showing the reasoning.\n- Forgetting to check whether the result is sensible.\n\n## Guided Practice\n\n- **Q1.** Explain subtraction without regrouping with a labelled example of your own.\n- **Q2.** Explain subtraction with regrouping with a labelled example of your own.\n- **Q3.** Explain subtracting from 3-digit and 4-digit numbers with a labelled example of your own.\n- **Q4.** Explain relationship between addition and subtraction with a labelled example of your own.\n- **Q5.** Explain mental subtraction strategies with a labelled example of your own.\n\n## Independent Practice\n\n### Easy\n\n1. Define two important words from this chapter.\n2. Draw a simple model that represents one chapter idea.\n3. State the rule or method you would use for the worked example.\n4. Estimate whether the worked-example answer should be small or large.\n5. Write one real-life situation where this mathematics is useful.\n\n### Medium\n\n1. Change one value in the worked example and solve the new problem.\n2. Solve the worked example by a second method or representation.\n3. Write a one-step word problem using a topic from the chapter, then solve it.\n4. Compare two examples and explain what stays the same.\n5. Find and correct this claim: “A numerical answer never needs a unit or label.”\n\n### Challenge\n\n1. Create a two-step problem combining this chapter with an earlier Grade 4 topic.\n2. Give an example and a non-example of one key concept and explain the difference.\n3. Make a visual puzzle whose solution uses subtraction without regrouping.\n4. Describe how estimation or inverse operations can verify a solution.\n5. Teach the hardest chapter idea in four clear sentences.\n\n## Quick Quiz\n\n1. **Multiple choice:** What should you do first? A) Guess B) Identify the information and goal C) Ignore units D) Copy a rule\n2. **True or false:** A labelled visual can help explain mathematical reasoning.\n3. **Fill in the blank:** A final measurement answer needs a number and a ______.\n4. **Short answer:** Why is checking useful?\n5. **Application:** Solve: Find $2,478 + 1,356$.\n\n## Answer Key\n\n### Guided Practice\n\n- **Q1.** A correct response should define subtraction without regrouping, show the relevant steps or model, and check the result.\n- **Q2.** A correct response should define subtraction with regrouping, show the relevant steps or model, and check the result.\n- **Q3.** A correct response should define subtracting from 3-digit and 4-digit numbers, show the relevant steps or model, and check the result.\n- **Q4.** A correct response should define relationship between addition and subtraction, show the relevant steps or model, and check the result.\n- **Q5.** A correct response should define mental subtraction strategies, show the relevant steps or model, and check the result.\n\n### Independent Practice\n\nResponses are open-ended. Check that each answer is mathematically correct, shows a suitable model or steps, uses accurate vocabulary, and includes units where needed. For Medium 5, the claim is false because units and labels give a number its context.\n\n### Quick Quiz\n\n1. **B** — identify the given information and the goal.\n2. **True.**\n3. **unit** (or an appropriate label).\n4. Checking catches calculation, unit, and interpretation errors and shows whether an answer is reasonable.\n5. 3,834 — $2,478 + 1,356 = 3,834$. Add by place value and regroup tens and hundreds.\n\n## Mastery Checklist\n\n- [ ] I can explain the important vocabulary.\n- [ ] I can represent an idea visually.\n- [ ] I can choose and apply a suitable method.\n- [ ] I can solve a word problem and label the answer.\n- [ ] I can check and explain my reasoning.\n",
+    "previewContent": "Learn Subtraction through clear explanations, a visual model, worked examples, three levels of practice, a quiz, and answer guidance.",
+    "contentFormat": "markdown",
+    "difficulty": "intermediate",
+    "category": "lesson",
+    "isFree": false,
+    "downloadCount": 0,
+    "viewCount": 0,
+    "order": 2,
+    "tags": [
+      "Grade 4",
+      "Mathematics",
+      "Subtraction",
+      "Subtraction without regrouping",
+      "Subtraction with regrouping (borrowing)",
+      "Subtracting from 3-digit and 4-digit numbers",
+      "Relationship between addition and subtraction",
+      "Mental subtraction strategies",
+      "Estimation in subtraction",
+      "CBSE",
+      "ICSE",
+      "CISCE",
+      "Primary Mathematics"
+    ],
+    "isActive": true,
+    "createdAt": {
+      "$date": "2026-08-02T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-08-02T00:00:00.000Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "74a000000000000000000005"
+    },
+    "course": {
+      "$oid": "740000000000000000000003"
+    },
+    "tutor": {
+      "$oid": "696d8e8098d47cbd00770ac0"
+    },
+    "title": "Multiplication - Complete Study Material",
+    "description": "Grade 4 comprehensive lesson for Multiplication, including concept explanations, visual learning, worked examples, differentiated practice, a quiz, and complete guidance.",
+    "type": "article",
+    "content": "# Multiplication\n\nThis Grade 4 lesson develops the ideas in **Multiplication and Division** through explanations, visual reasoning, worked examples, practice, and reflection.\n\n## Learning Goals\n\n- Master multiplication tables fluently\n- Multiply larger numbers using algorithms\n- Apply multiplication in real situations\n- Estimate products for reasonableness\n\n## Key Vocabulary\n\nMultiplication tables 1-12 · Multiplication as repeated addition · Multiplying 2-digit by 1-digit · Multiplying 2-digit by 2-digit · Long multiplication method · Properties of multiplication\n\n## Concept Guide\n\n- **Multiplication tables 1-12:** Use known facts and place value. Split a large factor into friendly parts, multiply each part, then combine the partial products.\n- **Multiplication as repeated addition:** Line up equal place values, add from right to left, and regroup whenever a column totals 10 or more.\n- **Multiplying 2-digit by 1-digit:** Represent the information clearly, choose an operation or rule, solve in small steps, and check the result with estimation or an inverse operation.\n- **Multiplying 2-digit by 2-digit:** Represent the information clearly, choose an operation or rule, solve in small steps, and check the result with estimation or an inverse operation.\n- **Long multiplication method:** Use known facts and place value. Split a large factor into friendly parts, multiply each part, then combine the partial products.\n- **Properties of multiplication:** Use known facts and place value. Split a large factor into friendly parts, multiply each part, then combine the partial products.\n- **Word problems on multiplication:** Use known facts and place value. Split a large factor into friendly parts, multiply each part, then combine the partial products.\n- **Estimation in multiplication:** Locate the rounding place, inspect the digit immediately to its right, and decide which nearby multiple is closer. Use the rounded result to check reasonableness.\n\n### A reliable problem-solving routine\n\n1. Read the question twice and underline the quantities and units.\n2. Represent the information with a model, table, number sentence, or labelled sketch.\n3. Choose a rule or operation and explain why it fits.\n4. Work in clear steps and keep place values or units aligned.\n5. Check with estimation, an inverse operation, or a second representation.\n\n## Visual Learning\n\n```math-diagram\n{\n  \"type\": \"numberLine\",\n  \"params\": {\n    \"start\": 0,\n    \"end\": 10,\n    \"step\": 1,\n    \"marked\": [\n      2,\n      5,\n      8\n    ]\n  },\n  \"caption\": \"A number line for ordering and estimating values.\"\n}\n```\n\nAsk yourself: What do the labels mean? Which parts are equal? What changes when a value changes? How does the picture support the calculation?\n\n## Worked Examples\n\n### Example 1 — Model and calculate\n\n**Question:** Find $2,478 + 1,356$.\n\n**Solution:** $2,478 + 1,356 = 3,834$. Add by place value and regroup tens and hundreds.\n\n**Answer:** 3,834\n\n### Example 2 — Explain the reasoning\n\nUse one topic from this chapter in a daily-life situation. Draw or describe a model, write the mathematical statement, solve it, and check whether the answer is reasonable. A complete solution must include the correct unit or label.\n\n### Common Mistakes\n\n- Using a rule without checking what the question asks.\n- Mixing place values, units, or unequal parts.\n- Leaving a diagram unlabelled.\n- Writing only an answer without showing the reasoning.\n- Forgetting to check whether the result is sensible.\n\n## Guided Practice\n\n- **Q1.** Explain multiplication tables 1-12 with a labelled example of your own.\n- **Q2.** Explain multiplication as repeated addition with a labelled example of your own.\n- **Q3.** Explain multiplying 2-digit by 1-digit with a labelled example of your own.\n- **Q4.** Explain multiplying 2-digit by 2-digit with a labelled example of your own.\n- **Q5.** Explain long multiplication method with a labelled example of your own.\n\n## Independent Practice\n\n### Easy\n\n1. Define two important words from this chapter.\n2. Draw a simple model that represents one chapter idea.\n3. State the rule or method you would use for the worked example.\n4. Estimate whether the worked-example answer should be small or large.\n5. Write one real-life situation where this mathematics is useful.\n\n### Medium\n\n1. Change one value in the worked example and solve the new problem.\n2. Solve the worked example by a second method or representation.\n3. Write a one-step word problem using a topic from the chapter, then solve it.\n4. Compare two examples and explain what stays the same.\n5. Find and correct this claim: “A numerical answer never needs a unit or label.”\n\n### Challenge\n\n1. Create a two-step problem combining this chapter with an earlier Grade 4 topic.\n2. Give an example and a non-example of one key concept and explain the difference.\n3. Make a visual puzzle whose solution uses multiplication tables 1-12.\n4. Describe how estimation or inverse operations can verify a solution.\n5. Teach the hardest chapter idea in four clear sentences.\n\n## Quick Quiz\n\n1. **Multiple choice:** What should you do first? A) Guess B) Identify the information and goal C) Ignore units D) Copy a rule\n2. **True or false:** A labelled visual can help explain mathematical reasoning.\n3. **Fill in the blank:** A final measurement answer needs a number and a ______.\n4. **Short answer:** Why is checking useful?\n5. **Application:** Solve: Find $2,478 + 1,356$.\n\n## Answer Key\n\n### Guided Practice\n\n- **Q1.** A correct response should define multiplication tables 1-12, show the relevant steps or model, and check the result.\n- **Q2.** A correct response should define multiplication as repeated addition, show the relevant steps or model, and check the result.\n- **Q3.** A correct response should define multiplying 2-digit by 1-digit, show the relevant steps or model, and check the result.\n- **Q4.** A correct response should define multiplying 2-digit by 2-digit, show the relevant steps or model, and check the result.\n- **Q5.** A correct response should define long multiplication method, show the relevant steps or model, and check the result.\n\n### Independent Practice\n\nResponses are open-ended. Check that each answer is mathematically correct, shows a suitable model or steps, uses accurate vocabulary, and includes units where needed. For Medium 5, the claim is false because units and labels give a number its context.\n\n### Quick Quiz\n\n1. **B** — identify the given information and the goal.\n2. **True.**\n3. **unit** (or an appropriate label).\n4. Checking catches calculation, unit, and interpretation errors and shows whether an answer is reasonable.\n5. 3,834 — $2,478 + 1,356 = 3,834$. Add by place value and regroup tens and hundreds.\n\n## Mastery Checklist\n\n- [ ] I can explain the important vocabulary.\n- [ ] I can represent an idea visually.\n- [ ] I can choose and apply a suitable method.\n- [ ] I can solve a word problem and label the answer.\n- [ ] I can check and explain my reasoning.\n",
+    "previewContent": "Learn Multiplication through clear explanations, a visual model, worked examples, three levels of practice, a quiz, and answer guidance.",
+    "contentFormat": "markdown",
+    "difficulty": "basic",
+    "category": "lesson",
+    "isFree": true,
+    "downloadCount": 0,
+    "viewCount": 0,
+    "order": 1,
+    "tags": [
+      "Grade 4",
+      "Mathematics",
+      "Multiplication",
+      "Multiplication tables 1-12",
+      "Multiplication as repeated addition",
+      "Multiplying 2-digit by 1-digit",
+      "Multiplying 2-digit by 2-digit",
+      "Long multiplication method",
+      "Properties of multiplication",
+      "CBSE",
+      "ICSE",
+      "CISCE",
+      "Primary Mathematics"
+    ],
+    "isActive": true,
+    "createdAt": {
+      "$date": "2026-08-02T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-08-02T00:00:00.000Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "74a000000000000000000006"
+    },
+    "course": {
+      "$oid": "740000000000000000000003"
+    },
+    "tutor": {
+      "$oid": "696d8e8098d47cbd00770ac0"
+    },
+    "title": "Division - Complete Study Material",
+    "description": "Grade 4 comprehensive lesson for Division, including concept explanations, visual learning, worked examples, differentiated practice, a quiz, and complete guidance.",
+    "type": "article",
+    "content": "# Division\n\nThis Grade 4 lesson develops the ideas in **Multiplication and Division** through explanations, visual reasoning, worked examples, practice, and reflection.\n\n## Learning Goals\n\n- Understand division concepts clearly\n- Perform division with and without remainder\n- Use long division algorithm\n- Check division answers using multiplication\n\n## Key Vocabulary\n\nDivision as sharing and grouping · Division facts from multiplication tables · Division with single-digit divisor · Division with remainder · Long division method · Checking division using multiplication\n\n## Concept Guide\n\n- **Division as sharing and grouping:** Think about equal groups. Estimate each quotient digit, multiply back, subtract, and check that the remainder is smaller than the divisor.\n- **Division facts from multiplication tables:** Use known facts and place value. Split a large factor into friendly parts, multiply each part, then combine the partial products.\n- **Division with single-digit divisor:** Think about equal groups. Estimate each quotient digit, multiply back, subtract, and check that the remainder is smaller than the divisor.\n- **Division with remainder:** Think about equal groups. Estimate each quotient digit, multiply back, subtract, and check that the remainder is smaller than the divisor.\n- **Long division method:** Think about equal groups. Estimate each quotient digit, multiply back, subtract, and check that the remainder is smaller than the divisor.\n- **Checking division using multiplication:** Use known facts and place value. Split a large factor into friendly parts, multiply each part, then combine the partial products.\n- **Word problems on division:** Think about equal groups. Estimate each quotient digit, multiply back, subtract, and check that the remainder is smaller than the divisor.\n- **Estimation in division:** Locate the rounding place, inspect the digit immediately to its right, and decide which nearby multiple is closer. Use the rounded result to check reasonableness.\n\n### A reliable problem-solving routine\n\n1. Read the question twice and underline the quantities and units.\n2. Represent the information with a model, table, number sentence, or labelled sketch.\n3. Choose a rule or operation and explain why it fits.\n4. Work in clear steps and keep place values or units aligned.\n5. Check with estimation, an inverse operation, or a second representation.\n\n## Visual Learning\n\n```math-diagram\n{\n  \"type\": \"numberLine\",\n  \"params\": {\n    \"start\": 0,\n    \"end\": 10,\n    \"step\": 1,\n    \"marked\": [\n      2,\n      5,\n      8\n    ]\n  },\n  \"caption\": \"A number line for ordering and estimating values.\"\n}\n```\n\nAsk yourself: What do the labels mean? Which parts are equal? What changes when a value changes? How does the picture support the calculation?\n\n## Worked Examples\n\n### Example 1 — Model and calculate\n\n**Question:** Find $36 \\times 24$.\n\n**Solution:** $36 \\times 20 = 720$ and $36 \\times 4 = 144$; therefore $720 + 144 = 864$.\n\n**Answer:** 864\n\n### Example 2 — Explain the reasoning\n\nUse one topic from this chapter in a daily-life situation. Draw or describe a model, write the mathematical statement, solve it, and check whether the answer is reasonable. A complete solution must include the correct unit or label.\n\n### Common Mistakes\n\n- Using a rule without checking what the question asks.\n- Mixing place values, units, or unequal parts.\n- Leaving a diagram unlabelled.\n- Writing only an answer without showing the reasoning.\n- Forgetting to check whether the result is sensible.\n\n## Guided Practice\n\n- **Q1.** Explain division as sharing and grouping with a labelled example of your own.\n- **Q2.** Explain division facts from multiplication tables with a labelled example of your own.\n- **Q3.** Explain division with single-digit divisor with a labelled example of your own.\n- **Q4.** Explain division with remainder with a labelled example of your own.\n- **Q5.** Explain long division method with a labelled example of your own.\n\n## Independent Practice\n\n### Easy\n\n1. Define two important words from this chapter.\n2. Draw a simple model that represents one chapter idea.\n3. State the rule or method you would use for the worked example.\n4. Estimate whether the worked-example answer should be small or large.\n5. Write one real-life situation where this mathematics is useful.\n\n### Medium\n\n1. Change one value in the worked example and solve the new problem.\n2. Solve the worked example by a second method or representation.\n3. Write a one-step word problem using a topic from the chapter, then solve it.\n4. Compare two examples and explain what stays the same.\n5. Find and correct this claim: “A numerical answer never needs a unit or label.”\n\n### Challenge\n\n1. Create a two-step problem combining this chapter with an earlier Grade 4 topic.\n2. Give an example and a non-example of one key concept and explain the difference.\n3. Make a visual puzzle whose solution uses division as sharing and grouping.\n4. Describe how estimation or inverse operations can verify a solution.\n5. Teach the hardest chapter idea in four clear sentences.\n\n## Quick Quiz\n\n1. **Multiple choice:** What should you do first? A) Guess B) Identify the information and goal C) Ignore units D) Copy a rule\n2. **True or false:** A labelled visual can help explain mathematical reasoning.\n3. **Fill in the blank:** A final measurement answer needs a number and a ______.\n4. **Short answer:** Why is checking useful?\n5. **Application:** Solve: Find $36 \\times 24$.\n\n## Answer Key\n\n### Guided Practice\n\n- **Q1.** A correct response should define division as sharing and grouping, show the relevant steps or model, and check the result.\n- **Q2.** A correct response should define division facts from multiplication tables, show the relevant steps or model, and check the result.\n- **Q3.** A correct response should define division with single-digit divisor, show the relevant steps or model, and check the result.\n- **Q4.** A correct response should define division with remainder, show the relevant steps or model, and check the result.\n- **Q5.** A correct response should define long division method, show the relevant steps or model, and check the result.\n\n### Independent Practice\n\nResponses are open-ended. Check that each answer is mathematically correct, shows a suitable model or steps, uses accurate vocabulary, and includes units where needed. For Medium 5, the claim is false because units and labels give a number its context.\n\n### Quick Quiz\n\n1. **B** — identify the given information and the goal.\n2. **True.**\n3. **unit** (or an appropriate label).\n4. Checking catches calculation, unit, and interpretation errors and shows whether an answer is reasonable.\n5. 864 — $36 \\times 20 = 720$ and $36 \\times 4 = 144$; therefore $720 + 144 = 864$.\n\n## Mastery Checklist\n\n- [ ] I can explain the important vocabulary.\n- [ ] I can represent an idea visually.\n- [ ] I can choose and apply a suitable method.\n- [ ] I can solve a word problem and label the answer.\n- [ ] I can check and explain my reasoning.\n",
+    "previewContent": "Learn Division through clear explanations, a visual model, worked examples, three levels of practice, a quiz, and answer guidance.",
+    "contentFormat": "markdown",
+    "difficulty": "intermediate",
+    "category": "lesson",
+    "isFree": false,
+    "downloadCount": 0,
+    "viewCount": 0,
+    "order": 2,
+    "tags": [
+      "Grade 4",
+      "Mathematics",
+      "Division",
+      "Division as sharing and grouping",
+      "Division facts from multiplication tables",
+      "Division with single-digit divisor",
+      "Division with remainder",
+      "Long division method",
+      "Checking division using multiplication",
+      "CBSE",
+      "ICSE",
+      "CISCE",
+      "Primary Mathematics"
+    ],
+    "isActive": true,
+    "createdAt": {
+      "$date": "2026-08-02T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-08-02T00:00:00.000Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "74a000000000000000000007"
+    },
+    "course": {
+      "$oid": "740000000000000000000004"
+    },
+    "tutor": {
+      "$oid": "696d8e8098d47cbd00770ac0"
+    },
+    "title": "Factors and Multiples - Complete Study Material",
+    "description": "Grade 4 comprehensive lesson for Factors and Multiples, including concept explanations, visual learning, worked examples, differentiated practice, a quiz, and complete guidance.",
+    "type": "article",
+    "content": "# Factors and Multiples\n\nThis Grade 4 lesson develops the ideas in **Factors and Multiples** through explanations, visual reasoning, worked examples, practice, and reflection.\n\n## Learning Goals\n\n- Identify factors of given numbers\n- List multiples of single-digit numbers\n- Find factor pairs systematically\n- Understand relationship between factors and multiples\n\n## Key Vocabulary\n\nfactors? · Finding factors of numbers up to 50 · multiples? · Finding multiples of numbers 1-10 · Factor pairs · Common factors\n\n## Concept Guide\n\n- **What are factors?:** Use multiplication facts systematically. Factors divide exactly; multiples are obtained by multiplying by whole numbers.\n- **Finding factors of numbers up to 50:** Use multiplication facts systematically. Factors divide exactly; multiples are obtained by multiplying by whole numbers.\n- **What are multiples?:** Use multiplication facts systematically. Factors divide exactly; multiples are obtained by multiplying by whole numbers.\n- **Finding multiples of numbers 1-10:** Use multiplication facts systematically. Factors divide exactly; multiples are obtained by multiplying by whole numbers.\n- **Factor pairs:** Use multiplication facts systematically. Factors divide exactly; multiples are obtained by multiplying by whole numbers.\n- **Common factors:** Use multiplication facts systematically. Factors divide exactly; multiples are obtained by multiplying by whole numbers.\n- **Common multiples:** Use multiplication facts systematically. Factors divide exactly; multiples are obtained by multiplying by whole numbers.\n\n### A reliable problem-solving routine\n\n1. Read the question twice and underline the quantities and units.\n2. Represent the information with a model, table, number sentence, or labelled sketch.\n3. Choose a rule or operation and explain why it fits.\n4. Work in clear steps and keep place values or units aligned.\n5. Check with estimation, an inverse operation, or a second representation.\n\n## Visual Learning\n\n```math-diagram\n{\n  \"type\": \"factorTree\",\n  \"params\": {\n    \"number\": 24\n  },\n  \"caption\": \"A factor tree that breaks 24 into prime factors.\"\n}\n```\n\nAsk yourself: What do the labels mean? Which parts are equal? What changes when a value changes? How does the picture support the calculation?\n\n## Worked Examples\n\n### Example 1 — Model and calculate\n\n**Question:** List all factors of 24.\n\n**Solution:** Test factor pairs: $1\\times24$, $2\\times12$, $3\\times8$, $4\\times6$.\n\n**Answer:** 1, 2, 3, 4, 6, 8, 12, 24\n\n### Example 2 — Explain the reasoning\n\nUse one topic from this chapter in a daily-life situation. Draw or describe a model, write the mathematical statement, solve it, and check whether the answer is reasonable. A complete solution must include the correct unit or label.\n\n### Common Mistakes\n\n- Using a rule without checking what the question asks.\n- Mixing place values, units, or unequal parts.\n- Leaving a diagram unlabelled.\n- Writing only an answer without showing the reasoning.\n- Forgetting to check whether the result is sensible.\n\n## Guided Practice\n\n- **Q1.** Explain factors? with a labelled example of your own.\n- **Q2.** Explain finding factors of numbers up to 50 with a labelled example of your own.\n- **Q3.** Explain multiples? with a labelled example of your own.\n- **Q4.** Explain finding multiples of numbers 1-10 with a labelled example of your own.\n- **Q5.** Explain factor pairs with a labelled example of your own.\n\n## Independent Practice\n\n### Easy\n\n1. Define two important words from this chapter.\n2. Draw a simple model that represents one chapter idea.\n3. State the rule or method you would use for the worked example.\n4. Estimate whether the worked-example answer should be small or large.\n5. Write one real-life situation where this mathematics is useful.\n\n### Medium\n\n1. Change one value in the worked example and solve the new problem.\n2. Solve the worked example by a second method or representation.\n3. Write a one-step word problem using a topic from the chapter, then solve it.\n4. Compare two examples and explain what stays the same.\n5. Find and correct this claim: “A numerical answer never needs a unit or label.”\n\n### Challenge\n\n1. Create a two-step problem combining this chapter with an earlier Grade 4 topic.\n2. Give an example and a non-example of one key concept and explain the difference.\n3. Make a visual puzzle whose solution uses factors?.\n4. Describe how estimation or inverse operations can verify a solution.\n5. Teach the hardest chapter idea in four clear sentences.\n\n## Quick Quiz\n\n1. **Multiple choice:** What should you do first? A) Guess B) Identify the information and goal C) Ignore units D) Copy a rule\n2. **True or false:** A labelled visual can help explain mathematical reasoning.\n3. **Fill in the blank:** A final measurement answer needs a number and a ______.\n4. **Short answer:** Why is checking useful?\n5. **Application:** Solve: List all factors of 24.\n\n## Answer Key\n\n### Guided Practice\n\n- **Q1.** A correct response should define factors?, show the relevant steps or model, and check the result.\n- **Q2.** A correct response should define finding factors of numbers up to 50, show the relevant steps or model, and check the result.\n- **Q3.** A correct response should define multiples?, show the relevant steps or model, and check the result.\n- **Q4.** A correct response should define finding multiples of numbers 1-10, show the relevant steps or model, and check the result.\n- **Q5.** A correct response should define factor pairs, show the relevant steps or model, and check the result.\n\n### Independent Practice\n\nResponses are open-ended. Check that each answer is mathematically correct, shows a suitable model or steps, uses accurate vocabulary, and includes units where needed. For Medium 5, the claim is false because units and labels give a number its context.\n\n### Quick Quiz\n\n1. **B** — identify the given information and the goal.\n2. **True.**\n3. **unit** (or an appropriate label).\n4. Checking catches calculation, unit, and interpretation errors and shows whether an answer is reasonable.\n5. 1, 2, 3, 4, 6, 8, 12, 24 — Test factor pairs: $1\\times24$, $2\\times12$, $3\\times8$, $4\\times6$.\n\n## Mastery Checklist\n\n- [ ] I can explain the important vocabulary.\n- [ ] I can represent an idea visually.\n- [ ] I can choose and apply a suitable method.\n- [ ] I can solve a word problem and label the answer.\n- [ ] I can check and explain my reasoning.\n",
+    "previewContent": "Learn Factors and Multiples through clear explanations, a visual model, worked examples, three levels of practice, a quiz, and answer guidance.",
+    "contentFormat": "markdown",
+    "difficulty": "basic",
+    "category": "lesson",
+    "isFree": true,
+    "downloadCount": 0,
+    "viewCount": 0,
+    "order": 1,
+    "tags": [
+      "Grade 4",
+      "Mathematics",
+      "Factors and Multiples",
+      "What are factors?",
+      "Finding factors of numbers up to 50",
+      "What are multiples?",
+      "Finding multiples of numbers 1-10",
+      "Factor pairs",
+      "Common factors",
+      "CBSE",
+      "ICSE",
+      "CISCE",
+      "Primary Mathematics"
+    ],
+    "isActive": true,
+    "createdAt": {
+      "$date": "2026-08-02T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-08-02T00:00:00.000Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "74a000000000000000000008"
+    },
+    "course": {
+      "$oid": "740000000000000000000004"
+    },
+    "tutor": {
+      "$oid": "696d8e8098d47cbd00770ac0"
+    },
+    "title": "Prime and Composite Numbers - Complete Study Material",
+    "description": "Grade 4 comprehensive lesson for Prime and Composite Numbers, including concept explanations, visual learning, worked examples, differentiated practice, a quiz, and complete guidance.",
+    "type": "article",
+    "content": "# Prime and Composite Numbers\n\nThis Grade 4 lesson develops the ideas in **Factors and Multiples** through explanations, visual reasoning, worked examples, practice, and reflection.\n\n## Learning Goals\n\n- Distinguish between even and odd numbers\n- Identify prime and composite numbers up to 20\n- Recognize number patterns\n- Continue simple sequences\n\n## Key Vocabulary\n\nEven and odd numbers · Prime numbers · Composite numbers · Identifying prime numbers up to 20 · Number patterns · Skip counting by 2s, 5s, 10s\n\n## Concept Guide\n\n- **Even and odd numbers:** Represent the information clearly, choose an operation or rule, solve in small steps, and check the result with estimation or an inverse operation.\n- **Prime numbers (introduction):** Use multiplication facts systematically. Factors divide exactly; multiples are obtained by multiplying by whole numbers.\n- **Composite numbers (introduction):** Use multiplication facts systematically. Factors divide exactly; multiples are obtained by multiplying by whole numbers.\n- **Identifying prime numbers up to 20:** Use multiplication facts systematically. Factors divide exactly; multiples are obtained by multiplying by whole numbers.\n- **Number patterns:** Describe how one term changes to the next, test the rule on several terms, and use a symbol when a value is unknown.\n- **Skip counting by 2s, 5s, 10s:** Represent the information clearly, choose an operation or rule, solve in small steps, and check the result with estimation or an inverse operation.\n- **Simple number sequences:** Describe how one term changes to the next, test the rule on several terms, and use a symbol when a value is unknown.\n\n### A reliable problem-solving routine\n\n1. Read the question twice and underline the quantities and units.\n2. Represent the information with a model, table, number sentence, or labelled sketch.\n3. Choose a rule or operation and explain why it fits.\n4. Work in clear steps and keep place values or units aligned.\n5. Check with estimation, an inverse operation, or a second representation.\n\n## Visual Learning\n\n```math-diagram\n{\n  \"type\": \"factorTree\",\n  \"params\": {\n    \"number\": 24\n  },\n  \"caption\": \"A factor tree that breaks 24 into prime factors.\"\n}\n```\n\nAsk yourself: What do the labels mean? Which parts are equal? What changes when a value changes? How does the picture support the calculation?\n\n## Worked Examples\n\n### Example 1 — Model and calculate\n\n**Question:** List all factors of 24.\n\n**Solution:** Test factor pairs: $1\\times24$, $2\\times12$, $3\\times8$, $4\\times6$.\n\n**Answer:** 1, 2, 3, 4, 6, 8, 12, 24\n\n### Example 2 — Explain the reasoning\n\nUse one topic from this chapter in a daily-life situation. Draw or describe a model, write the mathematical statement, solve it, and check whether the answer is reasonable. A complete solution must include the correct unit or label.\n\n### Common Mistakes\n\n- Using a rule without checking what the question asks.\n- Mixing place values, units, or unequal parts.\n- Leaving a diagram unlabelled.\n- Writing only an answer without showing the reasoning.\n- Forgetting to check whether the result is sensible.\n\n## Guided Practice\n\n- **Q1.** Explain even and odd numbers with a labelled example of your own.\n- **Q2.** Explain prime numbers with a labelled example of your own.\n- **Q3.** Explain composite numbers with a labelled example of your own.\n- **Q4.** Explain identifying prime numbers up to 20 with a labelled example of your own.\n- **Q5.** Explain number patterns with a labelled example of your own.\n\n## Independent Practice\n\n### Easy\n\n1. Define two important words from this chapter.\n2. Draw a simple model that represents one chapter idea.\n3. State the rule or method you would use for the worked example.\n4. Estimate whether the worked-example answer should be small or large.\n5. Write one real-life situation where this mathematics is useful.\n\n### Medium\n\n1. Change one value in the worked example and solve the new problem.\n2. Solve the worked example by a second method or representation.\n3. Write a one-step word problem using a topic from the chapter, then solve it.\n4. Compare two examples and explain what stays the same.\n5. Find and correct this claim: “A numerical answer never needs a unit or label.”\n\n### Challenge\n\n1. Create a two-step problem combining this chapter with an earlier Grade 4 topic.\n2. Give an example and a non-example of one key concept and explain the difference.\n3. Make a visual puzzle whose solution uses even and odd numbers.\n4. Describe how estimation or inverse operations can verify a solution.\n5. Teach the hardest chapter idea in four clear sentences.\n\n## Quick Quiz\n\n1. **Multiple choice:** What should you do first? A) Guess B) Identify the information and goal C) Ignore units D) Copy a rule\n2. **True or false:** A labelled visual can help explain mathematical reasoning.\n3. **Fill in the blank:** A final measurement answer needs a number and a ______.\n4. **Short answer:** Why is checking useful?\n5. **Application:** Solve: List all factors of 24.\n\n## Answer Key\n\n### Guided Practice\n\n- **Q1.** A correct response should define even and odd numbers, show the relevant steps or model, and check the result.\n- **Q2.** A correct response should define prime numbers, show the relevant steps or model, and check the result.\n- **Q3.** A correct response should define composite numbers, show the relevant steps or model, and check the result.\n- **Q4.** A correct response should define identifying prime numbers up to 20, show the relevant steps or model, and check the result.\n- **Q5.** A correct response should define number patterns, show the relevant steps or model, and check the result.\n\n### Independent Practice\n\nResponses are open-ended. Check that each answer is mathematically correct, shows a suitable model or steps, uses accurate vocabulary, and includes units where needed. For Medium 5, the claim is false because units and labels give a number its context.\n\n### Quick Quiz\n\n1. **B** — identify the given information and the goal.\n2. **True.**\n3. **unit** (or an appropriate label).\n4. Checking catches calculation, unit, and interpretation errors and shows whether an answer is reasonable.\n5. 1, 2, 3, 4, 6, 8, 12, 24 — Test factor pairs: $1\\times24$, $2\\times12$, $3\\times8$, $4\\times6$.\n\n## Mastery Checklist\n\n- [ ] I can explain the important vocabulary.\n- [ ] I can represent an idea visually.\n- [ ] I can choose and apply a suitable method.\n- [ ] I can solve a word problem and label the answer.\n- [ ] I can check and explain my reasoning.\n",
+    "previewContent": "Learn Prime and Composite Numbers through clear explanations, a visual model, worked examples, three levels of practice, a quiz, and answer guidance.",
+    "contentFormat": "markdown",
+    "difficulty": "intermediate",
+    "category": "lesson",
+    "isFree": false,
+    "downloadCount": 0,
+    "viewCount": 0,
+    "order": 2,
+    "tags": [
+      "Grade 4",
+      "Mathematics",
+      "Prime and Composite Numbers",
+      "Even and odd numbers",
+      "Prime numbers (introduction)",
+      "Composite numbers (introduction)",
+      "Identifying prime numbers up to 20",
+      "Number patterns",
+      "Skip counting by 2s, 5s, 10s",
+      "CBSE",
+      "ICSE",
+      "CISCE",
+      "Primary Mathematics"
+    ],
+    "isActive": true,
+    "createdAt": {
+      "$date": "2026-08-02T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-08-02T00:00:00.000Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "74a000000000000000000009"
+    },
+    "course": {
+      "$oid": "740000000000000000000005"
+    },
+    "tutor": {
+      "$oid": "696d8e8098d47cbd00770ac0"
+    },
+    "title": "Introduction to Fractions - Complete Study Material",
+    "description": "Grade 4 comprehensive lesson for Introduction to Fractions, including concept explanations, visual learning, worked examples, differentiated practice, a quiz, and complete guidance.",
+    "type": "article",
+    "content": "# Introduction to Fractions\n\nThis Grade 4 lesson develops the ideas in **Fractions** through explanations, visual reasoning, worked examples, practice, and reflection.\n\n## Learning Goals\n\n- Understand concept of fractions\n- Identify numerator and denominator\n- Read and write fractions correctly\n- Relate fractions to real-life situations\n\n## Key Vocabulary\n\nFractions as parts of a whole · Numerator and denominator · Unit fractions · Proper fractions · Reading and writing fractions · Fractions in daily life\n\n## Concept Guide\n\n- **Fractions as parts of a whole:** The denominator names the number of equal parts; the numerator counts the selected parts. Draw equal parts before comparing or calculating.\n- **Numerator and denominator:** Represent the information clearly, choose an operation or rule, solve in small steps, and check the result with estimation or an inverse operation.\n- **Unit fractions (1/2, 1/3, 1/4, etc.):** The denominator names the number of equal parts; the numerator counts the selected parts. Draw equal parts before comparing or calculating.\n- **Proper fractions:** The denominator names the number of equal parts; the numerator counts the selected parts. Draw equal parts before comparing or calculating.\n- **Reading and writing fractions:** The denominator names the number of equal parts; the numerator counts the selected parts. Draw equal parts before comparing or calculating.\n- **Fractions in daily life:** The denominator names the number of equal parts; the numerator counts the selected parts. Draw equal parts before comparing or calculating.\n- **Visual representation of fractions:** The denominator names the number of equal parts; the numerator counts the selected parts. Draw equal parts before comparing or calculating.\n\n### A reliable problem-solving routine\n\n1. Read the question twice and underline the quantities and units.\n2. Represent the information with a model, table, number sentence, or labelled sketch.\n3. Choose a rule or operation and explain why it fits.\n4. Work in clear steps and keep place values or units aligned.\n5. Check with estimation, an inverse operation, or a second representation.\n\n## Visual Learning\n\n```math-diagram\n{\n  \"type\": \"fraction\",\n  \"params\": {\n    \"numerator\": 3,\n    \"denominator\": 4\n  },\n  \"caption\": \"Three of four equal parts are shaded.\"\n}\n```\n\nAsk yourself: What do the labels mean? Which parts are equal? What changes when a value changes? How does the picture support the calculation?\n\n## Worked Examples\n\n### Example 1 — Model and calculate\n\n**Question:** Add $\\frac{2}{7}+\\frac{3}{7}$.\n\n**Solution:** The parts are the same size, so add the numerators: $\\frac{2+3}{7}=\\frac{5}{7}$.\n\n**Answer:** $\\frac{5}{7}$\n\n### Example 2 — Explain the reasoning\n\nUse one topic from this chapter in a daily-life situation. Draw or describe a model, write the mathematical statement, solve it, and check whether the answer is reasonable. A complete solution must include the correct unit or label.\n\n### Common Mistakes\n\n- Using a rule without checking what the question asks.\n- Mixing place values, units, or unequal parts.\n- Leaving a diagram unlabelled.\n- Writing only an answer without showing the reasoning.\n- Forgetting to check whether the result is sensible.\n\n## Guided Practice\n\n- **Q1.** Explain fractions as parts of a whole with a labelled example of your own.\n- **Q2.** Explain numerator and denominator with a labelled example of your own.\n- **Q3.** Explain unit fractions with a labelled example of your own.\n- **Q4.** Explain proper fractions with a labelled example of your own.\n- **Q5.** Explain reading and writing fractions with a labelled example of your own.\n\n## Independent Practice\n\n### Easy\n\n1. Define two important words from this chapter.\n2. Draw a simple model that represents one chapter idea.\n3. State the rule or method you would use for the worked example.\n4. Estimate whether the worked-example answer should be small or large.\n5. Write one real-life situation where this mathematics is useful.\n\n### Medium\n\n1. Change one value in the worked example and solve the new problem.\n2. Solve the worked example by a second method or representation.\n3. Write a one-step word problem using a topic from the chapter, then solve it.\n4. Compare two examples and explain what stays the same.\n5. Find and correct this claim: “A numerical answer never needs a unit or label.”\n\n### Challenge\n\n1. Create a two-step problem combining this chapter with an earlier Grade 4 topic.\n2. Give an example and a non-example of one key concept and explain the difference.\n3. Make a visual puzzle whose solution uses fractions as parts of a whole.\n4. Describe how estimation or inverse operations can verify a solution.\n5. Teach the hardest chapter idea in four clear sentences.\n\n## Quick Quiz\n\n1. **Multiple choice:** What should you do first? A) Guess B) Identify the information and goal C) Ignore units D) Copy a rule\n2. **True or false:** A labelled visual can help explain mathematical reasoning.\n3. **Fill in the blank:** A final measurement answer needs a number and a ______.\n4. **Short answer:** Why is checking useful?\n5. **Application:** Solve: Add $\\frac{2}{7}+\\frac{3}{7}$.\n\n## Answer Key\n\n### Guided Practice\n\n- **Q1.** A correct response should define fractions as parts of a whole, show the relevant steps or model, and check the result.\n- **Q2.** A correct response should define numerator and denominator, show the relevant steps or model, and check the result.\n- **Q3.** A correct response should define unit fractions, show the relevant steps or model, and check the result.\n- **Q4.** A correct response should define proper fractions, show the relevant steps or model, and check the result.\n- **Q5.** A correct response should define reading and writing fractions, show the relevant steps or model, and check the result.\n\n### Independent Practice\n\nResponses are open-ended. Check that each answer is mathematically correct, shows a suitable model or steps, uses accurate vocabulary, and includes units where needed. For Medium 5, the claim is false because units and labels give a number its context.\n\n### Quick Quiz\n\n1. **B** — identify the given information and the goal.\n2. **True.**\n3. **unit** (or an appropriate label).\n4. Checking catches calculation, unit, and interpretation errors and shows whether an answer is reasonable.\n5. $\\frac{5}{7}$ — The parts are the same size, so add the numerators: $\\frac{2+3}{7}=\\frac{5}{7}$.\n\n## Mastery Checklist\n\n- [ ] I can explain the important vocabulary.\n- [ ] I can represent an idea visually.\n- [ ] I can choose and apply a suitable method.\n- [ ] I can solve a word problem and label the answer.\n- [ ] I can check and explain my reasoning.\n",
+    "previewContent": "Learn Introduction to Fractions through clear explanations, a visual model, worked examples, three levels of practice, a quiz, and answer guidance.",
+    "contentFormat": "markdown",
+    "difficulty": "basic",
+    "category": "lesson",
+    "isFree": true,
+    "downloadCount": 0,
+    "viewCount": 0,
+    "order": 1,
+    "tags": [
+      "Grade 4",
+      "Mathematics",
+      "Introduction to Fractions",
+      "Fractions as parts of a whole",
+      "Numerator and denominator",
+      "Unit fractions (1/2, 1/3, 1/4, etc.)",
+      "Proper fractions",
+      "Reading and writing fractions",
+      "Fractions in daily life",
+      "CBSE",
+      "ICSE",
+      "CISCE",
+      "Primary Mathematics"
+    ],
+    "isActive": true,
+    "createdAt": {
+      "$date": "2026-08-02T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-08-02T00:00:00.000Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "74a000000000000000000010"
+    },
+    "course": {
+      "$oid": "740000000000000000000005"
+    },
+    "tutor": {
+      "$oid": "696d8e8098d47cbd00770ac0"
+    },
+    "title": "Working with Fractions - Complete Study Material",
+    "description": "Grade 4 comprehensive lesson for Working with Fractions, including concept explanations, visual learning, worked examples, differentiated practice, a quiz, and complete guidance.",
+    "type": "article",
+    "content": "# Working with Fractions\n\nThis Grade 4 lesson develops the ideas in **Fractions** through explanations, visual reasoning, worked examples, practice, and reflection.\n\n## Learning Goals\n\n- Represent fractions on number line\n- Compare and order simple fractions\n- Add and subtract like fractions\n- Solve basic fraction word problems\n\n## Key Vocabulary\n\nFractions on number line · Equivalent fractions · Comparing fractions with same denominator · Ordering fractions · Addition of like fractions · Subtraction of like fractions\n\n## Concept Guide\n\n- **Fractions on number line:** The denominator names the number of equal parts; the numerator counts the selected parts. Draw equal parts before comparing or calculating.\n- **Equivalent fractions (simple cases):** The denominator names the number of equal parts; the numerator counts the selected parts. Draw equal parts before comparing or calculating.\n- **Comparing fractions with same denominator:** Compare the number of digits first, then compare equal place values from left to right. On a number line, values increase as you move right.\n- **Ordering fractions:** Compare the number of digits first, then compare equal place values from left to right. On a number line, values increase as you move right.\n- **Addition of like fractions:** Line up equal place values, add from right to left, and regroup whenever a column totals 10 or more.\n- **Subtraction of like fractions:** Line up equal place values, subtract from right to left, and exchange one unit from the next place when needed.\n- **Word problems on fractions:** The denominator names the number of equal parts; the numerator counts the selected parts. Draw equal parts before comparing or calculating.\n\n### A reliable problem-solving routine\n\n1. Read the question twice and underline the quantities and units.\n2. Represent the information with a model, table, number sentence, or labelled sketch.\n3. Choose a rule or operation and explain why it fits.\n4. Work in clear steps and keep place values or units aligned.\n5. Check with estimation, an inverse operation, or a second representation.\n\n## Visual Learning\n\n```math-diagram\n{\n  \"type\": \"fraction\",\n  \"params\": {\n    \"numerator\": 3,\n    \"denominator\": 4\n  },\n  \"caption\": \"Three of four equal parts are shaded.\"\n}\n```\n\nAsk yourself: What do the labels mean? Which parts are equal? What changes when a value changes? How does the picture support the calculation?\n\n## Worked Examples\n\n### Example 1 — Model and calculate\n\n**Question:** Find $2,478 + 1,356$.\n\n**Solution:** $2,478 + 1,356 = 3,834$. Add by place value and regroup tens and hundreds.\n\n**Answer:** 3,834\n\n### Example 2 — Explain the reasoning\n\nUse one topic from this chapter in a daily-life situation. Draw or describe a model, write the mathematical statement, solve it, and check whether the answer is reasonable. A complete solution must include the correct unit or label.\n\n### Common Mistakes\n\n- Using a rule without checking what the question asks.\n- Mixing place values, units, or unequal parts.\n- Leaving a diagram unlabelled.\n- Writing only an answer without showing the reasoning.\n- Forgetting to check whether the result is sensible.\n\n## Guided Practice\n\n- **Q1.** Explain fractions on number line with a labelled example of your own.\n- **Q2.** Explain equivalent fractions with a labelled example of your own.\n- **Q3.** Explain comparing fractions with same denominator with a labelled example of your own.\n- **Q4.** Explain ordering fractions with a labelled example of your own.\n- **Q5.** Explain addition of like fractions with a labelled example of your own.\n\n## Independent Practice\n\n### Easy\n\n1. Define two important words from this chapter.\n2. Draw a simple model that represents one chapter idea.\n3. State the rule or method you would use for the worked example.\n4. Estimate whether the worked-example answer should be small or large.\n5. Write one real-life situation where this mathematics is useful.\n\n### Medium\n\n1. Change one value in the worked example and solve the new problem.\n2. Solve the worked example by a second method or representation.\n3. Write a one-step word problem using a topic from the chapter, then solve it.\n4. Compare two examples and explain what stays the same.\n5. Find and correct this claim: “A numerical answer never needs a unit or label.”\n\n### Challenge\n\n1. Create a two-step problem combining this chapter with an earlier Grade 4 topic.\n2. Give an example and a non-example of one key concept and explain the difference.\n3. Make a visual puzzle whose solution uses fractions on number line.\n4. Describe how estimation or inverse operations can verify a solution.\n5. Teach the hardest chapter idea in four clear sentences.\n\n## Quick Quiz\n\n1. **Multiple choice:** What should you do first? A) Guess B) Identify the information and goal C) Ignore units D) Copy a rule\n2. **True or false:** A labelled visual can help explain mathematical reasoning.\n3. **Fill in the blank:** A final measurement answer needs a number and a ______.\n4. **Short answer:** Why is checking useful?\n5. **Application:** Solve: Find $2,478 + 1,356$.\n\n## Answer Key\n\n### Guided Practice\n\n- **Q1.** A correct response should define fractions on number line, show the relevant steps or model, and check the result.\n- **Q2.** A correct response should define equivalent fractions, show the relevant steps or model, and check the result.\n- **Q3.** A correct response should define comparing fractions with same denominator, show the relevant steps or model, and check the result.\n- **Q4.** A correct response should define ordering fractions, show the relevant steps or model, and check the result.\n- **Q5.** A correct response should define addition of like fractions, show the relevant steps or model, and check the result.\n\n### Independent Practice\n\nResponses are open-ended. Check that each answer is mathematically correct, shows a suitable model or steps, uses accurate vocabulary, and includes units where needed. For Medium 5, the claim is false because units and labels give a number its context.\n\n### Quick Quiz\n\n1. **B** — identify the given information and the goal.\n2. **True.**\n3. **unit** (or an appropriate label).\n4. Checking catches calculation, unit, and interpretation errors and shows whether an answer is reasonable.\n5. 3,834 — $2,478 + 1,356 = 3,834$. Add by place value and regroup tens and hundreds.\n\n## Mastery Checklist\n\n- [ ] I can explain the important vocabulary.\n- [ ] I can represent an idea visually.\n- [ ] I can choose and apply a suitable method.\n- [ ] I can solve a word problem and label the answer.\n- [ ] I can check and explain my reasoning.\n",
+    "previewContent": "Learn Working with Fractions through clear explanations, a visual model, worked examples, three levels of practice, a quiz, and answer guidance.",
+    "contentFormat": "markdown",
+    "difficulty": "intermediate",
+    "category": "lesson",
+    "isFree": false,
+    "downloadCount": 0,
+    "viewCount": 0,
+    "order": 2,
+    "tags": [
+      "Grade 4",
+      "Mathematics",
+      "Working with Fractions",
+      "Fractions on number line",
+      "Equivalent fractions (simple cases)",
+      "Comparing fractions with same denominator",
+      "Ordering fractions",
+      "Addition of like fractions",
+      "Subtraction of like fractions",
+      "CBSE",
+      "ICSE",
+      "CISCE",
+      "Primary Mathematics"
+    ],
+    "isActive": true,
+    "createdAt": {
+      "$date": "2026-08-02T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-08-02T00:00:00.000Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "74a000000000000000000011"
+    },
+    "course": {
+      "$oid": "740000000000000000000006"
+    },
+    "tutor": {
+      "$oid": "696d8e8098d47cbd00770ac0"
+    },
+    "title": "Understanding Decimals - Complete Study Material",
+    "description": "Grade 4 comprehensive lesson for Understanding Decimals, including concept explanations, visual learning, worked examples, differentiated practice, a quiz, and complete guidance.",
+    "type": "article",
+    "content": "# Understanding Decimals\n\nThis Grade 4 lesson develops the ideas in **Decimals** through explanations, visual reasoning, worked examples, practice, and reflection.\n\n## Learning Goals\n\n- Understand decimal number system\n- Identify place values in decimals\n- Read and write decimals correctly\n- Connect decimals with fractions\n\n## Key Vocabulary\n\ndecimal numbers? · Decimal point and place value · Tenths place · Hundredths place · Reading decimal numbers · Writing decimal numbers\n\n## Concept Guide\n\n- **What are decimal numbers?:** Read digits by place value and align decimal points before calculating. Add zero placeholders only when they help show equal places.\n- **Decimal point and place value:** A digit’s face value is the digit itself; its place value is the digit multiplied by the value of its position. Use a place-value chart to move between numerals, number words, and expanded form.\n- **Tenths place:** Represent the information clearly, choose an operation or rule, solve in small steps, and check the result with estimation or an inverse operation.\n- **Hundredths place:** Represent the information clearly, choose an operation or rule, solve in small steps, and check the result with estimation or an inverse operation.\n- **Reading decimal numbers:** Read digits by place value and align decimal points before calculating. Add zero placeholders only when they help show equal places.\n- **Writing decimal numbers:** Read digits by place value and align decimal points before calculating. Add zero placeholders only when they help show equal places.\n- **Decimal and fraction relationship:** The denominator names the number of equal parts; the numerator counts the selected parts. Draw equal parts before comparing or calculating.\n\n### A reliable problem-solving routine\n\n1. Read the question twice and underline the quantities and units.\n2. Represent the information with a model, table, number sentence, or labelled sketch.\n3. Choose a rule or operation and explain why it fits.\n4. Work in clear steps and keep place values or units aligned.\n5. Check with estimation, an inverse operation, or a second representation.\n\n## Visual Learning\n\n```math-diagram\n{\n  \"type\": \"fraction\",\n  \"params\": {\n    \"numerator\": 3,\n    \"denominator\": 4\n  },\n  \"caption\": \"Three of four equal parts are shaded.\"\n}\n```\n\nAsk yourself: What do the labels mean? Which parts are equal? What changes when a value changes? How does the picture support the calculation?\n\n## Worked Examples\n\n### Example 1 — Model and calculate\n\n**Question:** Add $\\frac{2}{7}+\\frac{3}{7}$.\n\n**Solution:** The parts are the same size, so add the numerators: $\\frac{2+3}{7}=\\frac{5}{7}$.\n\n**Answer:** $\\frac{5}{7}$\n\n### Example 2 — Explain the reasoning\n\nUse one topic from this chapter in a daily-life situation. Draw or describe a model, write the mathematical statement, solve it, and check whether the answer is reasonable. A complete solution must include the correct unit or label.\n\n### Common Mistakes\n\n- Using a rule without checking what the question asks.\n- Mixing place values, units, or unequal parts.\n- Leaving a diagram unlabelled.\n- Writing only an answer without showing the reasoning.\n- Forgetting to check whether the result is sensible.\n\n## Guided Practice\n\n- **Q1.** Explain decimal numbers? with a labelled example of your own.\n- **Q2.** Explain decimal point and place value with a labelled example of your own.\n- **Q3.** Explain tenths place with a labelled example of your own.\n- **Q4.** Explain hundredths place with a labelled example of your own.\n- **Q5.** Explain reading decimal numbers with a labelled example of your own.\n\n## Independent Practice\n\n### Easy\n\n1. Define two important words from this chapter.\n2. Draw a simple model that represents one chapter idea.\n3. State the rule or method you would use for the worked example.\n4. Estimate whether the worked-example answer should be small or large.\n5. Write one real-life situation where this mathematics is useful.\n\n### Medium\n\n1. Change one value in the worked example and solve the new problem.\n2. Solve the worked example by a second method or representation.\n3. Write a one-step word problem using a topic from the chapter, then solve it.\n4. Compare two examples and explain what stays the same.\n5. Find and correct this claim: “A numerical answer never needs a unit or label.”\n\n### Challenge\n\n1. Create a two-step problem combining this chapter with an earlier Grade 4 topic.\n2. Give an example and a non-example of one key concept and explain the difference.\n3. Make a visual puzzle whose solution uses decimal numbers?.\n4. Describe how estimation or inverse operations can verify a solution.\n5. Teach the hardest chapter idea in four clear sentences.\n\n## Quick Quiz\n\n1. **Multiple choice:** What should you do first? A) Guess B) Identify the information and goal C) Ignore units D) Copy a rule\n2. **True or false:** A labelled visual can help explain mathematical reasoning.\n3. **Fill in the blank:** A final measurement answer needs a number and a ______.\n4. **Short answer:** Why is checking useful?\n5. **Application:** Solve: Add $\\frac{2}{7}+\\frac{3}{7}$.\n\n## Answer Key\n\n### Guided Practice\n\n- **Q1.** A correct response should define decimal numbers?, show the relevant steps or model, and check the result.\n- **Q2.** A correct response should define decimal point and place value, show the relevant steps or model, and check the result.\n- **Q3.** A correct response should define tenths place, show the relevant steps or model, and check the result.\n- **Q4.** A correct response should define hundredths place, show the relevant steps or model, and check the result.\n- **Q5.** A correct response should define reading decimal numbers, show the relevant steps or model, and check the result.\n\n### Independent Practice\n\nResponses are open-ended. Check that each answer is mathematically correct, shows a suitable model or steps, uses accurate vocabulary, and includes units where needed. For Medium 5, the claim is false because units and labels give a number its context.\n\n### Quick Quiz\n\n1. **B** — identify the given information and the goal.\n2. **True.**\n3. **unit** (or an appropriate label).\n4. Checking catches calculation, unit, and interpretation errors and shows whether an answer is reasonable.\n5. $\\frac{5}{7}$ — The parts are the same size, so add the numerators: $\\frac{2+3}{7}=\\frac{5}{7}$.\n\n## Mastery Checklist\n\n- [ ] I can explain the important vocabulary.\n- [ ] I can represent an idea visually.\n- [ ] I can choose and apply a suitable method.\n- [ ] I can solve a word problem and label the answer.\n- [ ] I can check and explain my reasoning.\n",
+    "previewContent": "Learn Understanding Decimals through clear explanations, a visual model, worked examples, three levels of practice, a quiz, and answer guidance.",
+    "contentFormat": "markdown",
+    "difficulty": "basic",
+    "category": "lesson",
+    "isFree": true,
+    "downloadCount": 0,
+    "viewCount": 0,
+    "order": 1,
+    "tags": [
+      "Grade 4",
+      "Mathematics",
+      "Understanding Decimals",
+      "What are decimal numbers?",
+      "Decimal point and place value",
+      "Tenths place",
+      "Hundredths place",
+      "Reading decimal numbers",
+      "Writing decimal numbers",
+      "CBSE",
+      "ICSE",
+      "CISCE",
+      "Primary Mathematics"
+    ],
+    "isActive": true,
+    "createdAt": {
+      "$date": "2026-08-02T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-08-02T00:00:00.000Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "74a000000000000000000012"
+    },
+    "course": {
+      "$oid": "740000000000000000000006"
+    },
+    "tutor": {
+      "$oid": "696d8e8098d47cbd00770ac0"
+    },
+    "title": "Working with Decimals - Complete Study Material",
+    "description": "Grade 4 comprehensive lesson for Working with Decimals, including concept explanations, visual learning, worked examples, differentiated practice, a quiz, and complete guidance.",
+    "type": "article",
+    "content": "# Working with Decimals\n\nThis Grade 4 lesson develops the ideas in **Decimals** through explanations, visual reasoning, worked examples, practice, and reflection.\n\n## Learning Goals\n\n- Compare and order decimal numbers\n- Perform basic operations on decimals\n- Apply decimals in money context\n- Solve simple decimal problems\n\n## Key Vocabulary\n\nComparing decimal numbers · Ordering decimals · Adding decimals · Subtracting decimals · Money as decimals · Practical applications of decimals\n\n## Concept Guide\n\n- **Comparing decimal numbers:** Compare the number of digits first, then compare equal place values from left to right. On a number line, values increase as you move right.\n- **Ordering decimals:** Compare the number of digits first, then compare equal place values from left to right. On a number line, values increase as you move right.\n- **Adding decimals (tenths):** Read digits by place value and align decimal points before calculating. Add zero placeholders only when they help show equal places.\n- **Subtracting decimals (tenths):** Read digits by place value and align decimal points before calculating. Add zero placeholders only when they help show equal places.\n- **Money as decimals:** Read digits by place value and align decimal points before calculating. Add zero placeholders only when they help show equal places.\n- **Practical applications of decimals:** Read digits by place value and align decimal points before calculating. Add zero placeholders only when they help show equal places.\n- **Simple word problems:** Represent the information clearly, choose an operation or rule, solve in small steps, and check the result with estimation or an inverse operation.\n\n### A reliable problem-solving routine\n\n1. Read the question twice and underline the quantities and units.\n2. Represent the information with a model, table, number sentence, or labelled sketch.\n3. Choose a rule or operation and explain why it fits.\n4. Work in clear steps and keep place values or units aligned.\n5. Check with estimation, an inverse operation, or a second representation.\n\n## Visual Learning\n\n```math-diagram\n{\n  \"type\": \"decimalGrid\",\n  \"params\": {\n    \"value\": 0.45\n  },\n  \"caption\": \"A hundred-grid model of 0.45.\"\n}\n```\n\nAsk yourself: What do the labels mean? Which parts are equal? What changes when a value changes? How does the picture support the calculation?\n\n## Worked Examples\n\n### Example 1 — Model and calculate\n\n**Question:** Find $3.45 + 2.30$.\n\n**Solution:** Align decimal points: $3.45 + 2.30 = 5.75$.\n\n**Answer:** 5.75\n\n### Example 2 — Explain the reasoning\n\nUse one topic from this chapter in a daily-life situation. Draw or describe a model, write the mathematical statement, solve it, and check whether the answer is reasonable. A complete solution must include the correct unit or label.\n\n### Common Mistakes\n\n- Using a rule without checking what the question asks.\n- Mixing place values, units, or unequal parts.\n- Leaving a diagram unlabelled.\n- Writing only an answer without showing the reasoning.\n- Forgetting to check whether the result is sensible.\n\n## Guided Practice\n\n- **Q1.** Explain comparing decimal numbers with a labelled example of your own.\n- **Q2.** Explain ordering decimals with a labelled example of your own.\n- **Q3.** Explain adding decimals with a labelled example of your own.\n- **Q4.** Explain subtracting decimals with a labelled example of your own.\n- **Q5.** Explain money as decimals with a labelled example of your own.\n\n## Independent Practice\n\n### Easy\n\n1. Define two important words from this chapter.\n2. Draw a simple model that represents one chapter idea.\n3. State the rule or method you would use for the worked example.\n4. Estimate whether the worked-example answer should be small or large.\n5. Write one real-life situation where this mathematics is useful.\n\n### Medium\n\n1. Change one value in the worked example and solve the new problem.\n2. Solve the worked example by a second method or representation.\n3. Write a one-step word problem using a topic from the chapter, then solve it.\n4. Compare two examples and explain what stays the same.\n5. Find and correct this claim: “A numerical answer never needs a unit or label.”\n\n### Challenge\n\n1. Create a two-step problem combining this chapter with an earlier Grade 4 topic.\n2. Give an example and a non-example of one key concept and explain the difference.\n3. Make a visual puzzle whose solution uses comparing decimal numbers.\n4. Describe how estimation or inverse operations can verify a solution.\n5. Teach the hardest chapter idea in four clear sentences.\n\n## Quick Quiz\n\n1. **Multiple choice:** What should you do first? A) Guess B) Identify the information and goal C) Ignore units D) Copy a rule\n2. **True or false:** A labelled visual can help explain mathematical reasoning.\n3. **Fill in the blank:** A final measurement answer needs a number and a ______.\n4. **Short answer:** Why is checking useful?\n5. **Application:** Solve: Find $3.45 + 2.30$.\n\n## Answer Key\n\n### Guided Practice\n\n- **Q1.** A correct response should define comparing decimal numbers, show the relevant steps or model, and check the result.\n- **Q2.** A correct response should define ordering decimals, show the relevant steps or model, and check the result.\n- **Q3.** A correct response should define adding decimals, show the relevant steps or model, and check the result.\n- **Q4.** A correct response should define subtracting decimals, show the relevant steps or model, and check the result.\n- **Q5.** A correct response should define money as decimals, show the relevant steps or model, and check the result.\n\n### Independent Practice\n\nResponses are open-ended. Check that each answer is mathematically correct, shows a suitable model or steps, uses accurate vocabulary, and includes units where needed. For Medium 5, the claim is false because units and labels give a number its context.\n\n### Quick Quiz\n\n1. **B** — identify the given information and the goal.\n2. **True.**\n3. **unit** (or an appropriate label).\n4. Checking catches calculation, unit, and interpretation errors and shows whether an answer is reasonable.\n5. 5.75 — Align decimal points: $3.45 + 2.30 = 5.75$.\n\n## Mastery Checklist\n\n- [ ] I can explain the important vocabulary.\n- [ ] I can represent an idea visually.\n- [ ] I can choose and apply a suitable method.\n- [ ] I can solve a word problem and label the answer.\n- [ ] I can check and explain my reasoning.\n",
+    "previewContent": "Learn Working with Decimals through clear explanations, a visual model, worked examples, three levels of practice, a quiz, and answer guidance.",
+    "contentFormat": "markdown",
+    "difficulty": "intermediate",
+    "category": "lesson",
+    "isFree": false,
+    "downloadCount": 0,
+    "viewCount": 0,
+    "order": 2,
+    "tags": [
+      "Grade 4",
+      "Mathematics",
+      "Working with Decimals",
+      "Comparing decimal numbers",
+      "Ordering decimals",
+      "Adding decimals (tenths)",
+      "Subtracting decimals (tenths)",
+      "Money as decimals",
+      "Practical applications of decimals",
+      "CBSE",
+      "ICSE",
+      "CISCE",
+      "Primary Mathematics"
+    ],
+    "isActive": true,
+    "createdAt": {
+      "$date": "2026-08-02T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-08-02T00:00:00.000Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "74a000000000000000000013"
+    },
+    "course": {
+      "$oid": "740000000000000000000007"
+    },
+    "tutor": {
+      "$oid": "696d8e8098d47cbd00770ac0"
+    },
+    "title": "Length and Distance - Complete Study Material",
+    "description": "Grade 4 comprehensive lesson for Length and Distance, including concept explanations, visual learning, worked examples, differentiated practice, a quiz, and complete guidance.",
+    "type": "article",
+    "content": "# Length and Distance\n\nThis Grade 4 lesson develops the ideas in **Measurement** through explanations, visual reasoning, worked examples, practice, and reflection.\n\n## Learning Goals\n\n- Use appropriate units for measuring length\n- Convert between different units of length\n- Calculate perimeter of simple shapes\n- Solve measurement problems accurately\n\n## Key Vocabulary\n\nStandard units: millimeter, centimeter, meter, kilometer · Choosing appropriate units · Converting between units of length · Measuring with ruler and measuring tape · Estimating lengths · Perimeter of rectangles and squares\n\n## Concept Guide\n\n- **Standard units: millimeter, centimeter, meter, kilometer:** Choose a unit suited to the object, record the unit with every value, and convert to a common unit before calculating. A conversion table helps preserve the scale factor.\n- **Choosing appropriate units:** Choose a unit suited to the object, record the unit with every value, and convert to a common unit before calculating. A conversion table helps preserve the scale factor.\n- **Converting between units of length:** Choose a unit suited to the object, record the unit with every value, and convert to a common unit before calculating. A conversion table helps preserve the scale factor.\n- **Measuring with ruler and measuring tape:** Represent the information clearly, choose an operation or rule, solve in small steps, and check the result with estimation or an inverse operation.\n- **Estimating lengths:** Locate the rounding place, inspect the digit immediately to its right, and decide which nearby multiple is closer. Use the rounded result to check reasonableness.\n- **Perimeter of rectangles and squares:** Perimeter is the distance around a boundary. Add every outside side once and always include a length unit.\n- **Word problems on length:** Choose a unit suited to the object, record the unit with every value, and convert to a common unit before calculating. A conversion table helps preserve the scale factor.\n\n### A reliable problem-solving routine\n\n1. Read the question twice and underline the quantities and units.\n2. Represent the information with a model, table, number sentence, or labelled sketch.\n3. Choose a rule or operation and explain why it fits.\n4. Work in clear steps and keep place values or units aligned.\n5. Check with estimation, an inverse operation, or a second representation.\n\n## Visual Learning\n\n```math-diagram\n{\n  \"type\": \"clock\",\n  \"params\": {\n    \"hours\": 3,\n    \"minutes\": 30,\n    \"showLabels\": true\n  },\n  \"caption\": \"An analogue clock showing half past three.\"\n}\n```\n\nAsk yourself: What do the labels mean? Which parts are equal? What changes when a value changes? How does the picture support the calculation?\n\n## Worked Examples\n\n### Example 1 — Model and calculate\n\n**Question:** Find the perimeter of a rectangle 8 cm long and 5 cm wide.\n\n**Solution:** $2 \\times (8+5)=26$ cm.\n\n**Answer:** 26 cm\n\n### Example 2 — Explain the reasoning\n\nUse one topic from this chapter in a daily-life situation. Draw or describe a model, write the mathematical statement, solve it, and check whether the answer is reasonable. A complete solution must include the correct unit or label.\n\n### Common Mistakes\n\n- Using a rule without checking what the question asks.\n- Mixing place values, units, or unequal parts.\n- Leaving a diagram unlabelled.\n- Writing only an answer without showing the reasoning.\n- Forgetting to check whether the result is sensible.\n\n## Guided Practice\n\n- **Q1.** Explain standard units: millimeter, centimeter, meter, kilometer with a labelled example of your own.\n- **Q2.** Explain choosing appropriate units with a labelled example of your own.\n- **Q3.** Explain converting between units of length with a labelled example of your own.\n- **Q4.** Explain measuring with ruler and measuring tape with a labelled example of your own.\n- **Q5.** Explain estimating lengths with a labelled example of your own.\n\n## Independent Practice\n\n### Easy\n\n1. Define two important words from this chapter.\n2. Draw a simple model that represents one chapter idea.\n3. State the rule or method you would use for the worked example.\n4. Estimate whether the worked-example answer should be small or large.\n5. Write one real-life situation where this mathematics is useful.\n\n### Medium\n\n1. Change one value in the worked example and solve the new problem.\n2. Solve the worked example by a second method or representation.\n3. Write a one-step word problem using a topic from the chapter, then solve it.\n4. Compare two examples and explain what stays the same.\n5. Find and correct this claim: “A numerical answer never needs a unit or label.”\n\n### Challenge\n\n1. Create a two-step problem combining this chapter with an earlier Grade 4 topic.\n2. Give an example and a non-example of one key concept and explain the difference.\n3. Make a visual puzzle whose solution uses standard units: millimeter, centimeter, meter, kilometer.\n4. Describe how estimation or inverse operations can verify a solution.\n5. Teach the hardest chapter idea in four clear sentences.\n\n## Quick Quiz\n\n1. **Multiple choice:** What should you do first? A) Guess B) Identify the information and goal C) Ignore units D) Copy a rule\n2. **True or false:** A labelled visual can help explain mathematical reasoning.\n3. **Fill in the blank:** A final measurement answer needs a number and a ______.\n4. **Short answer:** Why is checking useful?\n5. **Application:** Solve: Find the perimeter of a rectangle 8 cm long and 5 cm wide.\n\n## Answer Key\n\n### Guided Practice\n\n- **Q1.** A correct response should define standard units: millimeter, centimeter, meter, kilometer, show the relevant steps or model, and check the result.\n- **Q2.** A correct response should define choosing appropriate units, show the relevant steps or model, and check the result.\n- **Q3.** A correct response should define converting between units of length, show the relevant steps or model, and check the result.\n- **Q4.** A correct response should define measuring with ruler and measuring tape, show the relevant steps or model, and check the result.\n- **Q5.** A correct response should define estimating lengths, show the relevant steps or model, and check the result.\n\n### Independent Practice\n\nResponses are open-ended. Check that each answer is mathematically correct, shows a suitable model or steps, uses accurate vocabulary, and includes units where needed. For Medium 5, the claim is false because units and labels give a number its context.\n\n### Quick Quiz\n\n1. **B** — identify the given information and the goal.\n2. **True.**\n3. **unit** (or an appropriate label).\n4. Checking catches calculation, unit, and interpretation errors and shows whether an answer is reasonable.\n5. 26 cm — $2 \\times (8+5)=26$ cm.\n\n## Mastery Checklist\n\n- [ ] I can explain the important vocabulary.\n- [ ] I can represent an idea visually.\n- [ ] I can choose and apply a suitable method.\n- [ ] I can solve a word problem and label the answer.\n- [ ] I can check and explain my reasoning.\n",
+    "previewContent": "Learn Length and Distance through clear explanations, a visual model, worked examples, three levels of practice, a quiz, and answer guidance.",
+    "contentFormat": "markdown",
+    "difficulty": "basic",
+    "category": "lesson",
+    "isFree": true,
+    "downloadCount": 0,
+    "viewCount": 0,
+    "order": 1,
+    "tags": [
+      "Grade 4",
+      "Mathematics",
+      "Length and Distance",
+      "Standard units: millimeter, centimeter, meter, kilometer",
+      "Choosing appropriate units",
+      "Converting between units of length",
+      "Measuring with ruler and measuring tape",
+      "Estimating lengths",
+      "Perimeter of rectangles and squares",
+      "CBSE",
+      "ICSE",
+      "CISCE",
+      "Primary Mathematics"
+    ],
+    "isActive": true,
+    "createdAt": {
+      "$date": "2026-08-02T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-08-02T00:00:00.000Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "74a000000000000000000014"
+    },
+    "course": {
+      "$oid": "740000000000000000000007"
+    },
+    "tutor": {
+      "$oid": "696d8e8098d47cbd00770ac0"
+    },
+    "title": "Weight, Capacity, and Time - Complete Study Material",
+    "description": "Grade 4 comprehensive lesson for Weight, Capacity, and Time, including concept explanations, visual learning, worked examples, differentiated practice, a quiz, and complete guidance.",
+    "type": "article",
+    "content": "# Weight, Capacity, and Time\n\nThis Grade 4 lesson develops the ideas in **Measurement** through explanations, visual reasoning, worked examples, practice, and reflection.\n\n## Learning Goals\n\n- Use correct units for weight and capacity\n- Convert between metric units\n- Tell time and calculate duration\n- Apply measurement in real situations\n\n## Key Vocabulary\n\nUnits of weight: gram and kilogram · Converting between g and kg · Units of capacity: milliliter and liter · Converting between ml and l · Reading time on analog and digital clocks · Calendar and dates\n\n## Concept Guide\n\n- **Units of weight: gram and kilogram:** Choose a unit suited to the object, record the unit with every value, and convert to a common unit before calculating. A conversion table helps preserve the scale factor.\n- **Converting between g and kg:** Choose a unit suited to the object, record the unit with every value, and convert to a common unit before calculating. A conversion table helps preserve the scale factor.\n- **Units of capacity: milliliter and liter:** Volume counts cubic units inside a solid; capacity tells how much a container can hold. Track cubic units and liquid units carefully.\n- **Converting between ml and l:** Choose a unit suited to the object, record the unit with every value, and convert to a common unit before calculating. A conversion table helps preserve the scale factor.\n- **Reading time on analog and digital clocks:** Draw a timeline or write the known quantities with units. Use consistent units before adding durations or applying a relationship.\n- **Calendar and dates:** Represent the information clearly, choose an operation or rule, solve in small steps, and check the result with estimation or an inverse operation.\n- **Duration and elapsed time:** Keep the same multiplicative relationship on both sides. A tape diagram or unitary method makes the scale factor visible.\n- **Word problems on measurement:** Choose a unit suited to the object, record the unit with every value, and convert to a common unit before calculating. A conversion table helps preserve the scale factor.\n\n### A reliable problem-solving routine\n\n1. Read the question twice and underline the quantities and units.\n2. Represent the information with a model, table, number sentence, or labelled sketch.\n3. Choose a rule or operation and explain why it fits.\n4. Work in clear steps and keep place values or units aligned.\n5. Check with estimation, an inverse operation, or a second representation.\n\n## Visual Learning\n\n```math-diagram\n{\n  \"type\": \"clock\",\n  \"params\": {\n    \"hours\": 3,\n    \"minutes\": 30,\n    \"showLabels\": true\n  },\n  \"caption\": \"An analogue clock showing half past three.\"\n}\n```\n\nAsk yourself: What do the labels mean? Which parts are equal? What changes when a value changes? How does the picture support the calculation?\n\n## Worked Examples\n\n### Example 1 — Model and calculate\n\n**Question:** Red and blue beads are in the ratio $2:3$. If there are 8 red beads, how many blue?\n\n**Solution:** The scale factor is $8 \\div 2 = 4$, so blue beads $=3 \\times 4=12$.\n\n**Answer:** 12 blue beads\n\n### Example 2 — Explain the reasoning\n\nUse one topic from this chapter in a daily-life situation. Draw or describe a model, write the mathematical statement, solve it, and check whether the answer is reasonable. A complete solution must include the correct unit or label.\n\n### Common Mistakes\n\n- Using a rule without checking what the question asks.\n- Mixing place values, units, or unequal parts.\n- Leaving a diagram unlabelled.\n- Writing only an answer without showing the reasoning.\n- Forgetting to check whether the result is sensible.\n\n## Guided Practice\n\n- **Q1.** Explain units of weight: gram and kilogram with a labelled example of your own.\n- **Q2.** Explain converting between g and kg with a labelled example of your own.\n- **Q3.** Explain units of capacity: milliliter and liter with a labelled example of your own.\n- **Q4.** Explain converting between ml and l with a labelled example of your own.\n- **Q5.** Explain reading time on analog and digital clocks with a labelled example of your own.\n\n## Independent Practice\n\n### Easy\n\n1. Define two important words from this chapter.\n2. Draw a simple model that represents one chapter idea.\n3. State the rule or method you would use for the worked example.\n4. Estimate whether the worked-example answer should be small or large.\n5. Write one real-life situation where this mathematics is useful.\n\n### Medium\n\n1. Change one value in the worked example and solve the new problem.\n2. Solve the worked example by a second method or representation.\n3. Write a one-step word problem using a topic from the chapter, then solve it.\n4. Compare two examples and explain what stays the same.\n5. Find and correct this claim: “A numerical answer never needs a unit or label.”\n\n### Challenge\n\n1. Create a two-step problem combining this chapter with an earlier Grade 4 topic.\n2. Give an example and a non-example of one key concept and explain the difference.\n3. Make a visual puzzle whose solution uses units of weight: gram and kilogram.\n4. Describe how estimation or inverse operations can verify a solution.\n5. Teach the hardest chapter idea in four clear sentences.\n\n## Quick Quiz\n\n1. **Multiple choice:** What should you do first? A) Guess B) Identify the information and goal C) Ignore units D) Copy a rule\n2. **True or false:** A labelled visual can help explain mathematical reasoning.\n3. **Fill in the blank:** A final measurement answer needs a number and a ______.\n4. **Short answer:** Why is checking useful?\n5. **Application:** Solve: Red and blue beads are in the ratio $2:3$. If there are 8 red beads, how many blue?\n\n## Answer Key\n\n### Guided Practice\n\n- **Q1.** A correct response should define units of weight: gram and kilogram, show the relevant steps or model, and check the result.\n- **Q2.** A correct response should define converting between g and kg, show the relevant steps or model, and check the result.\n- **Q3.** A correct response should define units of capacity: milliliter and liter, show the relevant steps or model, and check the result.\n- **Q4.** A correct response should define converting between ml and l, show the relevant steps or model, and check the result.\n- **Q5.** A correct response should define reading time on analog and digital clocks, show the relevant steps or model, and check the result.\n\n### Independent Practice\n\nResponses are open-ended. Check that each answer is mathematically correct, shows a suitable model or steps, uses accurate vocabulary, and includes units where needed. For Medium 5, the claim is false because units and labels give a number its context.\n\n### Quick Quiz\n\n1. **B** — identify the given information and the goal.\n2. **True.**\n3. **unit** (or an appropriate label).\n4. Checking catches calculation, unit, and interpretation errors and shows whether an answer is reasonable.\n5. 12 blue beads — The scale factor is $8 \\div 2 = 4$, so blue beads $=3 \\times 4=12$.\n\n## Mastery Checklist\n\n- [ ] I can explain the important vocabulary.\n- [ ] I can represent an idea visually.\n- [ ] I can choose and apply a suitable method.\n- [ ] I can solve a word problem and label the answer.\n- [ ] I can check and explain my reasoning.\n",
+    "previewContent": "Learn Weight, Capacity, and Time through clear explanations, a visual model, worked examples, three levels of practice, a quiz, and answer guidance.",
+    "contentFormat": "markdown",
+    "difficulty": "intermediate",
+    "category": "lesson",
+    "isFree": false,
+    "downloadCount": 0,
+    "viewCount": 0,
+    "order": 2,
+    "tags": [
+      "Grade 4",
+      "Mathematics",
+      "Weight, Capacity, and Time",
+      "Units of weight: gram and kilogram",
+      "Converting between g and kg",
+      "Units of capacity: milliliter and liter",
+      "Converting between ml and l",
+      "Reading time on analog and digital clocks",
+      "Calendar and dates",
+      "CBSE",
+      "ICSE",
+      "CISCE",
+      "Primary Mathematics"
+    ],
+    "isActive": true,
+    "createdAt": {
+      "$date": "2026-08-02T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-08-02T00:00:00.000Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "74a000000000000000000015"
+    },
+    "course": {
+      "$oid": "740000000000000000000007"
+    },
+    "tutor": {
+      "$oid": "696d8e8098d47cbd00770ac0"
+    },
+    "title": "Area and Practical Applications - Complete Study Material",
+    "description": "Grade 4 comprehensive lesson for Area and Practical Applications, including concept explanations, visual learning, worked examples, differentiated practice, a quiz, and complete guidance.",
+    "type": "article",
+    "content": "# Area and Practical Applications\n\nThis Grade 4 lesson develops the ideas in **Measurement** through explanations, visual reasoning, worked examples, practice, and reflection.\n\n## Learning Goals\n\n- Understand concept of area\n- Calculate area using simple methods\n- Apply measurement in practical situations\n- Develop estimation skills\n\n## Key Vocabulary\n\narea concept · Area using unit squares · Area of rectangles · Comparing areas · Practical measurement activities · Real-life measurement problems\n\n## Concept Guide\n\n- **Introduction to area concept:** Area measures surface covered in equal square units. Decompose an unfamiliar figure into rectangles or count unit squares.\n- **Area using unit squares:** Area measures surface covered in equal square units. Decompose an unfamiliar figure into rectangles or count unit squares.\n- **Area of rectangles (length × width):** Area measures surface covered in equal square units. Decompose an unfamiliar figure into rectangles or count unit squares.\n- **Comparing areas:** Compare the number of digits first, then compare equal place values from left to right. On a number line, values increase as you move right.\n- **Practical measurement activities:** Choose a unit suited to the object, record the unit with every value, and convert to a common unit before calculating. A conversion table helps preserve the scale factor.\n- **Real-life measurement problems:** Choose a unit suited to the object, record the unit with every value, and convert to a common unit before calculating. A conversion table helps preserve the scale factor.\n- **Estimation skills:** Locate the rounding place, inspect the digit immediately to its right, and decide which nearby multiple is closer. Use the rounded result to check reasonableness.\n\n### A reliable problem-solving routine\n\n1. Read the question twice and underline the quantities and units.\n2. Represent the information with a model, table, number sentence, or labelled sketch.\n3. Choose a rule or operation and explain why it fits.\n4. Work in clear steps and keep place values or units aligned.\n5. Check with estimation, an inverse operation, or a second representation.\n\n## Visual Learning\n\n```math-diagram\n{\n  \"type\": \"angle\",\n  \"params\": {\n    \"degrees\": 60\n  },\n  \"caption\": \"An angle model used to discuss size and type.\"\n}\n```\n\nAsk yourself: What do the labels mean? Which parts are equal? What changes when a value changes? How does the picture support the calculation?\n\n## Worked Examples\n\n### Example 1 — Model and calculate\n\n**Question:** Find the area of a rectangle 8 cm by 5 cm.\n\n**Solution:** $8 \\times 5=40$ square centimetres.\n\n**Answer:** 40 cm²\n\n### Example 2 — Explain the reasoning\n\nUse one topic from this chapter in a daily-life situation. Draw or describe a model, write the mathematical statement, solve it, and check whether the answer is reasonable. A complete solution must include the correct unit or label.\n\n### Common Mistakes\n\n- Using a rule without checking what the question asks.\n- Mixing place values, units, or unequal parts.\n- Leaving a diagram unlabelled.\n- Writing only an answer without showing the reasoning.\n- Forgetting to check whether the result is sensible.\n\n## Guided Practice\n\n- **Q1.** Explain area concept with a labelled example of your own.\n- **Q2.** Explain area using unit squares with a labelled example of your own.\n- **Q3.** Explain area of rectangles with a labelled example of your own.\n- **Q4.** Explain comparing areas with a labelled example of your own.\n- **Q5.** Explain practical measurement activities with a labelled example of your own.\n\n## Independent Practice\n\n### Easy\n\n1. Define two important words from this chapter.\n2. Draw a simple model that represents one chapter idea.\n3. State the rule or method you would use for the worked example.\n4. Estimate whether the worked-example answer should be small or large.\n5. Write one real-life situation where this mathematics is useful.\n\n### Medium\n\n1. Change one value in the worked example and solve the new problem.\n2. Solve the worked example by a second method or representation.\n3. Write a one-step word problem using a topic from the chapter, then solve it.\n4. Compare two examples and explain what stays the same.\n5. Find and correct this claim: “A numerical answer never needs a unit or label.”\n\n### Challenge\n\n1. Create a two-step problem combining this chapter with an earlier Grade 4 topic.\n2. Give an example and a non-example of one key concept and explain the difference.\n3. Make a visual puzzle whose solution uses area concept.\n4. Describe how estimation or inverse operations can verify a solution.\n5. Teach the hardest chapter idea in four clear sentences.\n\n## Quick Quiz\n\n1. **Multiple choice:** What should you do first? A) Guess B) Identify the information and goal C) Ignore units D) Copy a rule\n2. **True or false:** A labelled visual can help explain mathematical reasoning.\n3. **Fill in the blank:** A final measurement answer needs a number and a ______.\n4. **Short answer:** Why is checking useful?\n5. **Application:** Solve: Find the area of a rectangle 8 cm by 5 cm.\n\n## Answer Key\n\n### Guided Practice\n\n- **Q1.** A correct response should define area concept, show the relevant steps or model, and check the result.\n- **Q2.** A correct response should define area using unit squares, show the relevant steps or model, and check the result.\n- **Q3.** A correct response should define area of rectangles, show the relevant steps or model, and check the result.\n- **Q4.** A correct response should define comparing areas, show the relevant steps or model, and check the result.\n- **Q5.** A correct response should define practical measurement activities, show the relevant steps or model, and check the result.\n\n### Independent Practice\n\nResponses are open-ended. Check that each answer is mathematically correct, shows a suitable model or steps, uses accurate vocabulary, and includes units where needed. For Medium 5, the claim is false because units and labels give a number its context.\n\n### Quick Quiz\n\n1. **B** — identify the given information and the goal.\n2. **True.**\n3. **unit** (or an appropriate label).\n4. Checking catches calculation, unit, and interpretation errors and shows whether an answer is reasonable.\n5. 40 cm² — $8 \\times 5=40$ square centimetres.\n\n## Mastery Checklist\n\n- [ ] I can explain the important vocabulary.\n- [ ] I can represent an idea visually.\n- [ ] I can choose and apply a suitable method.\n- [ ] I can solve a word problem and label the answer.\n- [ ] I can check and explain my reasoning.\n",
+    "previewContent": "Learn Area and Practical Applications through clear explanations, a visual model, worked examples, three levels of practice, a quiz, and answer guidance.",
+    "contentFormat": "markdown",
+    "difficulty": "intermediate",
+    "category": "lesson",
+    "isFree": false,
+    "downloadCount": 0,
+    "viewCount": 0,
+    "order": 3,
+    "tags": [
+      "Grade 4",
+      "Mathematics",
+      "Area and Practical Applications",
+      "Introduction to area concept",
+      "Area using unit squares",
+      "Area of rectangles (length × width)",
+      "Comparing areas",
+      "Practical measurement activities",
+      "Real-life measurement problems",
+      "CBSE",
+      "ICSE",
+      "CISCE",
+      "Primary Mathematics"
+    ],
+    "isActive": true,
+    "createdAt": {
+      "$date": "2026-08-02T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-08-02T00:00:00.000Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "74a000000000000000000016"
+    },
+    "course": {
+      "$oid": "740000000000000000000008"
+    },
+    "tutor": {
+      "$oid": "696d8e8098d47cbd00770ac0"
+    },
+    "title": "2D and 3D Shapes - Complete Study Material",
+    "description": "Grade 4 comprehensive lesson for 2D and 3D Shapes, including concept explanations, visual learning, worked examples, differentiated practice, a quiz, and complete guidance.",
+    "type": "article",
+    "content": "# 2D and 3D Shapes\n\nThis Grade 4 lesson develops the ideas in **Geometry** through explanations, visual reasoning, worked examples, practice, and reflection.\n\n## Learning Goals\n\n- Identify and classify 2D and 3D shapes\n- Understand properties of shapes\n- Count faces, edges, and vertices\n- Relate shapes to real-world objects\n\n## Key Vocabulary\n\n2D shapes: triangle, quadrilateral, circle · Properties of triangles and quadrilaterals · Regular and irregular shapes · 3D shapes: cube, cuboid, sphere, cylinder, cone · Faces, edges, and vertices · Nets of 3D shapes\n\n## Concept Guide\n\n- **2D shapes: triangle, quadrilateral, circle:** Observe, measure, and name the defining properties. A careful labelled sketch helps separate what looks true from what is mathematically true.\n- **Properties of triangles and quadrilaterals:** Observe, measure, and name the defining properties. A careful labelled sketch helps separate what looks true from what is mathematically true.\n- **Regular and irregular shapes:** Observe, measure, and name the defining properties. A careful labelled sketch helps separate what looks true from what is mathematically true.\n- **3D shapes: cube, cuboid, sphere, cylinder, cone:** Observe, measure, and name the defining properties. A careful labelled sketch helps separate what looks true from what is mathematically true.\n- **Faces, edges, and vertices:** Represent the information clearly, choose an operation or rule, solve in small steps, and check the result with estimation or an inverse operation.\n- **Nets of 3D shapes:** Observe, measure, and name the defining properties. A careful labelled sketch helps separate what looks true from what is mathematically true.\n- **Real-life examples of shapes:** Observe, measure, and name the defining properties. A careful labelled sketch helps separate what looks true from what is mathematically true.\n\n### A reliable problem-solving routine\n\n1. Read the question twice and underline the quantities and units.\n2. Represent the information with a model, table, number sentence, or labelled sketch.\n3. Choose a rule or operation and explain why it fits.\n4. Work in clear steps and keep place values or units aligned.\n5. Check with estimation, an inverse operation, or a second representation.\n\n## Visual Learning\n\n```math-diagram\n{\n  \"type\": \"angle\",\n  \"params\": {\n    \"degrees\": 60\n  },\n  \"caption\": \"An angle model used to discuss size and type.\"\n}\n```\n\nAsk yourself: What do the labels mean? Which parts are equal? What changes when a value changes? How does the picture support the calculation?\n\n## Worked Examples\n\n### Example 1 — Model and calculate\n\n**Question:** Classify an angle measuring $60^\\circ$.\n\n**Solution:** It is greater than $0^\\circ$ and less than $90^\\circ$, so it is acute.\n\n**Answer:** Acute angle\n\n### Example 2 — Explain the reasoning\n\nUse one topic from this chapter in a daily-life situation. Draw or describe a model, write the mathematical statement, solve it, and check whether the answer is reasonable. A complete solution must include the correct unit or label.\n\n### Common Mistakes\n\n- Using a rule without checking what the question asks.\n- Mixing place values, units, or unequal parts.\n- Leaving a diagram unlabelled.\n- Writing only an answer without showing the reasoning.\n- Forgetting to check whether the result is sensible.\n\n## Guided Practice\n\n- **Q1.** Explain 2d shapes: triangle, quadrilateral, circle with a labelled example of your own.\n- **Q2.** Explain properties of triangles and quadrilaterals with a labelled example of your own.\n- **Q3.** Explain regular and irregular shapes with a labelled example of your own.\n- **Q4.** Explain 3d shapes: cube, cuboid, sphere, cylinder, cone with a labelled example of your own.\n- **Q5.** Explain faces, edges, and vertices with a labelled example of your own.\n\n## Independent Practice\n\n### Easy\n\n1. Define two important words from this chapter.\n2. Draw a simple model that represents one chapter idea.\n3. State the rule or method you would use for the worked example.\n4. Estimate whether the worked-example answer should be small or large.\n5. Write one real-life situation where this mathematics is useful.\n\n### Medium\n\n1. Change one value in the worked example and solve the new problem.\n2. Solve the worked example by a second method or representation.\n3. Write a one-step word problem using a topic from the chapter, then solve it.\n4. Compare two examples and explain what stays the same.\n5. Find and correct this claim: “A numerical answer never needs a unit or label.”\n\n### Challenge\n\n1. Create a two-step problem combining this chapter with an earlier Grade 4 topic.\n2. Give an example and a non-example of one key concept and explain the difference.\n3. Make a visual puzzle whose solution uses 2d shapes: triangle, quadrilateral, circle.\n4. Describe how estimation or inverse operations can verify a solution.\n5. Teach the hardest chapter idea in four clear sentences.\n\n## Quick Quiz\n\n1. **Multiple choice:** What should you do first? A) Guess B) Identify the information and goal C) Ignore units D) Copy a rule\n2. **True or false:** A labelled visual can help explain mathematical reasoning.\n3. **Fill in the blank:** A final measurement answer needs a number and a ______.\n4. **Short answer:** Why is checking useful?\n5. **Application:** Solve: Classify an angle measuring $60^\\circ$.\n\n## Answer Key\n\n### Guided Practice\n\n- **Q1.** A correct response should define 2d shapes: triangle, quadrilateral, circle, show the relevant steps or model, and check the result.\n- **Q2.** A correct response should define properties of triangles and quadrilaterals, show the relevant steps or model, and check the result.\n- **Q3.** A correct response should define regular and irregular shapes, show the relevant steps or model, and check the result.\n- **Q4.** A correct response should define 3d shapes: cube, cuboid, sphere, cylinder, cone, show the relevant steps or model, and check the result.\n- **Q5.** A correct response should define faces, edges, and vertices, show the relevant steps or model, and check the result.\n\n### Independent Practice\n\nResponses are open-ended. Check that each answer is mathematically correct, shows a suitable model or steps, uses accurate vocabulary, and includes units where needed. For Medium 5, the claim is false because units and labels give a number its context.\n\n### Quick Quiz\n\n1. **B** — identify the given information and the goal.\n2. **True.**\n3. **unit** (or an appropriate label).\n4. Checking catches calculation, unit, and interpretation errors and shows whether an answer is reasonable.\n5. Acute angle — It is greater than $0^\\circ$ and less than $90^\\circ$, so it is acute.\n\n## Mastery Checklist\n\n- [ ] I can explain the important vocabulary.\n- [ ] I can represent an idea visually.\n- [ ] I can choose and apply a suitable method.\n- [ ] I can solve a word problem and label the answer.\n- [ ] I can check and explain my reasoning.\n",
+    "previewContent": "Learn 2D and 3D Shapes through clear explanations, a visual model, worked examples, three levels of practice, a quiz, and answer guidance.",
+    "contentFormat": "markdown",
+    "difficulty": "basic",
+    "category": "lesson",
+    "isFree": true,
+    "downloadCount": 0,
+    "viewCount": 0,
+    "order": 1,
+    "tags": [
+      "Grade 4",
+      "Mathematics",
+      "2D and 3D Shapes",
+      "2D shapes: triangle, quadrilateral, circle",
+      "Properties of triangles and quadrilaterals",
+      "Regular and irregular shapes",
+      "3D shapes: cube, cuboid, sphere, cylinder, cone",
+      "Faces, edges, and vertices",
+      "Nets of 3D shapes",
+      "CBSE",
+      "ICSE",
+      "CISCE",
+      "Primary Mathematics"
+    ],
+    "isActive": true,
+    "createdAt": {
+      "$date": "2026-08-02T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-08-02T00:00:00.000Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "74a000000000000000000017"
+    },
+    "course": {
+      "$oid": "740000000000000000000008"
+    },
+    "tutor": {
+      "$oid": "696d8e8098d47cbd00770ac0"
+    },
+    "title": "Lines and Angles - Complete Study Material",
+    "description": "Grade 4 comprehensive lesson for Lines and Angles, including concept explanations, visual learning, worked examples, differentiated practice, a quiz, and complete guidance.",
+    "type": "article",
+    "content": "# Lines and Angles\n\nThis Grade 4 lesson develops the ideas in **Geometry** through explanations, visual reasoning, worked examples, practice, and reflection.\n\n## Learning Goals\n\n- Identify different types of lines\n- Recognize parallel and perpendicular lines\n- Understand angle concepts\n- Measure angles using protractor\n\n## Key Vocabulary\n\nStraight lines and curved lines · Parallel lines and intersecting lines · Perpendicular lines · angles · Right angles · Acute and obtuse angles\n\n## Concept Guide\n\n- **Straight lines and curved lines:** Observe, measure, and name the defining properties. A careful labelled sketch helps separate what looks true from what is mathematically true.\n- **Parallel lines and intersecting lines:** Observe, measure, and name the defining properties. A careful labelled sketch helps separate what looks true from what is mathematically true.\n- **Perpendicular lines:** Observe, measure, and name the defining properties. A careful labelled sketch helps separate what looks true from what is mathematically true.\n- **Introduction to angles:** Observe, measure, and name the defining properties. A careful labelled sketch helps separate what looks true from what is mathematically true.\n- **Right angles:** Observe, measure, and name the defining properties. A careful labelled sketch helps separate what looks true from what is mathematically true.\n- **Acute and obtuse angles:** Observe, measure, and name the defining properties. A careful labelled sketch helps separate what looks true from what is mathematically true.\n- **Angles in shapes:** Observe, measure, and name the defining properties. A careful labelled sketch helps separate what looks true from what is mathematically true.\n- **Using protractor (basic):** Represent the information clearly, choose an operation or rule, solve in small steps, and check the result with estimation or an inverse operation.\n\n### A reliable problem-solving routine\n\n1. Read the question twice and underline the quantities and units.\n2. Represent the information with a model, table, number sentence, or labelled sketch.\n3. Choose a rule or operation and explain why it fits.\n4. Work in clear steps and keep place values or units aligned.\n5. Check with estimation, an inverse operation, or a second representation.\n\n## Visual Learning\n\n```math-diagram\n{\n  \"type\": \"angle\",\n  \"params\": {\n    \"degrees\": 60\n  },\n  \"caption\": \"An angle model used to discuss size and type.\"\n}\n```\n\nAsk yourself: What do the labels mean? Which parts are equal? What changes when a value changes? How does the picture support the calculation?\n\n## Worked Examples\n\n### Example 1 — Model and calculate\n\n**Question:** Classify an angle measuring $60^\\circ$.\n\n**Solution:** It is greater than $0^\\circ$ and less than $90^\\circ$, so it is acute.\n\n**Answer:** Acute angle\n\n### Example 2 — Explain the reasoning\n\nUse one topic from this chapter in a daily-life situation. Draw or describe a model, write the mathematical statement, solve it, and check whether the answer is reasonable. A complete solution must include the correct unit or label.\n\n### Common Mistakes\n\n- Using a rule without checking what the question asks.\n- Mixing place values, units, or unequal parts.\n- Leaving a diagram unlabelled.\n- Writing only an answer without showing the reasoning.\n- Forgetting to check whether the result is sensible.\n\n## Guided Practice\n\n- **Q1.** Explain straight lines and curved lines with a labelled example of your own.\n- **Q2.** Explain parallel lines and intersecting lines with a labelled example of your own.\n- **Q3.** Explain perpendicular lines with a labelled example of your own.\n- **Q4.** Explain angles with a labelled example of your own.\n- **Q5.** Explain right angles with a labelled example of your own.\n\n## Independent Practice\n\n### Easy\n\n1. Define two important words from this chapter.\n2. Draw a simple model that represents one chapter idea.\n3. State the rule or method you would use for the worked example.\n4. Estimate whether the worked-example answer should be small or large.\n5. Write one real-life situation where this mathematics is useful.\n\n### Medium\n\n1. Change one value in the worked example and solve the new problem.\n2. Solve the worked example by a second method or representation.\n3. Write a one-step word problem using a topic from the chapter, then solve it.\n4. Compare two examples and explain what stays the same.\n5. Find and correct this claim: “A numerical answer never needs a unit or label.”\n\n### Challenge\n\n1. Create a two-step problem combining this chapter with an earlier Grade 4 topic.\n2. Give an example and a non-example of one key concept and explain the difference.\n3. Make a visual puzzle whose solution uses straight lines and curved lines.\n4. Describe how estimation or inverse operations can verify a solution.\n5. Teach the hardest chapter idea in four clear sentences.\n\n## Quick Quiz\n\n1. **Multiple choice:** What should you do first? A) Guess B) Identify the information and goal C) Ignore units D) Copy a rule\n2. **True or false:** A labelled visual can help explain mathematical reasoning.\n3. **Fill in the blank:** A final measurement answer needs a number and a ______.\n4. **Short answer:** Why is checking useful?\n5. **Application:** Solve: Classify an angle measuring $60^\\circ$.\n\n## Answer Key\n\n### Guided Practice\n\n- **Q1.** A correct response should define straight lines and curved lines, show the relevant steps or model, and check the result.\n- **Q2.** A correct response should define parallel lines and intersecting lines, show the relevant steps or model, and check the result.\n- **Q3.** A correct response should define perpendicular lines, show the relevant steps or model, and check the result.\n- **Q4.** A correct response should define angles, show the relevant steps or model, and check the result.\n- **Q5.** A correct response should define right angles, show the relevant steps or model, and check the result.\n\n### Independent Practice\n\nResponses are open-ended. Check that each answer is mathematically correct, shows a suitable model or steps, uses accurate vocabulary, and includes units where needed. For Medium 5, the claim is false because units and labels give a number its context.\n\n### Quick Quiz\n\n1. **B** — identify the given information and the goal.\n2. **True.**\n3. **unit** (or an appropriate label).\n4. Checking catches calculation, unit, and interpretation errors and shows whether an answer is reasonable.\n5. Acute angle — It is greater than $0^\\circ$ and less than $90^\\circ$, so it is acute.\n\n## Mastery Checklist\n\n- [ ] I can explain the important vocabulary.\n- [ ] I can represent an idea visually.\n- [ ] I can choose and apply a suitable method.\n- [ ] I can solve a word problem and label the answer.\n- [ ] I can check and explain my reasoning.\n",
+    "previewContent": "Learn Lines and Angles through clear explanations, a visual model, worked examples, three levels of practice, a quiz, and answer guidance.",
+    "contentFormat": "markdown",
+    "difficulty": "intermediate",
+    "category": "lesson",
+    "isFree": false,
+    "downloadCount": 0,
+    "viewCount": 0,
+    "order": 2,
+    "tags": [
+      "Grade 4",
+      "Mathematics",
+      "Lines and Angles",
+      "Straight lines and curved lines",
+      "Parallel lines and intersecting lines",
+      "Perpendicular lines",
+      "Introduction to angles",
+      "Right angles",
+      "Acute and obtuse angles",
+      "CBSE",
+      "ICSE",
+      "CISCE",
+      "Primary Mathematics"
+    ],
+    "isActive": true,
+    "createdAt": {
+      "$date": "2026-08-02T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-08-02T00:00:00.000Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "74a000000000000000000018"
+    },
+    "course": {
+      "$oid": "740000000000000000000008"
+    },
+    "tutor": {
+      "$oid": "696d8e8098d47cbd00770ac0"
+    },
+    "title": "Symmetry and Patterns - Complete Study Material",
+    "description": "Grade 4 comprehensive lesson for Symmetry and Patterns, including concept explanations, visual learning, worked examples, differentiated practice, a quiz, and complete guidance.",
+    "type": "article",
+    "content": "# Symmetry and Patterns\n\nThis Grade 4 lesson develops the ideas in **Geometry** through explanations, visual reasoning, worked examples, practice, and reflection.\n\n## Learning Goals\n\n- Identify lines of symmetry\n- Create symmetrical designs\n- Recognize and create patterns\n- Draw geometric shapes accurately\n\n## Key Vocabulary\n\nLine symmetry · Symmetrical shapes · Creating symmetrical patterns · Tessellations and tiling patterns · Geometric patterns in art · Basic constructions\n\n## Concept Guide\n\n- **Line symmetry:** Observe, measure, and name the defining properties. A careful labelled sketch helps separate what looks true from what is mathematically true.\n- **Symmetrical shapes:** Observe, measure, and name the defining properties. A careful labelled sketch helps separate what looks true from what is mathematically true.\n- **Creating symmetrical patterns:** Observe, measure, and name the defining properties. A careful labelled sketch helps separate what looks true from what is mathematically true.\n- **Tessellations and tiling patterns:** Describe how one term changes to the next, test the rule on several terms, and use a symbol when a value is unknown.\n- **Geometric patterns in art:** Describe how one term changes to the next, test the rule on several terms, and use a symbol when a value is unknown.\n- **Basic constructions:** Represent the information clearly, choose an operation or rule, solve in small steps, and check the result with estimation or an inverse operation.\n- **Drawing shapes accurately:** Observe, measure, and name the defining properties. A careful labelled sketch helps separate what looks true from what is mathematically true.\n\n### A reliable problem-solving routine\n\n1. Read the question twice and underline the quantities and units.\n2. Represent the information with a model, table, number sentence, or labelled sketch.\n3. Choose a rule or operation and explain why it fits.\n4. Work in clear steps and keep place values or units aligned.\n5. Check with estimation, an inverse operation, or a second representation.\n\n## Visual Learning\n\n```math-diagram\n{\n  \"type\": \"angle\",\n  \"params\": {\n    \"degrees\": 60\n  },\n  \"caption\": \"An angle model used to discuss size and type.\"\n}\n```\n\nAsk yourself: What do the labels mean? Which parts are equal? What changes when a value changes? How does the picture support the calculation?\n\n## Worked Examples\n\n### Example 1 — Model and calculate\n\n**Question:** Continue 5, 9, 13, 17, ...\n\n**Solution:** Each term increases by 4, so the next two terms are 21 and 25.\n\n**Answer:** 21, 25\n\n### Example 2 — Explain the reasoning\n\nUse one topic from this chapter in a daily-life situation. Draw or describe a model, write the mathematical statement, solve it, and check whether the answer is reasonable. A complete solution must include the correct unit or label.\n\n### Common Mistakes\n\n- Using a rule without checking what the question asks.\n- Mixing place values, units, or unequal parts.\n- Leaving a diagram unlabelled.\n- Writing only an answer without showing the reasoning.\n- Forgetting to check whether the result is sensible.\n\n## Guided Practice\n\n- **Q1.** Explain line symmetry with a labelled example of your own.\n- **Q2.** Explain symmetrical shapes with a labelled example of your own.\n- **Q3.** Explain creating symmetrical patterns with a labelled example of your own.\n- **Q4.** Explain tessellations and tiling patterns with a labelled example of your own.\n- **Q5.** Explain geometric patterns in art with a labelled example of your own.\n\n## Independent Practice\n\n### Easy\n\n1. Define two important words from this chapter.\n2. Draw a simple model that represents one chapter idea.\n3. State the rule or method you would use for the worked example.\n4. Estimate whether the worked-example answer should be small or large.\n5. Write one real-life situation where this mathematics is useful.\n\n### Medium\n\n1. Change one value in the worked example and solve the new problem.\n2. Solve the worked example by a second method or representation.\n3. Write a one-step word problem using a topic from the chapter, then solve it.\n4. Compare two examples and explain what stays the same.\n5. Find and correct this claim: “A numerical answer never needs a unit or label.”\n\n### Challenge\n\n1. Create a two-step problem combining this chapter with an earlier Grade 4 topic.\n2. Give an example and a non-example of one key concept and explain the difference.\n3. Make a visual puzzle whose solution uses line symmetry.\n4. Describe how estimation or inverse operations can verify a solution.\n5. Teach the hardest chapter idea in four clear sentences.\n\n## Quick Quiz\n\n1. **Multiple choice:** What should you do first? A) Guess B) Identify the information and goal C) Ignore units D) Copy a rule\n2. **True or false:** A labelled visual can help explain mathematical reasoning.\n3. **Fill in the blank:** A final measurement answer needs a number and a ______.\n4. **Short answer:** Why is checking useful?\n5. **Application:** Solve: Continue 5, 9, 13, 17, ...\n\n## Answer Key\n\n### Guided Practice\n\n- **Q1.** A correct response should define line symmetry, show the relevant steps or model, and check the result.\n- **Q2.** A correct response should define symmetrical shapes, show the relevant steps or model, and check the result.\n- **Q3.** A correct response should define creating symmetrical patterns, show the relevant steps or model, and check the result.\n- **Q4.** A correct response should define tessellations and tiling patterns, show the relevant steps or model, and check the result.\n- **Q5.** A correct response should define geometric patterns in art, show the relevant steps or model, and check the result.\n\n### Independent Practice\n\nResponses are open-ended. Check that each answer is mathematically correct, shows a suitable model or steps, uses accurate vocabulary, and includes units where needed. For Medium 5, the claim is false because units and labels give a number its context.\n\n### Quick Quiz\n\n1. **B** — identify the given information and the goal.\n2. **True.**\n3. **unit** (or an appropriate label).\n4. Checking catches calculation, unit, and interpretation errors and shows whether an answer is reasonable.\n5. 21, 25 — Each term increases by 4, so the next two terms are 21 and 25.\n\n## Mastery Checklist\n\n- [ ] I can explain the important vocabulary.\n- [ ] I can represent an idea visually.\n- [ ] I can choose and apply a suitable method.\n- [ ] I can solve a word problem and label the answer.\n- [ ] I can check and explain my reasoning.\n",
+    "previewContent": "Learn Symmetry and Patterns through clear explanations, a visual model, worked examples, three levels of practice, a quiz, and answer guidance.",
+    "contentFormat": "markdown",
+    "difficulty": "intermediate",
+    "category": "lesson",
+    "isFree": false,
+    "downloadCount": 0,
+    "viewCount": 0,
+    "order": 3,
+    "tags": [
+      "Grade 4",
+      "Mathematics",
+      "Symmetry and Patterns",
+      "Line symmetry",
+      "Symmetrical shapes",
+      "Creating symmetrical patterns",
+      "Tessellations and tiling patterns",
+      "Geometric patterns in art",
+      "Basic constructions",
+      "CBSE",
+      "ICSE",
+      "CISCE",
+      "Primary Mathematics"
+    ],
+    "isActive": true,
+    "createdAt": {
+      "$date": "2026-08-02T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-08-02T00:00:00.000Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "74a000000000000000000019"
+    },
+    "course": {
+      "$oid": "740000000000000000000009"
+    },
+    "tutor": {
+      "$oid": "696d8e8098d47cbd00770ac0"
+    },
+    "title": "Data Collection and Organization - Complete Study Material",
+    "description": "Grade 4 comprehensive lesson for Data Collection and Organization, including concept explanations, visual learning, worked examples, differentiated practice, a quiz, and complete guidance.",
+    "type": "article",
+    "content": "# Data Collection and Organization\n\nThis Grade 4 lesson develops the ideas in **Data Handling** through explanations, visual reasoning, worked examples, practice, and reflection.\n\n## Learning Goals\n\n- Understand the concept of data\n- Collect data systematically\n- Organize data using tally marks\n- Create frequency tables\n\n## Key Vocabulary\n\nWhat is data? · Collecting data through surveys · Organizing data in tables · Tally marks · Frequency tables · Sorting and grouping data\n\n## Concept Guide\n\n- **What is data?:** Read the title, labels, scale, and key before interpreting a graph. Support every conclusion with a value from the data.\n- **Collecting data through surveys:** Read the title, labels, scale, and key before interpreting a graph. Support every conclusion with a value from the data.\n- **Organizing data in tables:** Read the title, labels, scale, and key before interpreting a graph. Support every conclusion with a value from the data.\n- **Tally marks:** Represent the information clearly, choose an operation or rule, solve in small steps, and check the result with estimation or an inverse operation.\n- **Frequency tables:** Represent the information clearly, choose an operation or rule, solve in small steps, and check the result with estimation or an inverse operation.\n- **Sorting and grouping data:** Read the title, labels, scale, and key before interpreting a graph. Support every conclusion with a value from the data.\n- **Simple questionnaires:** Represent the information clearly, choose an operation or rule, solve in small steps, and check the result with estimation or an inverse operation.\n\n### A reliable problem-solving routine\n\n1. Read the question twice and underline the quantities and units.\n2. Represent the information with a model, table, number sentence, or labelled sketch.\n3. Choose a rule or operation and explain why it fits.\n4. Work in clear steps and keep place values or units aligned.\n5. Check with estimation, an inverse operation, or a second representation.\n\n## Visual Learning\n\n```math-diagram\n{\n  \"type\": \"barGraph\",\n  \"params\": {\n    \"data\": [\n      {\n        \"label\": \"Mon\",\n        \"value\": 4\n      },\n      {\n        \"label\": \"Tue\",\n        \"value\": 7\n      },\n      {\n        \"label\": \"Wed\",\n        \"value\": 5\n      },\n      {\n        \"label\": \"Thu\",\n        \"value\": 8\n      }\n    ],\n    \"title\": \"Books Read\",\n    \"xLabel\": \"Day\",\n    \"yLabel\": \"Books\"\n  },\n  \"caption\": \"A bar graph for reading and comparing data.\"\n}\n```\n\nAsk yourself: What do the labels mean? Which parts are equal? What changes when a value changes? How does the picture support the calculation?\n\n## Worked Examples\n\n### Example 1 — Model and calculate\n\n**Question:** A bar graph shows 4, 7, 5, and 8 books read. How many altogether?\n\n**Solution:** $4+7+5+8=24$.\n\n**Answer:** 24 books\n\n### Example 2 — Explain the reasoning\n\nUse one topic from this chapter in a daily-life situation. Draw or describe a model, write the mathematical statement, solve it, and check whether the answer is reasonable. A complete solution must include the correct unit or label.\n\n### Common Mistakes\n\n- Using a rule without checking what the question asks.\n- Mixing place values, units, or unequal parts.\n- Leaving a diagram unlabelled.\n- Writing only an answer without showing the reasoning.\n- Forgetting to check whether the result is sensible.\n\n## Guided Practice\n\n- **Q1.** Explain what is data? with a labelled example of your own.\n- **Q2.** Explain collecting data through surveys with a labelled example of your own.\n- **Q3.** Explain organizing data in tables with a labelled example of your own.\n- **Q4.** Explain tally marks with a labelled example of your own.\n- **Q5.** Explain frequency tables with a labelled example of your own.\n\n## Independent Practice\n\n### Easy\n\n1. Define two important words from this chapter.\n2. Draw a simple model that represents one chapter idea.\n3. State the rule or method you would use for the worked example.\n4. Estimate whether the worked-example answer should be small or large.\n5. Write one real-life situation where this mathematics is useful.\n\n### Medium\n\n1. Change one value in the worked example and solve the new problem.\n2. Solve the worked example by a second method or representation.\n3. Write a one-step word problem using a topic from the chapter, then solve it.\n4. Compare two examples and explain what stays the same.\n5. Find and correct this claim: “A numerical answer never needs a unit or label.”\n\n### Challenge\n\n1. Create a two-step problem combining this chapter with an earlier Grade 4 topic.\n2. Give an example and a non-example of one key concept and explain the difference.\n3. Make a visual puzzle whose solution uses what is data?.\n4. Describe how estimation or inverse operations can verify a solution.\n5. Teach the hardest chapter idea in four clear sentences.\n\n## Quick Quiz\n\n1. **Multiple choice:** What should you do first? A) Guess B) Identify the information and goal C) Ignore units D) Copy a rule\n2. **True or false:** A labelled visual can help explain mathematical reasoning.\n3. **Fill in the blank:** A final measurement answer needs a number and a ______.\n4. **Short answer:** Why is checking useful?\n5. **Application:** Solve: A bar graph shows 4, 7, 5, and 8 books read. How many altogether?\n\n## Answer Key\n\n### Guided Practice\n\n- **Q1.** A correct response should define what is data?, show the relevant steps or model, and check the result.\n- **Q2.** A correct response should define collecting data through surveys, show the relevant steps or model, and check the result.\n- **Q3.** A correct response should define organizing data in tables, show the relevant steps or model, and check the result.\n- **Q4.** A correct response should define tally marks, show the relevant steps or model, and check the result.\n- **Q5.** A correct response should define frequency tables, show the relevant steps or model, and check the result.\n\n### Independent Practice\n\nResponses are open-ended. Check that each answer is mathematically correct, shows a suitable model or steps, uses accurate vocabulary, and includes units where needed. For Medium 5, the claim is false because units and labels give a number its context.\n\n### Quick Quiz\n\n1. **B** — identify the given information and the goal.\n2. **True.**\n3. **unit** (or an appropriate label).\n4. Checking catches calculation, unit, and interpretation errors and shows whether an answer is reasonable.\n5. 24 books — $4+7+5+8=24$.\n\n## Mastery Checklist\n\n- [ ] I can explain the important vocabulary.\n- [ ] I can represent an idea visually.\n- [ ] I can choose and apply a suitable method.\n- [ ] I can solve a word problem and label the answer.\n- [ ] I can check and explain my reasoning.\n",
+    "previewContent": "Learn Data Collection and Organization through clear explanations, a visual model, worked examples, three levels of practice, a quiz, and answer guidance.",
+    "contentFormat": "markdown",
+    "difficulty": "basic",
+    "category": "lesson",
+    "isFree": true,
+    "downloadCount": 0,
+    "viewCount": 0,
+    "order": 1,
+    "tags": [
+      "Grade 4",
+      "Mathematics",
+      "Data Collection and Organization",
+      "What is data?",
+      "Collecting data through surveys",
+      "Organizing data in tables",
+      "Tally marks",
+      "Frequency tables",
+      "Sorting and grouping data",
+      "CBSE",
+      "ICSE",
+      "CISCE",
+      "Primary Mathematics"
+    ],
+    "isActive": true,
+    "createdAt": {
+      "$date": "2026-08-02T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-08-02T00:00:00.000Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "74a000000000000000000020"
+    },
+    "course": {
+      "$oid": "740000000000000000000009"
+    },
+    "tutor": {
+      "$oid": "696d8e8098d47cbd00770ac0"
+    },
+    "title": "Data Representation - Complete Study Material",
+    "description": "Grade 4 comprehensive lesson for Data Representation, including concept explanations, visual learning, worked examples, differentiated practice, a quiz, and complete guidance.",
+    "type": "article",
+    "content": "# Data Representation\n\nThis Grade 4 lesson develops the ideas in **Data Handling** through explanations, visual reasoning, worked examples, practice, and reflection.\n\n## Learning Goals\n\n- Create and interpret pictographs\n- Draw and read bar graphs\n- Compare data effectively\n- Draw logical conclusions from data\n\n## Key Vocabulary\n\nPictographs with symbols · Reading pictographs · Creating simple bar graphs · Reading bar graphs · Comparing data from graphs · Drawing conclusions\n\n## Concept Guide\n\n- **Pictographs with symbols:** Read the title, labels, scale, and key before interpreting a graph. Support every conclusion with a value from the data.\n- **Reading pictographs:** Read the title, labels, scale, and key before interpreting a graph. Support every conclusion with a value from the data.\n- **Creating simple bar graphs:** Read the title, labels, scale, and key before interpreting a graph. Support every conclusion with a value from the data.\n- **Reading bar graphs:** Read the title, labels, scale, and key before interpreting a graph. Support every conclusion with a value from the data.\n- **Comparing data from graphs:** Compare the number of digits first, then compare equal place values from left to right. On a number line, values increase as you move right.\n- **Drawing conclusions:** Represent the information clearly, choose an operation or rule, solve in small steps, and check the result with estimation or an inverse operation.\n- **Real-life applications:** Represent the information clearly, choose an operation or rule, solve in small steps, and check the result with estimation or an inverse operation.\n\n### A reliable problem-solving routine\n\n1. Read the question twice and underline the quantities and units.\n2. Represent the information with a model, table, number sentence, or labelled sketch.\n3. Choose a rule or operation and explain why it fits.\n4. Work in clear steps and keep place values or units aligned.\n5. Check with estimation, an inverse operation, or a second representation.\n\n## Visual Learning\n\n```math-diagram\n{\n  \"type\": \"barGraph\",\n  \"params\": {\n    \"data\": [\n      {\n        \"label\": \"Mon\",\n        \"value\": 4\n      },\n      {\n        \"label\": \"Tue\",\n        \"value\": 7\n      },\n      {\n        \"label\": \"Wed\",\n        \"value\": 5\n      },\n      {\n        \"label\": \"Thu\",\n        \"value\": 8\n      }\n    ],\n    \"title\": \"Books Read\",\n    \"xLabel\": \"Day\",\n    \"yLabel\": \"Books\"\n  },\n  \"caption\": \"A bar graph for reading and comparing data.\"\n}\n```\n\nAsk yourself: What do the labels mean? Which parts are equal? What changes when a value changes? How does the picture support the calculation?\n\n## Worked Examples\n\n### Example 1 — Model and calculate\n\n**Question:** A bar graph shows 4, 7, 5, and 8 books read. How many altogether?\n\n**Solution:** $4+7+5+8=24$.\n\n**Answer:** 24 books\n\n### Example 2 — Explain the reasoning\n\nUse one topic from this chapter in a daily-life situation. Draw or describe a model, write the mathematical statement, solve it, and check whether the answer is reasonable. A complete solution must include the correct unit or label.\n\n### Common Mistakes\n\n- Using a rule without checking what the question asks.\n- Mixing place values, units, or unequal parts.\n- Leaving a diagram unlabelled.\n- Writing only an answer without showing the reasoning.\n- Forgetting to check whether the result is sensible.\n\n## Guided Practice\n\n- **Q1.** Explain pictographs with symbols with a labelled example of your own.\n- **Q2.** Explain reading pictographs with a labelled example of your own.\n- **Q3.** Explain creating simple bar graphs with a labelled example of your own.\n- **Q4.** Explain reading bar graphs with a labelled example of your own.\n- **Q5.** Explain comparing data from graphs with a labelled example of your own.\n\n## Independent Practice\n\n### Easy\n\n1. Define two important words from this chapter.\n2. Draw a simple model that represents one chapter idea.\n3. State the rule or method you would use for the worked example.\n4. Estimate whether the worked-example answer should be small or large.\n5. Write one real-life situation where this mathematics is useful.\n\n### Medium\n\n1. Change one value in the worked example and solve the new problem.\n2. Solve the worked example by a second method or representation.\n3. Write a one-step word problem using a topic from the chapter, then solve it.\n4. Compare two examples and explain what stays the same.\n5. Find and correct this claim: “A numerical answer never needs a unit or label.”\n\n### Challenge\n\n1. Create a two-step problem combining this chapter with an earlier Grade 4 topic.\n2. Give an example and a non-example of one key concept and explain the difference.\n3. Make a visual puzzle whose solution uses pictographs with symbols.\n4. Describe how estimation or inverse operations can verify a solution.\n5. Teach the hardest chapter idea in four clear sentences.\n\n## Quick Quiz\n\n1. **Multiple choice:** What should you do first? A) Guess B) Identify the information and goal C) Ignore units D) Copy a rule\n2. **True or false:** A labelled visual can help explain mathematical reasoning.\n3. **Fill in the blank:** A final measurement answer needs a number and a ______.\n4. **Short answer:** Why is checking useful?\n5. **Application:** Solve: A bar graph shows 4, 7, 5, and 8 books read. How many altogether?\n\n## Answer Key\n\n### Guided Practice\n\n- **Q1.** A correct response should define pictographs with symbols, show the relevant steps or model, and check the result.\n- **Q2.** A correct response should define reading pictographs, show the relevant steps or model, and check the result.\n- **Q3.** A correct response should define creating simple bar graphs, show the relevant steps or model, and check the result.\n- **Q4.** A correct response should define reading bar graphs, show the relevant steps or model, and check the result.\n- **Q5.** A correct response should define comparing data from graphs, show the relevant steps or model, and check the result.\n\n### Independent Practice\n\nResponses are open-ended. Check that each answer is mathematically correct, shows a suitable model or steps, uses accurate vocabulary, and includes units where needed. For Medium 5, the claim is false because units and labels give a number its context.\n\n### Quick Quiz\n\n1. **B** — identify the given information and the goal.\n2. **True.**\n3. **unit** (or an appropriate label).\n4. Checking catches calculation, unit, and interpretation errors and shows whether an answer is reasonable.\n5. 24 books — $4+7+5+8=24$.\n\n## Mastery Checklist\n\n- [ ] I can explain the important vocabulary.\n- [ ] I can represent an idea visually.\n- [ ] I can choose and apply a suitable method.\n- [ ] I can solve a word problem and label the answer.\n- [ ] I can check and explain my reasoning.\n",
+    "previewContent": "Learn Data Representation through clear explanations, a visual model, worked examples, three levels of practice, a quiz, and answer guidance.",
+    "contentFormat": "markdown",
+    "difficulty": "intermediate",
+    "category": "lesson",
+    "isFree": false,
+    "downloadCount": 0,
+    "viewCount": 0,
+    "order": 2,
+    "tags": [
+      "Grade 4",
+      "Mathematics",
+      "Data Representation",
+      "Pictographs with symbols",
+      "Reading pictographs",
+      "Creating simple bar graphs",
+      "Reading bar graphs",
+      "Comparing data from graphs",
+      "Drawing conclusions",
+      "CBSE",
+      "ICSE",
+      "CISCE",
+      "Primary Mathematics"
+    ],
+    "isActive": true,
+    "createdAt": {
+      "$date": "2026-08-02T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-08-02T00:00:00.000Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "74a000000000000000000021"
+    },
+    "course": {
+      "$oid": "740000000000000000000009"
+    },
+    "tutor": {
+      "$oid": "696d8e8098d47cbd00770ac0"
+    },
+    "title": "Simple Probability - Complete Study Material",
+    "description": "Grade 4 comprehensive lesson for Simple Probability, including concept explanations, visual learning, worked examples, differentiated practice, a quiz, and complete guidance.",
+    "type": "article",
+    "content": "# Simple Probability\n\nThis Grade 4 lesson develops the ideas in **Data Handling** through explanations, visual reasoning, worked examples, practice, and reflection.\n\n## Learning Goals\n\n- Understand basic probability concepts\n- Identify certain, possible, impossible events\n- Conduct simple probability experiments\n- Make reasonable predictions\n\n## Key Vocabulary\n\nCertain, possible, and impossible events · Likelihood of events · Simple probability experiments · Recording outcomes · Making predictions · Games involving chance\n\n## Concept Guide\n\n- **Certain, possible, and impossible events:** List the possible outcomes and use words such as certain, likely, unlikely, or impossible. Repeat simple experiments because a single outcome may not show the long-run pattern.\n- **Likelihood of events:** List the possible outcomes and use words such as certain, likely, unlikely, or impossible. Repeat simple experiments because a single outcome may not show the long-run pattern.\n- **Simple probability experiments:** List the possible outcomes and use words such as certain, likely, unlikely, or impossible. Repeat simple experiments because a single outcome may not show the long-run pattern.\n- **Recording outcomes:** Represent the information clearly, choose an operation or rule, solve in small steps, and check the result with estimation or an inverse operation.\n- **Making predictions:** Represent the information clearly, choose an operation or rule, solve in small steps, and check the result with estimation or an inverse operation.\n- **Games involving chance:** List the possible outcomes and use words such as certain, likely, unlikely, or impossible. Repeat simple experiments because a single outcome may not show the long-run pattern.\n- **Fair and unfair situations:** Represent the information clearly, choose an operation or rule, solve in small steps, and check the result with estimation or an inverse operation.\n\n### A reliable problem-solving routine\n\n1. Read the question twice and underline the quantities and units.\n2. Represent the information with a model, table, number sentence, or labelled sketch.\n3. Choose a rule or operation and explain why it fits.\n4. Work in clear steps and keep place values or units aligned.\n5. Check with estimation, an inverse operation, or a second representation.\n\n## Visual Learning\n\n```math-diagram\n{\n  \"type\": \"barGraph\",\n  \"params\": {\n    \"data\": [\n      {\n        \"label\": \"Mon\",\n        \"value\": 4\n      },\n      {\n        \"label\": \"Tue\",\n        \"value\": 7\n      },\n      {\n        \"label\": \"Wed\",\n        \"value\": 5\n      },\n      {\n        \"label\": \"Thu\",\n        \"value\": 8\n      }\n    ],\n    \"title\": \"Books Read\",\n    \"xLabel\": \"Day\",\n    \"yLabel\": \"Books\"\n  },\n  \"caption\": \"A bar graph for reading and comparing data.\"\n}\n```\n\nAsk yourself: What do the labels mean? Which parts are equal? What changes when a value changes? How does the picture support the calculation?\n\n## Worked Examples\n\n### Example 1 — Model and calculate\n\n**Question:** A bar graph shows 4, 7, 5, and 8 books read. How many altogether?\n\n**Solution:** $4+7+5+8=24$.\n\n**Answer:** 24 books\n\n### Example 2 — Explain the reasoning\n\nUse one topic from this chapter in a daily-life situation. Draw or describe a model, write the mathematical statement, solve it, and check whether the answer is reasonable. A complete solution must include the correct unit or label.\n\n### Common Mistakes\n\n- Using a rule without checking what the question asks.\n- Mixing place values, units, or unequal parts.\n- Leaving a diagram unlabelled.\n- Writing only an answer without showing the reasoning.\n- Forgetting to check whether the result is sensible.\n\n## Guided Practice\n\n- **Q1.** Explain certain, possible, and impossible events with a labelled example of your own.\n- **Q2.** Explain likelihood of events with a labelled example of your own.\n- **Q3.** Explain simple probability experiments with a labelled example of your own.\n- **Q4.** Explain recording outcomes with a labelled example of your own.\n- **Q5.** Explain making predictions with a labelled example of your own.\n\n## Independent Practice\n\n### Easy\n\n1. Define two important words from this chapter.\n2. Draw a simple model that represents one chapter idea.\n3. State the rule or method you would use for the worked example.\n4. Estimate whether the worked-example answer should be small or large.\n5. Write one real-life situation where this mathematics is useful.\n\n### Medium\n\n1. Change one value in the worked example and solve the new problem.\n2. Solve the worked example by a second method or representation.\n3. Write a one-step word problem using a topic from the chapter, then solve it.\n4. Compare two examples and explain what stays the same.\n5. Find and correct this claim: “A numerical answer never needs a unit or label.”\n\n### Challenge\n\n1. Create a two-step problem combining this chapter with an earlier Grade 4 topic.\n2. Give an example and a non-example of one key concept and explain the difference.\n3. Make a visual puzzle whose solution uses certain, possible, and impossible events.\n4. Describe how estimation or inverse operations can verify a solution.\n5. Teach the hardest chapter idea in four clear sentences.\n\n## Quick Quiz\n\n1. **Multiple choice:** What should you do first? A) Guess B) Identify the information and goal C) Ignore units D) Copy a rule\n2. **True or false:** A labelled visual can help explain mathematical reasoning.\n3. **Fill in the blank:** A final measurement answer needs a number and a ______.\n4. **Short answer:** Why is checking useful?\n5. **Application:** Solve: A bar graph shows 4, 7, 5, and 8 books read. How many altogether?\n\n## Answer Key\n\n### Guided Practice\n\n- **Q1.** A correct response should define certain, possible, and impossible events, show the relevant steps or model, and check the result.\n- **Q2.** A correct response should define likelihood of events, show the relevant steps or model, and check the result.\n- **Q3.** A correct response should define simple probability experiments, show the relevant steps or model, and check the result.\n- **Q4.** A correct response should define recording outcomes, show the relevant steps or model, and check the result.\n- **Q5.** A correct response should define making predictions, show the relevant steps or model, and check the result.\n\n### Independent Practice\n\nResponses are open-ended. Check that each answer is mathematically correct, shows a suitable model or steps, uses accurate vocabulary, and includes units where needed. For Medium 5, the claim is false because units and labels give a number its context.\n\n### Quick Quiz\n\n1. **B** — identify the given information and the goal.\n2. **True.**\n3. **unit** (or an appropriate label).\n4. Checking catches calculation, unit, and interpretation errors and shows whether an answer is reasonable.\n5. 24 books — $4+7+5+8=24$.\n\n## Mastery Checklist\n\n- [ ] I can explain the important vocabulary.\n- [ ] I can represent an idea visually.\n- [ ] I can choose and apply a suitable method.\n- [ ] I can solve a word problem and label the answer.\n- [ ] I can check and explain my reasoning.\n",
+    "previewContent": "Learn Simple Probability through clear explanations, a visual model, worked examples, three levels of practice, a quiz, and answer guidance.",
+    "contentFormat": "markdown",
+    "difficulty": "intermediate",
+    "category": "lesson",
+    "isFree": false,
+    "downloadCount": 0,
+    "viewCount": 0,
+    "order": 3,
+    "tags": [
+      "Grade 4",
+      "Mathematics",
+      "Simple Probability",
+      "Certain, possible, and impossible events",
+      "Likelihood of events",
+      "Simple probability experiments",
+      "Recording outcomes",
+      "Making predictions",
+      "Games involving chance",
+      "CBSE",
+      "ICSE",
+      "CISCE",
+      "Primary Mathematics"
+    ],
+    "isActive": true,
+    "createdAt": {
+      "$date": "2026-08-02T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-08-02T00:00:00.000Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "74a000000000000000000022"
+    },
+    "course": {
+      "$oid": "740000000000000000000010"
+    },
+    "tutor": {
+      "$oid": "696d8e8098d47cbd00770ac0"
+    },
+    "title": "Money Calculations - Complete Study Material",
+    "description": "Grade 4 comprehensive lesson for Money Calculations, including concept explanations, visual learning, worked examples, differentiated practice, a quiz, and complete guidance.",
+    "type": "article",
+    "content": "# Money Calculations\n\nThis Grade 4 lesson develops the ideas in **Money and Practical Mathematics** through explanations, visual reasoning, worked examples, practice, and reflection.\n\n## Learning Goals\n\n- Perform operations with money accurately\n- Convert between rupees and paisa\n- Calculate change in purchases\n- Solve money-related word problems\n\n## Key Vocabulary\n\nIndian currency: rupees and paisa · Converting between rupees and paisa · Addition of money amounts · Subtraction of money amounts · Multiplication of money by numbers · Division of money by numbers\n\n## Concept Guide\n\n- **Indian currency: rupees and paisa:** Represent the information clearly, choose an operation or rule, solve in small steps, and check the result with estimation or an inverse operation.\n- **Converting between rupees and paisa:** Choose a unit suited to the object, record the unit with every value, and convert to a common unit before calculating. A conversion table helps preserve the scale factor.\n- **Addition of money amounts:** Line up equal place values, add from right to left, and regroup whenever a column totals 10 or more.\n- **Subtraction of money amounts:** Line up equal place values, subtract from right to left, and exchange one unit from the next place when needed.\n- **Multiplication of money by numbers:** Use known facts and place value. Split a large factor into friendly parts, multiply each part, then combine the partial products.\n- **Division of money by numbers:** Think about equal groups. Estimate each quotient digit, multiply back, subtract, and check that the remainder is smaller than the divisor.\n- **Making change problems:** Represent the information clearly, choose an operation or rule, solve in small steps, and check the result with estimation or an inverse operation.\n\n### A reliable problem-solving routine\n\n1. Read the question twice and underline the quantities and units.\n2. Represent the information with a model, table, number sentence, or labelled sketch.\n3. Choose a rule or operation and explain why it fits.\n4. Work in clear steps and keep place values or units aligned.\n5. Check with estimation, an inverse operation, or a second representation.\n\n## Visual Learning\n\n```math-diagram\n{\n  \"type\": \"moneyIndia\",\n  \"params\": {\n    \"amounts\": [\n      {\n        \"denomination\": 100,\n        \"count\": 2\n      },\n      {\n        \"denomination\": 50,\n        \"count\": 1\n      },\n      {\n        \"denomination\": 20,\n        \"count\": 1\n      },\n      {\n        \"denomination\": 5,\n        \"count\": 1\n      }\n    ],\n    \"totalLabel\": true\n  },\n  \"caption\": \"Indian currency representing ₹275.\"\n}\n```\n\nAsk yourself: What do the labels mean? Which parts are equal? What changes when a value changes? How does the picture support the calculation?\n\n## Worked Examples\n\n### Example 1 — Model and calculate\n\n**Question:** Find $2,478 + 1,356$.\n\n**Solution:** $2,478 + 1,356 = 3,834$. Add by place value and regroup tens and hundreds.\n\n**Answer:** 3,834\n\n### Example 2 — Explain the reasoning\n\nUse one topic from this chapter in a daily-life situation. Draw or describe a model, write the mathematical statement, solve it, and check whether the answer is reasonable. A complete solution must include the correct unit or label.\n\n### Common Mistakes\n\n- Using a rule without checking what the question asks.\n- Mixing place values, units, or unequal parts.\n- Leaving a diagram unlabelled.\n- Writing only an answer without showing the reasoning.\n- Forgetting to check whether the result is sensible.\n\n## Guided Practice\n\n- **Q1.** Explain indian currency: rupees and paisa with a labelled example of your own.\n- **Q2.** Explain converting between rupees and paisa with a labelled example of your own.\n- **Q3.** Explain addition of money amounts with a labelled example of your own.\n- **Q4.** Explain subtraction of money amounts with a labelled example of your own.\n- **Q5.** Explain multiplication of money by numbers with a labelled example of your own.\n\n## Independent Practice\n\n### Easy\n\n1. Define two important words from this chapter.\n2. Draw a simple model that represents one chapter idea.\n3. State the rule or method you would use for the worked example.\n4. Estimate whether the worked-example answer should be small or large.\n5. Write one real-life situation where this mathematics is useful.\n\n### Medium\n\n1. Change one value in the worked example and solve the new problem.\n2. Solve the worked example by a second method or representation.\n3. Write a one-step word problem using a topic from the chapter, then solve it.\n4. Compare two examples and explain what stays the same.\n5. Find and correct this claim: “A numerical answer never needs a unit or label.”\n\n### Challenge\n\n1. Create a two-step problem combining this chapter with an earlier Grade 4 topic.\n2. Give an example and a non-example of one key concept and explain the difference.\n3. Make a visual puzzle whose solution uses indian currency: rupees and paisa.\n4. Describe how estimation or inverse operations can verify a solution.\n5. Teach the hardest chapter idea in four clear sentences.\n\n## Quick Quiz\n\n1. **Multiple choice:** What should you do first? A) Guess B) Identify the information and goal C) Ignore units D) Copy a rule\n2. **True or false:** A labelled visual can help explain mathematical reasoning.\n3. **Fill in the blank:** A final measurement answer needs a number and a ______.\n4. **Short answer:** Why is checking useful?\n5. **Application:** Solve: Find $2,478 + 1,356$.\n\n## Answer Key\n\n### Guided Practice\n\n- **Q1.** A correct response should define indian currency: rupees and paisa, show the relevant steps or model, and check the result.\n- **Q2.** A correct response should define converting between rupees and paisa, show the relevant steps or model, and check the result.\n- **Q3.** A correct response should define addition of money amounts, show the relevant steps or model, and check the result.\n- **Q4.** A correct response should define subtraction of money amounts, show the relevant steps or model, and check the result.\n- **Q5.** A correct response should define multiplication of money by numbers, show the relevant steps or model, and check the result.\n\n### Independent Practice\n\nResponses are open-ended. Check that each answer is mathematically correct, shows a suitable model or steps, uses accurate vocabulary, and includes units where needed. For Medium 5, the claim is false because units and labels give a number its context.\n\n### Quick Quiz\n\n1. **B** — identify the given information and the goal.\n2. **True.**\n3. **unit** (or an appropriate label).\n4. Checking catches calculation, unit, and interpretation errors and shows whether an answer is reasonable.\n5. 3,834 — $2,478 + 1,356 = 3,834$. Add by place value and regroup tens and hundreds.\n\n## Mastery Checklist\n\n- [ ] I can explain the important vocabulary.\n- [ ] I can represent an idea visually.\n- [ ] I can choose and apply a suitable method.\n- [ ] I can solve a word problem and label the answer.\n- [ ] I can check and explain my reasoning.\n",
+    "previewContent": "Learn Money Calculations through clear explanations, a visual model, worked examples, three levels of practice, a quiz, and answer guidance.",
+    "contentFormat": "markdown",
+    "difficulty": "basic",
+    "category": "lesson",
+    "isFree": true,
+    "downloadCount": 0,
+    "viewCount": 0,
+    "order": 1,
+    "tags": [
+      "Grade 4",
+      "Mathematics",
+      "Money Calculations",
+      "Indian currency: rupees and paisa",
+      "Converting between rupees and paisa",
+      "Addition of money amounts",
+      "Subtraction of money amounts",
+      "Multiplication of money by numbers",
+      "Division of money by numbers",
+      "CBSE",
+      "ICSE",
+      "CISCE",
+      "Primary Mathematics"
+    ],
+    "isActive": true,
+    "createdAt": {
+      "$date": "2026-08-02T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-08-02T00:00:00.000Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "74a000000000000000000023"
+    },
+    "course": {
+      "$oid": "740000000000000000000010"
+    },
+    "tutor": {
+      "$oid": "696d8e8098d47cbd00770ac0"
+    },
+    "title": "Practical Applications - Complete Study Material",
+    "description": "Grade 4 comprehensive lesson for Practical Applications, including concept explanations, visual learning, worked examples, differentiated practice, a quiz, and complete guidance.",
+    "type": "article",
+    "content": "# Practical Applications\n\nThis Grade 4 lesson develops the ideas in **Money and Practical Mathematics** through explanations, visual reasoning, worked examples, practice, and reflection.\n\n## Learning Goals\n\n- Apply mathematics in shopping situations\n- Understand basic profit and loss\n- Use unitary method for simple problems\n- Solve practical mathematical problems\n\n## Key Vocabulary\n\nShopping and billing · Simple profit and loss · Cost price and selling price · unitary method · Time and work problems · Distance and speed\n\n## Concept Guide\n\n- **Shopping and billing:** Represent the information clearly, choose an operation or rule, solve in small steps, and check the result with estimation or an inverse operation.\n- **Simple profit and loss:** Write rupees and paise in aligned columns, identify what is paid or received, and check whether the final amount is sensible.\n- **Cost price and selling price:** Represent the information clearly, choose an operation or rule, solve in small steps, and check the result with estimation or an inverse operation.\n- **Introduction to unitary method:** Choose a unit suited to the object, record the unit with every value, and convert to a common unit before calculating. A conversion table helps preserve the scale factor.\n- **Time and work problems (simple):** Draw a timeline or write the known quantities with units. Use consistent units before adding durations or applying a relationship.\n- **Distance and speed (basic):** Draw a timeline or write the known quantities with units. Use consistent units before adding durations or applying a relationship.\n- **Real-life problem solving:** Represent the information clearly, choose an operation or rule, solve in small steps, and check the result with estimation or an inverse operation.\n\n### A reliable problem-solving routine\n\n1. Read the question twice and underline the quantities and units.\n2. Represent the information with a model, table, number sentence, or labelled sketch.\n3. Choose a rule or operation and explain why it fits.\n4. Work in clear steps and keep place values or units aligned.\n5. Check with estimation, an inverse operation, or a second representation.\n\n## Visual Learning\n\n```math-diagram\n{\n  \"type\": \"clock\",\n  \"params\": {\n    \"hours\": 3,\n    \"minutes\": 30,\n    \"showLabels\": true\n  },\n  \"caption\": \"An analogue clock showing half past three.\"\n}\n```\n\nAsk yourself: What do the labels mean? Which parts are equal? What changes when a value changes? How does the picture support the calculation?\n\n## Worked Examples\n\n### Example 1 — Model and calculate\n\n**Question:** A cyclist travels 36 km in 3 hours. Find the speed.\n\n**Solution:** $36 \\div 3=12$ kilometres per hour.\n\n**Answer:** 12 km/h\n\n### Example 2 — Explain the reasoning\n\nUse one topic from this chapter in a daily-life situation. Draw or describe a model, write the mathematical statement, solve it, and check whether the answer is reasonable. A complete solution must include the correct unit or label.\n\n### Common Mistakes\n\n- Using a rule without checking what the question asks.\n- Mixing place values, units, or unequal parts.\n- Leaving a diagram unlabelled.\n- Writing only an answer without showing the reasoning.\n- Forgetting to check whether the result is sensible.\n\n## Guided Practice\n\n- **Q1.** Explain shopping and billing with a labelled example of your own.\n- **Q2.** Explain simple profit and loss with a labelled example of your own.\n- **Q3.** Explain cost price and selling price with a labelled example of your own.\n- **Q4.** Explain unitary method with a labelled example of your own.\n- **Q5.** Explain time and work problems with a labelled example of your own.\n\n## Independent Practice\n\n### Easy\n\n1. Define two important words from this chapter.\n2. Draw a simple model that represents one chapter idea.\n3. State the rule or method you would use for the worked example.\n4. Estimate whether the worked-example answer should be small or large.\n5. Write one real-life situation where this mathematics is useful.\n\n### Medium\n\n1. Change one value in the worked example and solve the new problem.\n2. Solve the worked example by a second method or representation.\n3. Write a one-step word problem using a topic from the chapter, then solve it.\n4. Compare two examples and explain what stays the same.\n5. Find and correct this claim: “A numerical answer never needs a unit or label.”\n\n### Challenge\n\n1. Create a two-step problem combining this chapter with an earlier Grade 4 topic.\n2. Give an example and a non-example of one key concept and explain the difference.\n3. Make a visual puzzle whose solution uses shopping and billing.\n4. Describe how estimation or inverse operations can verify a solution.\n5. Teach the hardest chapter idea in four clear sentences.\n\n## Quick Quiz\n\n1. **Multiple choice:** What should you do first? A) Guess B) Identify the information and goal C) Ignore units D) Copy a rule\n2. **True or false:** A labelled visual can help explain mathematical reasoning.\n3. **Fill in the blank:** A final measurement answer needs a number and a ______.\n4. **Short answer:** Why is checking useful?\n5. **Application:** Solve: A cyclist travels 36 km in 3 hours. Find the speed.\n\n## Answer Key\n\n### Guided Practice\n\n- **Q1.** A correct response should define shopping and billing, show the relevant steps or model, and check the result.\n- **Q2.** A correct response should define simple profit and loss, show the relevant steps or model, and check the result.\n- **Q3.** A correct response should define cost price and selling price, show the relevant steps or model, and check the result.\n- **Q4.** A correct response should define unitary method, show the relevant steps or model, and check the result.\n- **Q5.** A correct response should define time and work problems, show the relevant steps or model, and check the result.\n\n### Independent Practice\n\nResponses are open-ended. Check that each answer is mathematically correct, shows a suitable model or steps, uses accurate vocabulary, and includes units where needed. For Medium 5, the claim is false because units and labels give a number its context.\n\n### Quick Quiz\n\n1. **B** — identify the given information and the goal.\n2. **True.**\n3. **unit** (or an appropriate label).\n4. Checking catches calculation, unit, and interpretation errors and shows whether an answer is reasonable.\n5. 12 km/h — $36 \\div 3=12$ kilometres per hour.\n\n## Mastery Checklist\n\n- [ ] I can explain the important vocabulary.\n- [ ] I can represent an idea visually.\n- [ ] I can choose and apply a suitable method.\n- [ ] I can solve a word problem and label the answer.\n- [ ] I can check and explain my reasoning.\n",
+    "previewContent": "Learn Practical Applications through clear explanations, a visual model, worked examples, three levels of practice, a quiz, and answer guidance.",
+    "contentFormat": "markdown",
+    "difficulty": "intermediate",
+    "category": "lesson",
+    "isFree": false,
+    "downloadCount": 0,
+    "viewCount": 0,
+    "order": 2,
+    "tags": [
+      "Grade 4",
+      "Mathematics",
+      "Practical Applications",
+      "Shopping and billing",
+      "Simple profit and loss",
+      "Cost price and selling price",
+      "Introduction to unitary method",
+      "Time and work problems (simple)",
+      "Distance and speed (basic)",
+      "CBSE",
+      "ICSE",
+      "CISCE",
+      "Primary Mathematics"
+    ],
+    "isActive": true,
+    "createdAt": {
+      "$date": "2026-08-02T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-08-02T00:00:00.000Z"
+    },
+    "__v": 0
+  }
+]
