@@ -15,9 +15,11 @@ export default function ForgotPassword() {
     setLoading(true)
 
     try {
-      const response = await api.post('/auth/forgot-password', { email })
+      const normalizedEmail = email.trim().toLowerCase()
+      const response = await api.post('/auth/forgot-password', { email: normalizedEmail })
       
       if (response.data.success) {
+        setEmail(normalizedEmail)
         setSuccess(true)
       }
     } catch (err) {
@@ -36,28 +38,28 @@ export default function ForgotPassword() {
               <CheckCircle className="h-8 w-8 text-green-600" />
             </div>
             <h2 className="text-xl sm:text-2xl font-bold text-gray-900">Check Your Email</h2>
-            <p className="mt-2 text-gray-600">We've sent you a password reset link</p>
+            <p className="mt-2 text-gray-600">Check whether a reset link has arrived</p>
           </div>
 
           <div className="card">
             <div className="text-center space-y-4">
               <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
                 <p className="text-sm text-blue-800">
-                  <strong>📧 Email sent to:</strong>
+                  <strong>📧 Password reset requested for:</strong>
                   <br />
                   <span className="font-medium">{email}</span>
                 </p>
               </div>
 
               <p className="text-sm text-gray-600">
-                Click the link in the email to reset your password. The link will expire in <strong>30 minutes</strong>.
+                If this address belongs to an account, it will receive a reset link that expires in <strong>30 minutes</strong>.
               </p>
 
               <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
                 <p className="text-xs text-yellow-800">
                   <strong>Didn't receive the email?</strong>
                   <br />
-                  Check your spam folder or try again in a few minutes.
+                  Confirm that you entered the exact email used during signup, then check your spam folder or try again in a few minutes.
                 </p>
               </div>
 

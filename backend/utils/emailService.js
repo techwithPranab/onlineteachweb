@@ -1,15 +1,9 @@
 const nodemailer = require('nodemailer');
 const logger = require('./logger');
 
-/**
- * Email Service using Brevo (formerly Sendinblue) SMTP
- * 
- * Setup Instructions:
- * 1. Create a Brevo account at https://www.brevo.com
- * 2. Go to SMTP & API settings
- * 3. Create SMTP credentials (username and password)
- * 4. Add credentials to .env file
- */
+const ZEABUR_EMAIL_API_URL = 'https://api.zeabur.com/api/v1/zsend/emails';
+const EMAIL_REQUEST_TIMEOUT_MS = 15000;
+const EMAIL_MAX_ATTEMPTS = 3;
 
 // Create transporter with Brevo SMTP
 const createTransporter = () => {
@@ -27,8 +21,119 @@ const createTransporter = () => {
   });
 };
 
+const normalizeRecipients = recipients => {
+  const values = Array.isArray(recipients) ? recipients : [recipients];
+  const normalized = values.map(value => String(value || '').trim()).filter(Boolean);
+  if (normalized.length === 0) throw new Error('At least one recipient email address is required');
+  return normalized;
+};
+
+const wait = milliseconds => new Promise(resolve => setTimeout(resolve, milliseconds));
+
+const parseResponseBody = async response => {
+  const body = await response.text();
+  if (!body) return {};
+  try {
+    return JSON.parse(body);
+  } catch {
+    return { message: body };
+  }
+};
+
+const sendViaZeabur = async options => {
+  const apiKey = process.env.ZEABUR_EMAIL_API_KEY;
+  const from = process.env.ZEABUR_EMAIL_FROM || process.env.EMAIL_FROM;
+  const apiUrl = process.env.ZEABUR_EMAIL_API_URL || ZEABUR_EMAIL_API_URL;
+
+  if (!apiKey) throw new Error('ZEABUR_EMAIL_API_KEY is not configured');
+  if (!from) throw new Error('ZEABUR_EMAIL_FROM or EMAIL_FROM is not configured');
+  if (typeof fetch !== 'function') throw new Error('Zeabur Email requires Node.js 18 or newer');
+
+  const payload = {
+    from,
+    to: normalizeRecipients(options.to),
+    subject: options.subject,
+    html: options.html,
+    text: options.text
+  };
+
+  if (options.cc) payload.cc = normalizeRecipients(options.cc);
+  if (options.bcc) payload.bcc = normalizeRecipients(options.bcc);
+  if (options.replyTo) payload.reply_to = normalizeRecipients(options.replyTo);
+  if (options.tags) payload.tags = options.tags;
+
+  for (let attempt = 1; attempt <= EMAIL_MAX_ATTEMPTS; attempt += 1) {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), EMAIL_REQUEST_TIMEOUT_MS);
+
+    try {
+      const response = await fetch(apiUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${apiKey}`
+        },
+        body: JSON.stringify(payload),
+        signal: controller.signal
+      });
+      const responseBody = await parseResponseBody(response);
+
+      if (response.ok) {
+        return {
+          success: true,
+          provider: 'zeabur',
+          messageId: responseBody.email_id || responseBody.id,
+          status: responseBody.status || 'queued'
+        };
+      }
+
+      const retriable = response.status === 429 || response.status >= 500;
+      const detail = responseBody.message || responseBody.error || response.statusText;
+      if (!retriable || attempt === EMAIL_MAX_ATTEMPTS) {
+        throw new Error(`Zeabur Email returned ${response.status}: ${detail}`);
+      }
+    } catch (error) {
+      const isLastAttempt = attempt === EMAIL_MAX_ATTEMPTS;
+      const isConfigurationOrClientError = error.message.startsWith('Zeabur Email returned 4')
+        && !error.message.startsWith('Zeabur Email returned 429');
+      if (isLastAttempt || isConfigurationOrClientError) throw error;
+    } finally {
+      clearTimeout(timeout);
+    }
+
+    await wait(2 ** (attempt - 1) * 1000);
+  }
+
+  throw new Error('Zeabur Email failed after all retry attempts');
+};
+
+const sendViaBrevo = async options => {
+  if (!process.env.BREVO_SMTP_USER || !process.env.BREVO_SMTP_PASSWORD) {
+    throw new Error('Brevo SMTP credentials are not configured');
+  }
+
+  const transporter = createTransporter();
+  const info = await transporter.sendMail({
+    from: `"${process.env.EMAIL_FROM_NAME || 'MeritAI'}" <${process.env.EMAIL_FROM || 'noreply@meritai.com'}>`,
+    to: options.to,
+    cc: options.cc,
+    bcc: options.bcc,
+    replyTo: options.replyTo,
+    subject: options.subject,
+    text: options.text,
+    html: options.html
+  });
+
+  return {
+    success: true,
+    provider: 'brevo',
+    messageId: info.messageId,
+    status: info.response
+  };
+};
+
 /**
- * Send email using Brevo SMTP
+ * Send email using Zeabur Email API or the existing Brevo SMTP fallback.
  * @param {Object} options - Email options
  * @param {string} options.to - Recipient email
  * @param {string} options.subject - Email subject
@@ -37,27 +142,27 @@ const createTransporter = () => {
  */
 const sendEmail = async (options) => {
   try {
-    const transporter = createTransporter();
+    if (!options?.subject || (!options.html && !options.text)) {
+      throw new Error('Email subject and HTML or text content are required');
+    }
 
-    const mailOptions = {
-      from: `"${process.env.EMAIL_FROM_NAME || 'MeritAI'}" <${process.env.EMAIL_FROM || 'noreply@meritai.com'}>`,
-      to: options.to,
-      subject: options.subject,
-      text: options.text,
-      html: options.html
-    };
+    const configuredProvider = String(process.env.EMAIL_PROVIDER || '').toLowerCase();
+    const provider = configuredProvider || (process.env.ZEABUR_EMAIL_API_KEY ? 'zeabur' : 'brevo');
+    if (!['zeabur', 'brevo'].includes(provider)) {
+      throw new Error(`Unsupported EMAIL_PROVIDER: ${provider}`);
+    }
 
-    const info = await transporter.sendMail(mailOptions);
+    const result = provider === 'zeabur'
+      ? await sendViaZeabur(options)
+      : await sendViaBrevo(options);
     
-    logger.info(`Email sent successfully to ${options.to}`, {
-      messageId: info.messageId,
-      response: info.response
+    logger.info(`Email accepted by provider for ${options.to}`, {
+      provider: result.provider,
+      messageId: result.messageId,
+      status: result.status
     });
 
-    return {
-      success: true,
-      messageId: info.messageId
-    };
+    return result;
   } catch (error) {
     logger.error('Error sending email:', {
       error: error.message,
@@ -213,7 +318,8 @@ The MeritAI Team
     to: email,
     subject: '🔐 Reset Your Password - MeritAI',
     html,
-    text
+    text,
+    tags: { purpose: 'password_reset' }
   });
 };
 
@@ -340,12 +446,14 @@ The MeritAI Team
     to: email,
     subject: '✅ Password Reset Successful - MeritAI',
     html,
-    text
+    text,
+    tags: { purpose: 'password_reset_confirmation' }
   });
 };
 
 module.exports = {
   sendEmail,
   sendPasswordResetEmail,
-  sendPasswordResetConfirmation
+  sendPasswordResetConfirmation,
+  sendViaZeabur
 };

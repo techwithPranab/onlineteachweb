@@ -96,6 +96,29 @@ See `.env.example` for all required environment variables:
 - `JWT_REFRESH_SECRET` - Refresh token secret
 - `STRIPE_SECRET_KEY` - Stripe API key
 - `FRONTEND_URL` - Frontend URL for CORS
+- `EMAIL_PROVIDER` - Email provider (`zeabur` recommended, or `brevo`)
+- `ZEABUR_EMAIL_API_KEY` - Zeabur Email send-capable API key
+- `ZEABUR_EMAIL_FROM` - Sender address on a Zeabur-verified domain
+
+### Zeabur Email
+
+Enable Zeabur Email, verify your sender domain, and create a send-only API key in the
+Zeabur console. Then configure:
+
+```env
+EMAIL_PROVIDER=zeabur
+ZEABUR_EMAIL_API_KEY=zs_your_email_api_key
+ZEABUR_EMAIL_FROM=noreply@your-verified-domain.com
+FRONTEND_URL=https://your-frontend.example.com
+```
+
+Password-reset and password-reset-confirmation messages automatically use this
+provider. Test the configuration from the repository root with:
+
+```bash
+cd backend
+npm run email:test -- --to=your-email@example.com
+```
 
 ## API Endpoints
 
