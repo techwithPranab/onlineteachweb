@@ -11,6 +11,7 @@ const QuestionGeneration = require('../models/QuestionGeneration.model');
 const AIQuestionDraft = require('../models/AIQuestionDraft.model');
 const { getDiagramTypesForContext } = require('./diagramTypeMatcher');
 const logger = require('../utils/logger');
+const crypto = require('crypto');
 
 /**
  * AI Question Generation Service
@@ -37,6 +38,7 @@ class AIQuestionGenerationService {
     questionTypes = ['mcq-single'],
     questionsPerTopic = 5,
     sources = ['syllabus'],
+    materialIds = [],
     userId,
     imageBased = false
   }) {
@@ -58,7 +60,7 @@ class AIQuestionGenerationService {
       logger.info(`Using AI provider: ${provider.getName()}`);
       
       // 3. Prepare content from sources
-      const content = await this._prepareContent(course, sources);
+      const content = await this._prepareContent(course, sources, materialIds);
       
       // 4. Determine topics to generate for
       const targetTopics = topics && topics.length > 0 
@@ -228,7 +230,8 @@ class AIQuestionGenerationService {
           maxTokens: (provider.maxTokenSettings?.[type] || 800) * count
         },
         status: 'pending',
-        generatedBy: userId || null
+        generatedBy: userId || null,
+        sourceSnapshot: content.snapshot
       });
       
       logger.info(`Created QuestionGeneration record ${generationRecord._id} for ${topic} - ${difficulty} ${type}`);
@@ -277,24 +280,22 @@ class AIQuestionGenerationService {
   /**
    * Prepare content from various sources
    */
-  async _prepareContent(course, sources) {
+  async _prepareContent(course, sources, materialIds = []) {
     const contentSources = [];
-    
-    // Syllabus content
-    if (sources.includes('syllabus')) {
-      const syllabusContent = this.contentNormalizer.normalizeSyllabus(course);
-      contentSources.push(syllabusContent);
-    }
     
     // Materials content
     if (sources.includes('materials')) {
-      const materials = await Material.find({ 
+      const materialQuery = {
         course: course._id, 
         isActive: true 
-      }).limit(10);
+      };
+      if (materialIds.length) materialQuery._id = { $in: materialIds };
+      const materials = await Material.find(materialQuery).sort({ order: 1, createdAt: 1 }).limit(20);
       
       for (const material of materials) {
-        if (material.fileUrl && this.materialExtractor.isSupported(material.fileUrl)) {
+        if (material.content && material.content.trim()) {
+          contentSources.push(this.contentNormalizer.normalizeMaterial(material, material.content));
+        } else if (material.fileUrl && this.materialExtractor.isSupported(material.fileUrl)) {
           const extracted = await this.materialExtractor.extract(
             material.fileUrl, 
             material.mimeType
@@ -310,9 +311,28 @@ class AIQuestionGenerationService {
         }
       }
     }
+
+    // Selected textbook material is authoritative, so it stays ahead of the
+    // syllabus if the combined model context must be shortened.
+    if (sources.includes('syllabus')) {
+      const syllabusContent = this.contentNormalizer.normalizeSyllabus(course);
+      contentSources.push(syllabusContent);
+    }
     
     // Combine all content
-    return this.contentNormalizer.combineContent(contentSources);
+    const combined = this.contentNormalizer.combineContent(contentSources);
+    combined.snapshot = {
+      content: combined.combinedContent,
+      contentHash: crypto.createHash('sha256').update(combined.combinedContent).digest('hex'),
+      capturedAt: new Date(),
+      sources: contentSources.map(source => ({
+        type: source.sourceType,
+        materialId: source.materialId,
+        title: source.title,
+        updatedAt: source.updatedAt
+      }))
+    };
+    return combined;
   }
 
   /**

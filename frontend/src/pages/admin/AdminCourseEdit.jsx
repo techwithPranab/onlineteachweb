@@ -30,6 +30,7 @@ export default function AdminCourseEdit() {
     syllabus: '',
     duration: '12',
     level: 'beginner',
+    status: 'draft',
     language: 'English',
     tags: ''
   })
@@ -67,6 +68,7 @@ export default function AdminCourseEdit() {
             syllabus: Array.isArray(course.syllabus) ? course.syllabus.join('\n') : (course.syllabus || ''),
             duration: course.duration?.toString() || '12',
             level: course.level || 'beginner',
+            status: course.status || 'draft',
             language: course.language || 'English',
             tags: Array.isArray(course.tags) ? course.tags.join(', ') : (course.tags || '')
           })
@@ -96,6 +98,10 @@ export default function AdminCourseEdit() {
     'Chemistry',
     'Biology',
     'Computer Science',
+    'Computer',
+    'AI',
+    'SST',
+    'General Knowledge',
     'History',
     'Geography',
     'Art',
@@ -370,6 +376,26 @@ export default function AdminCourseEdit() {
                   <option key={level.value} value={level.value}>{level.label}</option>
                 ))}
               </select>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Course Status *
+              </label>
+              <select
+                name="status"
+                value={formData.status}
+                onChange={handleInputChange}
+                required
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="draft">Draft</option>
+                <option value="published">Published</option>
+                <option value="archived">Archived</option>
+              </select>
+              <p className="mt-1 text-xs text-gray-500">
+                Published courses become available in public and student course listings.
+              </p>
             </div>
 
             <div>

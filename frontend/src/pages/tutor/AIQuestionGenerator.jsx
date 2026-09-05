@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useQuery } from 'react-query'
 import aiQuestionService from '../../services/aiQuestionService'
-import { courseService, questionService } from '../../services/apiServices'
+import { courseService, questionService, materialService } from '../../services/apiServices'
 import LoadingSpinner from '../../components/common/LoadingSpinner'
 import SEOHead from '../../components/SEO/SEOHead';
 import ErrorMessage from '../../components/common/ErrorMessage'
@@ -42,6 +42,7 @@ export default function AIQuestionGenerator() {
     questionTypes: ['mcq-single'],
     questionsPerTopic: 5,
     sources: ['syllabus'],
+    materialIds: [],
     // Image-based option (diagram types are auto-resolved from course topics)
     imageBased: false
   })
@@ -53,6 +54,7 @@ export default function AIQuestionGenerator() {
   const [grades, setGrades] = useState([])
   const [subjects, setSubjects] = useState([])
   const [filteredCourses, setFilteredCourses] = useState([])
+  const [courseMaterials, setCourseMaterials] = useState([])
 
   // Fetch grades
   const { data: gradesData, isLoading: loadingGrades } = useQuery(
@@ -98,6 +100,15 @@ export default function AIQuestionGenerator() {
       onSuccess: (data) => {
         setChapters(data.chapters || [])
       }
+    }
+  )
+
+  const { isLoading: loadingMaterials } = useQuery(
+    ['questionSourceMaterials', formData.courseId],
+    () => materialService.getMaterialsByCourse(formData.courseId),
+    {
+      enabled: !!formData.courseId,
+      onSuccess: data => setCourseMaterials((data.data || []).filter(material => material.content || material.fileUrl))
     }
   )
 
@@ -150,13 +161,16 @@ export default function AIQuestionGenerator() {
       // Reset chapter and topics when course changes
       setChapters([])
       setAvailableTopics([])
+      setCourseMaterials([])
+      setSelectedCourse(filteredCourses.find(course => course._id === value) || null)
       setFormData(prev => ({
         ...prev,
         courseId: value,
         chapterId: '',
         chapterName: '',
         topic: '',
-        topics: []
+        topics: [],
+        materialIds: []
       }))
     } else if (name === 'chapterId') {
       // Update topics when chapter changes
@@ -265,6 +279,7 @@ export default function AIQuestionGenerator() {
         questionTypes: formData.questionTypes,
         questionsPerTopic: formData.questionsPerTopic,
         sources: formData.sources,
+        materialIds: formData.materialIds,
         imageBased: formData.imageBased
       })
 
@@ -580,6 +595,40 @@ export default function AIQuestionGenerator() {
             </div>
           </div>
         </div>
+
+        {/* Question Types */}
+        {formData.courseId && (
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-2">Material snapshot for accurate questions</label>
+            <p className="text-xs text-gray-500 mb-3">Select the chapter material to pass to AI. The exact text and its hash are saved with the generation record.</p>
+            {loadingMaterials ? <p className="text-sm text-gray-500">Loading materials...</p> : courseMaterials.length ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                {courseMaterials.map(material => (
+                  <label key={material._id} className="flex items-start gap-3 rounded-lg border border-gray-200 p-3 cursor-pointer hover:bg-gray-50">
+                    <input
+                      type="checkbox"
+                      checked={formData.materialIds.includes(material._id)}
+                      onChange={(e) => setFormData(prev => {
+                        const materialIds = e.target.checked
+                          ? [...prev.materialIds, material._id]
+                          : prev.materialIds.filter(id => id !== material._id)
+                        return {
+                          ...prev,
+                          materialIds,
+                          sources: materialIds.length
+                            ? (prev.sources.includes('materials') ? prev.sources : [...prev.sources, 'materials'])
+                            : prev.sources.filter(source => source !== 'materials')
+                        }
+                      })}
+                      className="mt-1 rounded text-blue-600"
+                    />
+                    <span><span className="block text-sm font-medium text-gray-800">{material.title}</span><span className="text-xs text-gray-500">{material.sourceProvenance?.kind === 'scan-ocr' ? 'Created from textbook scans' : material.type}</span></span>
+                  </label>
+                ))}
+              </div>
+            ) : <p className="text-sm text-amber-700">No materials are available for this course yet.</p>}
+          </div>
+        )}
 
         {/* Question Types */}
         <div>

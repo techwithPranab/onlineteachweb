@@ -1,7 +1,7 @@
 import { useMemo, useRef, useState } from 'react'
 import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
-import { ArrowLeft, Eye, FileText, GripVertical, Save, SplitSquareVertical } from 'lucide-react'
+import { ArrowLeft, Eye, FileText, GripVertical, Save, SplitSquareVertical, RefreshCw } from 'lucide-react'
 import SEOHead from '@/components/SEO/SEOHead'
 import LoadingSpinner from '@/components/common/LoadingSpinner'
 import ErrorMessage from '@/components/common/ErrorMessage'
@@ -116,6 +116,25 @@ export default function MaterialEditor() {
     }
   )
 
+  const regenerateMutation = useMutation(
+    () => materialService.regenerateMaterial(id),
+    {
+      onSuccess: response => {
+        const regenerated = response.material
+        setForm(prev => ({ ...prev, content: regenerated.content || '', contentFormat: regenerated.contentFormat || 'markdown' }))
+        queryClient.invalidateQueries(['adminMaterial', id])
+        queryClient.invalidateQueries('adminMaterials')
+        setActiveTab('editor')
+        alert('Material regenerated successfully. Review the new content before making further edits.')
+      }
+    }
+  )
+
+  const handleRegenerate = () => {
+    if (!window.confirm('Regenerate this material from its original scan? This replaces the current Markdown content and cannot be undone.')) return
+    regenerateMutation.mutate()
+  }
+
   const setField = (key, value) => {
     setForm(prev => ({ ...prev, [key]: value }))
   }
@@ -202,6 +221,16 @@ export default function MaterialEditor() {
           </div>
 
           <div className="flex flex-wrap gap-2">
+            {!!material?.sourceFiles?.length && (
+              <button
+                onClick={handleRegenerate}
+                disabled={regenerateMutation.isLoading}
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-600 hover:bg-purple-700 text-white disabled:opacity-60"
+              >
+                <RefreshCw className={`h-4 w-4 ${regenerateMutation.isLoading ? 'animate-spin' : ''}`} />
+                {regenerateMutation.isLoading ? 'Regenerating...' : 'Regenerate from Scan'}
+              </button>
+            )}
             <button
               onClick={() => setActiveTab(activeTab === 'preview' ? 'editor' : 'preview')}
               className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-800"
@@ -219,6 +248,10 @@ export default function MaterialEditor() {
             </button>
           </div>
         </div>
+
+        {regenerateMutation.isError && (
+          <ErrorMessage message={regenerateMutation.error?.response?.data?.message || 'Failed to regenerate material'} />
+        )}
 
         <div className="grid grid-cols-1 xl:grid-cols-3 gap-4">
           <div className="xl:col-span-2 space-y-4">

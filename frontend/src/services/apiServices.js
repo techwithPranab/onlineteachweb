@@ -46,6 +46,24 @@ export const authService = {
 }
 
 export const courseService = {
+  createFromScans: async (formData, onUploadProgress) => {
+    const { data } = await api.post('/admin/courses/from-scans', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+      onUploadProgress: event => {
+        if (event.total && onUploadProgress) onUploadProgress(Math.round((event.loaded * 100) / event.total))
+      }
+    })
+    return data
+  },
+  getScanCourseHistory: async (params = {}) => {
+    const { data } = await api.get('/admin/courses/from-scans/history', { params })
+    return data
+  },
+  getScanCourseHistoryItem: async id => {
+    const { data } = await api.get(`/admin/courses/from-scans/history/${id}`)
+    return data
+  },
+
   getCourses: async (params = {}) => {
     const { data } = await api.get('/courses', { params })
     console.log('Courses data:', data);
@@ -258,6 +276,16 @@ export const materialService = {
     return data
   },
 
+  createFromScans: async (materialData, onUploadProgress) => {
+    const { data } = await api.post('/materials/from-scans', materialData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+      onUploadProgress: event => {
+        if (event.total && onUploadProgress) onUploadProgress(Math.round((event.loaded * 100) / event.total))
+      }
+    })
+    return data
+  },
+
   updateMaterial: async (id, materialData) => {
     if (materialData instanceof FormData) {
       const { data } = await api.put(`/materials/${id}`, materialData, {
@@ -267,6 +295,11 @@ export const materialService = {
     }
 
     const { data } = await api.put(`/materials/${id}`, materialData)
+    return data
+  },
+
+  regenerateMaterial: async (id, guidance = '') => {
+    const { data } = await api.post(`/materials/${id}/regenerate`, { guidance })
     return data
   },
 

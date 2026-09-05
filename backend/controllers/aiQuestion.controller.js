@@ -17,6 +17,7 @@ exports.generateQuestions = async (req, res, next) => {
       questionTypes,
       questionsPerTopic,
       sources,
+      materialIds,
       imageBased
     } = req.body;
 
@@ -53,6 +54,7 @@ exports.generateQuestions = async (req, res, next) => {
       questionTypes: questionTypes || ['mcq-single'],
       questionsPerTopic: questionsPerTopic || 5,
       sources: sources || ['syllabus'],
+      materialIds: materialIds || [],
       userId: req.user._id,
       imageBased: imageBased || false
     });

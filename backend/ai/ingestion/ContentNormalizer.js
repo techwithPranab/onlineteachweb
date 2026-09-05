@@ -7,7 +7,7 @@ const logger = require('../../utils/logger');
 class ContentNormalizer {
   constructor() {
     // Maximum content length for AI processing (tokens ≈ words * 1.3)
-    this.maxContentLength = 8000;
+    this.maxContentLength = 60000;
     
     // Section separators
     this.sectionSeparator = '\n\n---\n\n';
@@ -78,7 +78,9 @@ class ContentNormalizer {
       content: this._truncate(sections.join(this.sectionSeparator)),
       sourceType: 'material',
       materialId: material._id,
-      materialType: material.type
+      materialType: material.type,
+      title: material.title,
+      updatedAt: material.updatedAt
     };
   }
 

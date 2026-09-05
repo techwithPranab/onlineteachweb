@@ -80,6 +80,7 @@ import AdminQuestionImportExport from './pages/admin/QuestionImportExport'
 import ContactMessages from './pages/admin/ContactMessages'
 import StudentPerformanceDashboard from './pages/admin/StudentPerformanceDashboard'
 import ReviewApproval from './pages/admin/ReviewApproval'
+import ScanCourseCreation from './pages/admin/ScanCourseCreation'
 
 // Shared
 import ProfileSettings from './pages/shared/ProfileSettings'
@@ -207,6 +208,7 @@ function App() {
             <Route path="tutors/approval" element={<TutorApproval />} />
             <Route path="courses" element={<AdminCourseManagement />} />
             <Route path="courses/new" element={<AdminCourseCreation />} />
+            <Route path="courses/from-scans" element={<ScanCourseCreation />} />
             <Route path="courses/:id/view" element={<AdminCourseView />} />
             <Route path="courses/:id/edit" element={<AdminCourseEdit />} />
             <Route path="materials" element={<MaterialManagement />} />

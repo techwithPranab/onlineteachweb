@@ -21,9 +21,11 @@ export default function UploadMaterials() {
   const [showDeleteDialog, setShowDeleteDialog] = useState(false)
   const [selectedMaterial, setSelectedMaterial] = useState(null)
   const [uploadProgress, setUploadProgress] = useState(0)
+  const [createFromScans, setCreateFromScans] = useState(false)
   
   const [uploadData, setUploadData] = useState({
     file: null,
+    files: [],
     title: '',
     description: '',
     courseId: '',
@@ -52,6 +54,18 @@ export default function UploadMaterials() {
     (formData) => materialService.uploadMaterial(formData, (progress) => {
       setUploadProgress(progress)
     }),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries('tutorMaterials')
+        setShowUploadModal(false)
+        resetUploadForm()
+        setUploadProgress(0)
+      },
+    }
+  )
+
+  const scanMutation = useMutation(
+    (formData) => materialService.createFromScans(formData, setUploadProgress),
     {
       onSuccess: () => {
         queryClient.invalidateQueries('tutorMaterials')
@@ -92,6 +106,7 @@ export default function UploadMaterials() {
   const resetUploadForm = () => {
     setUploadData({
       file: null,
+      files: [],
       title: '',
       description: '',
       courseId: '',
@@ -104,7 +119,8 @@ export default function UploadMaterials() {
   }
 
   const handleFileSelect = (e) => {
-    const file = e.target.files[0]
+    const selectedFiles = Array.from(e.target.files || [])
+    const file = selectedFiles[0]
     if (file) {
       // Auto-detect type based on file extension
       const extension = file.name.split('.').pop().toLowerCase()
@@ -117,6 +133,7 @@ export default function UploadMaterials() {
       setUploadData({
         ...uploadData,
         file,
+        files: createFromScans ? selectedFiles : [file],
         type,
         title: uploadData.title || file.name.replace(/\.[^/.]+$/, ''),
       })
@@ -143,18 +160,20 @@ export default function UploadMaterials() {
     if (!uploadData.file) return
 
     const formData = new FormData()
-    formData.append('file', uploadData.file)
+    if (createFromScans) uploadData.files.forEach(file => formData.append('files', file))
+    else formData.append('file', uploadData.file)
     formData.append('title', uploadData.title)
     formData.append('description', uploadData.description)
     formData.append('courseId', uploadData.courseId)
     formData.append('type', uploadData.type)
     formData.append('accessLevel', uploadData.accessLevel)
 
-    uploadMutation.mutate(formData)
+    if (createFromScans) scanMutation.mutate(formData)
+    else uploadMutation.mutate(formData)
   }
 
   const handleEditClick = (material) => {
-    setSelectedMaterial(material)
+    setSelectedMaterial({ ...material, accessLevel: material.isFree ? 'free' : 'enrolled' })
     setShowEditModal(true)
   }
 
@@ -165,7 +184,8 @@ export default function UploadMaterials() {
       data: {
         title: selectedMaterial.title,
         description: selectedMaterial.description,
-        accessLevel: selectedMaterial.accessLevel,
+        isFree: selectedMaterial.accessLevel === 'free' || selectedMaterial.isFree === true,
+        content: selectedMaterial.content,
       },
     })
   }
@@ -302,11 +322,11 @@ export default function UploadMaterials() {
                   <div className="flex items-center justify-between">
                     <span>Access:</span>
                     <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                      material.accessLevel === 'free' 
+                      material.isFree
                         ? 'bg-green-100 text-green-700' 
                         : 'bg-blue-100 text-blue-700'
                     }`}>
-                      {material.accessLevel === 'free' ? 'Free' : 'Enrolled Only'}
+                      {material.isFree ? 'Free' : 'Enrolled Only'}
                     </span>
                   </div>
                   <div className="flex items-center justify-between">
@@ -318,15 +338,20 @@ export default function UploadMaterials() {
                 </div>
 
                 <div className="mt-4 pt-4 border-t border-gray-200">
-                  <a
-                    href={material.fileUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center justify-center gap-2 w-full px-4 py-2 text-sm font-medium text-primary-600 hover:bg-primary-50 rounded-lg transition-colors"
-                  >
-                    <Eye className="w-4 h-4" />
-                    View Material
-                  </a>
+                  {material.fileUrl ? (
+                    <a
+                      href={material.fileUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-center gap-2 w-full px-4 py-2 text-sm font-medium text-primary-600 hover:bg-primary-50 rounded-lg transition-colors"
+                    >
+                      <Eye className="w-4 h-4" /> View Source
+                    </a>
+                  ) : (
+                    <button onClick={() => handleEditClick(material)} className="flex items-center justify-center gap-2 w-full px-4 py-2 text-sm font-medium text-primary-600 hover:bg-primary-50 rounded-lg">
+                      <Edit className="w-4 h-4" /> Review Material
+                    </button>
+                  )}
                 </div>
               </div>
             </div>
@@ -360,6 +385,22 @@ export default function UploadMaterials() {
         size="lg"
       >
         <form onSubmit={handleUpload} className="space-y-4">
+          <label className="flex items-start gap-3 rounded-lg border border-blue-200 bg-blue-50 p-4 cursor-pointer">
+            <input
+              type="checkbox"
+              checked={createFromScans}
+              onChange={(e) => {
+                setCreateFromScans(e.target.checked)
+                setUploadData(data => ({ ...data, file: null, files: [] }))
+                if (fileInputRef.current) fileInputRef.current.value = ''
+              }}
+              className="mt-1 rounded text-blue-600"
+            />
+            <span>
+              <span className="block font-medium text-blue-900">Create complete material from textbook scans</span>
+              <span className="block text-sm text-blue-700">Upload pages in reading order. AI will transcribe the scans and create editable Markdown covering the full chapter.</span>
+            </span>
+          </label>
           {/* File Upload Area */}
           <div
             onDragOver={handleDragOver}
@@ -371,6 +412,7 @@ export default function UploadMaterials() {
               ref={fileInputRef}
               type="file"
               onChange={handleFileSelect}
+              multiple={createFromScans}
               className="hidden"
               accept=".pdf,.doc,.docx,.ppt,.pptx,.mp4,.avi,.mov,.jpg,.jpeg,.png"
             />
@@ -379,16 +421,16 @@ export default function UploadMaterials() {
               <div className="flex items-center justify-center gap-3">
                 <Check className="w-8 h-8 text-green-500" />
                 <div className="text-left">
-                  <p className="font-medium text-gray-900">{uploadData.file.name}</p>
+                  <p className="font-medium text-gray-900">{createFromScans ? `${uploadData.files.length} scan(s) selected` : uploadData.file.name}</p>
                   <p className="text-sm text-gray-500">
-                    {formatFileSize(uploadData.file.size)}
+                    {createFromScans ? uploadData.files.map(file => file.name).join(', ') : formatFileSize(uploadData.file.size)}
                   </p>
                 </div>
                 <button
                   type="button"
                   onClick={(e) => {
                     e.stopPropagation()
-                    setUploadData({ ...uploadData, file: null })
+                    setUploadData({ ...uploadData, file: null, files: [] })
                   }}
                   className="p-2 text-red-600 hover:bg-red-50 rounded-lg"
                 >
@@ -399,10 +441,10 @@ export default function UploadMaterials() {
               <>
                 <Upload className="w-12 h-12 text-gray-400 mx-auto mb-4" />
                 <p className="text-gray-700 font-medium mb-2">
-                  Drop your file here, or click to browse
+                  {createFromScans ? 'Select textbook scan pages in reading order' : 'Drop your file here, or click to browse'}
                 </p>
                 <p className="text-sm text-gray-500">
-                  Supports: PDF, DOC, PPT, MP4, Images (Max 100MB)
+                  {createFromScans ? 'Supports PDF, JPG, PNG and WebP (up to 30 files)' : 'Supports PDF, DOC, PPT, MP4 and images (max 50MB)'}
                 </p>
               </>
             )}
@@ -493,6 +535,19 @@ export default function UploadMaterials() {
             </select>
           </div>
 
+          {selectedMaterial?.content !== undefined && (
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Generated material (Markdown)</label>
+              <textarea
+                value={selectedMaterial?.content || ''}
+                onChange={(e) => setSelectedMaterial({ ...selectedMaterial, content: e.target.value })}
+                rows={18}
+                className="input-field w-full font-mono text-sm"
+                placeholder="Review and correct the material before using it for question generation."
+              />
+            </div>
+          )}
+
           <div className="flex gap-3 pt-4">
             <button
               type="button"
@@ -507,13 +562,13 @@ export default function UploadMaterials() {
             </button>
             <button
               type="submit"
-              disabled={!uploadData.file || uploadMutation.isLoading}
+              disabled={!uploadData.file || uploadMutation.isLoading || scanMutation.isLoading}
               className="flex-1 btn-primary disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {uploadMutation.isLoading ? (
-                <><LoadingSpinner size="sm" /> Uploading...</>
+              {uploadMutation.isLoading || scanMutation.isLoading ? (
+                <><LoadingSpinner size="sm" /> {createFromScans ? 'Reading scans and creating material...' : 'Uploading...'}</>
               ) : (
-                'Upload Material'
+                createFromScans ? 'Create Material' : 'Upload Material'
               )}
             </button>
           </div>

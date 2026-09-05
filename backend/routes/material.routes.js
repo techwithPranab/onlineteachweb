@@ -36,6 +36,15 @@ const upload = multer({
   }
 });
 
+const scanUpload = multer({
+  storage,
+  limits: { fileSize: 50 * 1024 * 1024, files: 30 },
+  fileFilter: (req, file, cb) => {
+    const allowed = ['application/pdf', 'image/jpeg', 'image/png', 'image/webp'];
+    cb(allowed.includes(file.mimetype) ? null : new Error('Scans must be PDF, JPG, PNG, or WebP'), allowed.includes(file.mimetype));
+  }
+});
+
 // Get all materials for tutor (or admin)
 router.get('/',
   authenticate,
@@ -51,6 +60,18 @@ router.get('/student/recent',
 );
 
 // Upload material (tutor or admin)
+router.post('/from-scans',
+  authenticate,
+  authorize('tutor', 'admin'),
+  scanUpload.array('files', 30),
+  [
+    body('courseId').isMongoId().withMessage('Valid course ID is required'),
+    body('title').trim().notEmpty().withMessage('Title is required'),
+    validate
+  ],
+  materialController.createMaterialFromScans
+);
+
 router.post('/',
   authenticate,
   authorize('tutor', 'admin'),
@@ -62,6 +83,13 @@ router.post('/',
     validate
   ],
   materialController.uploadMaterial
+);
+
+router.post('/:id/regenerate',
+  authenticate,
+  authorize('admin'),
+  [body('guidance').optional().isString().trim().isLength({ max: 1000 }), validate],
+  materialController.regenerateMaterial
 );
 
 // Update material (tutor or admin)

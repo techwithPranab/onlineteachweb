@@ -37,6 +37,19 @@ const questionGenerationSchema = new mongoose.Schema({
     type: String,
     trim: true
   },
+  // Immutable copy of the exact source text supplied to the model. Material
+  // edits after generation therefore cannot change the audit trail.
+  sourceSnapshot: {
+    content: String,
+    contentHash: String,
+    capturedAt: Date,
+    sources: [{
+      type: String,
+      materialId: { type: mongoose.Schema.Types.ObjectId, ref: 'Material' },
+      title: String,
+      updatedAt: Date
+    }]
+  },
   aiResponse: {
     type: String,
     required: false // Not required initially, will be added when AI responds

@@ -56,7 +56,10 @@ const generateQuestionsValidation = [
   body('sources.*')
     .optional()
     .isIn(['syllabus', 'materials', 'external'])
-    .withMessage('Invalid source type')
+    .withMessage('Invalid source type'),
+
+  body('materialIds').optional().isArray().withMessage('materialIds must be an array'),
+  body('materialIds.*').optional().isMongoId().withMessage('Each material ID must be valid')
 ];
 
 const getDraftsValidation = [

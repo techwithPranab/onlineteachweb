@@ -2,6 +2,9 @@ const Material = require('../models/Material.model');
 const Course = require('../models/Course.model');
 const User = require('../models/User.model');
 const featureAccessService = require('../services/featureAccess.service');
+const scanMaterialService = require('../services/scanMaterial.service');
+const MaterialRegeneration = require('../models/MaterialRegeneration.model');
+const path = require('path');
 
 // @desc    Get all materials for tutor
 // @route   GET /api/materials
@@ -123,6 +126,117 @@ exports.uploadMaterial = async (req, res, next) => {
       material
     });
   } catch (error) {
+    next(error);
+  }
+};
+
+// @desc Create comprehensive editable material from textbook scans
+// @route POST /api/materials/from-scans
+exports.createMaterialFromScans = async (req, res, next) => {
+  try {
+    const files = req.files || [];
+    const { courseId, title, description, accessLevel } = req.body;
+    if (!files.length) return res.status(400).json({ success: false, message: 'At least one scan image or PDF is required' });
+    if (files.reduce((total, file) => total + file.size, 0) > 100 * 1024 * 1024) {
+      return res.status(413).json({ success: false, message: 'Combined scan size cannot exceed 100MB' });
+    }
+
+    const course = await Course.findById(courseId);
+    if (!course) return res.status(404).json({ success: false, message: 'Course not found' });
+
+    const generated = await scanMaterialService.generateFromScans(files, {
+      title, description, courseTitle: course.title
+    });
+    const sourceFiles = files.map((file, index) => ({
+      fileUrl: `/uploads/materials/${file.filename}`,
+      fileName: file.originalname,
+      fileSize: file.size,
+      mimeType: file.mimetype,
+      pageOrder: index
+    }));
+    const material = await Material.create({
+      course: courseId,
+      tutor: req.user._id,
+      title,
+      description,
+      type: 'article',
+      content: generated.markdown,
+      contentFormat: 'markdown',
+      category: 'lesson',
+      isFree: accessLevel === 'free',
+      sourceFiles,
+      sourceProvenance: {
+        kind: 'scan-ocr', model: generated.model, extractedAt: new Date(), contentHash: generated.contentHash
+      }
+    });
+    res.status(201).json({ success: true, material });
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.regenerateMaterial = async (req, res, next) => {
+  const startedAt = Date.now();
+  let history;
+  let exchange;
+  try {
+    const material = await Material.findById(req.params.id).populate('course', 'title grade subject');
+    if (!material) return res.status(404).json({ success: false, message: 'Material not found' });
+    if (!material.sourceFiles?.length) return res.status(400).json({ success: false, message: 'This material has no retained scan files' });
+
+    const source = material.sourceFiles.length === 1
+      ? material.sourceFiles[0]
+      : material.sourceFiles.find(file => file.pageOrder === material.order) || material.sourceFiles[0];
+    const files = [{
+      path: path.resolve(__dirname, '..', String(source.fileUrl).replace(/^\//, '')),
+      originalname: source.fileName,
+      mimetype: source.mimeType,
+      size: source.fileSize
+    }];
+    history = await MaterialRegeneration.create({
+      material: material._id,
+      course: material.course._id,
+      status: 'processing',
+      requestedBy: req.user._id,
+      previousContentHash: material.sourceProvenance?.contentHash,
+      request: { materialId: material._id, title: material.title, sourceFiles: [source], guidance: req.body.guidance || '' }
+    });
+
+    const generated = await scanMaterialService.generateFromScans(files, {
+      title: material.title,
+      courseTitle: material.course.title,
+      description: req.body.guidance || material.description,
+      stage: `material-regeneration-${material._id}`,
+      onExchange: value => { exchange = value; }
+    });
+    material.content = generated.markdown;
+    material.contentFormat = 'markdown';
+    material.sourceProvenance = { kind: 'scan-ocr', model: generated.model, extractedAt: new Date(), contentHash: generated.contentHash };
+    await material.save();
+    await MaterialRegeneration.findByIdAndUpdate(history._id, {
+      status: 'success',
+      request: exchange?.requestPayload || history.request,
+      response: exchange?.responsePayload,
+      responseId: exchange?.responseId,
+      model: exchange?.model || generated.model,
+      usage: exchange?.usage,
+      generatedContentHash: generated.contentHash,
+      completedAt: new Date(),
+      durationMs: Date.now() - startedAt
+    });
+    res.json({ success: true, material, regenerationId: history._id, message: 'Material regenerated from its source scan' });
+  } catch (error) {
+    if (history?._id) await MaterialRegeneration.findByIdAndUpdate(history._id, {
+      status: 'failed',
+      request: exchange?.requestPayload || history.request,
+      response: exchange?.responsePayload,
+      responseId: exchange?.responseId,
+      model: exchange?.model,
+      usage: exchange?.usage,
+      error: { message: error.message, stack: error.stack },
+      completedAt: new Date(),
+      durationMs: Date.now() - startedAt
+    }).catch(() => {});
     next(error);
   }
 };
