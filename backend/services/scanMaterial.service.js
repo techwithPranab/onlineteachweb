@@ -194,7 +194,7 @@ async function extractExercisePatterns(file, course, sourceFileIndex, options = 
   const payload = {
     model, instructions: EXERCISE_EXTRACTION_PROMPT,
     input: [{ role: 'user', content: [
-      { type: 'input_text', text: `Audit every page of this original PDF for exercise formats. Course outline for chapter/topic naming only: ${JSON.stringify({ title: course.title, chapters: course.chapters || [] })}` },
+      { type: 'input_text', text: `Audit every page of this original PDF for exercise formats. Course outline for chapter/topic naming only: ${JSON.stringify({ title: course.title, subject: course.subject, grade: course.grade, chapters: course.chapters || [] })}` },
       { type: 'input_file', filename: file.originalname, file_data: `data:application/pdf;base64,${base64}` }
     ] }],
     max_output_tokens: 12000,
@@ -218,17 +218,19 @@ async function extractExercisePatterns(file, course, sourceFileIndex, options = 
       (review.status === 'no_exercises' && review.exercisePatterns.length)) {
     throw new Error(`Exercise format review returned an inconsistent inventory for ${file.originalname}`);
   }
+  if (typeof review.analysisReport !== 'string' || !review.analysisReport.trim()) throw new Error(`Exercise format review returned no document analysis for ${file.originalname}`);
   const validTypes = exerciseExtractionSchema.properties.exercisePatterns.items.properties.questionType.enum;
   const chapterNames = new Set((course.chapters || []).map(chapter => chapter.name));
   for (const pattern of review.exercisePatterns) {
     const chapter = (course.chapters || []).find(item => item.name === pattern.chapterName);
-    if (!validTypes.includes(pattern.questionType) || !pattern.label?.trim() || !pattern.instructions?.trim() || !pattern.example?.trim() ||
+    if (!pattern.description?.trim() || !pattern.skillTested?.trim() || !Number.isInteger(pattern.cognitiveLevel) || pattern.cognitiveLevel < 1 || pattern.cognitiveLevel > 5 || !validTypes.includes(pattern.questionType) || !pattern.label?.trim() || !pattern.instructions?.trim() || !pattern.example?.trim() ||
         !Array.isArray(pattern.sourcePages) || !pattern.sourcePages.length || pattern.sourcePages.some(page => !Number.isInteger(page) || page < 1) ||
         !Array.isArray(pattern.topics) || (chapterNames.size && !chapterNames.has(pattern.chapterName)) ||
         (chapter && pattern.topics.some(topic => !(chapter.topics || []).includes(topic)))) {
       throw new Error(`Exercise format review returned missing evidence or an unmatched chapter/topic for ${file.originalname}. Please retry the scan.`);
     }
   }
+  if (options.onAnalysisReport) await options.onAnalysisReport({ sourceFileName: file.originalname, report: review.analysisReport });
   // File identity comes from the upload, never from model-generated numbering.
   return review.exercisePatterns.map(pattern => ({ ...pattern, sourceFileIndex, sourceFileName: file.originalname }));
 }
@@ -298,11 +300,13 @@ ${sourceText}`
     throw new Error('The scan processor returned an incomplete course');
   }
   const reviewedPatterns = [];
+  const exerciseAnalysisReports = [];
   for (const [index, file] of files.entries()) {
-    reviewedPatterns.push(...await extractExercisePatterns(file, result.course, index, options));
+    reviewedPatterns.push(...await extractExercisePatterns(file, result.course, index, { ...options, onAnalysisReport: report => exerciseAnalysisReports.push(report) }));
   }
   result.course.exercisePatterns = normalizePatterns(reviewedPatterns, files);
   result.course.exercisePatternsReviewed = true;
+  result.course.exerciseAnalysisReports = exerciseAnalysisReports;
   const metadataMatchesSources = result.materials.length === extractedMaterials.length;
   // The synthesis model sometimes returns metadata per chapter instead of per
   // PDF. Do not guess which chapter belongs to which file or discard OCR text.
@@ -313,6 +317,7 @@ ${sourceText}`
       title: metadata?.title || source.sourceTitle,
       description: metadata?.description || `Complete study material from ${files[index].originalname}`,
       chapterName: metadata?.chapterName || source.sourceTitle,
+      exerciseAnalysisReport: exerciseAnalysisReports[index]?.report,
       exercisePatternsReviewed: true,
       exercisePatterns: result.course.exercisePatterns.filter(pattern => pattern.sourceFileIndex === index),
       content: source.content

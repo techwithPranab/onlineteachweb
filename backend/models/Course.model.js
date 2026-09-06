@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 
 const courseSchema = new mongoose.Schema({
   exercisePatterns: [require('./ExercisePattern.schema')],
+  exerciseAnalysisReports: [{ sourceFileName: String, report: String }],
   exercisePatternsReviewed: { type: Boolean, default: false },
   title: {
     type: String,
