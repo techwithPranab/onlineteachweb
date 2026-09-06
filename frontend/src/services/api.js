@@ -37,6 +37,8 @@ api.interceptors.request.use(
 )
 
 // Response interceptor
+let tokenRefreshPromise = null
+
 api.interceptors.response.use(
   (response) => {
     console.log('API Response:', response.status, response.config.url);
@@ -48,12 +50,19 @@ api.interceptors.response.use(
     const originalRequest = error.config
 
     // Handle token expiration
-    if (error.response?.status === 401 && !originalRequest._retry) {
+    const isAuthRequest = /^\/?auth\/(login|register|refresh|logout)(?:[/?]|$)/.test(originalRequest?.url || '')
+    if (error.response?.status === 401 && originalRequest && !originalRequest._retry && !isAuthRequest) {
       originalRequest._retry = true
 
       try {
         const { useAuthStore } = await import('../store/authStore')
-        const newToken = await useAuthStore.getState().refreshAccessToken()
+        // Share one refresh across simultaneous background requests. Never
+        // refresh a failed refresh/logout request, which would recurse forever.
+        if (!tokenRefreshPromise) {
+          tokenRefreshPromise = useAuthStore.getState().refreshAccessToken()
+            .finally(() => { tokenRefreshPromise = null })
+        }
+        const newToken = await tokenRefreshPromise
 
         originalRequest.headers['Authorization'] = `Bearer ${newToken}`
         return api(originalRequest)
