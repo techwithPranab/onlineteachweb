@@ -3,6 +3,8 @@ const Material = require('../models/Material.model');
 const scanMaterialService = require('../services/scanMaterial.service');
 const crypto = require('crypto');
 const ScanCourseGeneration = require('../models/ScanCourseGeneration.model');
+const { uploadScanPdf } = require('../services/cloudinary.service');
+const fs = require('fs').promises;
 
 exports.createFromScans = async (req, res, next) => {
   let course;
@@ -19,10 +21,17 @@ exports.createFromScans = async (req, res, next) => {
       status: 'processing',
       request: {
         grade: Number(req.body.grade), subject: req.body.subject, board: req.body.board, title: req.body.title,
-        files: files.map((file, order) => ({ fileName: file.originalname, fileUrl: `/uploads/materials/${file.filename}`, mimeType: file.mimetype, fileSize: file.size, order }))
+        files: files.map((file, order) => ({ fileName: file.originalname, mimeType: file.mimetype, fileSize: file.size, order }))
       },
       createdBy: req.user._id
     });
+    for (const [order, file] of files.entries()) {
+      Object.assign(file, await uploadScanPdf(file));
+      await ScanCourseGeneration.findByIdAndUpdate(generation._id, { $set: {
+        [`request.files.${order}.fileUrl`]: file.fileUrl,
+        [`request.files.${order}.cloudinaryPublicId`]: file.cloudinaryPublicId
+      } });
+    }
     const generated = await scanMaterialService.generateCourseFromScans(files, {
       ...req.body,
       onExchange: exchange => ScanCourseGeneration.findByIdAndUpdate(generation._id, { $push: { exchanges: exchange } })
@@ -40,7 +49,8 @@ exports.createFromScans = async (req, res, next) => {
     });
 
     const sourceFiles = files.map((file, pageOrder) => ({
-      fileUrl: `/uploads/materials/${file.filename}`,
+      fileUrl: file.fileUrl,
+      cloudinaryPublicId: file.cloudinaryPublicId,
       fileName: file.originalname,
       fileSize: file.size,
       mimeType: file.mimetype,
@@ -79,6 +89,8 @@ exports.createFromScans = async (req, res, next) => {
       status: 'failed', error: { message: error.message, stack: error.stack }, completedAt: new Date(), durationMs: Date.now() - startedAt
     }).catch(() => {});
     next(error);
+  } finally {
+    await Promise.all((req.files || []).map(file => fs.unlink(file.path).catch(() => {})));
   }
 };
 

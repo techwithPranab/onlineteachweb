@@ -8,10 +8,12 @@ const { authenticate, authorize } = require('../middleware/auth');
 const validate = require('../middleware/validate');
 const multer = require('multer');
 const path = require('path');
+const os = require('os');
+const fs = require('fs').promises;
 const scanCourseController = require('../controllers/scanCourse.controller');
 
 const scanStorage = multer.diskStorage({
-  destination: (req, file, cb) => cb(null, 'uploads/materials/'),
+  destination: (req, file, cb) => cb(null, os.tmpdir()),
   filename: (req, file, cb) => cb(null, `course-scan-${Date.now()}-${Math.round(Math.random() * 1e9)}${path.extname(file.originalname)}`)
 });
 const scanUpload = multer({
@@ -63,6 +65,12 @@ router.put('/tutors/:id/approve',
 router.get('/courses', adminController.getAllCoursesForAdmin);
 router.get('/courses/stats', adminController.getCourseStats);
 router.post('/courses/from-scans',
+  (req, res, next) => {
+    res.once('finish', () => {
+      for (const file of req.files || []) fs.unlink(file.path).catch(() => {});
+    });
+    next();
+  },
   scanUpload.array('files', 20),
   [
     body('grade').isInt({ min: 1, max: 12 }).withMessage('Grade must be between 1 and 12'),
