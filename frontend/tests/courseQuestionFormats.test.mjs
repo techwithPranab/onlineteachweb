@@ -24,3 +24,8 @@ test('PDF links allow HTTPS and local uploads but reject executable URLs', () =>
   assert.equal(safePdfUrl('/uploads/math.pdf'), '/uploads/math.pdf')
   assert.equal(safePdfUrl('javascript:alert(1)'), null)
 })
+
+test('merging scan and prompt evidence retains all PDF page references', () => {
+  const result = mergeExpectedFormats([{ ...format, sourcePages: [2] }], [{ sourceSnapshot: { exercisePatterns: [{ ...format, sourcePages: [2, 4] }] } }]);
+  assert.deepEqual(result[0].sourcePages, [2, 4]);
+});

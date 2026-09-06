@@ -6,6 +6,7 @@ function normalizePatterns(patterns = [], files) {
   return patterns.filter(p => p && TYPES.includes(p.questionType) && p.label &&
     (!files || (Number.isInteger(p.sourceFileIndex) && files[p.sourceFileIndex])))
     .map(p => ({
+      ...(Array.isArray(p.sourcePages) ? { sourcePages: [...new Set(p.sourcePages)].sort((a, b) => a - b) } : {}),
       sourceFileIndex: p.sourceFileIndex,
       sourceFileName: files ? files[p.sourceFileIndex].originalname : p.sourceFileName,
       chapterName: String(p.chapterName || ''),
@@ -48,8 +49,8 @@ async function loadExercisePatterns(course, materialIds = []) {
   const query = { course: course._id, isActive: true };
   if (materialIds.length) query._id = { $in: materialIds };
   else query['sourceProvenance.kind'] = 'scan-ocr';
-  const materials = await Material.find(query).select('exercisePatterns content title sourceFiles').sort({ order: 1 }).lean();
-  const patterns = materials.flatMap(m => m.exercisePatterns?.length ? normalizePatterns(m.exercisePatterns) : inferPatterns(m));
+  const materials = await Material.find(query).select('exercisePatterns exercisePatternsReviewed content title sourceFiles').sort({ order: 1 }).lean();
+  const patterns = materials.flatMap(m => m.exercisePatterns?.length ? normalizePatterns(m.exercisePatterns) : m.exercisePatternsReviewed ? [] : inferPatterns(m));
   if (!materialIds.length) patterns.push(...normalizePatterns(course.exercisePatterns));
   return [...new Map(patterns.map(p => [JSON.stringify(p), p])).values()];
 }

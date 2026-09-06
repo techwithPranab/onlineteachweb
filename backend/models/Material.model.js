@@ -12,6 +12,7 @@ const materialSchema = new mongoose.Schema({
     required: true
   },
   exercisePatterns: [require('./ExercisePattern.schema')],
+  exercisePatternsReviewed: { type: Boolean, default: false },
   title: {
     type: String,
     required: [true, 'Material title is required'],

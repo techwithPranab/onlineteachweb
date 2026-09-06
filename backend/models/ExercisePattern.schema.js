@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 module.exports = new mongoose.Schema({
   sourceFileIndex: { type: Number, min: 0 },
   sourceFileName: String,
+  sourcePages: [Number],
   chapterName: String,
   topics: [String],
   label: String,

@@ -65,6 +65,7 @@ exports.createFromScans = async (req, res, next) => {
       content: item.content,
       contentFormat: 'markdown',
       exercisePatterns: item.exercisePatterns || [],
+      exercisePatternsReviewed: item.exercisePatternsReviewed === true,
       category: 'lesson',
       order: index,
       tags: [requestedSubject, `Grade ${requestedGrade}`, item.chapterName].filter(Boolean),

@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 
 const courseSchema = new mongoose.Schema({
   exercisePatterns: [require('./ExercisePattern.schema')],
+  exercisePatternsReviewed: { type: Boolean, default: false },
   title: {
     type: String,
     required: [true, 'Course title is required'],

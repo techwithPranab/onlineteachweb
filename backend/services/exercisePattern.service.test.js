@@ -40,3 +40,11 @@ test('one-word and fraction answers from scanned exercises pass text-answer vali
   }
   expect(validator._validateTextAnswer({ type: 'short-answer', expectedAnswer: ' ', correctAnswer: ' ' })).not.toEqual([]);
 });
+
+test('explicitly reviewed empty inventory does not fall back to heuristic format detection', async () => {
+  const find = jest.spyOn(Material, 'find').mockReturnValue({ select: () => ({ sort: () => ({ lean: async () => [{ exercisePatterns: [], exercisePatternsReviewed: true, content: '# Examples\nFill in the blanks' }] }) }) });
+  try {
+    const { loadExercisePatterns } = require('./exercisePattern.service');
+    expect(await loadExercisePatterns({ _id: 'course', exercisePatterns: [] })).toEqual([]);
+  } finally { find.mockRestore(); }
+});

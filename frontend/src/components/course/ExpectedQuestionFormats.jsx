@@ -28,6 +28,7 @@ export default function ExpectedQuestionFormats({ course, materials = [] }) {
           </div>
           <p className="text-sm text-gray-600 mt-2">{format.chapterName || 'Chapter not recorded'}{format.topics?.length ? ` · ${format.topics.join(', ')}` : ' · Chapter-wide exercises'}</p>
           <p className="text-xs text-gray-500 mt-1">Evidence: {format.origins.join(' and ')}{format.sourceFileName && <> · {url ? <a href={url} target="_blank" rel="noreferrer" className="text-blue-700 underline">{format.sourceFileName}</a> : format.sourceFileName}</>}</p>
+          {format.sourcePages?.length > 0 && <p className="text-xs text-gray-500 mt-1">PDF pages: {format.sourcePages.join(', ')}</p>}
           {format.instructions && <p className="text-sm text-gray-800 whitespace-pre-wrap mt-3">{format.instructions}</p>}
           {format.example && <details className="mt-3">
             <summary className="cursor-pointer text-sm text-blue-700">Scanned exercise example</summary>
@@ -36,7 +37,7 @@ export default function ExpectedQuestionFormats({ course, materials = [] }) {
         </article>
       })}
     </div>
-    {!structure.isLoading && !history.isLoading && !formats.length && <p className="text-sm text-gray-500 mt-4">No exercise formats have been recorded yet. Scan the course PDF to capture its exercise headings, instructions and examples.</p>}
+    {!structure.isLoading && !history.isLoading && !formats.length && <p className="text-sm text-gray-500 mt-4">{course.exercisePatternsReviewed ? 'The PDF exercise review found no learner exercise formats in this course.' : 'No exercise formats have been recorded yet. Scan the course PDF to capture its exercise headings, instructions and examples.'}</p>}
 
     <h3 className="font-semibold text-gray-900 mt-6">Recent prompt responses</h3>
     <p className="text-xs text-gray-500 mt-1">The latest five generation records for this course. Response types show the saved AI output; they do not confirm that every question follows the exercise instructions.</p>

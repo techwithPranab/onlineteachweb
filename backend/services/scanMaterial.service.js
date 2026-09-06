@@ -1,3 +1,4 @@
+const { EXERCISE_EXTRACTION_PROMPT, exerciseExtractionSchema } = require('./exerciseExtractionPrompt');
 const { normalizePatterns } = require('./exercisePattern.service');
 const fs = require('fs').promises;
 const crypto = require('crypto');
@@ -187,6 +188,51 @@ Treat the attached files as the authoritative source.`
   };
 }
 
+async function extractExercisePatterns(file, course, sourceFileIndex, options = {}) {
+  const model = process.env.OPENAI_EXERCISE_MODEL || process.env.OPENAI_OCR_MODEL || process.env.OPENAI_MODEL || 'gpt-4.1-mini';
+  const base64 = (await fs.readFile(file.path)).toString('base64');
+  const payload = {
+    model, instructions: EXERCISE_EXTRACTION_PROMPT,
+    input: [{ role: 'user', content: [
+      { type: 'input_text', text: `Audit every page of this original PDF for exercise formats. Course outline for chapter/topic naming only: ${JSON.stringify({ title: course.title, chapters: course.chapters || [] })}` },
+      { type: 'input_file', filename: file.originalname, file_data: `data:application/pdf;base64,${base64}` }
+    ] }],
+    max_output_tokens: 12000,
+    text: { format: { type: 'json_schema', name: 'pdf_exercise_formats', strict: true, schema: exerciseExtractionSchema } },
+    store: false
+  };
+  const stage = `exercise-format-review-${sourceFileIndex + 1}-${file.originalname}`;
+  let response;
+  try {
+    response = await createResponse(payload);
+  } catch (error) {
+    if (options.onExchange) await options.onExchange({ stage, model, requestPayload: auditablePayload(payload, [file]), responsePayload: error.responsePayload || { error: { message: error.message } } });
+    throw error;
+  }
+  if (options.onExchange) await options.onExchange({ stage, model: response.model || model, responseId: response.id, usage: response.usage, requestPayload: auditablePayload(payload, [file]), responsePayload: response });
+  if (response.status === 'incomplete') throw new Error(`Exercise format review was truncated for ${file.originalname}. Split this PDF into smaller parts.`);
+  const review = parseJsonOutput(outputText(response));
+  if (review.status === 'unreadable') throw new Error(`Exercise sections could not be reliably read in ${file.originalname}. Upload a clearer scan. ${review.reviewNote || ''}`);
+  if (!['complete', 'no_exercises'].includes(review.status) || !Array.isArray(review.exercisePatterns) ||
+      (review.status === 'complete' && !review.exercisePatterns.length) ||
+      (review.status === 'no_exercises' && review.exercisePatterns.length)) {
+    throw new Error(`Exercise format review returned an inconsistent inventory for ${file.originalname}`);
+  }
+  const validTypes = exerciseExtractionSchema.properties.exercisePatterns.items.properties.questionType.enum;
+  const chapterNames = new Set((course.chapters || []).map(chapter => chapter.name));
+  for (const pattern of review.exercisePatterns) {
+    const chapter = (course.chapters || []).find(item => item.name === pattern.chapterName);
+    if (!validTypes.includes(pattern.questionType) || !pattern.label?.trim() || !pattern.instructions?.trim() || !pattern.example?.trim() ||
+        !Array.isArray(pattern.sourcePages) || !pattern.sourcePages.length || pattern.sourcePages.some(page => !Number.isInteger(page) || page < 1) ||
+        !Array.isArray(pattern.topics) || (chapterNames.size && !chapterNames.has(pattern.chapterName)) ||
+        (chapter && pattern.topics.some(topic => !(chapter.topics || []).includes(topic)))) {
+      throw new Error(`Exercise format review returned missing evidence or an unmatched chapter/topic for ${file.originalname}. Please retry the scan.`);
+    }
+  }
+  // File identity comes from the upload, never from model-generated numbering.
+  return review.exercisePatterns.map(pattern => ({ ...pattern, sourceFileIndex, sourceFileName: file.originalname }));
+}
+
 async function generateCourseFromScans(files, options = {}) {
   if (!process.env.OPENAI_API_KEY) throw new Error('OPENAI_API_KEY is required for scan processing');
   const model = process.env.OPENAI_OCR_MODEL || process.env.OPENAI_MODEL || 'gpt-4.1-mini';
@@ -215,8 +261,7 @@ Create one faithful course for Grade ${options.grade || 4}, subject ${options.su
 Board: ${options.board || 'CBSE'}. Course title hint: ${options.title || 'Grade 4 Computer'}.
 Return ONLY valid JSON with this shape:
 {"course":{"title":"","description":"","grade":4,"subject":"Computer","board":["CBSE"],"syllabus":[""],"topics":[""],"chapters":[{"name":"","topics":[""],"learningObjectives":[""],"estimatedHours":1}],"duration":"","estimatedHours":1,"level":"beginner","difficulty":1,"language":"English","prerequisites":[""],"learningOutcomes":[""],"tags":[""]},"materials":[{"title":"","description":"","chapterName":"","content":"complete Markdown lesson"}]}
-Also return course.exercisePatterns: one entry for each exercise format actually observed in each chapter, with sourceFileIndex (zero-based PDF index), chapterName (matching course.chapters.name), topics (matching course topic names, or [] for chapter-wide exercises), label (original exercise heading), questionType, instructions (original exercise directions), and example (one short representative question).
-Map single/multiple choice, true/false, numerical, short/long answers and case studies to their corresponding supported questionType. Store fill-in-the-blanks, matching, and one-word exercises as short-answer while preserving their original format in label, instructions and example. Do not invent exercise formats. Return [] if no readable exercises are present.
+Return course.exercisePatterns as an empty array. A dedicated audit of each original PDF will identify exercise formats after the canonical course chapter/topic outline is available. Do not infer exercise formats from lesson summaries.
 Return exactly ${files.length} material metadata objects, one per SOURCE PDF in the same order as the PDFs. A PDF may contain several chapters: list all of them in course.chapters, but keep a single material covering that entire PDF. Keep each material content field as an empty string because the complete transcriptions are already retained separately.
 
 ${sourceText}`
@@ -252,7 +297,12 @@ ${sourceText}`
   if (!result.course || !Array.isArray(result.materials)) {
     throw new Error('The scan processor returned an incomplete course');
   }
-  result.course.exercisePatterns = normalizePatterns(result.course.exercisePatterns, files);
+  const reviewedPatterns = [];
+  for (const [index, file] of files.entries()) {
+    reviewedPatterns.push(...await extractExercisePatterns(file, result.course, index, options));
+  }
+  result.course.exercisePatterns = normalizePatterns(reviewedPatterns, files);
+  result.course.exercisePatternsReviewed = true;
   const metadataMatchesSources = result.materials.length === extractedMaterials.length;
   // The synthesis model sometimes returns metadata per chapter instead of per
   // PDF. Do not guess which chapter belongs to which file or discard OCR text.
@@ -263,6 +313,7 @@ ${sourceText}`
       title: metadata?.title || source.sourceTitle,
       description: metadata?.description || `Complete study material from ${files[index].originalname}`,
       chapterName: metadata?.chapterName || source.sourceTitle,
+      exercisePatternsReviewed: true,
       exercisePatterns: result.course.exercisePatterns.filter(pattern => pattern.sourceFileIndex === index),
       content: source.content
     };
@@ -270,4 +321,4 @@ ${sourceText}`
   return { ...result, model };
 }
 
-module.exports = { generateFromScans, generateCourseFromScans, parseJsonOutput };
+module.exports = { generateFromScans, generateCourseFromScans, extractExercisePatterns, parseJsonOutput };
