@@ -3,6 +3,8 @@ import { questionService } from '@/services/apiServices'
 import MaterialViewer from './MaterialViewer'
 import { QUESTION_TYPE_LABELS, resolveExpectedFormats, getResponseQuestions, safePdfUrl } from '@/utils/courseQuestionFormats.mjs'
 
+const COGNITIVE_LEVELS = { 1: 'Recall / Understanding', 2: 'Procedural Application', 3: 'Visual / Conceptual Reasoning', 4: 'Application / Multi-step Reasoning', 5: 'Olympiad / HOTS' }
+
 export default function ExpectedQuestionFormats({ course, materials = [], materialsLoading = false, materialsError = null }) {
   const queryClient = useQueryClient()
   const structure = useQuery(['courseStructure', course._id], () => questionService.getCourseStructure(course._id))
@@ -18,6 +20,7 @@ export default function ExpectedQuestionFormats({ course, materials = [], materi
     structure.refetch()
     history.refetch()
   }
+  const reports = [...new Map([...(course.exerciseAnalysisReports || []), ...materials.filter(material => material.exerciseAnalysisReport).map(material => ({ sourceFileName: material.sourceFiles?.[0]?.fileName || material.title, report: material.exerciseAnalysisReport }))].map(report => [JSON.stringify([report.sourceFileName, report.report]), report])).values()]
   const files = materials.flatMap(material => material.sourceFiles || [])
 
   return <section className="bg-white rounded-lg shadow p-6" aria-labelledby="expected-question-formats">
@@ -32,6 +35,10 @@ export default function ExpectedQuestionFormats({ course, materials = [], materi
 
     {materialsError && <p role="alert" className="text-sm text-red-700 mt-4">Could not load exercise formats from course materials. Use Refresh formats to retry.</p>}
     {!formats.length && failed && !loading && <p className="text-sm text-gray-600 mt-4">Exercise formats could not be fully loaded. Retry before scanning the PDF again.</p>}
+    {reports.map((analysis, index) => <details key={index} className="mt-4 border border-blue-200 rounded-lg p-4">
+      <summary className="cursor-pointer font-medium text-blue-800">Document analysis and worksheet mix · {analysis.sourceFileName}</summary>
+      <div className="mt-3"><MaterialViewer material={{ type: 'article', title: 'Question-format analysis', content: analysis.report }} /></div>
+    </details>)}
     <div className="space-y-3 mt-4">
       {formats.map((format, index) => {
         const source = files.find(file => file.fileName === format.sourceFileName)
@@ -44,6 +51,9 @@ export default function ExpectedQuestionFormats({ course, materials = [], materi
           <p className="text-sm text-gray-600 mt-2">{format.chapterName || 'Chapter not recorded'}{format.topics?.length ? ` · ${format.topics.join(', ')}` : ' · Chapter-wide exercises'}</p>
           <p className="text-xs text-gray-500 mt-1">Evidence: {format.origins.join(' and ')}{format.sourceFileName && <> · {url ? <a href={url} target="_blank" rel="noreferrer" className="text-blue-700 underline">{format.sourceFileName}</a> : format.sourceFileName}</>}</p>
           {format.sourcePages?.length > 0 && <p className="text-xs text-gray-500 mt-1">PDF pages: {format.sourcePages.join(', ')}</p>}
+          {format.description && <p className="text-sm text-gray-700 mt-3">{format.description}</p>}
+          {format.skillTested && <p className="text-sm text-gray-700 mt-2"><span className="font-medium">Skill tested:</span> {format.skillTested}</p>}
+          {COGNITIVE_LEVELS[format.cognitiveLevel] && <p className="text-sm text-purple-700 mt-2">Source exercise level {format.cognitiveLevel} — {COGNITIVE_LEVELS[format.cognitiveLevel]}</p>}
           {format.instructions && <p className="text-sm text-gray-800 whitespace-pre-wrap mt-3">{format.instructions}</p>}
           {format.example && <details className="mt-3">
             <summary className="cursor-pointer text-sm text-blue-700">Scanned exercise example</summary>

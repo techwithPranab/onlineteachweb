@@ -13,3 +13,5 @@ Older scanned materials without structured patterns use conservative recognition
 Validation: `cd backend && npm test -- --runInBand`; `cd frontend && node --test tests/exercisePatterns.test.mjs`.
 
 The dedicated prompt is in `backend/services/exerciseExtractionPrompt.js`. Each review is recorded as an `exercise-format-review-*` exchange in scan history. This adds one AI request per PDF. `OPENAI_EXERCISE_MODEL` optionally overrides the OCR model for this step. Existing courses require a new scan to obtain the dedicated PDF review; old stored prompt snapshots remain historical.
+
+The extraction prompt now includes the supplied visual question-format taxonomy instructions. Its structured response stores each format description, skill tested and cognitive level (1–5), plus the complete Markdown document analysis, format table, grouped level summary and recommended worksheet mix. The admin course view displays the report for each PDF and the new taxonomy fields. Cognitive levels describe source questions; they do not change the existing course difficulty eligibility rules.

@@ -9,7 +9,7 @@ describe('course scan material mapping', () => {
 
   beforeEach(() => {
     process.env.OPENAI_API_KEY = 'test';
-    global.fetch = jest.fn().mockResolvedValue(respond(JSON.stringify({ status: 'no_exercises', reviewNote: 'No exercises', exercisePatterns: [] })));
+    global.fetch = jest.fn().mockResolvedValue(respond(JSON.stringify({ status: 'no_exercises', analysisReport: 'DOCUMENT ANALYSIS: No exercises', reviewNote: 'No exercises', exercisePatterns: [] })));
   });
   afterEach(() => {
     global.fetch = originalFetch;
@@ -43,19 +43,21 @@ describe('course scan material mapping', () => {
     global.fetch.mockResolvedValueOnce(respond('Full source content'))
       .mockResolvedValueOnce(respond(JSON.stringify({ course: { title: 'Course' }, materials: [{ title: 'AI title', description: 'Summary', chapterName: 'Chapter', content: 'Shortened text' }] })));
     const result = await generateCourseFromScans([pdf('Chapter.pdf')]);
-    expect(result.materials[0]).toEqual({ title: 'AI title', description: 'Summary', chapterName: 'Chapter', content: 'Full source content', exercisePatterns: [], exercisePatternsReviewed: true });
+    expect(result.materials[0]).toEqual({ title: 'AI title', description: 'Summary', chapterName: 'Chapter', content: 'Full source content', exercisePatterns: [], exercisePatternsReviewed: true, exerciseAnalysisReport: 'DOCUMENT ANALYSIS: No exercises' });
   });
   test('retains exercise formats on their original PDF when material metadata count differs', async () => {
     const patterns = [
-      { sourceFileIndex: 0, chapterName: 'Fractions', topics: ['Addition'], label: 'Fill in the blanks', questionType: 'short-answer', instructions: 'Complete the blanks', example: '1/5 + 2/5 = ___', sourcePages: [2] },
-      { sourceFileIndex: 1, chapterName: 'Plants', topics: [], label: 'True or false', questionType: 'true-false', instructions: 'State true or false', example: 'Plants need water.', sourcePages: [3] }
+      { description: 'Complete a missing fraction', skillTested: 'Addition', cognitiveLevel: 2, sourceFileIndex: 0, chapterName: 'Fractions', topics: ['Addition'], label: 'Fill in the blanks', questionType: 'short-answer', instructions: 'Complete the blanks', example: '1/5 + 2/5 = ___', sourcePages: [2] },
+      { description: 'Judge a statement', skillTested: 'Recall', cognitiveLevel: 1, sourceFileIndex: 1, chapterName: 'Plants', topics: [], label: 'True or false', questionType: 'true-false', instructions: 'State true or false', example: 'Plants need water.', sourcePages: [3] }
     ];
     global.fetch.mockResolvedValueOnce(respond('Fraction exercises')).mockResolvedValueOnce(respond('Plant exercises'))
       .mockResolvedValueOnce(respond(JSON.stringify({ course: { title: 'Course', exercisePatterns: [{ label: 'Wrong synthesis format' }] }, materials: [] })))
-      .mockResolvedValueOnce(respond(JSON.stringify({ status: 'complete', reviewNote: 'Reviewed all pages', exercisePatterns: [patterns[0]] })))
-      .mockResolvedValueOnce(respond(JSON.stringify({ status: 'complete', reviewNote: 'Reviewed all pages', exercisePatterns: [patterns[1]] })));
+      .mockResolvedValueOnce(respond(JSON.stringify({ status: 'complete', analysisReport: 'DOCUMENT ANALYSIS: Exercise report', reviewNote: 'Reviewed all pages', exercisePatterns: [patterns[0]] })))
+      .mockResolvedValueOnce(respond(JSON.stringify({ status: 'complete', analysisReport: 'DOCUMENT ANALYSIS: Exercise report', reviewNote: 'Reviewed all pages', exercisePatterns: [patterns[1]] })));
     const result = await generateCourseFromScans([pdf('Math.pdf'), pdf('Science.pdf')]);
     expect(result.course.exercisePatterns).toHaveLength(2);
+    expect(result.course.exerciseAnalysisReports).toEqual([{ sourceFileName: 'Math.pdf', report: 'DOCUMENT ANALYSIS: Exercise report' }, { sourceFileName: 'Science.pdf', report: 'DOCUMENT ANALYSIS: Exercise report' }]);
+    expect(result.materials[1].exerciseAnalysisReport).toBe('DOCUMENT ANALYSIS: Exercise report');
     expect(result.materials[0].exercisePatterns[0]).toMatchObject({ ...patterns[0], sourceFileName: 'Math.pdf' });
     expect(result.materials[1].exercisePatterns[0]).toMatchObject({ ...patterns[1], sourceFileName: 'Science.pdf' });
     const synthesis = JSON.parse(global.fetch.mock.calls[2][1].body);

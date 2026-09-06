@@ -48,3 +48,12 @@ test('explicitly reviewed empty inventory does not fall back to heuristic format
     expect(await loadExercisePatterns({ _id: 'course', exercisePatterns: [] })).toEqual([]);
   } finally { find.mockRestore(); }
 });
+
+test('taxonomy description, skill and cognitive level survive storage and reach the prompt', () => {
+  const taxonomy = { ...blank, description: 'Identify a fraction from a shaded figure', skillTested: 'Visual part-whole reasoning', cognitiveLevel: 3 };
+  const normalized = normalizePatterns([taxonomy]);
+  expect(new Material({ exercisePatterns: normalized }).toObject().exercisePatterns[0]).toMatchObject(taxonomy);
+  expect(new Course({ exercisePatterns: normalized }).toObject().exercisePatterns[0]).toMatchObject(taxonomy);
+  expect(buildExerciseGuidance(normalized)).toContain('Visual part-whole reasoning');
+  expect(buildExerciseGuidance(normalized)).toContain('"cognitiveLevel":3');
+});

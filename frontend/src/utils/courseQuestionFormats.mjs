@@ -14,6 +14,9 @@ export function mergeExpectedFormats(patterns = [], generations = []) {
     if (!pattern?.label || !pattern.questionType) return
     const key = JSON.stringify([pattern.sourceFileName || '', pattern.chapterName || '', pattern.topics || [], pattern.label, pattern.questionType, pattern.instructions || '', pattern.example || ''])
     const item = merged.get(key) || { ...pattern, origins: [] }
+    for (const field of ['description', 'skillTested', 'cognitiveLevel']) {
+      if (item[field] == null && pattern[field] != null) item[field] = pattern[field]
+    }
     if (pattern.sourcePages?.length) item.sourcePages = [...new Set([...(item.sourcePages || []), ...pattern.sourcePages])].sort((a, b) => a - b)
     if (!item.origins.includes(origin)) item.origins.push(origin)
     merged.set(key, item)

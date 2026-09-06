@@ -49,3 +49,10 @@ test('course, material, structure and generation evidence is combined without du
   assert.equal(formats.length, 1)
   assert.deepEqual(formats[0].origins, ['Scanned PDF', 'Generation prompt'])
 })
+
+test('additional taxonomy evidence is retained when combined with older scan records', () => {
+  const formats = mergeExpectedFormats([format], [{ sourceSnapshot: { exercisePatterns: [{ ...format, description: 'Identify shaded fraction', skillTested: 'Visual reasoning', cognitiveLevel: 3 }] } }]);
+  assert.equal(formats[0].description, 'Identify shaded fraction');
+  assert.equal(formats[0].skillTested, 'Visual reasoning');
+  assert.equal(formats[0].cognitiveLevel, 3);
+});
