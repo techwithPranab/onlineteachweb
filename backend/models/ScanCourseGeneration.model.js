@@ -7,7 +7,7 @@ const scanCourseGenerationSchema = new mongoose.Schema({
     subject: String,
     board: String,
     title: String,
-    files: [{ fileName: String, fileUrl: String, mimeType: String, fileSize: Number, order: Number }]
+    files: [{ fileName: String, fileUrl: String, cloudinaryPublicId: String, mimeType: String, fileSize: Number, order: Number }]
   },
   exchanges: [{
     stage: String,

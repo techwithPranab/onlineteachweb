@@ -53,6 +53,7 @@ const materialSchema = new mongoose.Schema({
   // retained so generated content remains auditable and can be regenerated.
   sourceFiles: [{
     fileUrl: String,
+    cloudinaryPublicId: String,
     fileName: String,
     fileSize: Number,
     mimeType: String,
