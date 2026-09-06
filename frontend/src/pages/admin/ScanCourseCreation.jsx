@@ -14,13 +14,17 @@ export default function ScanCourseCreation() {
   const [result, setResult] = useState(null)
   const [history, setHistory] = useState([])
   const [historyLoading, setHistoryLoading] = useState(false)
+  const [historyError, setHistoryError] = useState('')
   const [selectedHistory, setSelectedHistory] = useState(null)
 
   const loadHistory = async () => {
     setHistoryLoading(true)
+    setHistoryError('')
     try {
       const data = await courseService.getScanCourseHistory({ limit: 20 })
       setHistory(data.items || [])
+    } catch (err) {
+      setHistoryError(err.response?.data?.message || 'Could not load generation history. Please try refreshing the history.')
     } finally {
       setHistoryLoading(false)
     }
@@ -39,8 +43,10 @@ export default function ScanCourseCreation() {
 
   const submit = async event => {
     event.preventDefault()
+    if (loading) return
     if (!files.length) return setError('Select at least one textbook PDF.')
     setLoading(true)
+    setProgress(0)
     setError('')
     setResult(null)
     const data = new FormData()
@@ -103,6 +109,7 @@ export default function ScanCourseCreation() {
           <button onClick={loadHistory} disabled={historyLoading} className="p-2 border rounded-lg" title="Refresh"><RefreshCw className={`w-4 h-4 ${historyLoading ? 'animate-spin' : ''}`} /></button>
         </div>
         <div className="overflow-x-auto">
+          {historyError && <p role="alert" className="p-3 bg-red-50 text-red-700">{historyError}</p>}
           <table className="w-full text-sm">
             <thead className="bg-gray-50 text-left"><tr><th className="p-3">Date</th><th className="p-3">Request</th><th className="p-3">Files</th><th className="p-3">Status</th><th className="p-3">Result</th><th className="p-3"></th></tr></thead>
             <tbody>{history.map(item => <tr key={item._id} className="border-t">
