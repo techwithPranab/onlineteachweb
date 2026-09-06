@@ -9,6 +9,7 @@ import SEOHead from '@/components/SEO/SEOHead';
 import ErrorMessage from '@/components/common/ErrorMessage'
 import Modal from '@/components/common/Modal'
 import MaterialViewer from '@/components/course/MaterialViewer'
+import ExpectedQuestionFormats from '@/components/course/ExpectedQuestionFormats'
 
 export default function AdminCourseView() {
   const { id } = useParams()
@@ -533,6 +534,8 @@ export default function AdminCourseView() {
               </div>
             )}
           </div>
+
+          <ExpectedQuestionFormats course={course} materials={materials} />
 
           {/* Question Snapshot */}
           {(() => {
