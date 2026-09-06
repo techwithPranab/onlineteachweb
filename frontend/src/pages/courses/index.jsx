@@ -46,7 +46,7 @@ export default function Courses() {
 
   // Available grades and subjects
   const grades = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']
-  const subjects = ['Mathematics', 'Science', 'English', 'Social Studies', 'Hindi', 'Computer Science', 'Physics', 'Chemistry', 'Biology']
+  const subjects = ['Mathematics', 'Olympiad-Mathematics', 'Olympiad-Science', 'Science', 'English', 'Social Studies', 'Hindi', 'Computer Science', 'Physics', 'Chemistry', 'Biology']
 
   // SEO Data
   const getPageTitle = () => {

@@ -90,7 +90,7 @@ export default function AdminCourseEdit() {
   )
 
   const subjects = [
-    'Mathematics',
+    'Mathematics', 'Olympiad-Mathematics', 'Olympiad-Science',
     'Science',
     'English',
     'Social Studies',
