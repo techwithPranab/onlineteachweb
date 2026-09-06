@@ -1,0 +1,1530 @@
+[
+  {
+    "_id": {
+      "$oid": "700000000000000000000029"
+    },
+    "title": "Grade 8 Mathematics - Rational Numbers",
+    "description": "Comprehensive Grade 8 Mathematics course on Rational Numbers, aligned with the supplied syllabus and suitable for CBSE and CISCE middle-school learning.",
+    "createdBy": "696d8e8098d47cbd00770abd",
+    "grade": 8,
+    "subject": "Mathematics",
+    "board": [
+      "CBSE",
+      "ICSE"
+    ],
+    "thumbnail": "",
+    "syllabus": [
+      "Properties of rational numbers including identities",
+      "Closure property of rational numbers",
+      "Commutative and associative properties",
+      "Distributive property of rational numbers",
+      "Using general expression to describe properties",
+      "Representation of rational numbers on number line",
+      "Ordering rational numbers",
+      "Between any two rational numbers another rational number lies",
+      "Finding rational numbers between two numbers",
+      "Word problems on rational numbers"
+    ],
+    "chapters": [
+      {
+        "name": "Properties of Rational Numbers",
+        "topics": [
+          "Properties of rational numbers including identities",
+          "Closure property of rational numbers",
+          "Commutative and associative properties",
+          "Distributive property of rational numbers",
+          "Using general expression to describe properties"
+        ],
+        "learningObjectives": [
+          "Understand and solve Grade 8 syllabus-aligned problems on Properties of rational numbers including identities",
+          "Understand and solve Grade 8 syllabus-aligned problems on Closure property of rational numbers",
+          "Understand and solve Grade 8 syllabus-aligned problems on Commutative and associative properties",
+          "Understand and solve Grade 8 syllabus-aligned problems on Distributive property of rational numbers",
+          "Understand and solve Grade 8 syllabus-aligned problems on Using general expression to describe properties"
+        ],
+        "estimatedHours": 6
+      },
+      {
+        "name": "Rational Numbers on Number Line and Between Numbers",
+        "topics": [
+          "Representation of rational numbers on number line",
+          "Ordering rational numbers",
+          "Between any two rational numbers another rational number lies",
+          "Finding rational numbers between two numbers",
+          "Word problems on rational numbers"
+        ],
+        "learningObjectives": [
+          "Understand and solve Grade 8 syllabus-aligned problems on Representation of rational numbers on number line",
+          "Understand and solve Grade 8 syllabus-aligned problems on Ordering rational numbers",
+          "Understand and solve Grade 8 syllabus-aligned problems on Between any two rational numbers another rational number lies",
+          "Understand and solve Grade 8 syllabus-aligned problems on Finding rational numbers between two numbers",
+          "Understand and solve Grade 8 syllabus-aligned problems on Word problems on rational numbers"
+        ],
+        "estimatedHours": 6
+      }
+    ],
+    "topics": [
+      "Properties of rational numbers including identities",
+      "Closure property of rational numbers",
+      "Commutative and associative properties",
+      "Distributive property of rational numbers",
+      "Using general expression to describe properties",
+      "Representation of rational numbers on number line",
+      "Ordering rational numbers",
+      "Between any two rational numbers another rational number lies",
+      "Finding rational numbers between two numbers",
+      "Word problems on rational numbers"
+    ],
+    "duration": "6 weeks",
+    "estimatedHours": 12,
+    "level": "intermediate",
+    "difficulty": 3,
+    "language": "English",
+    "prerequisites": [
+      "Grade 7 arithmetic and rational numbers",
+      "Basic algebraic expressions",
+      "Basic geometry and mensuration"
+    ],
+    "learningOutcomes": [
+      "Explain the concepts of Rational Numbers clearly",
+      "Use diagrams and models before applying rules",
+      "Solve numerical, algebraic, geometric and data problems accurately",
+      "Check answers using properties, substitution, estimation or visual reasoning"
+    ],
+    "certificate": true,
+    "status": "published",
+    "enrollmentCount": 0,
+    "averageRating": 0,
+    "totalRatings": 0,
+    "reviewCount": 0,
+    "maxStudents": 50,
+    "tags": [
+      "Grade 8",
+      "Mathematics",
+      "Rational Numbers",
+      "CBSE",
+      "CISCE",
+      "Upper Primary"
+    ],
+    "isActive": true,
+    "createdAt": {
+      "$date": "2026-08-01T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-08-01T00:00:00.000Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "70000000000000000000002d"
+    },
+    "title": "Grade 8 Mathematics - Exponents, Squares and Cubes",
+    "description": "Comprehensive Grade 8 Mathematics course on Exponents, Squares and Cubes, aligned with the supplied syllabus and suitable for CBSE and CISCE middle-school learning.",
+    "createdBy": "696d8e8098d47cbd00770abd",
+    "grade": 8,
+    "subject": "Mathematics",
+    "board": [
+      "CBSE",
+      "ICSE"
+    ],
+    "thumbnail": "",
+    "syllabus": [
+      "Integral powers",
+      "Negative integral exponents",
+      "Product law of exponents",
+      "Quotient law of exponents",
+      "Power of a power and simple applications",
+      "Square numbers",
+      "Square roots by factor method",
+      "Square roots by division method",
+      "Square roots of numbers up to 4 digits",
+      "Square roots of decimals up to 2 decimal places",
+      "Cube numbers",
+      "Cube roots by factor method",
+      "Cube roots of numbers up to 3 digits",
+      "Recognising perfect cubes",
+      "Daily-life cube root problems"
+    ],
+    "chapters": [
+      {
+        "name": "Laws of Exponents with Integral Powers",
+        "topics": [
+          "Integral powers",
+          "Negative integral exponents",
+          "Product law of exponents",
+          "Quotient law of exponents",
+          "Power of a power and simple applications"
+        ],
+        "learningObjectives": [
+          "Understand and solve Grade 8 syllabus-aligned problems on Integral powers",
+          "Understand and solve Grade 8 syllabus-aligned problems on Negative integral exponents",
+          "Understand and solve Grade 8 syllabus-aligned problems on Product law of exponents",
+          "Understand and solve Grade 8 syllabus-aligned problems on Quotient law of exponents",
+          "Understand and solve Grade 8 syllabus-aligned problems on Power of a power and simple applications"
+        ],
+        "estimatedHours": 6
+      },
+      {
+        "name": "Squares and Square Roots",
+        "topics": [
+          "Square numbers",
+          "Square roots by factor method",
+          "Square roots by division method",
+          "Square roots of numbers up to 4 digits",
+          "Square roots of decimals up to 2 decimal places"
+        ],
+        "learningObjectives": [
+          "Understand and solve Grade 8 syllabus-aligned problems on Square numbers",
+          "Understand and solve Grade 8 syllabus-aligned problems on Square roots by factor method",
+          "Understand and solve Grade 8 syllabus-aligned problems on Square roots by division method",
+          "Understand and solve Grade 8 syllabus-aligned problems on Square roots of numbers up to 4 digits",
+          "Understand and solve Grade 8 syllabus-aligned problems on Square roots of decimals up to 2 decimal places"
+        ],
+        "estimatedHours": 6
+      },
+      {
+        "name": "Cubes and Cube Roots",
+        "topics": [
+          "Cube numbers",
+          "Cube roots by factor method",
+          "Cube roots of numbers up to 3 digits",
+          "Recognising perfect cubes",
+          "Daily-life cube root problems"
+        ],
+        "learningObjectives": [
+          "Understand and solve Grade 8 syllabus-aligned problems on Cube numbers",
+          "Understand and solve Grade 8 syllabus-aligned problems on Cube roots by factor method",
+          "Understand and solve Grade 8 syllabus-aligned problems on Cube roots of numbers up to 3 digits",
+          "Understand and solve Grade 8 syllabus-aligned problems on Recognising perfect cubes",
+          "Understand and solve Grade 8 syllabus-aligned problems on Daily-life cube root problems"
+        ],
+        "estimatedHours": 6
+      }
+    ],
+    "topics": [
+      "Integral powers",
+      "Negative integral exponents",
+      "Product law of exponents",
+      "Quotient law of exponents",
+      "Power of a power and simple applications",
+      "Square numbers",
+      "Square roots by factor method",
+      "Square roots by division method",
+      "Square roots of numbers up to 4 digits",
+      "Square roots of decimals up to 2 decimal places",
+      "Cube numbers",
+      "Cube roots by factor method",
+      "Cube roots of numbers up to 3 digits",
+      "Recognising perfect cubes",
+      "Daily-life cube root problems"
+    ],
+    "duration": "9 weeks",
+    "estimatedHours": 18,
+    "level": "intermediate",
+    "difficulty": 3,
+    "language": "English",
+    "prerequisites": [
+      "Grade 7 arithmetic and rational numbers",
+      "Basic algebraic expressions",
+      "Basic geometry and mensuration"
+    ],
+    "learningOutcomes": [
+      "Explain the concepts of Exponents, Squares and Cubes clearly",
+      "Use diagrams and models before applying rules",
+      "Solve numerical, algebraic, geometric and data problems accurately",
+      "Check answers using properties, substitution, estimation or visual reasoning"
+    ],
+    "certificate": true,
+    "status": "published",
+    "enrollmentCount": 0,
+    "averageRating": 0,
+    "totalRatings": 0,
+    "reviewCount": 0,
+    "maxStudents": 50,
+    "tags": [
+      "Grade 8",
+      "Mathematics",
+      "Exponents, Squares and Cubes",
+      "CBSE",
+      "CISCE",
+      "Upper Primary"
+    ],
+    "isActive": true,
+    "createdAt": {
+      "$date": "2026-08-01T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-08-01T00:00:00.000Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "700000000000000000000031"
+    },
+    "title": "Grade 8 Mathematics - Playing with Numbers and Sets",
+    "description": "Comprehensive Grade 8 Mathematics course on Playing with Numbers and Sets, aligned with the supplied syllabus and suitable for CBSE and CISCE middle-school learning.",
+    "createdBy": "696d8e8098d47cbd00770abd",
+    "grade": 8,
+    "subject": "Mathematics",
+    "board": [
+      "CBSE",
+      "ICSE"
+    ],
+    "thumbnail": "",
+    "syllabus": [
+      "Two-digit numbers as 10a + b",
+      "Three-digit numbers as 100a + 10b + c",
+      "Digit puzzles using generalised form",
+      "Creating number puzzles",
+      "Solving number puzzles logically",
+      "Divisibility test of 2",
+      "Divisibility test of 3",
+      "Divisibility test of 5",
+      "Divisibility test of 9",
+      "Divisibility test of 10 using general form",
+      "Union of sets",
+      "Intersection of sets",
+      "Disjoint sets",
+      "Complement of a set",
+      "Venn diagrams for set operations"
+    ],
+    "chapters": [
+      {
+        "name": "Generalised Form of Numbers",
+        "topics": [
+          "Two-digit numbers as 10a + b",
+          "Three-digit numbers as 100a + 10b + c",
+          "Digit puzzles using generalised form",
+          "Creating number puzzles",
+          "Solving number puzzles logically"
+        ],
+        "learningObjectives": [
+          "Understand and solve Grade 8 syllabus-aligned problems on Two-digit numbers as 10a + b",
+          "Understand and solve Grade 8 syllabus-aligned problems on Three-digit numbers as 100a + 10b + c",
+          "Understand and solve Grade 8 syllabus-aligned problems on Digit puzzles using generalised form",
+          "Understand and solve Grade 8 syllabus-aligned problems on Creating number puzzles",
+          "Understand and solve Grade 8 syllabus-aligned problems on Solving number puzzles logically"
+        ],
+        "estimatedHours": 5
+      },
+      {
+        "name": "Divisibility Tests from General Form",
+        "topics": [
+          "Divisibility test of 2",
+          "Divisibility test of 3",
+          "Divisibility test of 5",
+          "Divisibility test of 9",
+          "Divisibility test of 10 using general form"
+        ],
+        "learningObjectives": [
+          "Understand and solve Grade 8 syllabus-aligned problems on Divisibility test of 2",
+          "Understand and solve Grade 8 syllabus-aligned problems on Divisibility test of 3",
+          "Understand and solve Grade 8 syllabus-aligned problems on Divisibility test of 5",
+          "Understand and solve Grade 8 syllabus-aligned problems on Divisibility test of 9",
+          "Understand and solve Grade 8 syllabus-aligned problems on Divisibility test of 10 using general form"
+        ],
+        "estimatedHours": 5
+      },
+      {
+        "name": "Set Operations",
+        "topics": [
+          "Union of sets",
+          "Intersection of sets",
+          "Disjoint sets",
+          "Complement of a set",
+          "Venn diagrams for set operations"
+        ],
+        "learningObjectives": [
+          "Understand and solve Grade 8 syllabus-aligned problems on Union of sets",
+          "Understand and solve Grade 8 syllabus-aligned problems on Intersection of sets",
+          "Understand and solve Grade 8 syllabus-aligned problems on Disjoint sets",
+          "Understand and solve Grade 8 syllabus-aligned problems on Complement of a set",
+          "Understand and solve Grade 8 syllabus-aligned problems on Venn diagrams for set operations"
+        ],
+        "estimatedHours": 5
+      }
+    ],
+    "topics": [
+      "Two-digit numbers as 10a + b",
+      "Three-digit numbers as 100a + 10b + c",
+      "Digit puzzles using generalised form",
+      "Creating number puzzles",
+      "Solving number puzzles logically",
+      "Divisibility test of 2",
+      "Divisibility test of 3",
+      "Divisibility test of 5",
+      "Divisibility test of 9",
+      "Divisibility test of 10 using general form",
+      "Union of sets",
+      "Intersection of sets",
+      "Disjoint sets",
+      "Complement of a set",
+      "Venn diagrams for set operations"
+    ],
+    "duration": "7 weeks",
+    "estimatedHours": 14,
+    "level": "intermediate",
+    "difficulty": 3,
+    "language": "English",
+    "prerequisites": [
+      "Grade 7 arithmetic and rational numbers",
+      "Basic algebraic expressions",
+      "Basic geometry and mensuration"
+    ],
+    "learningOutcomes": [
+      "Explain the concepts of Playing with Numbers and Sets clearly",
+      "Use diagrams and models before applying rules",
+      "Solve numerical, algebraic, geometric and data problems accurately",
+      "Check answers using properties, substitution, estimation or visual reasoning"
+    ],
+    "certificate": true,
+    "status": "published",
+    "enrollmentCount": 0,
+    "averageRating": 0,
+    "totalRatings": 0,
+    "reviewCount": 0,
+    "maxStudents": 50,
+    "tags": [
+      "Grade 8",
+      "Mathematics",
+      "Playing with Numbers and Sets",
+      "CBSE",
+      "CISCE",
+      "Upper Primary"
+    ],
+    "isActive": true,
+    "createdAt": {
+      "$date": "2026-08-01T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-08-01T00:00:00.000Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "700000000000000000000035"
+    },
+    "title": "Grade 8 Mathematics - Commercial Mathematics and Variation",
+    "description": "Comprehensive Grade 8 Mathematics course on Commercial Mathematics and Variation, aligned with the supplied syllabus and suitable for CBSE and CISCE middle-school learning.",
+    "createdBy": "696d8e8098d47cbd00770abd",
+    "grade": 8,
+    "subject": "Mathematics",
+    "board": [
+      "CBSE",
+      "ICSE"
+    ],
+    "thumbnail": "",
+    "syllabus": [
+      "Advanced percentage applications",
+      "Profit and loss with overhead expenses",
+      "Discount on marked price",
+      "Tax on selling price",
+      "Single transaction commercial problems",
+      "Simple interest review",
+      "Compound interest yearly up to 3 years",
+      "Compound interest half-yearly up to 3 steps",
+      "Difference between simple and compound interest",
+      "Amount and interest comparison",
+      "Direct variation",
+      "Inverse variation",
+      "Simple direct variation word problems",
+      "Simple inverse variation word problems",
+      "Variation tables and unit reasoning",
+      "Work done in one day",
+      "Time taken to complete work",
+      "Simple direct time and work problems",
+      "Combining workers in simple cases",
+      "Checking work-rate answers"
+    ],
+    "chapters": [
+      {
+        "name": "Percentages, Profit, Loss, Discount and Tax",
+        "topics": [
+          "Advanced percentage applications",
+          "Profit and loss with overhead expenses",
+          "Discount on marked price",
+          "Tax on selling price",
+          "Single transaction commercial problems"
+        ],
+        "learningObjectives": [
+          "Understand and solve Grade 8 syllabus-aligned problems on Advanced percentage applications",
+          "Understand and solve Grade 8 syllabus-aligned problems on Profit and loss with overhead expenses",
+          "Understand and solve Grade 8 syllabus-aligned problems on Discount on marked price",
+          "Understand and solve Grade 8 syllabus-aligned problems on Tax on selling price",
+          "Understand and solve Grade 8 syllabus-aligned problems on Single transaction commercial problems"
+        ],
+        "estimatedHours": 5
+      },
+      {
+        "name": "Simple and Compound Interest",
+        "topics": [
+          "Simple interest review",
+          "Compound interest yearly up to 3 years",
+          "Compound interest half-yearly up to 3 steps",
+          "Difference between simple and compound interest",
+          "Amount and interest comparison"
+        ],
+        "learningObjectives": [
+          "Understand and solve Grade 8 syllabus-aligned problems on Simple interest review",
+          "Understand and solve Grade 8 syllabus-aligned problems on Compound interest yearly up to 3 years",
+          "Understand and solve Grade 8 syllabus-aligned problems on Compound interest half-yearly up to 3 steps",
+          "Understand and solve Grade 8 syllabus-aligned problems on Difference between simple and compound interest",
+          "Understand and solve Grade 8 syllabus-aligned problems on Amount and interest comparison"
+        ],
+        "estimatedHours": 5
+      },
+      {
+        "name": "Direct and Inverse Variation",
+        "topics": [
+          "Direct variation",
+          "Inverse variation",
+          "Simple direct variation word problems",
+          "Simple inverse variation word problems",
+          "Variation tables and unit reasoning"
+        ],
+        "learningObjectives": [
+          "Understand and solve Grade 8 syllabus-aligned problems on Direct variation",
+          "Understand and solve Grade 8 syllabus-aligned problems on Inverse variation",
+          "Understand and solve Grade 8 syllabus-aligned problems on Simple direct variation word problems",
+          "Understand and solve Grade 8 syllabus-aligned problems on Simple inverse variation word problems",
+          "Understand and solve Grade 8 syllabus-aligned problems on Variation tables and unit reasoning"
+        ],
+        "estimatedHours": 5
+      },
+      {
+        "name": "Time and Work",
+        "topics": [
+          "Work done in one day",
+          "Time taken to complete work",
+          "Simple direct time and work problems",
+          "Combining workers in simple cases",
+          "Checking work-rate answers"
+        ],
+        "learningObjectives": [
+          "Understand and solve Grade 8 syllabus-aligned problems on Work done in one day",
+          "Understand and solve Grade 8 syllabus-aligned problems on Time taken to complete work",
+          "Understand and solve Grade 8 syllabus-aligned problems on Simple direct time and work problems",
+          "Understand and solve Grade 8 syllabus-aligned problems on Combining workers in simple cases",
+          "Understand and solve Grade 8 syllabus-aligned problems on Checking work-rate answers"
+        ],
+        "estimatedHours": 5
+      }
+    ],
+    "topics": [
+      "Advanced percentage applications",
+      "Profit and loss with overhead expenses",
+      "Discount on marked price",
+      "Tax on selling price",
+      "Single transaction commercial problems",
+      "Simple interest review",
+      "Compound interest yearly up to 3 years",
+      "Compound interest half-yearly up to 3 steps",
+      "Difference between simple and compound interest",
+      "Amount and interest comparison",
+      "Direct variation",
+      "Inverse variation",
+      "Simple direct variation word problems",
+      "Simple inverse variation word problems",
+      "Variation tables and unit reasoning",
+      "Work done in one day",
+      "Time taken to complete work",
+      "Simple direct time and work problems",
+      "Combining workers in simple cases",
+      "Checking work-rate answers"
+    ],
+    "duration": "9 weeks",
+    "estimatedHours": 18,
+    "level": "intermediate",
+    "difficulty": 3,
+    "language": "English",
+    "prerequisites": [
+      "Grade 7 arithmetic and rational numbers",
+      "Basic algebraic expressions",
+      "Basic geometry and mensuration"
+    ],
+    "learningOutcomes": [
+      "Explain the concepts of Commercial Mathematics and Variation clearly",
+      "Use diagrams and models before applying rules",
+      "Solve numerical, algebraic, geometric and data problems accurately",
+      "Check answers using properties, substitution, estimation or visual reasoning"
+    ],
+    "certificate": true,
+    "status": "published",
+    "enrollmentCount": 0,
+    "averageRating": 0,
+    "totalRatings": 0,
+    "reviewCount": 0,
+    "maxStudents": 50,
+    "tags": [
+      "Grade 8",
+      "Mathematics",
+      "Commercial Mathematics and Variation",
+      "CBSE",
+      "CISCE",
+      "Upper Primary"
+    ],
+    "isActive": true,
+    "createdAt": {
+      "$date": "2026-08-01T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-08-01T00:00:00.000Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "700000000000000000000039"
+    },
+    "title": "Grade 8 Mathematics - Algebraic Expressions, Identities and Factorisation",
+    "description": "Comprehensive Grade 8 Mathematics course on Algebraic Expressions, Identities and Factorisation, aligned with the supplied syllabus and suitable for CBSE and CISCE middle-school learning.",
+    "createdBy": "696d8e8098d47cbd00770abd",
+    "grade": 8,
+    "subject": "Mathematics",
+    "board": [
+      "CBSE",
+      "ICSE"
+    ],
+    "thumbnail": "",
+    "syllabus": [
+      "Multiplication of algebraic expressions",
+      "Division of algebraic expressions",
+      "Integer coefficients",
+      "Multiplying monomial by polynomial",
+      "Dividing simple algebraic terms",
+      "Identity (a + b)^2",
+      "Identity (a - b)^2",
+      "Identity a^2 - b^2",
+      "Using identities for mental calculation",
+      "Verifying identities visually",
+      "Common factor type a(x + y)",
+      "Factorisation of (x + y)^2 and (x - y)^2",
+      "Factorisation of a^2 - b^2",
+      "Factorisation of (x + a)(x + b)",
+      "Simple factorisation problems",
+      "Linear equations in one variable with multiplication",
+      "Linear equations in one variable with division",
+      "Contextual linear equation word problems",
+      "Properties of inequalities",
+      "Solving simple inequalities"
+    ],
+    "chapters": [
+      {
+        "name": "Multiplication and Division of Algebraic Expressions",
+        "topics": [
+          "Multiplication of algebraic expressions",
+          "Division of algebraic expressions",
+          "Integer coefficients",
+          "Multiplying monomial by polynomial",
+          "Dividing simple algebraic terms"
+        ],
+        "learningObjectives": [
+          "Understand and solve Grade 8 syllabus-aligned problems on Multiplication of algebraic expressions",
+          "Understand and solve Grade 8 syllabus-aligned problems on Division of algebraic expressions",
+          "Understand and solve Grade 8 syllabus-aligned problems on Integer coefficients",
+          "Understand and solve Grade 8 syllabus-aligned problems on Multiplying monomial by polynomial",
+          "Understand and solve Grade 8 syllabus-aligned problems on Dividing simple algebraic terms"
+        ],
+        "estimatedHours": 5
+      },
+      {
+        "name": "Algebraic Identities",
+        "topics": [
+          "Identity (a + b)^2",
+          "Identity (a - b)^2",
+          "Identity a^2 - b^2",
+          "Using identities for mental calculation",
+          "Verifying identities visually"
+        ],
+        "learningObjectives": [
+          "Understand and solve Grade 8 syllabus-aligned problems on Identity (a + b)^2",
+          "Understand and solve Grade 8 syllabus-aligned problems on Identity (a - b)^2",
+          "Understand and solve Grade 8 syllabus-aligned problems on Identity a^2 - b^2",
+          "Understand and solve Grade 8 syllabus-aligned problems on Using identities for mental calculation",
+          "Understand and solve Grade 8 syllabus-aligned problems on Verifying identities visually"
+        ],
+        "estimatedHours": 5
+      },
+      {
+        "name": "Factorisation",
+        "topics": [
+          "Common factor type a(x + y)",
+          "Factorisation of (x + y)^2 and (x - y)^2",
+          "Factorisation of a^2 - b^2",
+          "Factorisation of (x + a)(x + b)",
+          "Simple factorisation problems"
+        ],
+        "learningObjectives": [
+          "Understand and solve Grade 8 syllabus-aligned problems on Common factor type a(x + y)",
+          "Understand and solve Grade 8 syllabus-aligned problems on Factorisation of (x + y)^2 and (x - y)^2",
+          "Understand and solve Grade 8 syllabus-aligned problems on Factorisation of a^2 - b^2",
+          "Understand and solve Grade 8 syllabus-aligned problems on Factorisation of (x + a)(x + b)",
+          "Understand and solve Grade 8 syllabus-aligned problems on Simple factorisation problems"
+        ],
+        "estimatedHours": 5
+      },
+      {
+        "name": "Linear Equations and Inequalities",
+        "topics": [
+          "Linear equations in one variable with multiplication",
+          "Linear equations in one variable with division",
+          "Contextual linear equation word problems",
+          "Properties of inequalities",
+          "Solving simple inequalities"
+        ],
+        "learningObjectives": [
+          "Understand and solve Grade 8 syllabus-aligned problems on Linear equations in one variable with multiplication",
+          "Understand and solve Grade 8 syllabus-aligned problems on Linear equations in one variable with division",
+          "Understand and solve Grade 8 syllabus-aligned problems on Contextual linear equation word problems",
+          "Understand and solve Grade 8 syllabus-aligned problems on Properties of inequalities",
+          "Understand and solve Grade 8 syllabus-aligned problems on Solving simple inequalities"
+        ],
+        "estimatedHours": 5
+      }
+    ],
+    "topics": [
+      "Multiplication of algebraic expressions",
+      "Division of algebraic expressions",
+      "Integer coefficients",
+      "Multiplying monomial by polynomial",
+      "Dividing simple algebraic terms",
+      "Identity (a + b)^2",
+      "Identity (a - b)^2",
+      "Identity a^2 - b^2",
+      "Using identities for mental calculation",
+      "Verifying identities visually",
+      "Common factor type a(x + y)",
+      "Factorisation of (x + y)^2 and (x - y)^2",
+      "Factorisation of a^2 - b^2",
+      "Factorisation of (x + a)(x + b)",
+      "Simple factorisation problems",
+      "Linear equations in one variable with multiplication",
+      "Linear equations in one variable with division",
+      "Contextual linear equation word problems",
+      "Properties of inequalities",
+      "Solving simple inequalities"
+    ],
+    "duration": "10 weeks",
+    "estimatedHours": 20,
+    "level": "intermediate",
+    "difficulty": 3,
+    "language": "English",
+    "prerequisites": [
+      "Grade 7 arithmetic and rational numbers",
+      "Basic algebraic expressions",
+      "Basic geometry and mensuration"
+    ],
+    "learningOutcomes": [
+      "Explain the concepts of Algebraic Expressions, Identities and Factorisation clearly",
+      "Use diagrams and models before applying rules",
+      "Solve numerical, algebraic, geometric and data problems accurately",
+      "Check answers using properties, substitution, estimation or visual reasoning"
+    ],
+    "certificate": true,
+    "status": "published",
+    "enrollmentCount": 0,
+    "averageRating": 0,
+    "totalRatings": 0,
+    "reviewCount": 0,
+    "maxStudents": 50,
+    "tags": [
+      "Grade 8",
+      "Mathematics",
+      "Algebraic Expressions, Identities and Factorisation",
+      "CBSE",
+      "CISCE",
+      "Upper Primary"
+    ],
+    "isActive": true,
+    "createdAt": {
+      "$date": "2026-08-01T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-08-01T00:00:00.000Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "73000000000000000000232a"
+    },
+    "title": "Grade 8 Mathematics - Quadrilaterals and Circle Geometry",
+    "description": "Comprehensive Grade 8 Mathematics course on Quadrilaterals and Circle Geometry, aligned with the supplied syllabus and suitable for CBSE and CISCE middle-school learning.",
+    "createdBy": "696d8e8098d47cbd00770abd",
+    "grade": 8,
+    "subject": "Mathematics",
+    "board": [
+      "CBSE",
+      "ICSE"
+    ],
+    "thumbnail": "",
+    "syllabus": [
+      "Angle sum property of quadrilaterals",
+      "Properties of parallelogram by verification",
+      "Opposite sides of parallelogram are equal",
+      "Opposite angles of parallelogram are equal",
+      "Diagonals of parallelogram bisect each other",
+      "Diagonals of rectangle are equal and bisect each other",
+      "Diagonals of rhombus bisect at right angles",
+      "Diagonals of square are equal and bisect at right angles",
+      "Comparing rectangle rhombus and square",
+      "Using diagonal properties in problems",
+      "Circle centre radius and diameter",
+      "Arc and chord",
+      "Sector and segment",
+      "Semicircle",
+      "Circle vocabulary in diagrams"
+    ],
+    "chapters": [
+      {
+        "name": "Properties of Quadrilaterals",
+        "topics": [
+          "Angle sum property of quadrilaterals",
+          "Properties of parallelogram by verification",
+          "Opposite sides of parallelogram are equal",
+          "Opposite angles of parallelogram are equal",
+          "Diagonals of parallelogram bisect each other"
+        ],
+        "learningObjectives": [
+          "Understand and solve Grade 8 syllabus-aligned problems on Angle sum property of quadrilaterals",
+          "Understand and solve Grade 8 syllabus-aligned problems on Properties of parallelogram by verification",
+          "Understand and solve Grade 8 syllabus-aligned problems on Opposite sides of parallelogram are equal",
+          "Understand and solve Grade 8 syllabus-aligned problems on Opposite angles of parallelogram are equal",
+          "Understand and solve Grade 8 syllabus-aligned problems on Diagonals of parallelogram bisect each other"
+        ],
+        "estimatedHours": 6
+      },
+      {
+        "name": "Special Parallelograms",
+        "topics": [
+          "Diagonals of rectangle are equal and bisect each other",
+          "Diagonals of rhombus bisect at right angles",
+          "Diagonals of square are equal and bisect at right angles",
+          "Comparing rectangle rhombus and square",
+          "Using diagonal properties in problems"
+        ],
+        "learningObjectives": [
+          "Understand and solve Grade 8 syllabus-aligned problems on Diagonals of rectangle are equal and bisect each other",
+          "Understand and solve Grade 8 syllabus-aligned problems on Diagonals of rhombus bisect at right angles",
+          "Understand and solve Grade 8 syllabus-aligned problems on Diagonals of square are equal and bisect at right angles",
+          "Understand and solve Grade 8 syllabus-aligned problems on Comparing rectangle rhombus and square",
+          "Understand and solve Grade 8 syllabus-aligned problems on Using diagonal properties in problems"
+        ],
+        "estimatedHours": 6
+      },
+      {
+        "name": "Circle Parts",
+        "topics": [
+          "Circle centre radius and diameter",
+          "Arc and chord",
+          "Sector and segment",
+          "Semicircle",
+          "Circle vocabulary in diagrams"
+        ],
+        "learningObjectives": [
+          "Understand and solve Grade 8 syllabus-aligned problems on Circle centre radius and diameter",
+          "Understand and solve Grade 8 syllabus-aligned problems on Arc and chord",
+          "Understand and solve Grade 8 syllabus-aligned problems on Sector and segment",
+          "Understand and solve Grade 8 syllabus-aligned problems on Semicircle",
+          "Understand and solve Grade 8 syllabus-aligned problems on Circle vocabulary in diagrams"
+        ],
+        "estimatedHours": 6
+      }
+    ],
+    "topics": [
+      "Angle sum property of quadrilaterals",
+      "Properties of parallelogram by verification",
+      "Opposite sides of parallelogram are equal",
+      "Opposite angles of parallelogram are equal",
+      "Diagonals of parallelogram bisect each other",
+      "Diagonals of rectangle are equal and bisect each other",
+      "Diagonals of rhombus bisect at right angles",
+      "Diagonals of square are equal and bisect at right angles",
+      "Comparing rectangle rhombus and square",
+      "Using diagonal properties in problems",
+      "Circle centre radius and diameter",
+      "Arc and chord",
+      "Sector and segment",
+      "Semicircle",
+      "Circle vocabulary in diagrams"
+    ],
+    "duration": "9 weeks",
+    "estimatedHours": 18,
+    "level": "intermediate",
+    "difficulty": 3,
+    "language": "English",
+    "prerequisites": [
+      "Grade 7 arithmetic and rational numbers",
+      "Basic algebraic expressions",
+      "Basic geometry and mensuration"
+    ],
+    "learningOutcomes": [
+      "Explain the concepts of Quadrilaterals and Circle Geometry clearly",
+      "Use diagrams and models before applying rules",
+      "Solve numerical, algebraic, geometric and data problems accurately",
+      "Check answers using properties, substitution, estimation or visual reasoning"
+    ],
+    "certificate": true,
+    "status": "published",
+    "enrollmentCount": 0,
+    "averageRating": 0,
+    "totalRatings": 0,
+    "reviewCount": 0,
+    "maxStudents": 50,
+    "tags": [
+      "Grade 8",
+      "Mathematics",
+      "Quadrilaterals and Circle Geometry",
+      "CBSE",
+      "CISCE",
+      "Upper Primary"
+    ],
+    "isActive": true,
+    "createdAt": {
+      "$date": "2026-08-01T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-08-01T00:00:00.000Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "73000000000000000000232b"
+    },
+    "title": "Grade 8 Mathematics - 3-D Representation and Quadrilateral Construction",
+    "description": "Comprehensive Grade 8 Mathematics course on 3-D Representation and Quadrilateral Construction, aligned with the supplied syllabus and suitable for CBSE and CISCE middle-school learning.",
+    "createdBy": "696d8e8098d47cbd00770abd",
+    "grade": 8,
+    "subject": "Mathematics",
+    "board": [
+      "CBSE",
+      "ICSE"
+    ],
+    "thumbnail": "",
+    "syllabus": [
+      "Matching pictures with 3-D objects",
+      "Nested and joined 2-D and 3-D shapes",
+      "Drawing 2-D representation of 3-D objects",
+      "Counting vertices edges and faces",
+      "Euler relation for flat-faced solids",
+      "Construction with four sides and one diagonal",
+      "Construction with three sides and two diagonals",
+      "Construction with three sides and two included angles",
+      "Construction with two adjacent sides and three angles",
+      "Rough diagram before construction",
+      "Idea of reflection symmetry",
+      "Symmetrical shapes",
+      "Lines of symmetry",
+      "Mirror image in geometrical figures",
+      "Symmetry in designs and objects"
+    ],
+    "chapters": [
+      {
+        "name": "Representing 3-D Objects in 2-D",
+        "topics": [
+          "Matching pictures with 3-D objects",
+          "Nested and joined 2-D and 3-D shapes",
+          "Drawing 2-D representation of 3-D objects",
+          "Counting vertices edges and faces",
+          "Euler relation for flat-faced solids"
+        ],
+        "learningObjectives": [
+          "Understand and solve Grade 8 syllabus-aligned problems on Matching pictures with 3-D objects",
+          "Understand and solve Grade 8 syllabus-aligned problems on Nested and joined 2-D and 3-D shapes",
+          "Understand and solve Grade 8 syllabus-aligned problems on Drawing 2-D representation of 3-D objects",
+          "Understand and solve Grade 8 syllabus-aligned problems on Counting vertices edges and faces",
+          "Understand and solve Grade 8 syllabus-aligned problems on Euler relation for flat-faced solids"
+        ],
+        "estimatedHours": 6
+      },
+      {
+        "name": "Construction of Quadrilaterals",
+        "topics": [
+          "Construction with four sides and one diagonal",
+          "Construction with three sides and two diagonals",
+          "Construction with three sides and two included angles",
+          "Construction with two adjacent sides and three angles",
+          "Rough diagram before construction"
+        ],
+        "learningObjectives": [
+          "Understand and solve Grade 8 syllabus-aligned problems on Construction with four sides and one diagonal",
+          "Understand and solve Grade 8 syllabus-aligned problems on Construction with three sides and two diagonals",
+          "Understand and solve Grade 8 syllabus-aligned problems on Construction with three sides and two included angles",
+          "Understand and solve Grade 8 syllabus-aligned problems on Construction with two adjacent sides and three angles",
+          "Understand and solve Grade 8 syllabus-aligned problems on Rough diagram before construction"
+        ],
+        "estimatedHours": 6
+      },
+      {
+        "name": "Reflection Symmetry and Symmetrical Shapes",
+        "topics": [
+          "Idea of reflection symmetry",
+          "Symmetrical shapes",
+          "Lines of symmetry",
+          "Mirror image in geometrical figures",
+          "Symmetry in designs and objects"
+        ],
+        "learningObjectives": [
+          "Understand and solve Grade 8 syllabus-aligned problems on Idea of reflection symmetry",
+          "Understand and solve Grade 8 syllabus-aligned problems on Symmetrical shapes",
+          "Understand and solve Grade 8 syllabus-aligned problems on Lines of symmetry",
+          "Understand and solve Grade 8 syllabus-aligned problems on Mirror image in geometrical figures",
+          "Understand and solve Grade 8 syllabus-aligned problems on Symmetry in designs and objects"
+        ],
+        "estimatedHours": 6
+      }
+    ],
+    "topics": [
+      "Matching pictures with 3-D objects",
+      "Nested and joined 2-D and 3-D shapes",
+      "Drawing 2-D representation of 3-D objects",
+      "Counting vertices edges and faces",
+      "Euler relation for flat-faced solids",
+      "Construction with four sides and one diagonal",
+      "Construction with three sides and two diagonals",
+      "Construction with three sides and two included angles",
+      "Construction with two adjacent sides and three angles",
+      "Rough diagram before construction",
+      "Idea of reflection symmetry",
+      "Symmetrical shapes",
+      "Lines of symmetry",
+      "Mirror image in geometrical figures",
+      "Symmetry in designs and objects"
+    ],
+    "duration": "9 weeks",
+    "estimatedHours": 18,
+    "level": "intermediate",
+    "difficulty": 3,
+    "language": "English",
+    "prerequisites": [
+      "Grade 7 arithmetic and rational numbers",
+      "Basic algebraic expressions",
+      "Basic geometry and mensuration"
+    ],
+    "learningOutcomes": [
+      "Explain the concepts of 3-D Representation and Quadrilateral Construction clearly",
+      "Use diagrams and models before applying rules",
+      "Solve numerical, algebraic, geometric and data problems accurately",
+      "Check answers using properties, substitution, estimation or visual reasoning"
+    ],
+    "certificate": true,
+    "status": "published",
+    "enrollmentCount": 0,
+    "averageRating": 0,
+    "totalRatings": 0,
+    "reviewCount": 0,
+    "maxStudents": 50,
+    "tags": [
+      "Grade 8",
+      "Mathematics",
+      "3-D Representation and Quadrilateral Construction",
+      "CBSE",
+      "CISCE",
+      "Upper Primary"
+    ],
+    "isActive": true,
+    "createdAt": {
+      "$date": "2026-08-01T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-08-01T00:00:00.000Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "780000000000000000000001"
+    },
+    "title": "Grade 8 Mathematics - Plane Mensuration",
+    "description": "Comprehensive Grade 8 Mathematics course on Plane Mensuration, aligned with the supplied syllabus and suitable for CBSE and CISCE middle-school learning.",
+    "createdBy": "696d8e8098d47cbd00770abd",
+    "grade": 8,
+    "subject": "Mathematics",
+    "board": [
+      "CBSE",
+      "ICSE"
+    ],
+    "thumbnail": "",
+    "syllabus": [
+      "Area of trapezium",
+      "Area of polygon by splitting",
+      "Area using triangles and rectangles",
+      "Choosing suitable base and height",
+      "Practical land-area problems",
+      "Area of semicircle",
+      "Area of circle revision",
+      "Combined figures with semicircles",
+      "Subtracting areas to find shaded region",
+      "Estimating plane area"
+    ],
+    "chapters": [
+      {
+        "name": "Area of Trapezium and Polygon",
+        "topics": [
+          "Area of trapezium",
+          "Area of polygon by splitting",
+          "Area using triangles and rectangles",
+          "Choosing suitable base and height",
+          "Practical land-area problems"
+        ],
+        "learningObjectives": [
+          "Understand and solve Grade 8 syllabus-aligned problems on Area of trapezium",
+          "Understand and solve Grade 8 syllabus-aligned problems on Area of polygon by splitting",
+          "Understand and solve Grade 8 syllabus-aligned problems on Area using triangles and rectangles",
+          "Understand and solve Grade 8 syllabus-aligned problems on Choosing suitable base and height",
+          "Understand and solve Grade 8 syllabus-aligned problems on Practical land-area problems"
+        ],
+        "estimatedHours": 8
+      },
+      {
+        "name": "Area of Semicircle and Combined Figures",
+        "topics": [
+          "Area of semicircle",
+          "Area of circle revision",
+          "Combined figures with semicircles",
+          "Subtracting areas to find shaded region",
+          "Estimating plane area"
+        ],
+        "learningObjectives": [
+          "Understand and solve Grade 8 syllabus-aligned problems on Area of semicircle",
+          "Understand and solve Grade 8 syllabus-aligned problems on Area of circle revision",
+          "Understand and solve Grade 8 syllabus-aligned problems on Combined figures with semicircles",
+          "Understand and solve Grade 8 syllabus-aligned problems on Subtracting areas to find shaded region",
+          "Understand and solve Grade 8 syllabus-aligned problems on Estimating plane area"
+        ],
+        "estimatedHours": 8
+      }
+    ],
+    "topics": [
+      "Area of trapezium",
+      "Area of polygon by splitting",
+      "Area using triangles and rectangles",
+      "Choosing suitable base and height",
+      "Practical land-area problems",
+      "Area of semicircle",
+      "Area of circle revision",
+      "Combined figures with semicircles",
+      "Subtracting areas to find shaded region",
+      "Estimating plane area"
+    ],
+    "duration": "8 weeks",
+    "estimatedHours": 16,
+    "level": "intermediate",
+    "difficulty": 3,
+    "language": "English",
+    "prerequisites": [
+      "Grade 7 arithmetic and rational numbers",
+      "Basic algebraic expressions",
+      "Basic geometry and mensuration"
+    ],
+    "learningOutcomes": [
+      "Explain the concepts of Plane Mensuration clearly",
+      "Use diagrams and models before applying rules",
+      "Solve numerical, algebraic, geometric and data problems accurately",
+      "Check answers using properties, substitution, estimation or visual reasoning"
+    ],
+    "certificate": true,
+    "status": "published",
+    "enrollmentCount": 0,
+    "averageRating": 0,
+    "totalRatings": 0,
+    "reviewCount": 0,
+    "maxStudents": 50,
+    "tags": [
+      "Grade 8",
+      "Mathematics",
+      "Plane Mensuration",
+      "CBSE",
+      "CISCE",
+      "Upper Primary"
+    ],
+    "isActive": true,
+    "createdAt": {
+      "$date": "2026-08-01T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-08-01T00:00:00.000Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "780000000000000000000002"
+    },
+    "title": "Grade 8 Mathematics - Solid Mensuration and Capacity",
+    "description": "Comprehensive Grade 8 Mathematics course on Solid Mensuration and Capacity, aligned with the supplied syllabus and suitable for CBSE and CISCE middle-school learning.",
+    "createdBy": "696d8e8098d47cbd00770abd",
+    "grade": 8,
+    "subject": "Mathematics",
+    "board": [
+      "CBSE",
+      "ICSE"
+    ],
+    "thumbnail": "",
+    "syllabus": [
+      "Surface area of cube",
+      "Surface area of cuboid",
+      "Curved surface area of cylinder",
+      "Total surface area of cylinder",
+      "Choosing TSA or CSA in word problems",
+      "Concept of volume",
+      "Measurement of volume using cubic unit",
+      "Volume of cube",
+      "Volume of cuboid",
+      "Volume of cylinder",
+      "Capacity as volume of container",
+      "Relation between litre and cubic centimetre",
+      "Converting volume and capacity",
+      "Capacity of cuboid and cylinder containers",
+      "Real-life storage problems"
+    ],
+    "chapters": [
+      {
+        "name": "Surface Area of Cube, Cuboid and Cylinder",
+        "topics": [
+          "Surface area of cube",
+          "Surface area of cuboid",
+          "Curved surface area of cylinder",
+          "Total surface area of cylinder",
+          "Choosing TSA or CSA in word problems"
+        ],
+        "learningObjectives": [
+          "Understand and solve Grade 8 syllabus-aligned problems on Surface area of cube",
+          "Understand and solve Grade 8 syllabus-aligned problems on Surface area of cuboid",
+          "Understand and solve Grade 8 syllabus-aligned problems on Curved surface area of cylinder",
+          "Understand and solve Grade 8 syllabus-aligned problems on Total surface area of cylinder",
+          "Understand and solve Grade 8 syllabus-aligned problems on Choosing TSA or CSA in word problems"
+        ],
+        "estimatedHours": 6
+      },
+      {
+        "name": "Volume of Cube, Cuboid and Cylinder",
+        "topics": [
+          "Concept of volume",
+          "Measurement of volume using cubic unit",
+          "Volume of cube",
+          "Volume of cuboid",
+          "Volume of cylinder"
+        ],
+        "learningObjectives": [
+          "Understand and solve Grade 8 syllabus-aligned problems on Concept of volume",
+          "Understand and solve Grade 8 syllabus-aligned problems on Measurement of volume using cubic unit",
+          "Understand and solve Grade 8 syllabus-aligned problems on Volume of cube",
+          "Understand and solve Grade 8 syllabus-aligned problems on Volume of cuboid",
+          "Understand and solve Grade 8 syllabus-aligned problems on Volume of cylinder"
+        ],
+        "estimatedHours": 6
+      },
+      {
+        "name": "Volume and Capacity",
+        "topics": [
+          "Capacity as volume of container",
+          "Relation between litre and cubic centimetre",
+          "Converting volume and capacity",
+          "Capacity of cuboid and cylinder containers",
+          "Real-life storage problems"
+        ],
+        "learningObjectives": [
+          "Understand and solve Grade 8 syllabus-aligned problems on Capacity as volume of container",
+          "Understand and solve Grade 8 syllabus-aligned problems on Relation between litre and cubic centimetre",
+          "Understand and solve Grade 8 syllabus-aligned problems on Converting volume and capacity",
+          "Understand and solve Grade 8 syllabus-aligned problems on Capacity of cuboid and cylinder containers",
+          "Understand and solve Grade 8 syllabus-aligned problems on Real-life storage problems"
+        ],
+        "estimatedHours": 6
+      }
+    ],
+    "topics": [
+      "Surface area of cube",
+      "Surface area of cuboid",
+      "Curved surface area of cylinder",
+      "Total surface area of cylinder",
+      "Choosing TSA or CSA in word problems",
+      "Concept of volume",
+      "Measurement of volume using cubic unit",
+      "Volume of cube",
+      "Volume of cuboid",
+      "Volume of cylinder",
+      "Capacity as volume of container",
+      "Relation between litre and cubic centimetre",
+      "Converting volume and capacity",
+      "Capacity of cuboid and cylinder containers",
+      "Real-life storage problems"
+    ],
+    "duration": "9 weeks",
+    "estimatedHours": 18,
+    "level": "intermediate",
+    "difficulty": 3,
+    "language": "English",
+    "prerequisites": [
+      "Grade 7 arithmetic and rational numbers",
+      "Basic algebraic expressions",
+      "Basic geometry and mensuration"
+    ],
+    "learningOutcomes": [
+      "Explain the concepts of Solid Mensuration and Capacity clearly",
+      "Use diagrams and models before applying rules",
+      "Solve numerical, algebraic, geometric and data problems accurately",
+      "Check answers using properties, substitution, estimation or visual reasoning"
+    ],
+    "certificate": true,
+    "status": "published",
+    "enrollmentCount": 0,
+    "averageRating": 0,
+    "totalRatings": 0,
+    "reviewCount": 0,
+    "maxStudents": 50,
+    "tags": [
+      "Grade 8",
+      "Mathematics",
+      "Solid Mensuration and Capacity",
+      "CBSE",
+      "CISCE",
+      "Upper Primary"
+    ],
+    "isActive": true,
+    "createdAt": {
+      "$date": "2026-08-01T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-08-01T00:00:00.000Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "780000000000000000000003"
+    },
+    "title": "Grade 8 Mathematics - Data Handling",
+    "description": "Comprehensive Grade 8 Mathematics course on Data Handling, aligned with the supplied syllabus and suitable for CBSE and CISCE middle-school learning.",
+    "createdBy": "696d8e8098d47cbd00770abd",
+    "grade": 8,
+    "subject": "Mathematics",
+    "board": [
+      "CBSE",
+      "ICSE"
+    ],
+    "thumbnail": "",
+    "syllabus": [
+      "Arranging ungrouped data",
+      "Forming grouped data",
+      "Grouped frequency table",
+      "Representing grouped data through bar graphs",
+      "Constructing and interpreting bar graphs",
+      "Simple pie charts",
+      "Reasonable data numbers for pie chart",
+      "Converting data to parts of a circle",
+      "Interpreting pie chart sectors",
+      "Comparing categories using pie charts"
+    ],
+    "chapters": [
+      {
+        "name": "Grouped Data and Bar Graphs",
+        "topics": [
+          "Arranging ungrouped data",
+          "Forming grouped data",
+          "Grouped frequency table",
+          "Representing grouped data through bar graphs",
+          "Constructing and interpreting bar graphs"
+        ],
+        "learningObjectives": [
+          "Understand and solve Grade 8 syllabus-aligned problems on Arranging ungrouped data",
+          "Understand and solve Grade 8 syllabus-aligned problems on Forming grouped data",
+          "Understand and solve Grade 8 syllabus-aligned problems on Grouped frequency table",
+          "Understand and solve Grade 8 syllabus-aligned problems on Representing grouped data through bar graphs",
+          "Understand and solve Grade 8 syllabus-aligned problems on Constructing and interpreting bar graphs"
+        ],
+        "estimatedHours": 6
+      },
+      {
+        "name": "Simple Pie Charts",
+        "topics": [
+          "Simple pie charts",
+          "Reasonable data numbers for pie chart",
+          "Converting data to parts of a circle",
+          "Interpreting pie chart sectors",
+          "Comparing categories using pie charts"
+        ],
+        "learningObjectives": [
+          "Understand and solve Grade 8 syllabus-aligned problems on Simple pie charts",
+          "Understand and solve Grade 8 syllabus-aligned problems on Reasonable data numbers for pie chart",
+          "Understand and solve Grade 8 syllabus-aligned problems on Converting data to parts of a circle",
+          "Understand and solve Grade 8 syllabus-aligned problems on Interpreting pie chart sectors",
+          "Understand and solve Grade 8 syllabus-aligned problems on Comparing categories using pie charts"
+        ],
+        "estimatedHours": 6
+      }
+    ],
+    "topics": [
+      "Arranging ungrouped data",
+      "Forming grouped data",
+      "Grouped frequency table",
+      "Representing grouped data through bar graphs",
+      "Constructing and interpreting bar graphs",
+      "Simple pie charts",
+      "Reasonable data numbers for pie chart",
+      "Converting data to parts of a circle",
+      "Interpreting pie chart sectors",
+      "Comparing categories using pie charts"
+    ],
+    "duration": "6 weeks",
+    "estimatedHours": 12,
+    "level": "intermediate",
+    "difficulty": 3,
+    "language": "English",
+    "prerequisites": [
+      "Grade 7 arithmetic and rational numbers",
+      "Basic algebraic expressions",
+      "Basic geometry and mensuration"
+    ],
+    "learningOutcomes": [
+      "Explain the concepts of Data Handling clearly",
+      "Use diagrams and models before applying rules",
+      "Solve numerical, algebraic, geometric and data problems accurately",
+      "Check answers using properties, substitution, estimation or visual reasoning"
+    ],
+    "certificate": true,
+    "status": "published",
+    "enrollmentCount": 0,
+    "averageRating": 0,
+    "totalRatings": 0,
+    "reviewCount": 0,
+    "maxStudents": 50,
+    "tags": [
+      "Grade 8",
+      "Mathematics",
+      "Data Handling",
+      "CBSE",
+      "CISCE",
+      "Upper Primary"
+    ],
+    "isActive": true,
+    "createdAt": {
+      "$date": "2026-08-01T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-08-01T00:00:00.000Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "780000000000000000000004"
+    },
+    "title": "Grade 8 Mathematics - Probability and Chance",
+    "description": "Comprehensive Grade 8 Mathematics course on Probability and Chance, aligned with the supplied syllabus and suitable for CBSE and CISCE middle-school learning.",
+    "createdBy": "696d8e8098d47cbd00770abd",
+    "grade": 8,
+    "subject": "Mathematics",
+    "board": [
+      "CBSE",
+      "ICSE"
+    ],
+    "thumbnail": "",
+    "syllabus": [
+      "Notion of chance",
+      "Coin tossing experiments",
+      "Dice throwing experiments",
+      "Tabulating outcomes",
+      "Relating chance to life events",
+      "Consolidating chance",
+      "Counting occurrences",
+      "Comparing coin and dice observations",
+      "Strings of throws",
+      "Notion of randomness"
+    ],
+    "chapters": [
+      {
+        "name": "Chance in Experiments and Life Events",
+        "topics": [
+          "Notion of chance",
+          "Coin tossing experiments",
+          "Dice throwing experiments",
+          "Tabulating outcomes",
+          "Relating chance to life events"
+        ],
+        "learningObjectives": [
+          "Understand and solve Grade 8 syllabus-aligned problems on Notion of chance",
+          "Understand and solve Grade 8 syllabus-aligned problems on Coin tossing experiments",
+          "Understand and solve Grade 8 syllabus-aligned problems on Dice throwing experiments",
+          "Understand and solve Grade 8 syllabus-aligned problems on Tabulating outcomes",
+          "Understand and solve Grade 8 syllabus-aligned problems on Relating chance to life events"
+        ],
+        "estimatedHours": 5
+      },
+      {
+        "name": "Randomness and Comparing Outcomes",
+        "topics": [
+          "Consolidating chance",
+          "Counting occurrences",
+          "Comparing coin and dice observations",
+          "Strings of throws",
+          "Notion of randomness"
+        ],
+        "learningObjectives": [
+          "Understand and solve Grade 8 syllabus-aligned problems on Consolidating chance",
+          "Understand and solve Grade 8 syllabus-aligned problems on Counting occurrences",
+          "Understand and solve Grade 8 syllabus-aligned problems on Comparing coin and dice observations",
+          "Understand and solve Grade 8 syllabus-aligned problems on Strings of throws",
+          "Understand and solve Grade 8 syllabus-aligned problems on Notion of randomness"
+        ],
+        "estimatedHours": 5
+      }
+    ],
+    "topics": [
+      "Notion of chance",
+      "Coin tossing experiments",
+      "Dice throwing experiments",
+      "Tabulating outcomes",
+      "Relating chance to life events",
+      "Consolidating chance",
+      "Counting occurrences",
+      "Comparing coin and dice observations",
+      "Strings of throws",
+      "Notion of randomness"
+    ],
+    "duration": "5 weeks",
+    "estimatedHours": 10,
+    "level": "intermediate",
+    "difficulty": 3,
+    "language": "English",
+    "prerequisites": [
+      "Grade 7 arithmetic and rational numbers",
+      "Basic algebraic expressions",
+      "Basic geometry and mensuration"
+    ],
+    "learningOutcomes": [
+      "Explain the concepts of Probability and Chance clearly",
+      "Use diagrams and models before applying rules",
+      "Solve numerical, algebraic, geometric and data problems accurately",
+      "Check answers using properties, substitution, estimation or visual reasoning"
+    ],
+    "certificate": true,
+    "status": "published",
+    "enrollmentCount": 0,
+    "averageRating": 0,
+    "totalRatings": 0,
+    "reviewCount": 0,
+    "maxStudents": 50,
+    "tags": [
+      "Grade 8",
+      "Mathematics",
+      "Probability and Chance",
+      "CBSE",
+      "CISCE",
+      "Upper Primary"
+    ],
+    "isActive": true,
+    "createdAt": {
+      "$date": "2026-08-01T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-08-01T00:00:00.000Z"
+    },
+    "__v": 0
+  }
+]

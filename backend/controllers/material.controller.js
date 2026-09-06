@@ -1,6 +1,10 @@
 const Material = require('../models/Material.model');
 const Course = require('../models/Course.model');
 const User = require('../models/User.model');
+const featureAccessService = require('../services/featureAccess.service');
+const scanMaterialService = require('../services/scanMaterial.service');
+const MaterialRegeneration = require('../models/MaterialRegeneration.model');
+const path = require('path');
 
 // @desc    Get all materials for tutor
 // @route   GET /api/materials
@@ -10,9 +14,12 @@ exports.getMaterialsByTutor = async (req, res, next) => {
     const { courseId, type } = req.query;
     
     const query = { 
-      tutor: req.user._id,
       isActive: true
     };
+
+    if (req.user.role !== 'admin') {
+      query.tutor = req.user._id;
+    }
     
     if (courseId) query.course = courseId;
     if (type) query.type = type;
@@ -123,12 +130,123 @@ exports.uploadMaterial = async (req, res, next) => {
   }
 };
 
+// @desc Create comprehensive editable material from textbook scans
+// @route POST /api/materials/from-scans
+exports.createMaterialFromScans = async (req, res, next) => {
+  try {
+    const files = req.files || [];
+    const { courseId, title, description, accessLevel } = req.body;
+    if (!files.length) return res.status(400).json({ success: false, message: 'At least one scan image or PDF is required' });
+    if (files.reduce((total, file) => total + file.size, 0) > 100 * 1024 * 1024) {
+      return res.status(413).json({ success: false, message: 'Combined scan size cannot exceed 100MB' });
+    }
+
+    const course = await Course.findById(courseId);
+    if (!course) return res.status(404).json({ success: false, message: 'Course not found' });
+
+    const generated = await scanMaterialService.generateFromScans(files, {
+      title, description, courseTitle: course.title
+    });
+    const sourceFiles = files.map((file, index) => ({
+      fileUrl: `/uploads/materials/${file.filename}`,
+      fileName: file.originalname,
+      fileSize: file.size,
+      mimeType: file.mimetype,
+      pageOrder: index
+    }));
+    const material = await Material.create({
+      course: courseId,
+      tutor: req.user._id,
+      title,
+      description,
+      type: 'article',
+      content: generated.markdown,
+      contentFormat: 'markdown',
+      category: 'lesson',
+      isFree: accessLevel === 'free',
+      sourceFiles,
+      sourceProvenance: {
+        kind: 'scan-ocr', model: generated.model, extractedAt: new Date(), contentHash: generated.contentHash
+      }
+    });
+    res.status(201).json({ success: true, material });
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.regenerateMaterial = async (req, res, next) => {
+  const startedAt = Date.now();
+  let history;
+  let exchange;
+  try {
+    const material = await Material.findById(req.params.id).populate('course', 'title grade subject');
+    if (!material) return res.status(404).json({ success: false, message: 'Material not found' });
+    if (!material.sourceFiles?.length) return res.status(400).json({ success: false, message: 'This material has no retained scan files' });
+
+    const source = material.sourceFiles.length === 1
+      ? material.sourceFiles[0]
+      : material.sourceFiles.find(file => file.pageOrder === material.order) || material.sourceFiles[0];
+    const files = [{
+      path: path.resolve(__dirname, '..', String(source.fileUrl).replace(/^\//, '')),
+      originalname: source.fileName,
+      mimetype: source.mimeType,
+      size: source.fileSize
+    }];
+    history = await MaterialRegeneration.create({
+      material: material._id,
+      course: material.course._id,
+      status: 'processing',
+      requestedBy: req.user._id,
+      previousContentHash: material.sourceProvenance?.contentHash,
+      request: { materialId: material._id, title: material.title, sourceFiles: [source], guidance: req.body.guidance || '' }
+    });
+
+    const generated = await scanMaterialService.generateFromScans(files, {
+      title: material.title,
+      courseTitle: material.course.title,
+      description: req.body.guidance || material.description,
+      stage: `material-regeneration-${material._id}`,
+      onExchange: value => { exchange = value; }
+    });
+    material.content = generated.markdown;
+    material.contentFormat = 'markdown';
+    material.sourceProvenance = { kind: 'scan-ocr', model: generated.model, extractedAt: new Date(), contentHash: generated.contentHash };
+    await material.save();
+    await MaterialRegeneration.findByIdAndUpdate(history._id, {
+      status: 'success',
+      request: exchange?.requestPayload || history.request,
+      response: exchange?.responsePayload,
+      responseId: exchange?.responseId,
+      model: exchange?.model || generated.model,
+      usage: exchange?.usage,
+      generatedContentHash: generated.contentHash,
+      completedAt: new Date(),
+      durationMs: Date.now() - startedAt
+    });
+    res.json({ success: true, material, regenerationId: history._id, message: 'Material regenerated from its source scan' });
+  } catch (error) {
+    if (history?._id) await MaterialRegeneration.findByIdAndUpdate(history._id, {
+      status: 'failed',
+      request: exchange?.requestPayload || history.request,
+      response: exchange?.responsePayload,
+      responseId: exchange?.responseId,
+      model: exchange?.model,
+      usage: exchange?.usage,
+      error: { message: error.message, stack: error.stack },
+      completedAt: new Date(),
+      durationMs: Date.now() - startedAt
+    }).catch(() => {});
+    next(error);
+  }
+};
+
 // @desc    Update material
 // @route   PUT /api/materials/:id
 // @access  Private (Tutor or Admin)
 exports.updateMaterial = async (req, res, next) => {
   try {
-    const { title, description, type, fileUrl, isFree, content, contentFormat, previewContent, difficulty, category } = req.body;
+    const { title, description, type, fileUrl, isFree, isActive, order, content, contentFormat, previewContent, difficulty, category } = req.body;
     
     const material = await Material.findById(req.params.id);
     
@@ -153,6 +271,8 @@ exports.updateMaterial = async (req, res, next) => {
     if (type !== undefined) updatePayload.type = type;
     if (fileUrl !== undefined) updatePayload.fileUrl = fileUrl;
     if (isFree !== undefined) updatePayload.isFree = isFree;
+    if (isActive !== undefined) updatePayload.isActive = isActive;
+    if (order !== undefined) updatePayload.order = order;
     if (content !== undefined) updatePayload.content = content;
     if (contentFormat !== undefined) updatePayload.contentFormat = contentFormat;
     if (previewContent !== undefined) updatePayload.previewContent = previewContent;
@@ -257,11 +377,17 @@ exports.getMaterialsByCourse = async (req, res, next) => {
     if (type) query.type = type;
     if (isFree !== undefined) query.isFree = isFree === 'true';
     
-    // Students can access all materials for course details viewing
-    // Enrollment check is handled at the application level for actual access
     if (req.user.role === 'student') {
-      // Allow students to see all materials for course browsing
-      // Individual material access can be controlled by enrollment status
+      const [viewAccess, downloadAccess] = await Promise.all([
+        featureAccessService.checkAccess(req.user._id, 'materials.view'),
+        featureAccessService.checkAccess(req.user._id, 'materials.download')
+      ]);
+
+      const hasFullMaterialAccess = viewAccess.allowed || downloadAccess.allowed;
+
+      if (!hasFullMaterialAccess) {
+        query.isFree = true;
+      }
     }
     
     const materials = await Material.find(query)

@@ -12,7 +12,7 @@ const OrganizationSchema = () => {
     "alternateName": "MeritAI - AI-Powered Learning Platform",
     "url": typeof window !== 'undefined' ? window.location.origin : "https://meritai.com",
     "logo": typeof window !== 'undefined' ? `${window.location.origin}/images/logo.png` : "",
-    "description": "AI-Powered Personalized Learning Platform that identifies knowledge gaps, provides personalized assessments, and connects students with expert mentors for targeted skill development.",
+    "description": "AI-Powered Personalized Learning Platform that identifies knowledge gaps and provides personalized assessments for targeted skill development.",
     "foundingDate": "2024",
     "email": "support@meritai.com",
     "areaServed": {

@@ -58,6 +58,7 @@ export default function AdminMaterialForm({ isOpen, onClose, courseId, initialDa
     {
       onSuccess: () => {
         queryClient.invalidateQueries(['course', courseId])
+        queryClient.invalidateQueries(['adminCourseMaterials', courseId])
         onClose()
       }
     }
@@ -68,6 +69,7 @@ export default function AdminMaterialForm({ isOpen, onClose, courseId, initialDa
     {
       onSuccess: () => {
         queryClient.invalidateQueries(['course', courseId])
+        queryClient.invalidateQueries(['adminCourseMaterials', courseId])
         onClose()
       }
     }

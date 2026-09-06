@@ -1,13 +1,14 @@
 import { useState } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import { useQuery, useMutation, useQueryClient } from 'react-query'
-import { ArrowLeft, Edit, Calendar, Users, IndianRupee, BookOpen, Clock, Globe, Target, CheckCircle, Plus, Trash2, X, BarChart2, ChevronDown, ChevronRight, Sparkles, AlertCircle } from 'lucide-react'
-import { courseService, questionService } from '@/services/apiServices'
+import { ArrowLeft, Edit, Calendar, Users, IndianRupee, BookOpen, Clock, Globe, Target, CheckCircle, Plus, Trash2, X, BarChart2, ChevronDown, ChevronRight, Sparkles, AlertCircle, FileText, Eye } from 'lucide-react'
+import { courseService, materialService, questionService } from '@/services/apiServices'
 import { useAuthStore } from '@/store/authStore'
 import LoadingSpinner from '@/components/common/LoadingSpinner'
 import SEOHead from '@/components/SEO/SEOHead';
 import ErrorMessage from '@/components/common/ErrorMessage'
 import Modal from '@/components/common/Modal'
+import MaterialViewer from '@/components/course/MaterialViewer'
 
 export default function AdminCourseView() {
   const { id } = useParams()
@@ -24,6 +25,8 @@ export default function AdminCourseView() {
     learningObjectives: [''],
     estimatedHours: 0
   })
+  const [selectedMaterial, setSelectedMaterial] = useState(null)
+  const [isMaterialModalOpen, setIsMaterialModalOpen] = useState(false)
   // Question snapshot: which chapters are expanded
   const [expandedChapters, setExpandedChapters] = useState({})
   const toggleChapter = (chName) =>
@@ -44,6 +47,18 @@ export default function AdminCourseView() {
   )
 
   const course = courseResponse?.course || courseResponse
+
+  const {
+    data: materialsData,
+    isLoading: materialsLoading,
+    error: materialsError
+  } = useQuery(
+    ['adminCourseMaterials', id],
+    () => materialService.getMaterials({ courseId: id }),
+    { enabled: !!id && user?.role === 'admin' }
+  )
+
+  const materials = materialsData?.data || []
 
   // Question snapshot
   const { data: snapshotData, isLoading: snapshotLoading } = useQuery(
@@ -145,6 +160,16 @@ export default function AdminCourseView() {
       const updatedChapters = course.chapters.filter((_, i) => i !== chapterIndex)
       updateCourseMutation.mutate({ chapters: updatedChapters })
     }
+  }
+
+  const openMaterialModal = (material) => {
+    setSelectedMaterial(material)
+    setIsMaterialModalOpen(true)
+  }
+
+  const closeMaterialModal = () => {
+    setIsMaterialModalOpen(false)
+    setSelectedMaterial(null)
   }
 
   if (isLoading) {
@@ -250,13 +275,6 @@ export default function AdminCourseView() {
                 <div>
                   <p className="text-sm text-gray-500">Duration</p>
                   <p className="font-medium">{course.duration || '12 weeks'}</p>
-                </div>
-              </div>
-              <div className="flex items-center">
-                <Users className="h-5 w-5 text-gray-400 mr-3" />
-                <div>
-                  <p className="text-sm text-gray-500">Max Students</p>
-                  <p className="font-medium">{course.maxStudents}</p>
                 </div>
               </div>
               <div className="flex items-center">
@@ -427,6 +445,91 @@ export default function AdminCourseView() {
                 >
                   Add your first chapter
                 </button>
+              </div>
+            )}
+          </div>
+
+          {/* Materials */}
+          <div className="bg-white rounded-lg shadow p-6">
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-2">
+                <FileText className="h-5 w-5 text-blue-600" />
+                <h2 className="text-xl font-semibold">Materials</h2>
+                {materials.length > 0 && (
+                  <span className="px-2 py-0.5 rounded-full bg-blue-100 text-blue-800 text-xs font-semibold">
+                    {materials.length}
+                  </span>
+                )}
+              </div>
+              <Link
+                to={`/admin/courses/${course._id}/edit`}
+                className="text-sm text-blue-600 hover:text-blue-800 font-medium"
+              >
+                Manage Materials
+              </Link>
+            </div>
+
+            {materialsLoading ? (
+              <div className="flex justify-center py-8">
+                <LoadingSpinner size="sm" />
+              </div>
+            ) : materialsError ? (
+              <p className="text-sm text-red-600">Failed to load materials.</p>
+            ) : materials.length > 0 ? (
+              <div className="space-y-3">
+                {materials.map(material => (
+                  <div key={material._id} className="border border-gray-200 rounded-lg p-4">
+                    <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                      <div className="min-w-0">
+                        <div className="flex flex-wrap items-center gap-2 mb-1">
+                          <h3 className="font-semibold text-gray-900 break-words">{material.title}</h3>
+                          <span className="px-2 py-0.5 rounded-full bg-gray-100 text-gray-700 text-xs capitalize">
+                            {material.type}
+                          </span>
+                          {material.isFree && (
+                            <span className="px-2 py-0.5 rounded-full bg-green-100 text-green-700 text-xs">
+                              Free
+                            </span>
+                          )}
+                        </div>
+                        {material.description && (
+                          <p className="text-sm text-gray-600 line-clamp-2">{material.description}</p>
+                        )}
+                        <div className="flex flex-wrap gap-2 mt-2">
+                          {material.difficulty && (
+                            <span className="px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 text-xs capitalize">
+                              {material.difficulty}
+                            </span>
+                          )}
+                          {material.category && (
+                            <span className="px-2 py-0.5 rounded-full bg-purple-50 text-purple-700 text-xs capitalize">
+                              {material.category.replace('-', ' ')}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => openMaterialModal(material)}
+                        className="inline-flex items-center justify-center gap-1 px-3 py-1.5 bg-blue-600 text-white text-sm rounded-md hover:bg-blue-700"
+                      >
+                        <Eye className="h-4 w-4" />
+                        View
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-8 text-gray-500">
+                <FileText className="h-12 w-12 mx-auto mb-3 text-gray-300" />
+                <p>No materials added yet for this course.</p>
+                <Link
+                  to={`/admin/courses/${course._id}/edit`}
+                  className="mt-3 inline-block text-blue-600 hover:text-blue-800"
+                >
+                  Add material
+                </Link>
               </div>
             )}
           </div>
@@ -754,12 +857,6 @@ export default function AdminCourseView() {
                 <span className="text-sm font-medium">{course.enrolledCount || 0}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-sm text-gray-500">Available Spots</span>
-                <span className="text-sm font-medium">
-                  {Math.max(0, course.maxStudents - (course.enrolledCount || 0))}
-                </span>
-              </div>
-              <div className="flex justify-between">
                 <span className="text-sm text-gray-500">Created</span>
                 <span className="text-sm font-medium">
                   {new Date(course.createdAt).toLocaleDateString()}
@@ -769,6 +866,15 @@ export default function AdminCourseView() {
           </div>
         </div>
       </div>
+
+      <Modal
+        isOpen={isMaterialModalOpen}
+        onClose={closeMaterialModal}
+        title={selectedMaterial?.title || 'Material'}
+        size="lg"
+      >
+        {selectedMaterial && <MaterialViewer material={selectedMaterial} showPreview={false} />}
+      </Modal>
 
       {/* Chapter Modal */}
       {showChapterModal && (

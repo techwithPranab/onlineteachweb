@@ -12,7 +12,10 @@ export default function Courses() {
   const [selectedGrade, setSelectedGrade] = useState('')
   const [selectedSubject, setSelectedSubject] = useState('')
 
-  const { data: courses, isLoading, error } = useQuery('courses', courseService.getPublicCourses)
+  const { data: courses, isLoading, error } = useQuery(
+    ['public-courses', 'all'],
+    () => courseService.getAllPublicCourses()
+  )
 
   useEffect(() => {
     if (courses) {
@@ -84,7 +87,7 @@ export default function Courses() {
             Explore Our Courses
           </h1>
           <p className="text-lg text-gray-600 max-w-xl mx-auto">
-            Discover comprehensive learning paths designed by expert educators to help you excel in your academic journey
+            Discover comprehensive learning paths to help you excel in your academic journey
           </p>
         </div>
 

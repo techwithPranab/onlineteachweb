@@ -1,0 +1,1586 @@
+[
+  {
+    "_id": {
+      "$oid": "700000000000000000000015"
+    },
+    "title": "Grade 7 Mathematics - Integers and Integer Properties",
+    "description": "Comprehensive Grade 7 Mathematics course on Integers and Integer Properties, aligned with the supplied syllabus themes and suitable for CBSE and CISCE middle-school learning.",
+    "createdBy": "696d8e8098d47cbd00770abd",
+    "grade": 7,
+    "subject": "Mathematics",
+    "board": [
+      "CBSE",
+      "ICSE"
+    ],
+    "thumbnail": "",
+    "syllabus": [
+      "Multiplication of integers",
+      "Division of integers",
+      "Sign rules through patterns",
+      "Integer operations on number line",
+      "Integer word problems with all operations",
+      "Commutativity of integer operations",
+      "Associativity of integer operations",
+      "Identity and inverse for integers",
+      "Distributive property",
+      "Mixed integer operations in daily life"
+    ],
+    "chapters": [
+      {
+        "name": "Multiplication and Division of Integers",
+        "topics": [
+          "Multiplication of integers",
+          "Division of integers",
+          "Sign rules through patterns",
+          "Integer operations on number line",
+          "Integer word problems with all operations"
+        ],
+        "learningObjectives": [
+          "Understand and solve Class 7 syllabus-aligned problems on Multiplication of integers",
+          "Understand and solve Class 7 syllabus-aligned problems on Division of integers",
+          "Understand and solve Class 7 syllabus-aligned problems on Sign rules through patterns",
+          "Understand and solve Class 7 syllabus-aligned problems on Integer operations on number line",
+          "Understand and solve Class 7 syllabus-aligned problems on Integer word problems with all operations"
+        ],
+        "estimatedHours": 6
+      },
+      {
+        "name": "Properties and Problem Solving with Integers",
+        "topics": [
+          "Commutativity of integer operations",
+          "Associativity of integer operations",
+          "Identity and inverse for integers",
+          "Distributive property",
+          "Mixed integer operations in daily life"
+        ],
+        "learningObjectives": [
+          "Understand and solve Class 7 syllabus-aligned problems on Commutativity of integer operations",
+          "Understand and solve Class 7 syllabus-aligned problems on Associativity of integer operations",
+          "Understand and solve Class 7 syllabus-aligned problems on Identity and inverse for integers",
+          "Understand and solve Class 7 syllabus-aligned problems on Distributive property",
+          "Understand and solve Class 7 syllabus-aligned problems on Mixed integer operations in daily life"
+        ],
+        "estimatedHours": 6
+      }
+    ],
+    "topics": [
+      "Multiplication of integers",
+      "Division of integers",
+      "Sign rules through patterns",
+      "Integer operations on number line",
+      "Integer word problems with all operations",
+      "Commutativity of integer operations",
+      "Associativity of integer operations",
+      "Identity and inverse for integers",
+      "Distributive property",
+      "Mixed integer operations in daily life"
+    ],
+    "duration": "6 weeks",
+    "estimatedHours": 12,
+    "level": "beginner",
+    "difficulty": 2,
+    "language": "English",
+    "prerequisites": [
+      "Class 6 number operations",
+      "Basic fractions and decimals",
+      "Basic geometry and measurement"
+    ],
+    "learningOutcomes": [
+      "Explain important concepts in Integers and Integer Properties using simple mathematical language",
+      "Use visual models before applying procedures",
+      "Solve routine and word problems accurately",
+      "Check answers using estimation, substitution, diagrams or reverse operations"
+    ],
+    "certificate": true,
+    "status": "published",
+    "enrollmentCount": 0,
+    "averageRating": 0,
+    "totalRatings": 0,
+    "reviewCount": 0,
+    "maxStudents": 50,
+    "tags": [
+      "Grade 7",
+      "Mathematics",
+      "Integers and Integer Properties",
+      "CBSE",
+      "CISCE",
+      "Upper Primary"
+    ],
+    "isActive": true,
+    "createdAt": {
+      "$date": "2026-08-01T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-08-01T00:00:00.000Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "700000000000000000000019"
+    },
+    "title": "Grade 7 Mathematics - Rational Numbers and Decimal Fractions",
+    "description": "Comprehensive Grade 7 Mathematics course on Rational Numbers and Decimal Fractions, aligned with the supplied syllabus themes and suitable for CBSE and CISCE middle-school learning.",
+    "createdBy": "696d8e8098d47cbd00770abd",
+    "grade": 7,
+    "subject": "Mathematics",
+    "board": [
+      "CBSE",
+      "ICSE"
+    ],
+    "thumbnail": "",
+    "syllabus": [
+      "Meaning of rational numbers",
+      "Representation of rational numbers on number line",
+      "Ordering rational numbers",
+      "Positive and negative rational numbers",
+      "Equivalent rational numbers",
+      "Addition of rational numbers",
+      "Subtraction of rational numbers",
+      "Multiplication of rational numbers",
+      "Division of rational numbers",
+      "Word problems on rational numbers",
+      "Decimal representation of rational numbers",
+      "Terminating decimals",
+      "Multiplication of decimal fractions",
+      "Division of decimal fractions",
+      "Problem solving using decimal fractions"
+    ],
+    "chapters": [
+      {
+        "name": "Introduction to Rational Numbers",
+        "topics": [
+          "Meaning of rational numbers",
+          "Representation of rational numbers on number line",
+          "Ordering rational numbers",
+          "Positive and negative rational numbers",
+          "Equivalent rational numbers"
+        ],
+        "learningObjectives": [
+          "Understand and solve Class 7 syllabus-aligned problems on Meaning of rational numbers",
+          "Understand and solve Class 7 syllabus-aligned problems on Representation of rational numbers on number line",
+          "Understand and solve Class 7 syllabus-aligned problems on Ordering rational numbers",
+          "Understand and solve Class 7 syllabus-aligned problems on Positive and negative rational numbers",
+          "Understand and solve Class 7 syllabus-aligned problems on Equivalent rational numbers"
+        ],
+        "estimatedHours": 6
+      },
+      {
+        "name": "Operations on Rational Numbers",
+        "topics": [
+          "Addition of rational numbers",
+          "Subtraction of rational numbers",
+          "Multiplication of rational numbers",
+          "Division of rational numbers",
+          "Word problems on rational numbers"
+        ],
+        "learningObjectives": [
+          "Understand and solve Class 7 syllabus-aligned problems on Addition of rational numbers",
+          "Understand and solve Class 7 syllabus-aligned problems on Subtraction of rational numbers",
+          "Understand and solve Class 7 syllabus-aligned problems on Multiplication of rational numbers",
+          "Understand and solve Class 7 syllabus-aligned problems on Division of rational numbers",
+          "Understand and solve Class 7 syllabus-aligned problems on Word problems on rational numbers"
+        ],
+        "estimatedHours": 6
+      },
+      {
+        "name": "Decimal Representation and Decimal Operations",
+        "topics": [
+          "Decimal representation of rational numbers",
+          "Terminating decimals",
+          "Multiplication of decimal fractions",
+          "Division of decimal fractions",
+          "Problem solving using decimal fractions"
+        ],
+        "learningObjectives": [
+          "Understand and solve Class 7 syllabus-aligned problems on Decimal representation of rational numbers",
+          "Understand and solve Class 7 syllabus-aligned problems on Terminating decimals",
+          "Understand and solve Class 7 syllabus-aligned problems on Multiplication of decimal fractions",
+          "Understand and solve Class 7 syllabus-aligned problems on Division of decimal fractions",
+          "Understand and solve Class 7 syllabus-aligned problems on Problem solving using decimal fractions"
+        ],
+        "estimatedHours": 6
+      }
+    ],
+    "topics": [
+      "Meaning of rational numbers",
+      "Representation of rational numbers on number line",
+      "Ordering rational numbers",
+      "Positive and negative rational numbers",
+      "Equivalent rational numbers",
+      "Addition of rational numbers",
+      "Subtraction of rational numbers",
+      "Multiplication of rational numbers",
+      "Division of rational numbers",
+      "Word problems on rational numbers",
+      "Decimal representation of rational numbers",
+      "Terminating decimals",
+      "Multiplication of decimal fractions",
+      "Division of decimal fractions",
+      "Problem solving using decimal fractions"
+    ],
+    "duration": "8 weeks",
+    "estimatedHours": 16,
+    "level": "beginner",
+    "difficulty": 2,
+    "language": "English",
+    "prerequisites": [
+      "Class 6 number operations",
+      "Basic fractions and decimals",
+      "Basic geometry and measurement"
+    ],
+    "learningOutcomes": [
+      "Explain important concepts in Rational Numbers and Decimal Fractions using simple mathematical language",
+      "Use visual models before applying procedures",
+      "Solve routine and word problems accurately",
+      "Check answers using estimation, substitution, diagrams or reverse operations"
+    ],
+    "certificate": true,
+    "status": "published",
+    "enrollmentCount": 0,
+    "averageRating": 0,
+    "totalRatings": 0,
+    "reviewCount": 0,
+    "maxStudents": 50,
+    "tags": [
+      "Grade 7",
+      "Mathematics",
+      "Rational Numbers and Decimal Fractions",
+      "CBSE",
+      "CISCE",
+      "Upper Primary"
+    ],
+    "isActive": true,
+    "createdAt": {
+      "$date": "2026-08-01T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-08-01T00:00:00.000Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "70000000000000000000001d"
+    },
+    "title": "Grade 7 Mathematics - Fractions as Operators, Reciprocals and Exponents",
+    "description": "Comprehensive Grade 7 Mathematics course on Fractions as Operators, Reciprocals and Exponents, aligned with the supplied syllabus themes and suitable for CBSE and CISCE middle-school learning.",
+    "createdBy": "696d8e8098d47cbd00770abd",
+    "grade": 7,
+    "subject": "Mathematics",
+    "board": [
+      "CBSE",
+      "ICSE"
+    ],
+    "thumbnail": "",
+    "syllabus": [
+      "Fraction as an operator",
+      "Finding a fraction of a quantity",
+      "Reciprocal of a fraction",
+      "Division using reciprocal",
+      "Daily-life fractional parts",
+      "Meaning of exponents",
+      "Powers with natural-number exponents",
+      "Expanded form of powers",
+      "Comparing powers",
+      "Exponents in large quantities",
+      "Product law of exponents",
+      "Quotient law of exponents",
+      "Power of a power",
+      "Power of a product",
+      "Simple applications of exponent laws"
+    ],
+    "chapters": [
+      {
+        "name": "Fraction as an Operator and Reciprocal",
+        "topics": [
+          "Fraction as an operator",
+          "Finding a fraction of a quantity",
+          "Reciprocal of a fraction",
+          "Division using reciprocal",
+          "Daily-life fractional parts"
+        ],
+        "learningObjectives": [
+          "Understand and solve Class 7 syllabus-aligned problems on Fraction as an operator",
+          "Understand and solve Class 7 syllabus-aligned problems on Finding a fraction of a quantity",
+          "Understand and solve Class 7 syllabus-aligned problems on Reciprocal of a fraction",
+          "Understand and solve Class 7 syllabus-aligned problems on Division using reciprocal",
+          "Understand and solve Class 7 syllabus-aligned problems on Daily-life fractional parts"
+        ],
+        "estimatedHours": 5
+      },
+      {
+        "name": "Exponents with Natural Numbers",
+        "topics": [
+          "Meaning of exponents",
+          "Powers with natural-number exponents",
+          "Expanded form of powers",
+          "Comparing powers",
+          "Exponents in large quantities"
+        ],
+        "learningObjectives": [
+          "Understand and solve Class 7 syllabus-aligned problems on Meaning of exponents",
+          "Understand and solve Class 7 syllabus-aligned problems on Powers with natural-number exponents",
+          "Understand and solve Class 7 syllabus-aligned problems on Expanded form of powers",
+          "Understand and solve Class 7 syllabus-aligned problems on Comparing powers",
+          "Understand and solve Class 7 syllabus-aligned problems on Exponents in large quantities"
+        ],
+        "estimatedHours": 5
+      },
+      {
+        "name": "Laws of Exponents",
+        "topics": [
+          "Product law of exponents",
+          "Quotient law of exponents",
+          "Power of a power",
+          "Power of a product",
+          "Simple applications of exponent laws"
+        ],
+        "learningObjectives": [
+          "Understand and solve Class 7 syllabus-aligned problems on Product law of exponents",
+          "Understand and solve Class 7 syllabus-aligned problems on Quotient law of exponents",
+          "Understand and solve Class 7 syllabus-aligned problems on Power of a power",
+          "Understand and solve Class 7 syllabus-aligned problems on Power of a product",
+          "Understand and solve Class 7 syllabus-aligned problems on Simple applications of exponent laws"
+        ],
+        "estimatedHours": 5
+      }
+    ],
+    "topics": [
+      "Fraction as an operator",
+      "Finding a fraction of a quantity",
+      "Reciprocal of a fraction",
+      "Division using reciprocal",
+      "Daily-life fractional parts",
+      "Meaning of exponents",
+      "Powers with natural-number exponents",
+      "Expanded form of powers",
+      "Comparing powers",
+      "Exponents in large quantities",
+      "Product law of exponents",
+      "Quotient law of exponents",
+      "Power of a power",
+      "Power of a product",
+      "Simple applications of exponent laws"
+    ],
+    "duration": "7 weeks",
+    "estimatedHours": 14,
+    "level": "beginner",
+    "difficulty": 2,
+    "language": "English",
+    "prerequisites": [
+      "Class 6 number operations",
+      "Basic fractions and decimals",
+      "Basic geometry and measurement"
+    ],
+    "learningOutcomes": [
+      "Explain important concepts in Fractions as Operators, Reciprocals and Exponents using simple mathematical language",
+      "Use visual models before applying procedures",
+      "Solve routine and word problems accurately",
+      "Check answers using estimation, substitution, diagrams or reverse operations"
+    ],
+    "certificate": true,
+    "status": "published",
+    "enrollmentCount": 0,
+    "averageRating": 0,
+    "totalRatings": 0,
+    "reviewCount": 0,
+    "maxStudents": 50,
+    "tags": [
+      "Grade 7",
+      "Mathematics",
+      "Fractions as Operators, Reciprocals and Exponents",
+      "CBSE",
+      "CISCE",
+      "Upper Primary"
+    ],
+    "isActive": true,
+    "createdAt": {
+      "$date": "2026-08-01T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-08-01T00:00:00.000Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "700000000000000000000021"
+    },
+    "title": "Grade 7 Mathematics - Sets",
+    "description": "Comprehensive Grade 7 Mathematics course on Sets, aligned with the supplied syllabus themes and suitable for CBSE and CISCE middle-school learning.",
+    "createdBy": "696d8e8098d47cbd00770abd",
+    "grade": 7,
+    "subject": "Mathematics",
+    "board": [
+      "CBSE",
+      "ICSE"
+    ],
+    "thumbnail": "",
+    "syllabus": [
+      "Revision idea of sets",
+      "Roster form",
+      "Set-builder idea in simple language",
+      "Membership of a set",
+      "Finite and infinite sets",
+      "Equal sets",
+      "Equivalent sets",
+      "Universal set",
+      "Cardinal property of sets",
+      "Using Venn diagrams for set relationships"
+    ],
+    "chapters": [
+      {
+        "name": "Revision of Sets and Set Representation",
+        "topics": [
+          "Revision idea of sets",
+          "Roster form",
+          "Set-builder idea in simple language",
+          "Membership of a set",
+          "Finite and infinite sets"
+        ],
+        "learningObjectives": [
+          "Understand and solve Class 7 syllabus-aligned problems on Revision idea of sets",
+          "Understand and solve Class 7 syllabus-aligned problems on Roster form",
+          "Understand and solve Class 7 syllabus-aligned problems on Set-builder idea in simple language",
+          "Understand and solve Class 7 syllabus-aligned problems on Membership of a set",
+          "Understand and solve Class 7 syllabus-aligned problems on Finite and infinite sets"
+        ],
+        "estimatedHours": 4
+      },
+      {
+        "name": "Equal, Equivalent, Universal Sets and Cardinality",
+        "topics": [
+          "Equal sets",
+          "Equivalent sets",
+          "Universal set",
+          "Cardinal property of sets",
+          "Using Venn diagrams for set relationships"
+        ],
+        "learningObjectives": [
+          "Understand and solve Class 7 syllabus-aligned problems on Equal sets",
+          "Understand and solve Class 7 syllabus-aligned problems on Equivalent sets",
+          "Understand and solve Class 7 syllabus-aligned problems on Universal set",
+          "Understand and solve Class 7 syllabus-aligned problems on Cardinal property of sets",
+          "Understand and solve Class 7 syllabus-aligned problems on Using Venn diagrams for set relationships"
+        ],
+        "estimatedHours": 4
+      }
+    ],
+    "topics": [
+      "Revision idea of sets",
+      "Roster form",
+      "Set-builder idea in simple language",
+      "Membership of a set",
+      "Finite and infinite sets",
+      "Equal sets",
+      "Equivalent sets",
+      "Universal set",
+      "Cardinal property of sets",
+      "Using Venn diagrams for set relationships"
+    ],
+    "duration": "4 weeks",
+    "estimatedHours": 8,
+    "level": "beginner",
+    "difficulty": 2,
+    "language": "English",
+    "prerequisites": [
+      "Class 6 number operations",
+      "Basic fractions and decimals",
+      "Basic geometry and measurement"
+    ],
+    "learningOutcomes": [
+      "Explain important concepts in Sets using simple mathematical language",
+      "Use visual models before applying procedures",
+      "Solve routine and word problems accurately",
+      "Check answers using estimation, substitution, diagrams or reverse operations"
+    ],
+    "certificate": true,
+    "status": "published",
+    "enrollmentCount": 0,
+    "averageRating": 0,
+    "totalRatings": 0,
+    "reviewCount": 0,
+    "maxStudents": 50,
+    "tags": [
+      "Grade 7",
+      "Mathematics",
+      "Sets",
+      "CBSE",
+      "CISCE",
+      "Upper Primary"
+    ],
+    "isActive": true,
+    "createdAt": {
+      "$date": "2026-08-01T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-08-01T00:00:00.000Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "700000000000000000000025"
+    },
+    "title": "Grade 7 Mathematics - Ratio, Proportion, Percentage and Commercial Mathematics",
+    "description": "Comprehensive Grade 7 Mathematics course on Ratio, Proportion, Percentage and Commercial Mathematics, aligned with the supplied syllabus themes and suitable for CBSE and CISCE middle-school learning.",
+    "createdBy": "696d8e8098d47cbd00770abd",
+    "grade": 7,
+    "subject": "Mathematics",
+    "board": [
+      "CBSE",
+      "ICSE"
+    ],
+    "thumbnail": "",
+    "syllabus": [
+      "Ratio and proportion revision",
+      "Equivalent ratios",
+      "Proportion as equality of ratios",
+      "Unitary method continued",
+      "General expression for unitary method",
+      "Percentage as denominator 100",
+      "Converting fractions into percentages",
+      "Converting decimals into percentages",
+      "Converting percentages into fractions and decimals",
+      "Daily-life percentage comparisons",
+      "Cost price and selling price",
+      "Profit and loss in one transaction",
+      "Profit percent and loss percent",
+      "Simple interest for complete years",
+      "Amount as principal plus interest",
+      "Speed distance time relation",
+      "Finding speed",
+      "Finding distance",
+      "Finding time",
+      "Daily-life travel problems"
+    ],
+    "chapters": [
+      {
+        "name": "Ratio, Proportion and Unitary Method",
+        "topics": [
+          "Ratio and proportion revision",
+          "Equivalent ratios",
+          "Proportion as equality of ratios",
+          "Unitary method continued",
+          "General expression for unitary method"
+        ],
+        "learningObjectives": [
+          "Understand and solve Class 7 syllabus-aligned problems on Ratio and proportion revision",
+          "Understand and solve Class 7 syllabus-aligned problems on Equivalent ratios",
+          "Understand and solve Class 7 syllabus-aligned problems on Proportion as equality of ratios",
+          "Understand and solve Class 7 syllabus-aligned problems on Unitary method continued",
+          "Understand and solve Class 7 syllabus-aligned problems on General expression for unitary method"
+        ],
+        "estimatedHours": 5
+      },
+      {
+        "name": "Percentage and Conversions",
+        "topics": [
+          "Percentage as denominator 100",
+          "Converting fractions into percentages",
+          "Converting decimals into percentages",
+          "Converting percentages into fractions and decimals",
+          "Daily-life percentage comparisons"
+        ],
+        "learningObjectives": [
+          "Understand and solve Class 7 syllabus-aligned problems on Percentage as denominator 100",
+          "Understand and solve Class 7 syllabus-aligned problems on Converting fractions into percentages",
+          "Understand and solve Class 7 syllabus-aligned problems on Converting decimals into percentages",
+          "Understand and solve Class 7 syllabus-aligned problems on Converting percentages into fractions and decimals",
+          "Understand and solve Class 7 syllabus-aligned problems on Daily-life percentage comparisons"
+        ],
+        "estimatedHours": 5
+      },
+      {
+        "name": "Profit, Loss and Simple Interest",
+        "topics": [
+          "Cost price and selling price",
+          "Profit and loss in one transaction",
+          "Profit percent and loss percent",
+          "Simple interest for complete years",
+          "Amount as principal plus interest"
+        ],
+        "learningObjectives": [
+          "Understand and solve Class 7 syllabus-aligned problems on Cost price and selling price",
+          "Understand and solve Class 7 syllabus-aligned problems on Profit and loss in one transaction",
+          "Understand and solve Class 7 syllabus-aligned problems on Profit percent and loss percent",
+          "Understand and solve Class 7 syllabus-aligned problems on Simple interest for complete years",
+          "Understand and solve Class 7 syllabus-aligned problems on Amount as principal plus interest"
+        ],
+        "estimatedHours": 5
+      },
+      {
+        "name": "Speed, Distance and Time",
+        "topics": [
+          "Speed distance time relation",
+          "Finding speed",
+          "Finding distance",
+          "Finding time",
+          "Daily-life travel problems"
+        ],
+        "learningObjectives": [
+          "Understand and solve Class 7 syllabus-aligned problems on Speed distance time relation",
+          "Understand and solve Class 7 syllabus-aligned problems on Finding speed",
+          "Understand and solve Class 7 syllabus-aligned problems on Finding distance",
+          "Understand and solve Class 7 syllabus-aligned problems on Finding time",
+          "Understand and solve Class 7 syllabus-aligned problems on Daily-life travel problems"
+        ],
+        "estimatedHours": 5
+      }
+    ],
+    "topics": [
+      "Ratio and proportion revision",
+      "Equivalent ratios",
+      "Proportion as equality of ratios",
+      "Unitary method continued",
+      "General expression for unitary method",
+      "Percentage as denominator 100",
+      "Converting fractions into percentages",
+      "Converting decimals into percentages",
+      "Converting percentages into fractions and decimals",
+      "Daily-life percentage comparisons",
+      "Cost price and selling price",
+      "Profit and loss in one transaction",
+      "Profit percent and loss percent",
+      "Simple interest for complete years",
+      "Amount as principal plus interest",
+      "Speed distance time relation",
+      "Finding speed",
+      "Finding distance",
+      "Finding time",
+      "Daily-life travel problems"
+    ],
+    "duration": "9 weeks",
+    "estimatedHours": 18,
+    "level": "beginner",
+    "difficulty": 2,
+    "language": "English",
+    "prerequisites": [
+      "Class 6 number operations",
+      "Basic fractions and decimals",
+      "Basic geometry and measurement"
+    ],
+    "learningOutcomes": [
+      "Explain important concepts in Ratio, Proportion, Percentage and Commercial Mathematics using simple mathematical language",
+      "Use visual models before applying procedures",
+      "Solve routine and word problems accurately",
+      "Check answers using estimation, substitution, diagrams or reverse operations"
+    ],
+    "certificate": true,
+    "status": "published",
+    "enrollmentCount": 0,
+    "averageRating": 0,
+    "totalRatings": 0,
+    "reviewCount": 0,
+    "maxStudents": 50,
+    "tags": [
+      "Grade 7",
+      "Mathematics",
+      "Ratio, Proportion, Percentage and Commercial Mathematics",
+      "CBSE",
+      "CISCE",
+      "Upper Primary"
+    ],
+    "isActive": true,
+    "createdAt": {
+      "$date": "2026-08-01T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-08-01T00:00:00.000Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "730000000000000000002329"
+    },
+    "title": "Grade 7 Mathematics - Algebraic Expressions, Equations and Inequalities",
+    "description": "Comprehensive Grade 7 Mathematics course on Algebraic Expressions, Equations and Inequalities, aligned with the supplied syllabus themes and suitable for CBSE and CISCE middle-school learning.",
+    "createdBy": "696d8e8098d47cbd00770abd",
+    "grade": 7,
+    "subject": "Mathematics",
+    "board": [
+      "CBSE",
+      "ICSE"
+    ],
+    "thumbnail": "",
+    "syllabus": [
+      "Constants and variables",
+      "Terms and coefficients",
+      "Like and unlike terms",
+      "Generating algebraic expressions",
+      "Expressions from word situations",
+      "Addition of algebraic expressions",
+      "Subtraction of algebraic expressions",
+      "Integral coefficients only",
+      "Collecting like terms",
+      "Checking expression simplification",
+      "Simple linear equations in one variable",
+      "Two-operation equations",
+      "Contextual equation problems",
+      "Checking equation solutions",
+      "Framing equations from stories",
+      "Meaning of inequality",
+      "Symbols less than and greater than",
+      "Solution of simple inequalities",
+      "Showing inequalities on number line",
+      "Inequality word problems"
+    ],
+    "chapters": [
+      {
+        "name": "Algebraic Terms and Expressions",
+        "topics": [
+          "Constants and variables",
+          "Terms and coefficients",
+          "Like and unlike terms",
+          "Generating algebraic expressions",
+          "Expressions from word situations"
+        ],
+        "learningObjectives": [
+          "Understand and solve Class 7 syllabus-aligned problems on Constants and variables",
+          "Understand and solve Class 7 syllabus-aligned problems on Terms and coefficients",
+          "Understand and solve Class 7 syllabus-aligned problems on Like and unlike terms",
+          "Understand and solve Class 7 syllabus-aligned problems on Generating algebraic expressions",
+          "Understand and solve Class 7 syllabus-aligned problems on Expressions from word situations"
+        ],
+        "estimatedHours": 5
+      },
+      {
+        "name": "Operations on Algebraic Expressions",
+        "topics": [
+          "Addition of algebraic expressions",
+          "Subtraction of algebraic expressions",
+          "Integral coefficients only",
+          "Collecting like terms",
+          "Checking expression simplification"
+        ],
+        "learningObjectives": [
+          "Understand and solve Class 7 syllabus-aligned problems on Addition of algebraic expressions",
+          "Understand and solve Class 7 syllabus-aligned problems on Subtraction of algebraic expressions",
+          "Understand and solve Class 7 syllabus-aligned problems on Integral coefficients only",
+          "Understand and solve Class 7 syllabus-aligned problems on Collecting like terms",
+          "Understand and solve Class 7 syllabus-aligned problems on Checking expression simplification"
+        ],
+        "estimatedHours": 5
+      },
+      {
+        "name": "Linear Equations in One Variable",
+        "topics": [
+          "Simple linear equations in one variable",
+          "Two-operation equations",
+          "Contextual equation problems",
+          "Checking equation solutions",
+          "Framing equations from stories"
+        ],
+        "learningObjectives": [
+          "Understand and solve Class 7 syllabus-aligned problems on Simple linear equations in one variable",
+          "Understand and solve Class 7 syllabus-aligned problems on Two-operation equations",
+          "Understand and solve Class 7 syllabus-aligned problems on Contextual equation problems",
+          "Understand and solve Class 7 syllabus-aligned problems on Checking equation solutions",
+          "Understand and solve Class 7 syllabus-aligned problems on Framing equations from stories"
+        ],
+        "estimatedHours": 5
+      },
+      {
+        "name": "Simple Inequalities in One Variable",
+        "topics": [
+          "Meaning of inequality",
+          "Symbols less than and greater than",
+          "Solution of simple inequalities",
+          "Showing inequalities on number line",
+          "Inequality word problems"
+        ],
+        "learningObjectives": [
+          "Understand and solve Class 7 syllabus-aligned problems on Meaning of inequality",
+          "Understand and solve Class 7 syllabus-aligned problems on Symbols less than and greater than",
+          "Understand and solve Class 7 syllabus-aligned problems on Solution of simple inequalities",
+          "Understand and solve Class 7 syllabus-aligned problems on Showing inequalities on number line",
+          "Understand and solve Class 7 syllabus-aligned problems on Inequality word problems"
+        ],
+        "estimatedHours": 5
+      }
+    ],
+    "topics": [
+      "Constants and variables",
+      "Terms and coefficients",
+      "Like and unlike terms",
+      "Generating algebraic expressions",
+      "Expressions from word situations",
+      "Addition of algebraic expressions",
+      "Subtraction of algebraic expressions",
+      "Integral coefficients only",
+      "Collecting like terms",
+      "Checking expression simplification",
+      "Simple linear equations in one variable",
+      "Two-operation equations",
+      "Contextual equation problems",
+      "Checking equation solutions",
+      "Framing equations from stories",
+      "Meaning of inequality",
+      "Symbols less than and greater than",
+      "Solution of simple inequalities",
+      "Showing inequalities on number line",
+      "Inequality word problems"
+    ],
+    "duration": "9 weeks",
+    "estimatedHours": 18,
+    "level": "beginner",
+    "difficulty": 2,
+    "language": "English",
+    "prerequisites": [
+      "Class 6 number operations",
+      "Basic fractions and decimals",
+      "Basic geometry and measurement"
+    ],
+    "learningOutcomes": [
+      "Explain important concepts in Algebraic Expressions, Equations and Inequalities using simple mathematical language",
+      "Use visual models before applying procedures",
+      "Solve routine and word problems accurately",
+      "Check answers using estimation, substitution, diagrams or reverse operations"
+    ],
+    "certificate": true,
+    "status": "published",
+    "enrollmentCount": 0,
+    "averageRating": 0,
+    "totalRatings": 0,
+    "reviewCount": 0,
+    "maxStudents": 50,
+    "tags": [
+      "Grade 7",
+      "Mathematics",
+      "Algebraic Expressions, Equations and Inequalities",
+      "CBSE",
+      "CISCE",
+      "Upper Primary"
+    ],
+    "isActive": true,
+    "createdAt": {
+      "$date": "2026-08-01T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-08-01T00:00:00.000Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "770000000000000000000001"
+    },
+    "title": "Grade 7 Mathematics - Lines, Angles and Triangle Properties",
+    "description": "Comprehensive Grade 7 Mathematics course on Lines, Angles and Triangle Properties, aligned with the supplied syllabus themes and suitable for CBSE and CISCE middle-school learning.",
+    "createdBy": "696d8e8098d47cbd00770abd",
+    "grade": 7,
+    "subject": "Mathematics",
+    "board": [
+      "CBSE",
+      "ICSE"
+    ],
+    "thumbnail": "",
+    "syllabus": [
+      "Linear pair of angles",
+      "Supplementary angles",
+      "Complementary angles",
+      "Adjacent angles",
+      "Vertically opposite angles",
+      "Corresponding angles",
+      "Alternate interior angles",
+      "Interior angles on same side",
+      "Exterior angles",
+      "Properties of parallel lines with transversal",
+      "Angle sum property of triangle",
+      "Exterior angle property",
+      "Triangle angle problems",
+      "Pythagoras theorem verification only",
+      "Right triangle visual checking"
+    ],
+    "chapters": [
+      {
+        "name": "Pairs of Angles",
+        "topics": [
+          "Linear pair of angles",
+          "Supplementary angles",
+          "Complementary angles",
+          "Adjacent angles",
+          "Vertically opposite angles"
+        ],
+        "learningObjectives": [
+          "Understand and solve Class 7 syllabus-aligned problems on Linear pair of angles",
+          "Understand and solve Class 7 syllabus-aligned problems on Supplementary angles",
+          "Understand and solve Class 7 syllabus-aligned problems on Complementary angles",
+          "Understand and solve Class 7 syllabus-aligned problems on Adjacent angles",
+          "Understand and solve Class 7 syllabus-aligned problems on Vertically opposite angles"
+        ],
+        "estimatedHours": 6
+      },
+      {
+        "name": "Parallel Lines and Transversal",
+        "topics": [
+          "Corresponding angles",
+          "Alternate interior angles",
+          "Interior angles on same side",
+          "Exterior angles",
+          "Properties of parallel lines with transversal"
+        ],
+        "learningObjectives": [
+          "Understand and solve Class 7 syllabus-aligned problems on Corresponding angles",
+          "Understand and solve Class 7 syllabus-aligned problems on Alternate interior angles",
+          "Understand and solve Class 7 syllabus-aligned problems on Interior angles on same side",
+          "Understand and solve Class 7 syllabus-aligned problems on Exterior angles",
+          "Understand and solve Class 7 syllabus-aligned problems on Properties of parallel lines with transversal"
+        ],
+        "estimatedHours": 6
+      },
+      {
+        "name": "Properties of Triangles",
+        "topics": [
+          "Angle sum property of triangle",
+          "Exterior angle property",
+          "Triangle angle problems",
+          "Pythagoras theorem verification only",
+          "Right triangle visual checking"
+        ],
+        "learningObjectives": [
+          "Understand and solve Class 7 syllabus-aligned problems on Angle sum property of triangle",
+          "Understand and solve Class 7 syllabus-aligned problems on Exterior angle property",
+          "Understand and solve Class 7 syllabus-aligned problems on Triangle angle problems",
+          "Understand and solve Class 7 syllabus-aligned problems on Pythagoras theorem verification only",
+          "Understand and solve Class 7 syllabus-aligned problems on Right triangle visual checking"
+        ],
+        "estimatedHours": 6
+      }
+    ],
+    "topics": [
+      "Linear pair of angles",
+      "Supplementary angles",
+      "Complementary angles",
+      "Adjacent angles",
+      "Vertically opposite angles",
+      "Corresponding angles",
+      "Alternate interior angles",
+      "Interior angles on same side",
+      "Exterior angles",
+      "Properties of parallel lines with transversal",
+      "Angle sum property of triangle",
+      "Exterior angle property",
+      "Triangle angle problems",
+      "Pythagoras theorem verification only",
+      "Right triangle visual checking"
+    ],
+    "duration": "8 weeks",
+    "estimatedHours": 16,
+    "level": "beginner",
+    "difficulty": 2,
+    "language": "English",
+    "prerequisites": [
+      "Class 6 number operations",
+      "Basic fractions and decimals",
+      "Basic geometry and measurement"
+    ],
+    "learningOutcomes": [
+      "Explain important concepts in Lines, Angles and Triangle Properties using simple mathematical language",
+      "Use visual models before applying procedures",
+      "Solve routine and word problems accurately",
+      "Check answers using estimation, substitution, diagrams or reverse operations"
+    ],
+    "certificate": true,
+    "status": "published",
+    "enrollmentCount": 0,
+    "averageRating": 0,
+    "totalRatings": 0,
+    "reviewCount": 0,
+    "maxStudents": 50,
+    "tags": [
+      "Grade 7",
+      "Mathematics",
+      "Lines, Angles and Triangle Properties",
+      "CBSE",
+      "CISCE",
+      "Upper Primary"
+    ],
+    "isActive": true,
+    "createdAt": {
+      "$date": "2026-08-01T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-08-01T00:00:00.000Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "770000000000000000000002"
+    },
+    "title": "Grade 7 Mathematics - Symmetry, 3-D Representation and Congruence",
+    "description": "Comprehensive Grade 7 Mathematics course on Symmetry, 3-D Representation and Congruence, aligned with the supplied syllabus themes and suitable for CBSE and CISCE middle-school learning.",
+    "createdBy": "696d8e8098d47cbd00770abd",
+    "grade": 7,
+    "subject": "Mathematics",
+    "board": [
+      "CBSE",
+      "ICSE"
+    ],
+    "thumbnail": "",
+    "syllabus": [
+      "Recalling reflection symmetry",
+      "Rotational symmetry of 2-D objects",
+      "Angles of rotation 90°, 120° and 180°",
+      "Order of rotational symmetry",
+      "Symmetry in daily-life designs",
+      "Vertices edges and faces",
+      "Nets of cubes and cuboids",
+      "Nets of cylinders and cones",
+      "Visual estimation of space",
+      "Mapping space around us approximately",
+      "Congruence through superimposition",
+      "Congruence of simple shapes",
+      "Congruence of triangles",
+      "Congruence of circles",
+      "Matching corresponding parts",
+      "SSS congruence criterion",
+      "SAS congruence criterion",
+      "ASA congruence criterion",
+      "RHS congruence criterion",
+      "Choosing a congruence criterion"
+    ],
+    "chapters": [
+      {
+        "name": "Reflection and Rotational Symmetry",
+        "topics": [
+          "Recalling reflection symmetry",
+          "Rotational symmetry of 2-D objects",
+          "Angles of rotation 90°, 120° and 180°",
+          "Order of rotational symmetry",
+          "Symmetry in daily-life designs"
+        ],
+        "learningObjectives": [
+          "Understand and solve Class 7 syllabus-aligned problems on Recalling reflection symmetry",
+          "Understand and solve Class 7 syllabus-aligned problems on Rotational symmetry of 2-D objects",
+          "Understand and solve Class 7 syllabus-aligned problems on Angles of rotation 90°, 120° and 180°",
+          "Understand and solve Class 7 syllabus-aligned problems on Order of rotational symmetry",
+          "Understand and solve Class 7 syllabus-aligned problems on Symmetry in daily-life designs"
+        ],
+        "estimatedHours": 5
+      },
+      {
+        "name": "Representing 3-D Shapes in 2-D",
+        "topics": [
+          "Vertices edges and faces",
+          "Nets of cubes and cuboids",
+          "Nets of cylinders and cones",
+          "Visual estimation of space",
+          "Mapping space around us approximately"
+        ],
+        "learningObjectives": [
+          "Understand and solve Class 7 syllabus-aligned problems on Vertices edges and faces",
+          "Understand and solve Class 7 syllabus-aligned problems on Nets of cubes and cuboids",
+          "Understand and solve Class 7 syllabus-aligned problems on Nets of cylinders and cones",
+          "Understand and solve Class 7 syllabus-aligned problems on Visual estimation of space",
+          "Understand and solve Class 7 syllabus-aligned problems on Mapping space around us approximately"
+        ],
+        "estimatedHours": 5
+      },
+      {
+        "name": "Congruence of Shapes",
+        "topics": [
+          "Congruence through superimposition",
+          "Congruence of simple shapes",
+          "Congruence of triangles",
+          "Congruence of circles",
+          "Matching corresponding parts"
+        ],
+        "learningObjectives": [
+          "Understand and solve Class 7 syllabus-aligned problems on Congruence through superimposition",
+          "Understand and solve Class 7 syllabus-aligned problems on Congruence of simple shapes",
+          "Understand and solve Class 7 syllabus-aligned problems on Congruence of triangles",
+          "Understand and solve Class 7 syllabus-aligned problems on Congruence of circles",
+          "Understand and solve Class 7 syllabus-aligned problems on Matching corresponding parts"
+        ],
+        "estimatedHours": 5
+      },
+      {
+        "name": "Criteria of Triangle Congruence",
+        "topics": [
+          "SSS congruence criterion",
+          "SAS congruence criterion",
+          "ASA congruence criterion",
+          "RHS congruence criterion",
+          "Choosing a congruence criterion"
+        ],
+        "learningObjectives": [
+          "Understand and solve Class 7 syllabus-aligned problems on SSS congruence criterion",
+          "Understand and solve Class 7 syllabus-aligned problems on SAS congruence criterion",
+          "Understand and solve Class 7 syllabus-aligned problems on ASA congruence criterion",
+          "Understand and solve Class 7 syllabus-aligned problems on RHS congruence criterion",
+          "Understand and solve Class 7 syllabus-aligned problems on Choosing a congruence criterion"
+        ],
+        "estimatedHours": 5
+      }
+    ],
+    "topics": [
+      "Recalling reflection symmetry",
+      "Rotational symmetry of 2-D objects",
+      "Angles of rotation 90°, 120° and 180°",
+      "Order of rotational symmetry",
+      "Symmetry in daily-life designs",
+      "Vertices edges and faces",
+      "Nets of cubes and cuboids",
+      "Nets of cylinders and cones",
+      "Visual estimation of space",
+      "Mapping space around us approximately",
+      "Congruence through superimposition",
+      "Congruence of simple shapes",
+      "Congruence of triangles",
+      "Congruence of circles",
+      "Matching corresponding parts",
+      "SSS congruence criterion",
+      "SAS congruence criterion",
+      "ASA congruence criterion",
+      "RHS congruence criterion",
+      "Choosing a congruence criterion"
+    ],
+    "duration": "9 weeks",
+    "estimatedHours": 18,
+    "level": "beginner",
+    "difficulty": 2,
+    "language": "English",
+    "prerequisites": [
+      "Class 6 number operations",
+      "Basic fractions and decimals",
+      "Basic geometry and measurement"
+    ],
+    "learningOutcomes": [
+      "Explain important concepts in Symmetry, 3-D Representation and Congruence using simple mathematical language",
+      "Use visual models before applying procedures",
+      "Solve routine and word problems accurately",
+      "Check answers using estimation, substitution, diagrams or reverse operations"
+    ],
+    "certificate": true,
+    "status": "published",
+    "enrollmentCount": 0,
+    "averageRating": 0,
+    "totalRatings": 0,
+    "reviewCount": 0,
+    "maxStudents": 50,
+    "tags": [
+      "Grade 7",
+      "Mathematics",
+      "Symmetry, 3-D Representation and Congruence",
+      "CBSE",
+      "CISCE",
+      "Upper Primary"
+    ],
+    "isActive": true,
+    "createdAt": {
+      "$date": "2026-08-01T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-08-01T00:00:00.000Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "770000000000000000000003"
+    },
+    "title": "Grade 7 Mathematics - Geometrical Constructions",
+    "description": "Comprehensive Grade 7 Mathematics course on Geometrical Constructions, aligned with the supplied syllabus themes and suitable for CBSE and CISCE middle-school learning.",
+    "createdBy": "696d8e8098d47cbd00770abd",
+    "grade": 7,
+    "subject": "Mathematics",
+    "board": [
+      "CBSE",
+      "ICSE"
+    ],
+    "thumbnail": "",
+    "syllabus": [
+      "Construction of a line parallel to a given line",
+      "Point outside a line",
+      "Using ruler and compass for parallels",
+      "Using angle copy for parallel construction",
+      "Checking parallel construction",
+      "Constructing triangle from three sides",
+      "Constructing triangle from two sides and included angle",
+      "Constructing triangle from two angles and included side",
+      "Drawing rough diagrams before construction",
+      "Checking triangle construction"
+    ],
+    "chapters": [
+      {
+        "name": "Constructing Parallel Lines",
+        "topics": [
+          "Construction of a line parallel to a given line",
+          "Point outside a line",
+          "Using ruler and compass for parallels",
+          "Using angle copy for parallel construction",
+          "Checking parallel construction"
+        ],
+        "learningObjectives": [
+          "Understand and solve Class 7 syllabus-aligned problems on Construction of a line parallel to a given line",
+          "Understand and solve Class 7 syllabus-aligned problems on Point outside a line",
+          "Understand and solve Class 7 syllabus-aligned problems on Using ruler and compass for parallels",
+          "Understand and solve Class 7 syllabus-aligned problems on Using angle copy for parallel construction",
+          "Understand and solve Class 7 syllabus-aligned problems on Checking parallel construction"
+        ],
+        "estimatedHours": 5
+      },
+      {
+        "name": "Construction of Simple Triangles",
+        "topics": [
+          "Constructing triangle from three sides",
+          "Constructing triangle from two sides and included angle",
+          "Constructing triangle from two angles and included side",
+          "Drawing rough diagrams before construction",
+          "Checking triangle construction"
+        ],
+        "learningObjectives": [
+          "Understand and solve Class 7 syllabus-aligned problems on Constructing triangle from three sides",
+          "Understand and solve Class 7 syllabus-aligned problems on Constructing triangle from two sides and included angle",
+          "Understand and solve Class 7 syllabus-aligned problems on Constructing triangle from two angles and included side",
+          "Understand and solve Class 7 syllabus-aligned problems on Drawing rough diagrams before construction",
+          "Understand and solve Class 7 syllabus-aligned problems on Checking triangle construction"
+        ],
+        "estimatedHours": 5
+      }
+    ],
+    "topics": [
+      "Construction of a line parallel to a given line",
+      "Point outside a line",
+      "Using ruler and compass for parallels",
+      "Using angle copy for parallel construction",
+      "Checking parallel construction",
+      "Constructing triangle from three sides",
+      "Constructing triangle from two sides and included angle",
+      "Constructing triangle from two angles and included side",
+      "Drawing rough diagrams before construction",
+      "Checking triangle construction"
+    ],
+    "duration": "5 weeks",
+    "estimatedHours": 10,
+    "level": "beginner",
+    "difficulty": 2,
+    "language": "English",
+    "prerequisites": [
+      "Class 6 number operations",
+      "Basic fractions and decimals",
+      "Basic geometry and measurement"
+    ],
+    "learningOutcomes": [
+      "Explain important concepts in Geometrical Constructions using simple mathematical language",
+      "Use visual models before applying procedures",
+      "Solve routine and word problems accurately",
+      "Check answers using estimation, substitution, diagrams or reverse operations"
+    ],
+    "certificate": true,
+    "status": "published",
+    "enrollmentCount": 0,
+    "averageRating": 0,
+    "totalRatings": 0,
+    "reviewCount": 0,
+    "maxStudents": 50,
+    "tags": [
+      "Grade 7",
+      "Mathematics",
+      "Geometrical Constructions",
+      "CBSE",
+      "CISCE",
+      "Upper Primary"
+    ],
+    "isActive": true,
+    "createdAt": {
+      "$date": "2026-08-01T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-08-01T00:00:00.000Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "770000000000000000000004"
+    },
+    "title": "Grade 7 Mathematics - Mensuration: Perimeter, Area and Circumference",
+    "description": "Comprehensive Grade 7 Mathematics course on Mensuration: Perimeter, Area and Circumference, aligned with the supplied syllabus themes and suitable for CBSE and CISCE middle-school learning.",
+    "createdBy": "696d8e8098d47cbd00770abd",
+    "grade": 7,
+    "subject": "Mathematics",
+    "board": [
+      "CBSE",
+      "ICSE"
+    ],
+    "thumbnail": "",
+    "syllabus": [
+      "Revision of perimeter",
+      "Circumference of circle",
+      "Perimeter of combined figures",
+      "Perimeter in daily-life fencing",
+      "Choosing correct length units",
+      "Area as counting square units",
+      "Area of square",
+      "Area of rectangle",
+      "Area of triangle",
+      "Area of parallelogram",
+      "Area of circle idea",
+      "Using pi in simple circle area",
+      "Area of ring",
+      "Area of combined figures",
+      "Estimating area of practical shapes"
+    ],
+    "chapters": [
+      {
+        "name": "Perimeter and Circumference",
+        "topics": [
+          "Revision of perimeter",
+          "Circumference of circle",
+          "Perimeter of combined figures",
+          "Perimeter in daily-life fencing",
+          "Choosing correct length units"
+        ],
+        "learningObjectives": [
+          "Understand and solve Class 7 syllabus-aligned problems on Revision of perimeter",
+          "Understand and solve Class 7 syllabus-aligned problems on Circumference of circle",
+          "Understand and solve Class 7 syllabus-aligned problems on Perimeter of combined figures",
+          "Understand and solve Class 7 syllabus-aligned problems on Perimeter in daily-life fencing",
+          "Understand and solve Class 7 syllabus-aligned problems on Choosing correct length units"
+        ],
+        "estimatedHours": 6
+      },
+      {
+        "name": "Area of Squares, Rectangles, Triangles and Parallelograms",
+        "topics": [
+          "Area as counting square units",
+          "Area of square",
+          "Area of rectangle",
+          "Area of triangle",
+          "Area of parallelogram"
+        ],
+        "learningObjectives": [
+          "Understand and solve Class 7 syllabus-aligned problems on Area as counting square units",
+          "Understand and solve Class 7 syllabus-aligned problems on Area of square",
+          "Understand and solve Class 7 syllabus-aligned problems on Area of rectangle",
+          "Understand and solve Class 7 syllabus-aligned problems on Area of triangle",
+          "Understand and solve Class 7 syllabus-aligned problems on Area of parallelogram"
+        ],
+        "estimatedHours": 6
+      },
+      {
+        "name": "Area of Circles, Rings and Combined Figures",
+        "topics": [
+          "Area of circle idea",
+          "Using pi in simple circle area",
+          "Area of ring",
+          "Area of combined figures",
+          "Estimating area of practical shapes"
+        ],
+        "learningObjectives": [
+          "Understand and solve Class 7 syllabus-aligned problems on Area of circle idea",
+          "Understand and solve Class 7 syllabus-aligned problems on Using pi in simple circle area",
+          "Understand and solve Class 7 syllabus-aligned problems on Area of ring",
+          "Understand and solve Class 7 syllabus-aligned problems on Area of combined figures",
+          "Understand and solve Class 7 syllabus-aligned problems on Estimating area of practical shapes"
+        ],
+        "estimatedHours": 6
+      }
+    ],
+    "topics": [
+      "Revision of perimeter",
+      "Circumference of circle",
+      "Perimeter of combined figures",
+      "Perimeter in daily-life fencing",
+      "Choosing correct length units",
+      "Area as counting square units",
+      "Area of square",
+      "Area of rectangle",
+      "Area of triangle",
+      "Area of parallelogram",
+      "Area of circle idea",
+      "Using pi in simple circle area",
+      "Area of ring",
+      "Area of combined figures",
+      "Estimating area of practical shapes"
+    ],
+    "duration": "9 weeks",
+    "estimatedHours": 18,
+    "level": "beginner",
+    "difficulty": 2,
+    "language": "English",
+    "prerequisites": [
+      "Class 6 number operations",
+      "Basic fractions and decimals",
+      "Basic geometry and measurement"
+    ],
+    "learningOutcomes": [
+      "Explain important concepts in Mensuration: Perimeter, Area and Circumference using simple mathematical language",
+      "Use visual models before applying procedures",
+      "Solve routine and word problems accurately",
+      "Check answers using estimation, substitution, diagrams or reverse operations"
+    ],
+    "certificate": true,
+    "status": "published",
+    "enrollmentCount": 0,
+    "averageRating": 0,
+    "totalRatings": 0,
+    "reviewCount": 0,
+    "maxStudents": 50,
+    "tags": [
+      "Grade 7",
+      "Mathematics",
+      "Mensuration: Perimeter, Area and Circumference",
+      "CBSE",
+      "CISCE",
+      "Upper Primary"
+    ],
+    "isActive": true,
+    "createdAt": {
+      "$date": "2026-08-01T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-08-01T00:00:00.000Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "770000000000000000000005"
+    },
+    "title": "Grade 7 Mathematics - Data Handling and Probability",
+    "description": "Comprehensive Grade 7 Mathematics course on Data Handling and Probability, aligned with the supplied syllabus themes and suitable for CBSE and CISCE middle-school learning.",
+    "createdBy": "696d8e8098d47cbd00770abd",
+    "grade": 7,
+    "subject": "Mathematics",
+    "board": [
+      "CBSE",
+      "ICSE"
+    ],
+    "thumbnail": "",
+    "syllabus": [
+      "Choosing data for hypothesis testing",
+      "Collecting data fairly",
+      "Organising data in tables",
+      "Ungrouped data",
+      "Drawing conclusions from data",
+      "Mean of ungrouped data",
+      "Median of ungrouped data",
+      "Mode of ungrouped data",
+      "What averages represent",
+      "Choosing a suitable average",
+      "Constructing bar graphs",
+      "Interpreting bar graphs",
+      "Notion of chance",
+      "Coin and dice experiments",
+      "Randomness and tabulating outcomes"
+    ],
+    "chapters": [
+      {
+        "name": "Data Collection and Organisation",
+        "topics": [
+          "Choosing data for hypothesis testing",
+          "Collecting data fairly",
+          "Organising data in tables",
+          "Ungrouped data",
+          "Drawing conclusions from data"
+        ],
+        "learningObjectives": [
+          "Understand and solve Class 7 syllabus-aligned problems on Choosing data for hypothesis testing",
+          "Understand and solve Class 7 syllabus-aligned problems on Collecting data fairly",
+          "Understand and solve Class 7 syllabus-aligned problems on Organising data in tables",
+          "Understand and solve Class 7 syllabus-aligned problems on Ungrouped data",
+          "Understand and solve Class 7 syllabus-aligned problems on Drawing conclusions from data"
+        ],
+        "estimatedHours": 6
+      },
+      {
+        "name": "Mean, Median and Mode",
+        "topics": [
+          "Mean of ungrouped data",
+          "Median of ungrouped data",
+          "Mode of ungrouped data",
+          "What averages represent",
+          "Choosing a suitable average"
+        ],
+        "learningObjectives": [
+          "Understand and solve Class 7 syllabus-aligned problems on Mean of ungrouped data",
+          "Understand and solve Class 7 syllabus-aligned problems on Median of ungrouped data",
+          "Understand and solve Class 7 syllabus-aligned problems on Mode of ungrouped data",
+          "Understand and solve Class 7 syllabus-aligned problems on What averages represent",
+          "Understand and solve Class 7 syllabus-aligned problems on Choosing a suitable average"
+        ],
+        "estimatedHours": 6
+      },
+      {
+        "name": "Bar Graphs and Chance Experiments",
+        "topics": [
+          "Constructing bar graphs",
+          "Interpreting bar graphs",
+          "Notion of chance",
+          "Coin and dice experiments",
+          "Randomness and tabulating outcomes"
+        ],
+        "learningObjectives": [
+          "Understand and solve Class 7 syllabus-aligned problems on Constructing bar graphs",
+          "Understand and solve Class 7 syllabus-aligned problems on Interpreting bar graphs",
+          "Understand and solve Class 7 syllabus-aligned problems on Notion of chance",
+          "Understand and solve Class 7 syllabus-aligned problems on Coin and dice experiments",
+          "Understand and solve Class 7 syllabus-aligned problems on Randomness and tabulating outcomes"
+        ],
+        "estimatedHours": 6
+      }
+    ],
+    "topics": [
+      "Choosing data for hypothesis testing",
+      "Collecting data fairly",
+      "Organising data in tables",
+      "Ungrouped data",
+      "Drawing conclusions from data",
+      "Mean of ungrouped data",
+      "Median of ungrouped data",
+      "Mode of ungrouped data",
+      "What averages represent",
+      "Choosing a suitable average",
+      "Constructing bar graphs",
+      "Interpreting bar graphs",
+      "Notion of chance",
+      "Coin and dice experiments",
+      "Randomness and tabulating outcomes"
+    ],
+    "duration": "8 weeks",
+    "estimatedHours": 16,
+    "level": "beginner",
+    "difficulty": 2,
+    "language": "English",
+    "prerequisites": [
+      "Class 6 number operations",
+      "Basic fractions and decimals",
+      "Basic geometry and measurement"
+    ],
+    "learningOutcomes": [
+      "Explain important concepts in Data Handling and Probability using simple mathematical language",
+      "Use visual models before applying procedures",
+      "Solve routine and word problems accurately",
+      "Check answers using estimation, substitution, diagrams or reverse operations"
+    ],
+    "certificate": true,
+    "status": "published",
+    "enrollmentCount": 0,
+    "averageRating": 0,
+    "totalRatings": 0,
+    "reviewCount": 0,
+    "maxStudents": 50,
+    "tags": [
+      "Grade 7",
+      "Mathematics",
+      "Data Handling and Probability",
+      "CBSE",
+      "CISCE",
+      "Upper Primary"
+    ],
+    "isActive": true,
+    "createdAt": {
+      "$date": "2026-08-01T00:00:00.000Z"
+    },
+    "updatedAt": {
+      "$date": "2026-08-01T00:00:00.000Z"
+    },
+    "__v": 0
+  }
+]

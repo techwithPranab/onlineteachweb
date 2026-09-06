@@ -463,7 +463,7 @@ export default function TutorApproval() {
               </div>
 
               <div className="col-span-2">
-                <label className="block text-sm font-medium text-gray-500 mb-1">Expertise Areas</label>
+                <label className="block text-sm font-medium text-gray-500 mb-1">Subjects Taught</label>
                 <div className="flex flex-wrap gap-2">
                   {selectedTutor.expertise?.map((item, index) => (
                     <span key={index} className="px-3 py-1 bg-primary-100 text-primary-700 rounded-full text-sm">

@@ -277,7 +277,7 @@ const quizSessionSchema = new mongoose.Schema({
   recommendations: [{
     recommendationType: {
       type: String,
-      enum: ['topic_focus', 'difficulty_adjustment', 'time_management', 'practice_more', 'general', 'study', 'mentor', 'reattempt', 'review', 'challenge', 'practice']
+      enum: ['topic_focus', 'difficulty_adjustment', 'time_management', 'practice_more', 'general', 'study', 'reattempt', 'review', 'challenge', 'practice']
     },
     message: String,
     priority: {
@@ -524,4 +524,3 @@ quizSessionSchema.statics.getAttemptCount = async function(quizId, studentId) {
 };
 
 module.exports = mongoose.model('QuizSession', quizSessionSchema);
-

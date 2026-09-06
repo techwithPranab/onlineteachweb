@@ -12,7 +12,7 @@ const WebsiteSchema = ({ searchUrl }) => {
     "name": "MeritAI",
     "alternateName": "MeritAI - AI-Powered Learning Platform",
     "url": typeof window !== 'undefined' ? window.location.origin : "https://meritai.com",
-    "description": "Find your learning gaps with AI precision. Get personalized assessments, expert mentorship, and master every concept with our adaptive learning platform.",
+    "description": "Find your learning gaps with AI precision. Get personalized assessments, AI practice, and master every concept with our adaptive learning platform.",
     "publisher": {
       "@type": "EducationalOrganization",
       "name": "MeritAI",

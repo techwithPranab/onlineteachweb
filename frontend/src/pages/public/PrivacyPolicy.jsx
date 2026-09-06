@@ -67,7 +67,7 @@ export default function PrivacyPolicy() {
                   <p>We collect information that you voluntarily provide when you:</p>
                   <ul className="list-disc pl-6 mt-2 space-y-1">
                     <li>Create an account (name, email, password, profile photo)</li>
-                    <li>Complete your profile (education, expertise, qualifications)</li>
+                    <li>Complete your profile (education, subjects taught, qualifications)</li>
                     <li>Enroll in courses</li>
                     <li>Participate in live classes (video, audio, chat messages)</li>
                     <li>Upload course materials or assignments</li>

@@ -11,7 +11,10 @@ export default function CourseList() {
   const { grade, subject } = useParams()
   const [filteredCourses, setFilteredCourses] = useState([])
 
-  const { data: courses, isLoading, error } = useQuery('courses', courseService.getPublicCourses)
+  const { data: courses, isLoading, error } = useQuery(
+    ['public-courses', 'all'],
+    () => courseService.getAllPublicCourses()
+  )
 
   useEffect(() => {
     if (courses && grade && subject) {

@@ -7,6 +7,7 @@ import {
   BookOpen,
   Calendar,
   FileText,
+  FileUp,
   BarChart3,
   Settings,
   Users,
@@ -77,6 +78,8 @@ const adminLinks = [
     label: 'Content Management',
     items: [
       { to: '/admin/courses', icon: BookOpen, label: 'Course Management' },
+      { to: '/admin/courses/from-scans', icon: FileUp, label: 'Scan to Course' },
+      { to: '/admin/materials', icon: FileText, label: 'Material Management' },
       { to: '/admin/quizzes', icon: ClipboardList, label: 'Quiz Management' },
       { to: '/admin/questions', icon: HelpCircle, label: 'Question Bank' },
       { to: '/admin/questions/import-export', icon: ArrowUpDown, label: 'Import/Export' },

@@ -64,11 +64,11 @@ export default function Courses() {
 
   const getPageDescription = () => {
     if (selectedGrade && selectedSubject) {
-      return `Browse ${courses.length}+ Grade ${selectedGrade} ${selectedSubject} courses. AI-powered learning with personalized assessments and expert mentorship.`
+      return `Browse ${courses.length}+ Grade ${selectedGrade} ${selectedSubject} courses. AI-powered learning with personalized assessments and adaptive AI practice.`
     } else if (selectedGrade) {
       return `Explore comprehensive Grade ${selectedGrade} courses across Math, Science, English and more. Personalized learning for CBSE, ICSE students.`
     } else if (selectedSubject) {
-      return `Learn ${selectedSubject} with our AI-powered courses for Grades 1-12. Interactive lessons, quizzes, and expert guidance.`
+      return `Learn ${selectedSubject} with our AI-powered courses for Grades 1-12. Interactive lessons, quizzes, and personalized practice.`
     }
     return 'Browse 100+ courses across Math, Science, English and more. AI-powered personalized learning for CBSE, ICSE students from Grade 1-12.'
   }

@@ -213,8 +213,24 @@ class AdaptiveQuestionSelectionStrategy extends QuestionSelectionStrategy {
       });
     }
     
+    // ── DEDUP + TRIM ────────────────────────────────────────────────────────────
+    // Remove any duplicate question IDs and trim to exactly totalQuestions.
+    const seenAdaptiveIds = new Set();
+    const dedupedSelected = [];
+    for (const q of selectedQuestions) {
+      const idStr = q._id.toString();
+      if (!seenAdaptiveIds.has(idStr)) {
+        seenAdaptiveIds.add(idStr);
+        dedupedSelected.push(q);
+      }
+    }
+    const trimmedSelected = dedupedSelected.slice(0, totalQuestions);
+    if (trimmedSelected.length < selectedQuestions.length) {
+      logger.warn(`[AdaptiveSelection] Trimmed from ${selectedQuestions.length} → ${trimmedSelected.length} (removed ${selectedQuestions.length - trimmedSelected.length} over-selected/duplicate questions)`);
+    }
+
     // Shuffle if required
-    let orderedQuestions = [...selectedQuestions];
+    let orderedQuestions = [...trimmedSelected];
     if (settings.shuffleQuestions) {
       orderedQuestions = this._shuffle(orderedQuestions);
     }
@@ -235,7 +251,7 @@ class AdaptiveQuestionSelectionStrategy extends QuestionSelectionStrategy {
     
     const result = orderedQuestions.map((q, index) => ({
       questionId: q._id,
-      originalOrder: selectedQuestions.findIndex(sq => sq._id.toString() === q._id.toString()),
+      originalOrder: trimmedSelected.findIndex(sq => sq._id.toString() === q._id.toString()),
       displayOrder: index,
       snapshot: {
         question: q.text,

@@ -274,6 +274,17 @@ class FeatureDefinitionService {
 
         // Content Features
         {
+          key: 'materials.view',
+          name: 'View Materials',
+          description: 'View learning materials',
+          category: 'content',
+          type: 'boolean',
+          defaultValue: true,
+          applicableRoles: ['student'],
+          displayOrder: 1,
+          icon: 'book-open'
+        },
+        {
           key: 'materials.download',
           name: 'Download Materials',
           description: 'Download learning materials',
@@ -281,7 +292,7 @@ class FeatureDefinitionService {
           type: 'boolean',
           defaultValue: true,
           applicableRoles: ['student'],
-          displayOrder: 1,
+          displayOrder: 2,
           icon: 'download'
         },
         {
@@ -292,7 +303,7 @@ class FeatureDefinitionService {
           type: 'boolean',
           defaultValue: false,
           applicableRoles: ['student'],
-          displayOrder: 2,
+          displayOrder: 3,
           icon: 'printer'
         },
         {

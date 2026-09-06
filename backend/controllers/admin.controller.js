@@ -1,5 +1,6 @@
 const User = require('../models/User.model');
 const Course = require('../models/Course.model');
+const Material = require('../models/Material.model');
 const Notification = require('../models/Notification.model');
 const { SubscriptionPlan } = require('../models/Subscription.model');
 const StudentPerformance = require('../models/StudentPerformance.model');
@@ -321,6 +322,123 @@ exports.getAllCoursesForAdmin = async (req, res, next) => {
       total,
       page: parseInt(page),
       pages: Math.ceil(total / parseInt(limit))
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// @desc    Get all materials for admin management with course/chapter filters
+// @route   GET /api/admin/materials
+// @access  Private (Admin)
+exports.getAllMaterialsForAdmin = async (req, res, next) => {
+  try {
+    const {
+      page = 1,
+      limit = 10,
+      search,
+      grade,
+      subject,
+      courseId,
+      chapter,
+      type,
+      difficulty,
+      category,
+      isActive
+    } = req.query;
+
+    const courseQuery = {};
+    if (grade) courseQuery.grade = parseInt(grade);
+    if (subject) courseQuery.subject = new RegExp(subject, 'i');
+
+    let allowedCourseIds = null;
+    if (courseId) {
+      allowedCourseIds = [courseId];
+    } else if (grade || subject) {
+      const matchingCourses = await Course.find(courseQuery).select('_id');
+      allowedCourseIds = matchingCourses.map(course => course._id);
+    }
+
+    const materialQuery = {};
+    if (allowedCourseIds) materialQuery.course = { $in: allowedCourseIds };
+    if (type) materialQuery.type = type;
+    if (difficulty) materialQuery.difficulty = difficulty;
+    if (category) materialQuery.category = category;
+    if (isActive !== undefined && isActive !== '') materialQuery.isActive = isActive === 'true';
+
+    const textFilters = [];
+    if (search) {
+      const regex = new RegExp(search, 'i');
+      textFilters.push({
+        $or: [
+          { title: regex },
+          { description: regex },
+          { tags: regex },
+          { content: regex },
+          { previewContent: regex }
+        ]
+      });
+    }
+
+    if (chapter) {
+      const chapterRegex = new RegExp(chapter, 'i');
+      textFilters.push({
+        $or: [
+          { title: chapterRegex },
+          { description: chapterRegex },
+          { tags: chapterRegex },
+          { content: chapterRegex }
+        ]
+      });
+    }
+
+    if (textFilters.length) {
+      materialQuery.$and = textFilters;
+    }
+
+    const skip = (parseInt(page) - 1) * parseInt(limit);
+
+    const [materials, total] = await Promise.all([
+      Material.find(materialQuery)
+        .populate('course', 'title grade subject board chapters topics')
+        .populate('tutor', 'name email')
+        .sort({ updatedAt: -1, createdAt: -1, order: 1 })
+        .skip(skip)
+        .limit(parseInt(limit)),
+      Material.countDocuments(materialQuery)
+    ]);
+
+    res.json({
+      success: true,
+      materials,
+      total,
+      page: parseInt(page),
+      pages: Math.ceil(total / parseInt(limit))
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// @desc    Get one material for admin editor
+// @route   GET /api/admin/materials/:id
+// @access  Private (Admin)
+exports.getMaterialForAdmin = async (req, res, next) => {
+  try {
+    const material = await Material.findById(req.params.id)
+      .populate('course', 'title grade subject board chapters topics')
+      .populate('tutor', 'name email');
+
+    if (!material) {
+      return res.status(404).json({
+        success: false,
+        message: 'Material not found'
+      });
+    }
+
+    res.json({
+      success: true,
+      material
     });
   } catch (error) {
     next(error);
@@ -988,4 +1106,3 @@ function convertToCSV(data) {
 
   return csvContent;
 }
-

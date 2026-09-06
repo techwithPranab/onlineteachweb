@@ -8,6 +8,7 @@ import ErrorMessage from '../../components/common/ErrorMessage'
 import EmptyState from '../../components/common/EmptyState'
 import Modal from '../../components/common/Modal'
 import ConfirmDialog from '../../components/common/ConfirmDialog'
+import MathDiagram from '../../components/diagrams/MathDiagram'
 
 export default function AIQuestionReview() {
   const navigate = useNavigate()
@@ -62,7 +63,8 @@ export default function AIQuestionReview() {
   }, [filters.grade, filters.subject])
 
   useEffect(() => {
-    // Reset to first page when filters change
+    // Only re-fetch the list when filters change; stats are always global
+    // and were already loaded on mount.
     fetchDrafts(1)
   }, [filters])
 
@@ -95,7 +97,9 @@ export default function AIQuestionReview() {
 
   const fetchStats = async () => {
     try {
-      const response = await aiQuestionService.getStatistics(filters.courseId || undefined)
+      // Always fetch global stats — no courseId filter — so metrics never
+      // change based on what the user has filtered or just approved/rejected.
+      const response = await aiQuestionService.getStatistics()
       setStats(response.stats)
     } catch (err) {
       console.error('Failed to load stats:', err)
@@ -423,6 +427,11 @@ export default function AIQuestionReview() {
                       className="text-sm text-gray-900 max-w-md truncate cursor-pointer hover:text-blue-600"
                       onClick={() => setViewDraft(draft)}
                     >
+                      {draft.questionPayload?.diagram?.type && (
+                        <span className="inline-flex items-center gap-1 px-1.5 py-0.5 bg-purple-100 text-purple-700 rounded text-xs font-medium mr-2">
+                          🖼️ {draft.questionPayload.diagram.type}
+                        </span>
+                      )}
                       {draft.questionPayload?.text || 'No text'}
                     </div>
                     <div className="text-xs text-gray-500 mt-1 space-y-1">
@@ -650,6 +659,13 @@ function QuestionPreview({ draft, onApprove, onEdit, onReject }) {
 
   return (
     <div className="space-y-6">
+      {/* Diagram (if image-based question) */}
+      {question.diagram && question.diagram.type && (
+        <div className="flex justify-center">
+          <MathDiagram diagram={question.diagram} size={240} />
+        </div>
+      )}
+
       {/* Question Text */}
       <div>
         <h4 className="font-medium text-gray-700 mb-2">Question</h4>

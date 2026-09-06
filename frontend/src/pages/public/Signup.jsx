@@ -4,6 +4,8 @@ import { useAuthStore } from '../../store/authStore'
 import { User, Mail, Lock, GraduationCap, Check } from 'lucide-react'
 import SEOHead from '../../components/SEO/SEOHead'
 
+const STUDENT_GRADES = Array.from({ length: 7 }, (_, index) => index + 4)
+
 export default function Signup() {
   const seoData = {
     title: 'Sign Up - MeritAI',
@@ -169,8 +171,9 @@ export default function Signup() {
                      onChange={(e) => setFormData({ ...formData, grade: e.target.value })}
                    >
                      <option value="">Select Grade</option>
-                     <option value="4">Grade 4</option>
-                     <option value="5">Grade 5</option>
+                     {STUDENT_GRADES.map(grade => (
+                       <option key={grade} value={grade}>Grade {grade}</option>
+                     ))}
                    </select>
                  </div>
                )}
@@ -215,8 +218,8 @@ export default function Signup() {
               <li className="flex items-start gap-3">
                 <Check className="h-5 w-5 text-primary-600 mt-1 flex-shrink-0" />
                 <div>
-                  <div className="font-semibold">Mentorship & Progress Tracking</div>
-                  <div className="text-sm text-gray-600">Connect with experts and track measurable improvement.</div>
+                  <div className="font-semibold">Personalized Learning & Progress Tracking</div>
+                  <div className="text-sm text-gray-600">Follow a tailored learning plan and track measurable improvement.</div>
                 </div>
               </li>
             </ul>

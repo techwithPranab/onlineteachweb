@@ -49,6 +49,21 @@ const materialSchema = new mongoose.Schema({
     enum: ['markdown', 'html', 'plaintext'],
     default: 'markdown'
   },
+  // Original textbook scans used to create this material. These references are
+  // retained so generated content remains auditable and can be regenerated.
+  sourceFiles: [{
+    fileUrl: String,
+    fileName: String,
+    fileSize: Number,
+    mimeType: String,
+    pageOrder: Number
+  }],
+  sourceProvenance: {
+    kind: { type: String, enum: ['manual', 'scan-ocr'], default: 'manual' },
+    model: String,
+    extractedAt: Date,
+    contentHash: String
+  },
   // Difficulty level for progression
   difficulty: {
     type: String,

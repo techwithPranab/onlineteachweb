@@ -363,7 +363,7 @@ export default function BlogPost() {
                 <h4 className="font-semibold text-gray-900 mb-2">About {post.author}</h4>
                 <p className="text-gray-600 text-sm">
                   {post.author === 'MeritAI Team'
-                    ? 'Our team of education experts and experienced tutors are dedicated to helping students achieve academic excellence through innovative learning solutions.'
+                    ? 'Our team is dedicated to helping students achieve academic excellence through innovative learning solutions.'
                     : 'An experienced educator passionate about helping students reach their full potential through effective teaching and personalized learning strategies.'
                   }
                 </p>

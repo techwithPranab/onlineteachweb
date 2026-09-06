@@ -74,7 +74,7 @@ class OpenAIProvider extends AIProviderInterface {
    * Generate questions using OpenAI
    */
   async generateQuestions(input) {
-    const { topic, content, difficultyLevel, questionType, count, context } = input;
+    const { topic, content, difficultyLevel, questionType, count, context, imageBased, diagramTypes } = input;
     
     if (!this.apiKey) {
       throw new Error('OpenAI API key not configured');
@@ -86,7 +86,9 @@ class OpenAIProvider extends AIProviderInterface {
       difficultyLevel,
       questionType,
       count,
-      context
+      context,
+      imageBased: imageBased || false,
+      diagramTypes: diagramTypes || []
     });
 
     const temperature = this.temperatureSettings[difficultyLevel] || 0.5;

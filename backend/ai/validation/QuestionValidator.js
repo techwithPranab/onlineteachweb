@@ -361,6 +361,15 @@ class QuestionValidator {
       sanitized._metadata = question._metadata;
     }
     
+    // Preserve SVG diagram data for image-based questions
+    if (question.diagram && question.diagram.type) {
+      sanitized.diagram = {
+        type: question.diagram.type,
+        params: question.diagram.params || {},
+        caption: question.diagram.caption || ''
+      };
+    }
+    
     return sanitized;
   }
 

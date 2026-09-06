@@ -3,6 +3,8 @@ import { useQuery, useMutation } from 'react-query'
 import Modal from '../common/Modal'
 import { questionService } from '@/services/apiServices'
 import { Sparkles, AlertCircle, CheckCircle, Loader } from 'lucide-react'
+import { DIAGRAM_CATALOG, getRelevantDiagramTypes } from '../diagrams/diagramCatalog'
+import MathDiagram from '../diagrams/MathDiagram'
 
 const DIFFICULTY_LEVELS = [
   { value: 'easy', label: 'Easy', color: 'bg-green-100 text-green-800' },
@@ -37,7 +39,8 @@ export default function AIGenerationModal({ isOpen, onClose, onSuccess, courseId
     questionType: 'mcq-single',
     count: 5,
     aiProvider: 'openai',
-    model: 'gpt-4'
+    model: 'gpt-4',
+    imageBased: false
   })
 
   const [chapters, setChapters] = useState([])
@@ -149,8 +152,19 @@ export default function AIGenerationModal({ isOpen, onClose, onSuccess, courseId
 
   const handleGenerate = () => {
     if (!validate()) return
-    
-    generateMutation.mutate(formData)
+
+    // Auto-resolve diagram types from the selected topic and chapter
+    const autoTypes = formData.imageBased
+      ? getRelevantDiagramTypes(
+          formData.topic ? [formData.topic] : topics.map(t => typeof t === 'string' ? t : t.name),
+          null
+        )
+      : []
+
+    generateMutation.mutate({
+      ...formData,
+      diagramTypes: autoTypes
+    })
   }
 
   return (
@@ -309,6 +323,59 @@ export default function AIGenerationModal({ isOpen, onClose, onSuccess, courseId
               }`}
             />
             {errors.count && <p className="text-red-500 text-xs mt-1">{errors.count}</p>}
+          </div>
+
+          {/* ── Image Based Option ── */}
+          <div className="col-span-2">
+            <div className={`rounded-xl border-2 transition-all p-3 ${formData.imageBased ? 'border-purple-400 bg-purple-50' : 'border-dashed border-gray-200'}`}>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <span className="text-xl">🖼️</span>
+                  <div>
+                    <p className="text-sm font-semibold text-gray-800">Image Based Questions</p>
+                    <p className="text-xs text-gray-500">SVG diagrams are auto-selected from the chapter topic</p>
+                  </div>
+                </div>
+                <label className="relative inline-flex items-center cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={formData.imageBased}
+                    onChange={(e) => handleChange('imageBased', e.target.checked)}
+                    className="sr-only peer"
+                  />
+                  <div className="w-10 h-5 bg-gray-300 rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-purple-600" />
+                </label>
+              </div>
+
+              {formData.imageBased && (() => {
+                const autoTypes = getRelevantDiagramTypes(
+                  formData.topic ? [formData.topic] : topics.map(t => typeof t === 'string' ? t : t.name),
+                  null
+                )
+                const matchedDiagrams = DIAGRAM_CATALOG.filter(d => autoTypes.includes(d.type))
+                return (
+                  <div className="mt-3 space-y-2">
+                    <p className="text-xs font-semibold text-purple-800">Auto-matched diagram types:</p>
+                    {matchedDiagrams.length > 0 ? (
+                      <div className="flex flex-wrap gap-1.5">
+                        {matchedDiagrams.map(d => (
+                          <span
+                            key={d.type}
+                            className="inline-flex items-center gap-1 px-2 py-0.5 bg-purple-100 text-purple-800 border border-purple-300 rounded-full text-xs font-medium"
+                          >
+                            {d.emoji} {d.label}
+                          </span>
+                        ))}
+                      </div>
+                    ) : (
+                      <p className="text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded px-2 py-1.5">
+                        ⚠️ Select a topic first — diagrams will be matched automatically.
+                      </p>
+                    )}
+                  </div>
+                )
+              })()}
+            </div>
           </div>
         </div>
 

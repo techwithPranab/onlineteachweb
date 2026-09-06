@@ -6,6 +6,19 @@ const reportController = require('../controllers/report.controller');
 const paymentController = require('../controllers/payment.controller');
 const { authenticate, authorize } = require('../middleware/auth');
 const validate = require('../middleware/validate');
+const multer = require('multer');
+const path = require('path');
+const scanCourseController = require('../controllers/scanCourse.controller');
+
+const scanStorage = multer.diskStorage({
+  destination: (req, file, cb) => cb(null, 'uploads/materials/'),
+  filename: (req, file, cb) => cb(null, `course-scan-${Date.now()}-${Math.round(Math.random() * 1e9)}${path.extname(file.originalname)}`)
+});
+const scanUpload = multer({
+  storage: scanStorage,
+  limits: { fileSize: 50 * 1024 * 1024, files: 20 },
+  fileFilter: (req, file, cb) => cb(file.mimetype === 'application/pdf' ? null : new Error('Only PDF scans are supported'), file.mimetype === 'application/pdf')
+});
 
 // All admin routes require authentication and admin role
 router.use(authenticate);
@@ -49,6 +62,22 @@ router.put('/tutors/:id/approve',
 // Course management
 router.get('/courses', adminController.getAllCoursesForAdmin);
 router.get('/courses/stats', adminController.getCourseStats);
+router.post('/courses/from-scans',
+  scanUpload.array('files', 20),
+  [
+    body('grade').isInt({ min: 1, max: 12 }).withMessage('Grade must be between 1 and 12'),
+    body('subject').trim().notEmpty().withMessage('Subject is required'),
+    body('board').optional().isIn(['CBSE', 'ICSE', 'State Board', 'Other']),
+    validate
+  ],
+  scanCourseController.createFromScans
+);
+router.get('/courses/from-scans/history', scanCourseController.getHistory);
+router.get('/courses/from-scans/history/:id', scanCourseController.getHistoryItem);
+
+// Material management
+router.get('/materials', adminController.getAllMaterialsForAdmin);
+router.get('/materials/:id', adminController.getMaterialForAdmin);
 
 // Payment management
 router.get('/payments', paymentController.getPayments);

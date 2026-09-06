@@ -18,7 +18,7 @@ export const LEVELS = [
   { level: 3,  title: 'Learner',   emoji: '📖', color: 'blue',   minXP: 300   },
   { level: 4,  title: 'Scholar',   emoji: '🎓', color: 'cyan',   minXP: 600   },
   { level: 5,  title: 'Achiever',  emoji: '⭐', color: 'yellow', minXP: 1000  },
-  { level: 6,  title: 'Expert',    emoji: '💡', color: 'orange', minXP: 1500  },
+  { level: 6,  title: 'Skilled',   emoji: '💡', color: 'orange', minXP: 1500  },
   { level: 7,  title: 'Master',    emoji: '🔥', color: 'red',    minXP: 2200  },
   { level: 8,  title: 'Champion',  emoji: '🏆', color: 'purple', minXP: 3100  },
   { level: 9,  title: 'Elite',     emoji: '💎', color: 'violet', minXP: 4300  },

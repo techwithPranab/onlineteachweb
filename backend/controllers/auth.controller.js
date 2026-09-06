@@ -249,9 +249,10 @@ exports.logout = async (req, res, next) => {
 exports.forgotPassword = async (req, res, next) => {
   try {
     const { email } = req.body;
+    const normalizedEmail = String(email || '').trim().toLowerCase();
     
     // Find user by email
-    const user = await User.findOne({ email: email.toLowerCase() });
+    const user = await User.findOne({ email: normalizedEmail });
     
     if (!user) {
       // Don't reveal if user exists or not for security

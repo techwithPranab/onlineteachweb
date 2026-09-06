@@ -29,7 +29,7 @@ export default function ForTutors() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <h1 className="text-5xl md:text-6xl font-bold mb-6">
-              Share Your Expertise, Earn Money
+              Share Your Knowledge, Earn Money
             </h1>
             <p className="text-xl md:text-2xl mb-8 text-purple-100">
               Join our platform and connect with students eager to learn from you
@@ -166,7 +166,7 @@ export default function ForTutors() {
             <StepCard
               number="1"
               title="Apply Online"
-              description="Complete your tutor profile with qualifications, expertise, and experience."
+              description="Complete your tutor profile with qualifications, subjects taught, and experience."
             />
             <StepCard
               number="2"
@@ -212,7 +212,7 @@ export default function ForTutors() {
               title="Teaching Experience"
               items={[
                 "Minimum 1 year of teaching/tutoring experience",
-                "Demonstrated subject matter expertise",
+                "Strong subject knowledge",
                 "References from previous students/institutions"
               ]}
             />

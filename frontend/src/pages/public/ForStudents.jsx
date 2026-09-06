@@ -12,7 +12,7 @@ export default function ForStudents() {
 
   const seoData = {
     title: 'For Students - AI-Powered Learning Platform',
-    description: 'Master concepts with AI-driven gap analysis, personalized quizzes, and expert mentorship. Track your progress and achieve academic excellence with MeritAI.',
+    description: 'Master concepts with AI-driven gap analysis and personalized quizzes. Track your progress and achieve academic excellence with MeritAI.',
     keywords: 'online learning for students, personalized learning, AI quizzes, exam preparation, CBSE study, ICSE study, student dashboard, progress tracking'
   };
 
@@ -99,8 +99,8 @@ export default function ForStudents() {
             />
             <BenefitCard
               icon={<Users className="h-12 w-12 text-primary-600" />}
-              title="Expert Tutor Support"
-              description="Connect with qualified tutors for personalized guidance and doubt clearing."
+              title="Personalized Learning Support"
+              description="Use tailored resources and practice to strengthen concepts and clear doubts."
             />
           </div>
         </div>
@@ -154,7 +154,7 @@ export default function ForStudents() {
                 <FeatureItem text="Weak topic identification and targeted practice recommendations" />
                 <FeatureItem text="Custom quiz creation with flexible parameters" />
                 <FeatureItem text="Mobile-friendly platform for learning on-the-go" />
-                <FeatureItem text="Expert tutor support for doubt clearing and guidance" />
+                <FeatureItem text="Personalized resources for doubt clearing and guidance" />
               </div>
             </div>
             <div className="bg-gradient-to-br from-primary-50 to-primary-100 rounded-2xl p-8 text-center">

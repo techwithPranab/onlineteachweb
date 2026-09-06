@@ -2,6 +2,60 @@
 
 This directory contains scripts for seeding the database with features and subscription plan configurations.
 
+## Grade 4-10 Mathematics replacement
+
+`replace-grade4-10-math-data.js` replaces every course and material in MongoDB with
+the Mathematics course and material JSON files under `Data/Grade4` through
+`Data/Grade10`.
+
+The script validates all files, model fields, ObjectIds, duplicate IDs, and material
+course references before connecting to MongoDB or deleting data. It uses a MongoDB
+transaction on replica sets and sharded clusters. Standalone MongoDB servers do not
+support transactions, so deletion and insertion run sequentially there.
+
+```bash
+# From the repository root: validate only (recommended first)
+cd backend && npm run seed:math:grade4-10:check
+
+# Replace the database data
+cd backend && npm run seed:math:grade4-10
+```
+
+Direct terminal commands are also supported:
+
+```bash
+node backend/scripts/replace-grade4-10-math-data.js --dry-run
+node backend/scripts/replace-grade4-10-math-data.js --yes
+```
+
+The destructive run requires `--yes` and a valid `MONGODB_URI` in `backend/.env` or
+the terminal environment. Back up the database before running it. This script deletes
+all courses and materials, including courses outside Grades 4-10 and non-Mathematics
+courses, before inserting the validated Grade 4-10 Mathematics data.
+
+## Grade 4-10 student accounts
+
+`seed-grade4-10-students.js` creates 10 active, email-verified student accounts for
+each Grade 4 through Grade 10 (70 accounts total). It is safe to rerun: generated
+accounts are matched by email and updated instead of duplicated.
+
+```bash
+# Validate and preview without changing MongoDB
+cd backend && npm run seed:students:grade4-10:check
+
+# Create or update all 70 students
+cd backend && npm run seed:students:grade4-10
+
+# Override the default password
+node backend/scripts/seed-grade4-10-students.js --yes --password=YourSecurePassword
+```
+
+The fallback password is `MeritAI@123`. Set `DEFAULT_STUDENT_PASSWORD` in
+`backend/.env` or pass `--password=...` to override it. Generated emails follow the
+pattern `student-grade4-01@meritai.test` through `student-grade10-10@meritai.test`.
+These shared-password accounts are intended for testing or demonstrations; use unique
+credentials for real students.
+
 ## 📋 Available Scripts
 
 ### 1. `seedFeaturesAndPlans.js`

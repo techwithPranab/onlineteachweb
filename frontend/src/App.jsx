@@ -57,6 +57,7 @@ import ManualEvaluation from './pages/tutor/ManualEvaluation'
 import QuizAnalytics from './pages/tutor/QuizAnalytics'
 import AIQuestionGenerator from './pages/tutor/AIQuestionGenerator'
 import AIQuestionReview from './pages/tutor/AIQuestionReview'
+import DiagramGallery from './pages/tutor/DiagramGallery'
 
 // Admin Pages
 import AdminDashboard from './pages/admin/AdminDashboard'
@@ -66,6 +67,8 @@ import AdminCourseManagement from './pages/admin/AdminCourseManagement'
 import AdminCourseCreation from './pages/admin/AdminCourseCreation'
 import AdminCourseEdit from './pages/admin/AdminCourseEdit'
 import AdminCourseView from './pages/admin/AdminCourseView'
+import MaterialManagement from './pages/admin/MaterialManagement'
+import MaterialEditor from './pages/admin/MaterialEditor'
 import RevenueAnalytics from './pages/admin/RevenueAnalytics'
 import PaymentManagement from './pages/admin/PaymentManagement'
 import SessionManagement from './pages/admin/SessionManagement'
@@ -77,6 +80,7 @@ import AdminQuestionImportExport from './pages/admin/QuestionImportExport'
 import ContactMessages from './pages/admin/ContactMessages'
 import StudentPerformanceDashboard from './pages/admin/StudentPerformanceDashboard'
 import ReviewApproval from './pages/admin/ReviewApproval'
+import ScanCourseCreation from './pages/admin/ScanCourseCreation'
 
 // Shared
 import ProfileSettings from './pages/shared/ProfileSettings'
@@ -183,6 +187,7 @@ function App() {
             <Route path="ai-questions" element={<AIQuestionReview />} />
             <Route path="ai-questions/generate" element={<AIQuestionGenerator />} />
             <Route path="ai-questions/review" element={<AIQuestionReview />} />
+            <Route path="diagrams" element={<DiagramGallery />} />
             <Route path="evaluate" element={<ManualEvaluation />} />
             <Route path="evaluate/:sessionId" element={<ManualEvaluation />} />
             <Route path="analytics" element={<QuizAnalytics />} />
@@ -203,8 +208,11 @@ function App() {
             <Route path="tutors/approval" element={<TutorApproval />} />
             <Route path="courses" element={<AdminCourseManagement />} />
             <Route path="courses/new" element={<AdminCourseCreation />} />
+            <Route path="courses/from-scans" element={<ScanCourseCreation />} />
             <Route path="courses/:id/view" element={<AdminCourseView />} />
             <Route path="courses/:id/edit" element={<AdminCourseEdit />} />
+            <Route path="materials" element={<MaterialManagement />} />
+            <Route path="materials/:id/edit" element={<MaterialEditor />} />
             <Route path="payments" element={<PaymentManagement />} />
             <Route path="sessions" element={<SessionManagement />} />
             <Route path="subscriptions" element={<AdminSubscriptionManagement />} />
@@ -227,6 +235,7 @@ function App() {
             <Route path="ai-questions" element={<AIQuestionReview />} />
             <Route path="ai-questions/generate" element={<AIQuestionGenerator />} />
             <Route path="ai-questions/review" element={<AIQuestionReview />} />
+            <Route path="diagrams" element={<DiagramGallery />} />
             <Route path="quiz-analytics" element={<QuizAnalytics />} />
             <Route path="quiz-analytics/:quizId" element={<QuizAnalytics />} />
             <Route path="evaluate" element={<ManualEvaluation />} />
