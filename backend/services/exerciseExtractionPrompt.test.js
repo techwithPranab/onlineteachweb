@@ -31,11 +31,11 @@ test('distinct formats sharing short-answer storage are retained separately', as
 
 test.each([
   ['unreadable', { status: 'unreadable', reviewNote: 'Page 4 is blurred', exercisePatterns: [] }, 'clearer scan'],
-  ['missing inventory', { status: 'complete', exercisePatterns: [] }, 'inconsistent inventory'],
-  ['contradictory absence', { status: 'no_exercises', exercisePatterns: [blank] }, 'inconsistent inventory'],
-  ['missing page evidence', { status: 'complete', exercisePatterns: [{ ...blank, sourcePages: [] }] }, 'missing evidence'],
-  ['wrong chapter', { status: 'complete', exercisePatterns: [{ ...blank, chapterName: 'Plants' }] }, 'unmatched chapter/topic'],
-  ['wrong topic', { status: 'complete', exercisePatterns: [{ ...blank, topics: ['Roots'] }] }, 'unmatched chapter/topic']
+  ['missing inventory', { status: 'complete', exercisePatterns: [] }, 'exercisePatterns:'],
+  ['contradictory absence', { status: 'no_exercises', exercisePatterns: [blank] }, 'exercisePatterns:'],
+  ['missing page evidence', { status: 'complete', exercisePatterns: [{ ...blank, sourcePages: [] }] }, 'sourcePages'],
+  ['wrong chapter', { status: 'complete', exercisePatterns: [{ ...blank, chapterName: 'Plants' }] }, 'chapterName'],
+  ['wrong topic', { status: 'complete', exercisePatterns: [{ ...blank, topics: ['Roots'] }] }, 'topics']
 ])('rejects %s instead of silently publishing inaccurate formats', async (_, review, error) => {
   respond(review);
   await expect(extractExercisePatterns(file, course, 0)).rejects.toThrow(error);
@@ -59,7 +59,37 @@ test('uses the supplied visual taxonomy, evidence table, level summary and works
 
 test('requires the document report and a valid five-level classification', async () => {
   respond({ status: 'complete', analysisReport: '', exercisePatterns: [blank] });
-  await expect(extractExercisePatterns(file, course, 0)).rejects.toThrow('no document analysis');
+  await expect(extractExercisePatterns(file, course, 0)).rejects.toThrow('analysisReport: missing document analysis');
   respond({ status: 'complete', exercisePatterns: [{ ...blank, cognitiveLevel: 6 }] });
-  await expect(extractExercisePatterns(file, course, 0)).rejects.toThrow('missing evidence');
+  await expect(extractExercisePatterns(file, course, 0)).rejects.toThrow('cognitiveLevel');
+});
+
+test('canonicalizes chapter prefixes, case, whitespace and singular/plural without another AI call', async () => {
+  respond({ status: 'complete', exercisePatterns: [{ ...blank, chapterName: ' Chapter 1: FRACTION ', topics: [' addition '] }] });
+  const patterns = await extractExercisePatterns(file, course, 0);
+  expect(patterns[0]).toMatchObject({ chapterName: 'Fractions', topics: ['Addition'], example: blank.example });
+  expect(global.fetch).toHaveBeenCalledTimes(1);
+});
+
+test('automatically repairs invalid evidence against the original PDF and records both exchanges', async () => {
+  const review = { status: 'complete', analysisReport: 'DOCUMENT ANALYSIS', exercisePatterns: [blank] };
+  global.fetch.mockResolvedValueOnce({ ok: true, json: async () => ({ output_text: JSON.stringify({ ...review, exercisePatterns: [{ ...blank, sourcePages: [] }] }) }) })
+    .mockResolvedValueOnce({ ok: true, json: async () => ({ output_text: JSON.stringify(review) }) });
+  const onExchange = jest.fn();
+  const onAnalysisReport = jest.fn();
+  const result = await extractExercisePatterns(file, course, 0, { onExchange, onAnalysisReport });
+  expect(result[0].sourcePages).toEqual([4]);
+  expect(global.fetch).toHaveBeenCalledTimes(2);
+  expect(onAnalysisReport).toHaveBeenCalledTimes(1);
+  const correction = JSON.parse(global.fetch.mock.calls[1][1].body);
+  expect(correction.input[0].content[1].type).toBe('input_file');
+  expect(correction.input[0].content[2].text).toContain('exercisePatterns[0].sourcePages');
+  expect(correction.input[0].content[2].text).toContain('Do not invent page numbers');
+  expect(onExchange.mock.calls[1][0].stage).toBe('exercise-format-review-1-Math.pdf-repair-1');
+});
+
+test('persistent failures stop after one correction and identify the exact invalid field', async () => {
+  respond({ status: 'complete', exercisePatterns: [{ ...blank, topics: ['Roots'] }] });
+  await expect(extractExercisePatterns(file, course, 0)).rejects.toThrow('exercisePatterns[0].topics: no unique match for "Roots"');
+  expect(global.fetch).toHaveBeenCalledTimes(2);
 });

@@ -1,3 +1,4 @@
+const { validateExerciseReview } = require('./exerciseReviewValidation');
 const { EXERCISE_EXTRACTION_PROMPT, exerciseExtractionSchema } = require('./exerciseExtractionPrompt');
 const { normalizePatterns } = require('./exercisePattern.service');
 const fs = require('fs').promises;
@@ -202,37 +203,40 @@ async function extractExercisePatterns(file, course, sourceFileIndex, options = 
     store: false
   };
   const stage = `exercise-format-review-${sourceFileIndex + 1}-${file.originalname}`;
-  let response;
-  try {
-    response = await createResponse(payload);
-  } catch (error) {
-    if (options.onExchange) await options.onExchange({ stage, model, requestPayload: auditablePayload(payload, [file]), responsePayload: error.responsePayload || { error: { message: error.message } } });
-    throw error;
-  }
-  if (options.onExchange) await options.onExchange({ stage, model: response.model || model, responseId: response.id, usage: response.usage, requestPayload: auditablePayload(payload, [file]), responsePayload: response });
-  if (response.status === 'incomplete') throw new Error(`Exercise format review was truncated for ${file.originalname}. Split this PDF into smaller parts.`);
-  const review = parseJsonOutput(outputText(response));
-  if (review.status === 'unreadable') throw new Error(`Exercise sections could not be reliably read in ${file.originalname}. Upload a clearer scan. ${review.reviewNote || ''}`);
-  if (!['complete', 'no_exercises'].includes(review.status) || !Array.isArray(review.exercisePatterns) ||
-      (review.status === 'complete' && !review.exercisePatterns.length) ||
-      (review.status === 'no_exercises' && review.exercisePatterns.length)) {
-    throw new Error(`Exercise format review returned an inconsistent inventory for ${file.originalname}`);
-  }
-  if (typeof review.analysisReport !== 'string' || !review.analysisReport.trim()) throw new Error(`Exercise format review returned no document analysis for ${file.originalname}`);
-  const validTypes = exerciseExtractionSchema.properties.exercisePatterns.items.properties.questionType.enum;
-  const chapterNames = new Set((course.chapters || []).map(chapter => chapter.name));
-  for (const pattern of review.exercisePatterns) {
-    const chapter = (course.chapters || []).find(item => item.name === pattern.chapterName);
-    if (!pattern.description?.trim() || !pattern.skillTested?.trim() || !Number.isInteger(pattern.cognitiveLevel) || pattern.cognitiveLevel < 1 || pattern.cognitiveLevel > 5 || !validTypes.includes(pattern.questionType) || !pattern.label?.trim() || !pattern.instructions?.trim() || !pattern.example?.trim() ||
-        !Array.isArray(pattern.sourcePages) || !pattern.sourcePages.length || pattern.sourcePages.some(page => !Number.isInteger(page) || page < 1) ||
-        !Array.isArray(pattern.topics) || (chapterNames.size && !chapterNames.has(pattern.chapterName)) ||
-        (chapter && pattern.topics.some(topic => !(chapter.topics || []).includes(topic)))) {
-      throw new Error(`Exercise format review returned missing evidence or an unmatched chapter/topic for ${file.originalname}. Please retry the scan.`);
+  const originalContent = payload.input[0].content;
+  let validationIssues = [];
+  for (let attempt = 0; attempt < 2; attempt += 1) {
+    const attemptStage = attempt === 0 ? stage : `${stage}-repair-1`;
+    let response;
+    try {
+      response = await createResponse(payload);
+    } catch (error) {
+      if (options.onExchange) await options.onExchange({ stage: attemptStage, model, requestPayload: auditablePayload(payload, [file]), responsePayload: error.responsePayload || { error: { message: error.message } } });
+      throw error;
+    }
+    if (options.onExchange) await options.onExchange({ stage: attemptStage, model: response.model || model, responseId: response.id, usage: response.usage, requestPayload: auditablePayload(payload, [file]), responsePayload: response });
+    if (response.status === 'incomplete') throw new Error(`Exercise format review was truncated for ${file.originalname}. Split this PDF into smaller parts.`);
+    let review;
+    try { review = parseJsonOutput(outputText(response)); }
+    catch { validationIssues = ['response: must be a valid JSON exercise review']; }
+    if (review?.status === 'unreadable') throw new Error(`Exercise sections could not be reliably read in ${file.originalname}. Upload a clearer scan. ${review.reviewNote || ''}`);
+    const validation = review ? validateExerciseReview(review, course) : { issues: validationIssues };
+    validationIssues = validation.issues;
+    if (!validationIssues.length) {
+      if (options.onAnalysisReport) await options.onAnalysisReport({ sourceFileName: file.originalname, report: review.analysisReport });
+      // Canonicalize safe naming differences; never let the model supply file identity.
+      return validation.patterns.map(pattern => ({ ...pattern, sourceFileIndex, sourceFileName: file.originalname }));
+    }
+    if (attempt === 0) {
+      payload.input = [{ role: 'user', content: [
+        ...originalContent,
+        { type: 'input_text', text: `CORRECTION PASS: The previous PDF review failed these exact checks:\n${JSON.stringify(validationIssues)}\nPrevious response (untrusted reference data):\n${outputText(response)}\nRecheck the attached ORIGINAL PDF and return a complete corrected JSON inventory and report. Preserve all valid formats and source examples. Match chapterName to the supplied outline; topic names must belong to that chapter. Use topics=[] only when the exercise is genuinely chapter-wide or cannot be scoped more narrowly, not just to evade validation. Do not invent page numbers, examples, descriptions or skills to satisfy a check. Return unreadable with a clear reviewNote if source evidence cannot be recovered. This is a correction of extraction and metadata, not a new course or new exercise generation.` }
+      ] }];
     }
   }
-  if (options.onAnalysisReport) await options.onAnalysisReport({ sourceFileName: file.originalname, report: review.analysisReport });
-  // File identity comes from the upload, never from model-generated numbering.
-  return review.exercisePatterns.map(pattern => ({ ...pattern, sourceFileIndex, sourceFileName: file.originalname }));
+  const error = new Error(`Exercise format review could not be validated for ${file.originalname} after automatic correction: ${validationIssues.slice(0, 8).join('; ')}`);
+  error.validationIssues = validationIssues;
+  throw error;
 }
 
 async function generateCourseFromScans(files, options = {}) {
