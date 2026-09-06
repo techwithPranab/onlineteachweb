@@ -1,4 +1,3 @@
-import React from 'react'
 import ReactMarkdown from 'react-markdown'
 import remarkMath from 'remark-math'
 import rehypeKatex from 'rehype-katex'
@@ -7,11 +6,14 @@ import rehypeSanitize from 'rehype-sanitize'
 import githubSanitizeSchema from 'hast-util-sanitize/lib/github.json'
 import 'katex/dist/katex.min.css'
 import MathDiagram from '@/components/diagrams/MathDiagram'
+import { normalizeMaterialMath } from '@/utils/materialMath.mjs'
 
 const markdownSanitizeSchema = {
   ...githubSanitizeSchema,
   attributes: {
     ...githubSanitizeSchema.attributes,
+    span: [...(githubSanitizeSchema.attributes?.span || []), ['className', 'math-inline']],
+    div: [...(githubSanitizeSchema.attributes?.div || []), ['className', 'math-display']],
     code: [
       ...(githubSanitizeSchema.attributes?.code || []),
       ['className', 'language-math', 'math-inline', 'math-display']
@@ -97,7 +99,7 @@ export default function MaterialViewer({ material, showPreview = false }) {
         remarkPlugins={[remarkMath]}
         rehypePlugins={[rehypeRaw, [rehypeSanitize, markdownSanitizeSchema], rehypeKatex]}
       >
-        {markdown}
+        {normalizeMaterialMath(markdown)}
       </ReactMarkdown>
     </div>
   )
@@ -110,7 +112,7 @@ export default function MaterialViewer({ material, showPreview = false }) {
         p: ({ children }) => <>{children}</>
       }}
     >
-      {markdown}
+      {normalizeMaterialMath(markdown)}
     </ReactMarkdown>
   )
 
@@ -251,7 +253,7 @@ export default function MaterialViewer({ material, showPreview = false }) {
             className="group rounded-lg border border-gray-200 bg-white shadow-sm"
           >
             <summary className="flex cursor-pointer list-none items-center justify-between gap-3 px-4 py-3 text-sm font-semibold text-gray-900 marker:hidden">
-              <span>{section.title}</span>
+              <span>{renderInlineMarkdown(section.title)}</span>
               <span className="text-xs font-medium text-blue-600 group-open:hidden">Open</span>
               <span className="hidden text-xs font-medium text-gray-500 group-open:inline">Close</span>
             </summary>
