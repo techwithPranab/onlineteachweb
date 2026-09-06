@@ -1,3 +1,4 @@
+const { getCourseDifficulties, validateCourseDifficulties } = require('../utils/courseDifficulty');
 const AIQuestionGenerationService = require('../ai/AIQuestionGenerationService');
 const AIQuestionDraft = require('../models/AIQuestionDraft.model');
 const Course = require('../models/Course.model');
@@ -18,7 +19,9 @@ exports.generateQuestions = async (req, res, next) => {
       questionsPerTopic,
       sources,
       materialIds,
-      imageBased
+      imageBased,
+      chapterName,
+      useExercisePatterns
     } = req.body;
 
     // Validate courseId
@@ -46,16 +49,22 @@ exports.generateQuestions = async (req, res, next) => {
       });
     }
 
+    const requestedDifficulties = difficultyLevels || getCourseDifficulties(course);
+    const difficultyError = validateCourseDifficulties(course, requestedDifficulties);
+    if (difficultyError) return res.status(400).json({ success: false, message: difficultyError });
+
     // Generate questions
     const result = await AIQuestionGenerationService.generateQuestions({
       courseId,
       topics: topics || [],
-      difficultyLevels: difficultyLevels || ['easy', 'medium', 'hard'],
+      difficultyLevels: requestedDifficulties,
       questionTypes: questionTypes || ['mcq-single'],
       questionsPerTopic: questionsPerTopic || 5,
       sources: sources || ['syllabus'],
       materialIds: materialIds || [],
       userId: req.user._id,
+      chapterName,
+      useExercisePatterns: useExercisePatterns !== false,
       imageBased: imageBased || false
     });
 
@@ -525,7 +534,7 @@ exports.generateQuestionsAsync = async (req, res, next) => {
       difficultyLevels,
       questionTypes,
       questionsPerTopic,
-      providerName
+      sources, materialIds, imageBased, chapterName, useExercisePatterns
     } = req.body;
 
     // Validate courseId
@@ -553,15 +562,24 @@ exports.generateQuestionsAsync = async (req, res, next) => {
       });
     }
 
+    const requestedDifficulties = difficultyLevels || getCourseDifficulties(course);
+    const difficultyError = validateCourseDifficulties(course, requestedDifficulties);
+    if (difficultyError) return res.status(400).json({ success: false, message: difficultyError });
+
     // Add job to queue
     const aiGenerationQueue = require('../services/aiGenerationQueue.service');
     
     const jobId = aiGenerationQueue.addJob({
       courseId,
       topics: topics || [],
-      difficulty: difficultyLevels || ['easy', 'medium', 'hard'],
-      count: (topics?.length || 1) * (questionsPerTopic || 5),
-      provider: providerName,
+      difficultyLevels: requestedDifficulties,
+      questionTypes: questionTypes || ['mcq-single'],
+      questionsPerTopic: questionsPerTopic || 5,
+      sources: sources || ['syllabus'],
+      materialIds: materialIds || [],
+      imageBased: !!imageBased,
+      chapterName,
+      useExercisePatterns: useExercisePatterns !== false,
       userId: req.user._id
     });
 

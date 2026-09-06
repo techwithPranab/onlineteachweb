@@ -88,50 +88,14 @@ class AIGenerationQueue extends EventEmitter {
     logger.info(`Started processing job: ${job.id}`);
 
     try {
-      const { courseId, topics, difficulty, count, provider, userId } = job.data;
-      
-      // Import service dynamically to avoid circular dependency
-      const AIQuestionGenerationService = require('../ai/AIQuestionGenerationService');
-      const aiService = new AIQuestionGenerationService();
-
-      // Process each topic
-      for (let i = 0; i < topics.length; i++) {
-        const topic = topics[i];
-        
-        try {
-          // Update progress
-          job.progress = Math.round((i / topics.length) * 100);
-          job.completedItems = i;
-          
-          this.emit('jobProgress', {
-            jobId: job.id,
-            progress: job.progress,
-            currentTopic: topic,
-            completedItems: job.completedItems,
-            totalItems: job.totalItems
-          });
-
-          // Generate questions for this topic
-          const result = await aiService.generateQuestions({
-            courseId,
-            topics: [topic],
-            difficulty,
-            count: Math.ceil(count / topics.length),
-            provider
-          });
-
-          if (result.questions && result.questions.length > 0) {
-            job.results.push(...result.questions);
-          }
-
-          if (result.errors && result.errors.length > 0) {
-            job.errors.push(...result.errors.map(e => ({ topic, error: e })));
-          }
-
-        } catch (topicError) {
-          logger.error(`Error generating for topic ${topic}:`, topicError);
-          job.errors.push({ topic, error: topicError.message });
-        }
+      const aiService = require('../ai/AIQuestionGenerationService');
+      // Use the same service and complete request as synchronous generation.
+      // It resolves chapter topics, exercise formats and selected PDF sources.
+      const result = await aiService.generateQuestions(job.data);
+      job.results.push(...(result.drafts || []));
+      job.errors.push(...(result.errors || []));
+      if (!job.results.length && job.errors.length) {
+        throw new Error(job.errors.map(item => item.error).join('; '));
       }
 
       // Job completed

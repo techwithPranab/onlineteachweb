@@ -1,8 +1,10 @@
+const { loadExercisePatterns, selectExercisePatterns } = require('../services/exercisePattern.service');
+const { validateCourseDifficulties } = require('../utils/courseDifficulty');
 const QuestionGeneration = require('../models/QuestionGeneration.model');
 const Question = require('../models/Question.model');
 const Course = require('../models/Course.model');
 const logger = require('../utils/logger');
-const { generateQuestionsWithAI } = require('../services/aiQuestionGenerator');
+const aiQuestionGenerator = require('../services/aiQuestionGenerator');
 
 // @desc    Generate questions using AI
 // @route   POST /api/questions/generate
@@ -11,6 +13,7 @@ exports.generateQuestionsWithAI = async (req, res, next) => {
   try {
     const {
       courseId,
+      chapterId,
       chapterName,
       topic,
       difficultyLevel,
@@ -29,6 +32,9 @@ exports.generateQuestionsWithAI = async (req, res, next) => {
       });
     }
     
+    const difficultyError = validateCourseDifficulties(course, [difficultyLevel]);
+    if (difficultyError) return res.status(400).json({ success: false, message: difficultyError });
+
     // Validate chapterName is provided
     if (!chapterName) {
       return res.status(400).json({
@@ -37,8 +43,12 @@ exports.generateQuestionsWithAI = async (req, res, next) => {
       });
     }
     
+    const exercisePatterns = selectExercisePatterns(await loadExercisePatterns(course), { chapterName, topic, questionType });
     // Build context for AI prompt
     const context = {
+      exercisePatterns,
+      sourceContent: (course.syllabus || []).join('\n'),
+      learningObjectives: (course.chapters || []).find(chapter => chapter.name === chapterName)?.learningObjectives || [],
       courseTitle: course.title,
       subject: course.subject,
       grade: course.grade,
@@ -61,6 +71,7 @@ exports.generateQuestionsWithAI = async (req, res, next) => {
       aiProvider,
       model,
       prompt,
+      sourceSnapshot: { exercisePatterns },
       generationParams: {
         difficultyLevel,
         questionType,
@@ -73,7 +84,7 @@ exports.generateQuestionsWithAI = async (req, res, next) => {
     logger.info(`Generating ${count} ${difficultyLevel} ${questionType} questions for topic: ${topic}. Generation ID: ${generationRecord._id}`);
     
     // Call AI service
-    const aiResult = await generateQuestionsWithAI({
+    const aiResult = await aiQuestionGenerator.generateQuestionsWithAI({
       prompt,
       provider: aiProvider,
       model,
@@ -82,7 +93,8 @@ exports.generateQuestionsWithAI = async (req, res, next) => {
       chapterName,
       topic,
       difficultyLevel,
-      questionType
+      questionType,
+      context
     });
     
     if (!aiResult.success) {
@@ -246,92 +258,13 @@ exports.getGenerationById = async (req, res, next) => {
 
 // Helper function to build AI prompt
 function buildPrompt(context) {
-  const { courseTitle, subject, grade, chapterName, topic, difficultyLevel, questionType, count } = context;
-  
-  let prompt = `You are an expert educator creating assessment questions for students.
-
-Course Details:
-- Title: ${courseTitle}
-- Subject: ${subject}
-- Grade: ${grade}
-- Chapter: ${chapterName}
-- Topic: ${topic}
-
-Task: Generate ${count} ${difficultyLevel} level ${questionType} questions based on the topic "${topic}".
-
-Requirements:
-- Questions should be appropriate for Grade ${grade} students
-- Difficulty level: ${difficultyLevel}
-- Question type: ${questionType}
-- Questions should test understanding of "${topic}" from chapter "${chapterName}"
-- Include clear, concise question text
-- Provide detailed explanations for correct answers
-`;
-
-  if (questionType === 'mcq-single' || questionType === 'mcq-multiple') {
-    prompt += `
-For MCQ questions, provide:
-- 4 options per question
-- Clear indication of correct answer(s)
-- Brief explanation for why each option is correct or incorrect
-- Mark the correct option(s) with isCorrect: true
-`;
-  } else if (questionType === 'true-false') {
-    prompt += `
-For True/False questions, provide:
-- Clear statement
-- Correct answer (True or False)
-- Explanation of why the statement is true or false
-`;
-  } else if (questionType === 'numerical') {
-    prompt += `
-For numerical questions, provide:
-- Clear problem statement
-- Expected numerical answer
-- Unit of measurement (if applicable)
-- Acceptable tolerance range
-- Step-by-step solution
-`;
-  } else if (questionType === 'short-answer' || questionType === 'long-answer') {
-    prompt += `
-For answer-type questions, provide:
-- Clear question
-- Expected answer/model answer
-- Key points that should be included
-- Keywords for evaluation
-`;
-  } else if (questionType === 'case-based') {
-    prompt += `
-For case-based questions, provide:
-- Relevant case study scenario
-- Multiple related questions based on the case
-- Options and correct answers for each question
-`;
-  }
-
-  prompt += `
-
-Return the questions in JSON format as an array with the following structure:
-[
-  {
-    "text": "Question text here",
-    "options": [
-      {"text": "Option A", "isCorrect": false, "explanation": "Why this is wrong"},
-      {"text": "Option B", "isCorrect": true, "explanation": "Why this is correct"},
-      {"text": "Option C", "isCorrect": false, "explanation": "Why this is wrong"},
-      {"text": "Option D", "isCorrect": false, "explanation": "Why this is wrong"}
-    ],
-    "explanation": "Detailed explanation of the correct answer",
-    "marks": 1,
-    "recommendedTime": 60,
-    "keywords": ["keyword1", "keyword2"],
-    "tags": ["${topic}", "${chapterName}"]
-  }
-]
-
-Only return valid JSON, no additional text.`;
-
-  return prompt;
+  const { generateQuestionPrompt } = require('../ai/prompts/questionPrompts');
+  const { systemPrompt, userPrompt } = generateQuestionPrompt({
+    topic: context.topic, content: context.sourceContent,
+    difficultyLevel: context.difficultyLevel, questionType: context.questionType,
+    count: context.count, context
+  });
+  return `${systemPrompt}\n\n${userPrompt}`;
 }
 
 module.exports = {

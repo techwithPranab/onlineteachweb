@@ -1,3 +1,5 @@
+const Course = require('../models/Course.model');
+const { validateCourseDifficulties } = require('../utils/courseDifficulty');
 const offlinePromptService = require('../services/offlinePromptService');
 const logger = require('../utils/logger');
 
@@ -31,6 +33,11 @@ exports.generateOfflinePrompt = async (req, res, next) => {
         message: 'Missing required fields'
       });
     }
+
+    const course = await Course.findById(courseId);
+    if (!course) return res.status(404).json({ success: false, message: 'Course not found' });
+    const difficultyError = validateCourseDifficulties(course, [difficultyLevel]);
+    if (difficultyError) return res.status(400).json({ success: false, message: difficultyError });
 
     // Generate offline prompt
     const result = await offlinePromptService.generateOfflinePrompt({

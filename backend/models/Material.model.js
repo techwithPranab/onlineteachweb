@@ -11,6 +11,7 @@ const materialSchema = new mongoose.Schema({
     ref: 'User',
     required: true
   },
+  exercisePatterns: [require('./ExercisePattern.schema')],
   title: {
     type: String,
     required: [true, 'Material title is required'],

@@ -1,9 +1,10 @@
+const { buildExerciseGuidance } = require('../../services/exercisePattern.service');
 /**
  * Prompt Templates for AI Question Generation
  * Versioned templates for consistent question generation
  */
 
-const PROMPT_VERSION = '1.1.0';
+const PROMPT_VERSION = '1.2.0';
 
 /**
  * Diagram type prompt instructions – mirrors the frontend diagramCatalog.js
@@ -283,6 +284,7 @@ TOPIC: ${topic}
 SOURCE CONTENT:
 ${content || 'Use your knowledge about this topic.'}
 ${contextSection}
+${buildExerciseGuidance(context?.exercisePatterns, questionType)}
 ${imageBasedSection}
 DIFFICULTY LEVEL: ${difficultyLevel.toUpperCase()}
 - Description: ${difficulty.description}
@@ -291,7 +293,7 @@ DIFFICULTY LEVEL: ${difficultyLevel.toUpperCase()}
 - Example Types: ${difficulty.examples}
 
 QUESTION TYPE: ${typeSpec.name}
-- Instructions: ${typeSpec.instructions}
+- Instructions: ${questionType === 'short-answer' && context?.exercisePatterns?.length ? 'Follow the observed exercise response format (including blanks, one-word answers or matching pairs). Store the complete response in expectedAnswer and correctAnswer; do not require full sentences for one-word or numerical blanks.' : typeSpec.instructions}
 
 OUTPUT FORMAT:
 Return a JSON object with a "questions" array. Each question MUST have this exact structure:
@@ -337,8 +339,8 @@ Return a JSON object with a "questions" array. Each question MUST have this exac
 }
 
 CRITICAL ANSWER REQUIREMENTS:
-- EVERY question MUST include ALL answer options (for MCQ: exactly 4 options)
-- EVERY question MUST clearly mark which answer is correct using "isCorrect": true
+- Only MCQ and true/false questions require answer options (for MCQ: exactly 4 options)
+- For MCQ and true/false, mark correct options using "isCorrect": true
 - EVERY question MUST include a "correctAnswer" field with the correct answer text
 - For MCQ: Include "correctAnswerIndex" (0-based index of correct option)
 - For Numerical: Include "solutionSteps" showing how to arrive at the answer
@@ -348,7 +350,7 @@ CRITICAL ANSWER REQUIREMENTS:
 IMPORTANT:
 - Generate EXACTLY ${count} question(s)
 - Return ONLY the JSON object with "questions" array, no other text
-- EVERY question MUST have complete answer options with ONE marked as correct
+- For single-answer MCQ and true/false, mark exactly ONE option correct; for multiple-answer MCQ, mark ALL correct options. Do not add options to text-answer or numerical exercises.
 - EVERY question MUST include "correctAnswer" field with the answer text
 - Ensure variety in questions (don't repeat similar concepts)
 - All questions must be answerable from the given content or standard knowledge

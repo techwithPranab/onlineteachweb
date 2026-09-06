@@ -24,7 +24,8 @@ class AIQuestionGenerator {
     chapterName,
     topic,
     difficultyLevel,
-    questionType
+    questionType,
+    context = {}
   }) {
     try {
       logger.info(`Generating questions with ${provider}/${model}`);
@@ -39,7 +40,7 @@ class AIQuestionGenerator {
       // Call AI provider with the structured parameters
       const result = await aiProvider.generateQuestions({
         topic,
-        content: prompt, // Use the prompt as content
+        content: context.sourceContent || prompt,
         difficultyLevel,
         questionType,
         count,
@@ -51,13 +52,16 @@ class AIQuestionGenerator {
           topic,
           difficultyLevel,
           questionType,
-          count
+          count,
+          ...context
         }
       });
       
       // Extract questions from result
       const questions = Array.isArray(result) ? result : (result.questions || []);
-      const finalPrompt = result.finalPrompt || prompt; // Fallback to original prompt
+      const { generateQuestionPrompt } = require('../ai/prompts/questionPrompts');
+      const promptParts = generateQuestionPrompt({ topic, content: context.sourceContent || prompt, difficultyLevel, questionType, count, context });
+      const finalPrompt = `${promptParts.systemPrompt}\n\n${promptParts.userPrompt}`;
       
       // Validate and format questions
       const formattedQuestions = questions.map(q => ({

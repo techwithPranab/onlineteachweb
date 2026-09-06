@@ -466,7 +466,7 @@ exports.getCourseStructure = async (req, res, next) => {
     const Course = require('../models/Course.model');
     const { courseId } = req.params;
     
-    const course = await Course.findById(courseId).select('chapters title');
+    const course = await Course.findById(courseId).select('chapters title exercisePatterns');
     
     if (!course) {
       return res.status(404).json({
@@ -478,7 +478,8 @@ exports.getCourseStructure = async (req, res, next) => {
     res.json({
       success: true,
       courseTitle: course.title,
-      chapters: course.chapters
+      chapters: course.chapters,
+      exercisePatterns: await require('../services/exercisePattern.service').loadExercisePatterns(course)
     });
   } catch (error) {
     next(error);

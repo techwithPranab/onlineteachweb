@@ -5,6 +5,8 @@ const { body, param, query } = require('express-validator');
  */
 
 const generateQuestionsValidation = [
+  body('useExercisePatterns').optional().isBoolean().toBoolean(),
+  body('chapterName').optional().isString().trim(),
   body('courseId')
     .notEmpty()
     .withMessage('courseId is required')

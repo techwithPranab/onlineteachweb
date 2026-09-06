@@ -1,3 +1,4 @@
+const { loadExercisePatterns, selectExercisePatterns, buildExerciseGuidance } = require('./exercisePattern.service');
 const fs = require('fs').promises;
 const path = require('path');
 const QuestionOfflinePrompt = require('../models/QuestionOfflinePrompt.model');
@@ -41,6 +42,7 @@ class OfflinePromptService {
     const difficultyDescriptions = {
       easy: 'Direct recall, definitions, basic examples\n- Cognitive Level: Knowledge and Comprehension\n- Complexity: Single concept, straightforward application\n- Example Types: Define terms, identify facts, simple calculations',
       medium: 'Application of concepts, multi-step problems\n- Cognitive Level: Application and Analysis\n- Complexity: Multiple concepts, requires reasoning\n- Example Types: Apply formulas, analyze situations, compare/contrast',
+      olympiad: 'Competition-level reasoning, non-routine multi-step problems appropriate to the grade',
       hard: 'Complex problems, critical thinking, synthesis\n- Cognitive Level: Analysis, Synthesis, and Evaluation\n- Complexity: Multiple concepts integration, creative thinking\n- Example Types: Solve complex problems, evaluate arguments, create solutions'
     };
 
@@ -50,7 +52,7 @@ class OfflinePromptService {
       'mcq-multiple': 'Multiple Choice (Multiple Answers)\n- Instructions: Generate a question with 4-6 options where 2-3 options are correct.',
       'true-false': 'True/False\n- Instructions: Generate a statement that is definitively true or false.',
       'numerical': 'Numerical Answer\n- Instructions: Generate a problem that requires a numerical answer with units.',
-      'short-answer': 'Short Answer\n- Instructions: Generate a question requiring 1-3 sentence response.',
+      'short-answer': 'Short Answer\n- Instructions: Use the observed textbook response format when provided, including blanks, one-word answers or matching pairs. Otherwise use a brief answer. Store the complete answer in expectedAnswer.',
       'long-answer': 'Long Answer\n- Instructions: Generate a question requiring detailed 5-10 sentence response.',
       'case-based': 'Case-Based\n- Instructions: Generate a scenario with 3-5 related sub-questions.'
     };
@@ -397,9 +399,11 @@ IMPORTANT:
       }
 
       const courseName = course.title;
+      const exercisePatterns = selectExercisePatterns(await loadExercisePatterns(course), { chapterName, topic, questionType });
 
       // Generate prompt text
-      const promptText = this.generatePromptTemplate({
+      const chapter = (course.chapters || []).find(item => item.name === chapterName);
+      const promptText = buildExerciseGuidance(exercisePatterns, questionType) + this.generatePromptTemplate({
         courseId,
         chapterId,
         courseName,
@@ -411,7 +415,9 @@ IMPORTANT:
         questionType,
         questionsCount,
         includeExplanations,
-        includeHints
+        includeHints,
+        syllabus: (course.syllabus || []).join('\n'),
+        learningObjectives: (chapter?.learningObjectives || []).join('\n')
       });
 
       // Create output structure

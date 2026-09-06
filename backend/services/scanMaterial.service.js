@@ -1,3 +1,4 @@
+const { normalizePatterns } = require('./exercisePattern.service');
 const fs = require('fs').promises;
 const crypto = require('crypto');
 
@@ -6,7 +7,10 @@ Transcribe every readable fact, definition, heading, example, activity, table, c
 Preserve the chapter's order and meaning. Explain concepts in age-appropriate language, but do not
 invent facts not supported by the scans. Mark unreadable text as [unclear in scan]. Return Markdown.
 Use headings, learning objectives, key terms, detailed explanations, worked examples, image/diagram
-descriptions, recap, and every exercise with an answer key only when the answer is supported.`;
+descriptions, recap, and every exercise with an answer key only when the answer is supported.
+Preserve exercise section headings, directions, numbering, options, blanks, matching columns and
+sub-questions exactly enough to identify the original question formats. Do not convert exercises
+into another format. Use $...$ for inline mathematics and $$ on separate lines for display mathematics.`;
 
 function outputText(response) {
   if (response.output_text) return response.output_text;
@@ -56,8 +60,20 @@ const courseOutputSchema = {
   properties: {
     course: {
       type: 'object', additionalProperties: false,
-      required: ['title', 'description', 'grade', 'subject', 'board', 'syllabus', 'topics', 'chapters', 'duration', 'estimatedHours', 'level', 'difficulty', 'language', 'prerequisites', 'learningOutcomes', 'tags'],
+      required: ['title', 'description', 'grade', 'subject', 'board', 'syllabus', 'topics', 'chapters', 'duration', 'estimatedHours', 'level', 'difficulty', 'language', 'prerequisites', 'learningOutcomes', 'tags', 'exercisePatterns'],
       properties: {
+        exercisePatterns: {
+          type: 'array', items: {
+            type: 'object', additionalProperties: false,
+            required: ['sourceFileIndex', 'chapterName', 'topics', 'label', 'questionType', 'instructions', 'example'],
+            properties: {
+              sourceFileIndex: { type: 'integer', minimum: 0 }, chapterName: { type: 'string' },
+              topics: { type: 'array', items: { type: 'string' } }, label: { type: 'string' },
+              questionType: { type: 'string', enum: ['mcq-single', 'mcq-multiple', 'true-false', 'numerical', 'short-answer', 'long-answer', 'case-based'] },
+              instructions: { type: 'string' }, example: { type: 'string' }
+            }
+          }
+        },
         title: { type: 'string' }, description: { type: 'string' }, grade: { type: 'integer' }, subject: { type: 'string' },
         board: { type: 'array', items: { type: 'string' } }, syllabus: { type: 'array', items: { type: 'string' } },
         topics: { type: 'array', items: { type: 'string' } }, duration: { type: 'string' }, estimatedHours: { type: 'number' },
@@ -161,6 +177,7 @@ Treat the attached files as the authoritative source.`
     model: response.model || model,
     usage: response.usage
   });
+  if (response.status === 'incomplete') throw new Error('The PDF transcription was truncated. Split the PDF into smaller parts so every exercise can be captured.');
   const markdown = outputText(response).trim();
   if (!markdown) throw new Error('The scan processor returned no material');
   return {
@@ -198,6 +215,8 @@ Create one faithful course for Grade ${options.grade || 4}, subject ${options.su
 Board: ${options.board || 'CBSE'}. Course title hint: ${options.title || 'Grade 4 Computer'}.
 Return ONLY valid JSON with this shape:
 {"course":{"title":"","description":"","grade":4,"subject":"Computer","board":["CBSE"],"syllabus":[""],"topics":[""],"chapters":[{"name":"","topics":[""],"learningObjectives":[""],"estimatedHours":1}],"duration":"","estimatedHours":1,"level":"beginner","difficulty":1,"language":"English","prerequisites":[""],"learningOutcomes":[""],"tags":[""]},"materials":[{"title":"","description":"","chapterName":"","content":"complete Markdown lesson"}]}
+Also return course.exercisePatterns: one entry for each exercise format actually observed in each chapter, with sourceFileIndex (zero-based PDF index), chapterName (matching course.chapters.name), topics (matching course topic names, or [] for chapter-wide exercises), label (original exercise heading), questionType, instructions (original exercise directions), and example (one short representative question).
+Map single/multiple choice, true/false, numerical, short/long answers and case studies to their corresponding supported questionType. Store fill-in-the-blanks, matching, and one-word exercises as short-answer while preserving their original format in label, instructions and example. Do not invent exercise formats. Return [] if no readable exercises are present.
 Return exactly ${files.length} material metadata objects, one per SOURCE PDF in the same order as the PDFs. A PDF may contain several chapters: list all of them in course.chapters, but keep a single material covering that entire PDF. Keep each material content field as an empty string because the complete transcriptions are already retained separately.
 
 ${sourceText}`
@@ -206,7 +225,7 @@ ${sourceText}`
     model,
     instructions: 'You are a curriculum digitization specialist. Faithfulness to the supplied textbook pages is more important than adding outside knowledge.',
     input: [{ role: 'user', content: request }],
-    max_output_tokens: 6000,
+    max_output_tokens: 12000,
     text: { format: { type: 'json_schema', name: 'generated_course', strict: true, schema: courseOutputSchema } },
     store: false
   };
@@ -228,10 +247,12 @@ ${sourceText}`
     model: response.model || model,
     usage: response.usage
   });
+  if (response.status === 'incomplete') throw new Error('Course synthesis was truncated. Scan fewer PDF chapters at a time to preserve exercise formats.');
   const result = parseJsonOutput(outputText(response));
   if (!result.course || !Array.isArray(result.materials)) {
     throw new Error('The scan processor returned an incomplete course');
   }
+  result.course.exercisePatterns = normalizePatterns(result.course.exercisePatterns, files);
   const metadataMatchesSources = result.materials.length === extractedMaterials.length;
   // The synthesis model sometimes returns metadata per chapter instead of per
   // PDF. Do not guess which chapter belongs to which file or discard OCR text.
@@ -242,6 +263,7 @@ ${sourceText}`
       title: metadata?.title || source.sourceTitle,
       description: metadata?.description || `Complete study material from ${files[index].originalname}`,
       chapterName: metadata?.chapterName || source.sourceTitle,
+      exercisePatterns: result.course.exercisePatterns.filter(pattern => pattern.sourceFileIndex === index),
       content: source.content
     };
   });

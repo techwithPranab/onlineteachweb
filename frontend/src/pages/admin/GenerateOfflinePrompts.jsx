@@ -1,3 +1,5 @@
+import { getExercisePatterns } from '../../utils/exercisePatterns.mjs'
+import { getCourseDifficulties } from '../../utils/courseDifficulty.mjs'
 import { useState, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from 'react-query';
 import offlinePromptService from '../../services/offlinePromptService';
@@ -92,6 +94,15 @@ export default function GenerateOfflinePrompts() {
     }
   );
 
+  const difficultyCourse = (courses || []).find(course => course._id === formData.courseId)
+  const allowedDifficulties = getCourseDifficulties(difficultyCourse)
+  const difficultySubject = difficultyCourse?.subject
+  const hasDifficultyCourse = !!difficultyCourse
+  useEffect(() => {
+    const allowed = getCourseDifficulties(hasDifficultyCourse ? { subject: difficultySubject } : null)
+    setFormData(prev => ({ ...prev, difficultyLevel: allowed.includes(prev.difficultyLevel) ? prev.difficultyLevel : (allowed.includes('medium') ? 'medium' : allowed[0] || '') }))
+  }, [formData.courseId, hasDifficultyCourse, difficultySubject])
+
   // Fetch courses when grade and subject are selected
   useQuery(
     ['courses', formData.grade, formData.subject],
@@ -105,7 +116,7 @@ export default function GenerateOfflinePrompts() {
   );
 
   // Fetch course structure when course is selected
-  useQuery(
+  const { data: courseStructure } = useQuery(
     ['courseStructure', formData.courseId],
     () => questionService.getCourseStructure(formData.courseId),
     {
@@ -115,6 +126,13 @@ export default function GenerateOfflinePrompts() {
       }
     }
   );
+
+  const exercisePatterns = getExercisePatterns(courseStructure?.exercisePatterns || [], formData.chapterName, formData.topic ? [formData.topic] : [])
+  const matchingExerciseLabels = exercisePatterns.filter(pattern => pattern.questionType === formData.questionType).map(pattern => pattern.label)
+  const recommendedType = exercisePatterns[0]?.questionType
+  useEffect(() => {
+    if (recommendedType) setFormData(prev => ({ ...prev, questionType: recommendedType }))
+  }, [formData.courseId, formData.chapterName, formData.topic, recommendedType])
 
   // Update topics when chapter is selected
   useEffect(() => {
@@ -316,9 +334,9 @@ export default function GenerateOfflinePrompts() {
   ];
 
   const difficultyLevels = [
-    { value: 'easy', label: 'Easy' },
+    { value: 'easy', label: 'Low' },
     { value: 'medium', label: 'Medium' },
-    { value: 'hard', label: 'Hard' },
+    { value: 'hard', label: 'High' },
     { value: 'olympiad', label: 'Olympiad' }
   ];
 
@@ -706,11 +724,12 @@ export default function GenerateOfflinePrompts() {
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
               >
                 {difficultyLevels.map(level => (
-                  <option key={level.value} value={level.value}>{level.label}</option>
+                  <option key={level.value} value={level.value} disabled={!allowedDifficulties.includes(level.value)}>{level.label}</option>
                 ))}
               </select>
             </div>
 
+          {matchingExerciseLabels.length > 0 && <p className="text-sm text-blue-700">Textbook exercise formats: {[...new Set(matchingExerciseLabels)].join(', ')}. Matching examples and instructions will be included in the prompt.</p>}
             {/* Question Type */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">

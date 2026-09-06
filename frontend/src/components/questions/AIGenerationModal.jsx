@@ -1,3 +1,5 @@
+import { getExercisePatterns } from '../../utils/exercisePatterns.mjs'
+import { getCourseDifficulties } from '../../utils/courseDifficulty.mjs'
 import { useState, useEffect } from 'react'
 import { useQuery, useMutation } from 'react-query'
 import Modal from '../common/Modal'
@@ -7,9 +9,9 @@ import { DIAGRAM_CATALOG, getRelevantDiagramTypes } from '../diagrams/diagramCat
 import MathDiagram from '../diagrams/MathDiagram'
 
 const DIFFICULTY_LEVELS = [
-  { value: 'easy', label: 'Easy', color: 'bg-green-100 text-green-800' },
+  { value: 'easy', label: 'Low', color: 'bg-green-100 text-green-800' },
   { value: 'medium', label: 'Medium', color: 'bg-yellow-100 text-yellow-800' },
-  { value: 'hard', label: 'Hard', color: 'bg-red-100 text-red-800' },
+  { value: 'hard', label: 'High', color: 'bg-red-100 text-red-800' },
   { value: 'olympiad', label: 'Olympiad 🏆', color: 'bg-purple-100 text-purple-800' }
 ]
 
@@ -43,6 +45,7 @@ export default function AIGenerationModal({ isOpen, onClose, onSuccess, courseId
     imageBased: false
   })
 
+  const [errors, setErrors] = useState({})
   const [chapters, setChapters] = useState([])
   const [topics, setTopics] = useState([])
   const [availableModels, setAvailableModels] = useState([])
@@ -56,6 +59,15 @@ export default function AIGenerationModal({ isOpen, onClose, onSuccess, courseId
     }
   )
 
+  const difficultyCourse = (courses || []).find(course => course._id === formData.courseId)
+  const allowedDifficulties = getCourseDifficulties(difficultyCourse)
+  const difficultySubject = difficultyCourse?.subject
+  const hasDifficultyCourse = !!difficultyCourse
+  useEffect(() => {
+    const allowed = getCourseDifficulties(hasDifficultyCourse ? { subject: difficultySubject } : null)
+    setFormData(prev => ({ ...prev, difficultyLevel: allowed.includes(prev.difficultyLevel) ? prev.difficultyLevel : (allowed.includes('medium') ? 'medium' : allowed[0] || '') }))
+  }, [formData.courseId, hasDifficultyCourse, difficultySubject])
+
   // Fetch course structure
   const { data: courseStructure, isLoading: loadingStructure } = useQuery(
     ['courseStructure', formData.courseId],
@@ -67,6 +79,13 @@ export default function AIGenerationModal({ isOpen, onClose, onSuccess, courseId
       }
     }
   )
+
+  const exercisePatterns = getExercisePatterns(courseStructure?.exercisePatterns || [], formData.chapterName, formData.topic ? [formData.topic] : [])
+  const matchingExerciseLabels = exercisePatterns.filter(pattern => pattern.questionType === formData.questionType).map(pattern => pattern.label)
+  const recommendedType = exercisePatterns[0]?.questionType
+  useEffect(() => {
+    if (recommendedType) setFormData(prev => ({ ...prev, questionType: recommendedType }))
+  }, [formData.courseId, formData.chapterName, formData.topic, recommendedType])
 
   // AI generation mutation
   const generateMutation = useMutation(
@@ -270,6 +289,7 @@ export default function AIGenerationModal({ isOpen, onClose, onSuccess, courseId
           </div>
 
           <div>
+            {matchingExerciseLabels.length > 0 && <p className="text-sm text-blue-700 mb-3">The prompt will follow these textbook exercises: {[...new Set(matchingExerciseLabels)].join(', ')}.</p>}
             <label className="block text-sm font-medium text-gray-700 mb-1">Difficulty Level *</label>
             <select
               value={formData.difficultyLevel}
@@ -277,7 +297,7 @@ export default function AIGenerationModal({ isOpen, onClose, onSuccess, courseId
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
             >
               {DIFFICULTY_LEVELS.map(level => (
-                <option key={level.value} value={level.value}>{level.label}</option>
+                <option key={level.value} value={level.value} disabled={!allowedDifficulties.includes(level.value)}>{level.label}</option>
               ))}
             </select>
           </div>

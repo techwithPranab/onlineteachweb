@@ -1,3 +1,4 @@
+const { loadExercisePatterns, selectExercisePatterns } = require('../services/exercisePattern.service');
 const AIProviderFactory = require('./providers/AIProviderFactory');
 const QuestionValidator = require('./validation/QuestionValidator');
 const DuplicateDetector = require('./validation/DuplicateDetector');
@@ -40,7 +41,9 @@ class AIQuestionGenerationService {
     sources = ['syllabus'],
     materialIds = [],
     userId,
-    imageBased = false
+    imageBased = false,
+    useExercisePatterns = true,
+    chapterName
   }) {
     const startTime = Date.now();
     const jobId = this._generateJobId();
@@ -61,11 +64,14 @@ class AIQuestionGenerationService {
       
       // 3. Prepare content from sources
       const content = await this._prepareContent(course, sources, materialIds);
+      const exercisePatterns = await loadExercisePatterns(course, materialIds);
       
       // 4. Determine topics to generate for
+      const selectedChapter = chapterName && (course.chapters || []).find(chapter => chapter.name === chapterName);
+      if (chapterName && !selectedChapter) throw new Error('Selected chapter was not found in this course');
       const targetTopics = topics && topics.length > 0 
         ? topics 
-        : this._extractTopicsFromCourse(course);
+        : selectedChapter ? (selectedChapter.topics?.length ? selectedChapter.topics : [selectedChapter.name]) : this._extractTopicsFromCourse(course);
       
       if (targetTopics.length === 0) {
         throw new Error('No topics available for question generation');
@@ -76,8 +82,12 @@ class AIQuestionGenerationService {
       const errors = [];
       
       for (const topic of targetTopics) {
+        const chapter = selectedChapter || (course.chapters || []).find(item => (item.topics || []).includes(topic) || item.name === topic);
+        const topicPatterns = selectExercisePatterns(exercisePatterns, { topic, chapterName: chapter?.name });
+        const sourceTypes = [...new Set(topicPatterns.map(pattern => pattern.questionType))];
+        const targetTypes = useExercisePatterns && sourceTypes.length ? sourceTypes : questionTypes;
         for (const difficulty of difficultyLevels) {
-          for (const type of questionTypes) {
+          for (const type of targetTypes) {
             try {
               const generated = await this._generateForCombination({
                 provider,
@@ -90,11 +100,13 @@ class AIQuestionGenerationService {
                 courseId,
                 userId,
                 jobId,
-                imageBased
+                imageBased,
+                exercisePatterns: topicPatterns,
+                chapterName: chapter?.name
               });
               
               if (generated && Array.isArray(generated)) {
-                allGeneratedQuestions.push(...generated);
+                allGeneratedQuestions.push(...generated.map(question => ({ ...question, topic, chapterName: chapter?.name || course.title, type, difficultyLevel: difficulty })));
               }
             } catch (error) {
               logger.error(`Error generating ${type}/${difficulty} for topic ${topic}:`, error);
@@ -136,7 +148,7 @@ class AIQuestionGenerationService {
         jobId,
         grade: course.grade,
         subject: course.subject,
-        chapterName: course.title,
+        chapterName,
         topic: targetTopics[0] // Primary topic
       });
       
@@ -172,7 +184,7 @@ class AIQuestionGenerationService {
   /**
    * Generate questions for a single combination
    */
-  async _generateForCombination({ provider, topic, difficulty, type, count, content, course, courseId, userId, jobId, imageBased = false }) {
+  async _generateForCombination({ provider, topic, difficulty, type, count, content, course, courseId, userId, jobId, imageBased = false, exercisePatterns = [], chapterName }) {
     const chapter = (course.chapters || []).find(item => (item.topics || []).includes(topic));
     const diagramTypes = imageBased
       ? getDiagramTypesForContext({
@@ -189,6 +201,7 @@ class AIQuestionGenerationService {
       grade: course.grade,
       subject: course.subject,
       board: course.board,
+      exercisePatterns: selectExercisePatterns(exercisePatterns, { questionType: type }),
       learningObjectives: this._getLearningObjectives(course, topic)
     };
 
@@ -216,7 +229,7 @@ class AIQuestionGenerationService {
     try {
       generationRecord = await QuestionGeneration.create({
         courseId: courseId,
-        chapterName: course.title,
+        chapterName: chapterName || course.title,
         topic,
         aiProvider: provider.getName(),
         model: provider.model || 'unknown',
@@ -231,7 +244,7 @@ class AIQuestionGenerationService {
         },
         status: 'pending',
         generatedBy: userId || null,
-        sourceSnapshot: content.snapshot
+        sourceSnapshot: { ...content.snapshot, exercisePatterns: context.exercisePatterns }
       });
       
       logger.info(`Created QuestionGeneration record ${generationRecord._id} for ${topic} - ${difficulty} ${type}`);
@@ -383,7 +396,7 @@ class AIQuestionGenerationService {
       const questionPayload = {
         courseId,
         courseTitle: course.title,
-        chapterName: chapterName || question.chapterName,
+        chapterName: question.chapterName || chapterName,
         grade,
         subject,
         topic: question.topic || generationTopic,
@@ -429,7 +442,7 @@ class AIQuestionGenerationService {
           ...revalidation.sanitized,
           courseId,
           courseTitle: course.title,
-          chapterName: chapterName || question.chapterName,
+          chapterName: question.chapterName || chapterName,
           grade,
           subject,
           explanation: revalidation.sanitized?.explanation || question.explanation || 'Explanation not provided — please review and update.'
@@ -441,7 +454,7 @@ class AIQuestionGenerationService {
           ...validation.sanitized,
           courseId,
           courseTitle: course.title,
-          chapterName: chapterName || question.chapterName,
+          chapterName: question.chapterName || chapterName,
           grade,
           subject,
           explanation: validation.sanitized?.explanation || question.explanation || 'Explanation not provided — please review and update.'

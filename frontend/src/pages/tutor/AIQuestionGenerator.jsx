@@ -1,3 +1,5 @@
+import { getExercisePatterns } from '../../utils/exercisePatterns.mjs'
+import { getCourseDifficulties } from '../../utils/courseDifficulty.mjs'
 import { useState, useEffect, useRef } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useQuery } from 'react-query'
@@ -38,8 +40,9 @@ export default function AIQuestionGenerator() {
     chapterName: '',
     topic: '',
     topics: [],
-    difficultyLevels: ['easy', 'medium', 'hard', 'olympiad'],
+    difficultyLevels: [],
     questionTypes: ['mcq-single'],
+    useExercisePatterns: true,
     questionsPerTopic: 5,
     sources: ['syllabus'],
     materialIds: [],
@@ -55,6 +58,14 @@ export default function AIQuestionGenerator() {
   const [subjects, setSubjects] = useState([])
   const [filteredCourses, setFilteredCourses] = useState([])
   const [courseMaterials, setCourseMaterials] = useState([])
+
+  const difficultyCourse = filteredCourses.find(course => course._id === formData.courseId)
+  const allowedDifficulties = getCourseDifficulties(difficultyCourse)
+  const difficultySubject = difficultyCourse?.subject
+  const hasDifficultyCourse = !!difficultyCourse
+  useEffect(() => {
+    setFormData(prev => ({ ...prev, difficultyLevels: getCourseDifficulties(hasDifficultyCourse ? { subject: difficultySubject } : null) }))
+  }, [formData.courseId, hasDifficultyCourse, difficultySubject])
 
   // Fetch grades
   const { data: gradesData, isLoading: loadingGrades } = useQuery(
@@ -103,6 +114,11 @@ export default function AIQuestionGenerator() {
     }
   )
 
+  const exercisePatterns = getExercisePatterns(courseStructure?.exercisePatterns || [], formData.chapterName, formData.topics)
+  const exerciseTypes = [...new Set(exercisePatterns.map(pattern => pattern.questionType))]
+  const useSourceTypes = formData.useExercisePatterns && exerciseTypes.length > 0
+  const effectiveTypes = useSourceTypes ? exerciseTypes : formData.questionTypes
+
   const { isLoading: loadingMaterials } = useQuery(
     ['questionSourceMaterials', formData.courseId],
     () => materialService.getMaterialsByCourse(formData.courseId),
@@ -115,7 +131,9 @@ export default function AIQuestionGenerator() {
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target
     
-    if (type === 'checkbox') {
+    if (name === 'useExercisePatterns') {
+      setFormData(prev => ({ ...prev, useExercisePatterns: checked }))
+    } else if (type === 'checkbox') {
       setFormData(prev => ({
         ...prev,
         [name]: checked
@@ -220,7 +238,7 @@ export default function AIQuestionGenerator() {
 
     // Calculate estimated question count for progress messaging
     const topicCount = formData.topics.length || availableTopics.length || 1
-    const totalEstimated = topicCount * formData.difficultyLevels.length * formData.questionTypes.length * formData.questionsPerTopic
+    const totalEstimated = topicCount * formData.difficultyLevels.length * effectiveTypes.length * formData.questionsPerTopic
 
     // Build dynamic progress steps based on selections
     const steps = [
@@ -277,6 +295,8 @@ export default function AIQuestionGenerator() {
             : undefined,
         difficultyLevels: formData.difficultyLevels,
         questionTypes: formData.questionTypes,
+        chapterName: formData.chapterName || undefined,
+        useExercisePatterns: formData.useExercisePatterns,
         questionsPerTopic: formData.questionsPerTopic,
         sources: formData.sources,
         materialIds: formData.materialIds,
@@ -324,9 +344,9 @@ export default function AIQuestionGenerator() {
   ]
 
   const difficultyLevels = [
-    { value: 'easy', label: 'Easy', color: 'text-green-600' },
+    { value: 'easy', label: 'Low', color: 'text-green-600' },
     { value: 'medium', label: 'Medium', color: 'text-yellow-600' },
-    { value: 'hard', label: 'Hard', color: 'text-red-600' },
+    { value: 'hard', label: 'High', color: 'text-red-600' },
     { value: 'olympiad', label: 'Olympiad', color: 'text-purple-600' }
   ]
 
@@ -535,13 +555,14 @@ export default function AIQuestionGenerator() {
               {difficultyLevels.map(level => (
                 <label 
                   key={level.value}
-                  className="flex items-center gap-2 cursor-pointer"
+                  className={`flex items-center gap-2 ${allowedDifficulties.includes(level.value) ? 'cursor-pointer' : 'opacity-40 cursor-not-allowed'}`}
                 >
                   <input
                     type="checkbox"
                     name="difficultyLevels"
                     value={level.value}
-                    checked={formData.difficultyLevels.includes(level.value)}
+                    disabled={!allowedDifficulties.includes(level.value)}
+                    checked={allowedDifficulties.includes(level.value) && formData.difficultyLevels.includes(level.value)}
                     onChange={handleInputChange}
                     className="rounded text-blue-600 focus:ring-blue-500"
                   />
@@ -566,7 +587,7 @@ export default function AIQuestionGenerator() {
               className="w-32 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
             <p className="mt-1 text-xs text-gray-500">
-              Estimated total: ~{(formData.topics.length || availableTopics.length || 1) * formData.difficultyLevels.length * formData.questionTypes.length * formData.questionsPerTopic} questions
+              Estimated total: ~{(formData.topics.length || availableTopics.length || 1) * formData.difficultyLevels.length * effectiveTypes.length * formData.questionsPerTopic} questions
             </p>
           </div>
 
@@ -635,12 +656,21 @@ export default function AIQuestionGenerator() {
           <label className="block text-sm font-semibold text-gray-700 mb-2">
             Question Types *
           </label>
+          <label className="flex items-center gap-2 my-3 text-sm">
+            <input type="checkbox" name="useExercisePatterns" checked={formData.useExercisePatterns} onChange={handleInputChange} />
+            Match exercise formats from scanned textbooks
+          </label>
+          <p className="text-sm text-gray-600 mb-3">
+            {useSourceTypes
+              ? `Detected formats: ${[...new Set(exercisePatterns.map(pattern => pattern.label))].join(', ')}. Each topic uses its matching exercise types.`
+              : 'The selected question types below will be used when no matching textbook formats are available or automatic matching is off.'}
+          </p>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
             {questionTypes.map(type => (
               <label 
                 key={type.value}
                 className={`flex items-center gap-2 p-3 border rounded-lg cursor-pointer transition-all ${
-                  formData.questionTypes.includes(type.value)
+                  effectiveTypes.includes(type.value)
                     ? 'border-blue-500 bg-blue-50'
                     : 'border-gray-200 hover:border-gray-300'
                 }`}
@@ -648,8 +678,9 @@ export default function AIQuestionGenerator() {
                 <input
                   type="checkbox"
                   name="questionTypes"
+                  disabled={useSourceTypes}
                   value={type.value}
-                  checked={formData.questionTypes.includes(type.value)}
+                  checked={effectiveTypes.includes(type.value)}
                   onChange={handleInputChange}
                   className="rounded text-blue-600 focus:ring-blue-500"
                 />

@@ -40,6 +40,7 @@ const questionGenerationSchema = new mongoose.Schema({
   // Immutable copy of the exact source text supplied to the model. Material
   // edits after generation therefore cannot change the audit trail.
   sourceSnapshot: {
+    exercisePatterns: [require('./ExercisePattern.schema')],
     content: String,
     contentHash: String,
     capturedAt: Date,

@@ -256,8 +256,9 @@ class QuestionValidator {
     if (!question.correctAnswer || typeof question.correctAnswer !== 'string') {
       errors.push('correctAnswer field is required and must contain the model answer');
     }
-    if (question.expectedAnswer && question.expectedAnswer.trim().length < 10) {
-      errors.push('Expected answer should be at least 10 characters');
+    const minimumLength = question.type === 'short-answer' ? 1 : 10;
+    if (question.expectedAnswer && question.expectedAnswer.trim().length < minimumLength) {
+      errors.push(`Expected answer should be at least ${minimumLength} characters`);
     }
     
     return errors;
