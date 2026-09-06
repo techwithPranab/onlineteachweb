@@ -191,6 +191,8 @@ export default function AdminCourseManagement() {
             >
               <option value="">All Subjects</option>
               <option value="Mathematics">Mathematics</option>
+              <option value="Olympiad-Mathematics">Olympiad-Mathematics</option>
+              <option value="Olympiad-Science">Olympiad-Science</option>
               <option value="Science">Science</option>
               <option value="English">English</option>
               <option value="Physics">Physics</option>

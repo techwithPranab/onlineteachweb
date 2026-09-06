@@ -50,7 +50,7 @@ export default function CourseListing() {
   )
 
   const subjects = [
-    'Mathematics', 'Science', 'English', 'Social Studies',
+    'Mathematics', 'Olympiad-Mathematics', 'Olympiad-Science', 'Science', 'English', 'Social Studies',
     'Physics', 'Chemistry', 'Biology', 'Computer Science'
   ]
 

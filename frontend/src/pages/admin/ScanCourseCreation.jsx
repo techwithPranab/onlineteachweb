@@ -76,8 +76,11 @@ export default function ScanCourseCreation() {
             <input type="number" min="1" max="12" value={form.grade} onChange={e => setForm({ ...form, grade: e.target.value })} className="input-field w-full mt-2" required />
           </label>
           <label className="text-sm font-medium text-gray-700">Subject
-            <input value={form.subject} onChange={e => setForm({ ...form, subject: e.target.value })} className="input-field w-full mt-2" required />
+            <input list="scan-course-subjects" value={form.subject} onChange={e => setForm({ ...form, subject: e.target.value })} className="input-field w-full mt-2" required />
           </label>
+          <datalist id="scan-course-subjects">
+            {['Mathematics', 'Science', 'Olympiad-Mathematics', 'Olympiad-Science', 'English', 'Computer', 'Computer Science', 'Social Studies', 'Physics', 'Chemistry', 'Biology'].map(subject => <option key={subject} value={subject} />)}
+          </datalist>
           <label className="text-sm font-medium text-gray-700">Course title hint
             <input value={form.title} onChange={e => setForm({ ...form, title: e.target.value })} className="input-field w-full mt-2" />
           </label>
