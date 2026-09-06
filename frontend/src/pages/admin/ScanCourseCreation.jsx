@@ -104,7 +104,7 @@ export default function ScanCourseCreation() {
         <button disabled={loading || !files.length} className="btn-primary w-full flex justify-center items-center gap-2 disabled:opacity-50"><Sparkles className="w-4 h-4" />{loading ? 'Generating…' : 'Generate Draft Course & Materials'}</button>
       </form>
 
-      {result && <div className="mt-6 bg-green-50 border border-green-200 rounded-xl p-5"><h2 className="font-semibold text-green-900 flex gap-2"><CheckCircle /> Course created successfully</h2><p className="text-green-800 mt-2">{result.course.title} · {result.materials.length} material(s) created as a draft.</p><div className="flex gap-3 mt-4"><button className="btn-primary" onClick={() => navigate(`/admin/courses/${result.course._id}/edit`)}>Review Course</button><button className="px-4 py-2 border rounded-lg" onClick={() => navigate('/admin/materials')}>Review Materials</button></div></div>}
+      {result && <div className="mt-6 bg-green-50 border border-green-200 rounded-xl p-5"><h2 className="font-semibold text-green-900 flex gap-2"><CheckCircle /> Course created successfully</h2><p className="text-green-800 mt-2">{result.course.title} · {result.materials.length} material(s) created as a draft.</p><div className="flex gap-3 mt-4"><button className="btn-primary" onClick={() => navigate(`/admin/courses/${result.course._id}/view`)}>Review Course</button><button className="px-4 py-2 border rounded-lg" onClick={() => navigate('/admin/materials')}>Review Materials</button></div></div>}
 
       <section className="mt-8 bg-white border rounded-xl shadow-sm overflow-hidden">
         <div className="p-5 border-b flex items-center justify-between">

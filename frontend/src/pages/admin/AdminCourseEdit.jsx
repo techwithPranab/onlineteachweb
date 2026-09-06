@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
 import { ArrowLeft, Save, Plus, X, Edit, Trash2, BookOpen } from 'lucide-react'
 import { courseService } from '@/services/apiServices'
@@ -263,6 +263,7 @@ export default function AdminCourseEdit() {
           Back to Courses
         </button>
         <h1 className="text-2xl font-bold text-gray-900">Edit Course</h1>
+        <Link to={`/admin/courses/${id}/view`} className="inline-block mt-2 text-sm text-blue-700 underline">View expected question formats</Link>
         <p className="text-gray-600 mt-1">Update course information</p>
       </div>
 

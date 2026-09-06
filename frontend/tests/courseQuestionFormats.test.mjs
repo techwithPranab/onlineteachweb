@@ -29,3 +29,23 @@ test('merging scan and prompt evidence retains all PDF page references', () => {
   const result = mergeExpectedFormats([{ ...format, sourcePages: [2] }], [{ sourceSnapshot: { exercisePatterns: [{ ...format, sourcePages: [2, 4] }] } }]);
   assert.deepEqual(result[0].sourcePages, [2, 4]);
 });
+
+import { resolveExpectedFormats } from '../src/utils/courseQuestionFormats.mjs'
+
+test('empty structure response does not hide formats already saved on the course', () => {
+  const formats = resolveExpectedFormats({ course: { exercisePatterns: [format] }, structure: { exercisePatterns: [] } })
+  assert.equal(formats.length, 1)
+  assert.equal(formats[0].label, format.label)
+})
+
+test('material-only formats are visible while structure or history is unavailable', () => {
+  const formats = resolveExpectedFormats({ course: { exercisePatterns: [] }, materials: [{ exercisePatterns: [format] }], structure: undefined })
+  assert.equal(formats.length, 1)
+  assert.equal(formats[0].sourceFileName, format.sourceFileName)
+})
+
+test('course, material, structure and generation evidence is combined without duplicate cards', () => {
+  const formats = resolveExpectedFormats({ course: { exercisePatterns: [format] }, materials: [{ exercisePatterns: [format] }], structure: { exercisePatterns: [format] }, generations: [{ sourceSnapshot: { exercisePatterns: [format] } }] })
+  assert.equal(formats.length, 1)
+  assert.deepEqual(formats[0].origins, ['Scanned PDF', 'Generation prompt'])
+})

@@ -297,6 +297,8 @@ export default function AdminCourseView() {
             </div>
           </div>
 
+          <ExpectedQuestionFormats course={course} materials={materials} materialsLoading={materialsLoading} materialsError={materialsError} />
+
           {/* Syllabus */}
           {course.syllabus && course.syllabus.length > 0 && (
             <div className="bg-white rounded-lg shadow p-6">
@@ -534,8 +536,6 @@ export default function AdminCourseView() {
               </div>
             )}
           </div>
-
-          <ExpectedQuestionFormats course={course} materials={materials} />
 
           {/* Question Snapshot */}
           {(() => {

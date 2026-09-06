@@ -38,3 +38,13 @@ export function getResponseQuestions(generation) {
 export function safePdfUrl(url) {
   return typeof url === 'string' && (/^https?:\/\//i.test(url) || /^\/uploads\//.test(url)) ? url : null
 }
+
+// Each endpoint can contain evidence missing from the others. An empty structure
+// response must not hide formats already saved on the course or its materials.
+export function resolveExpectedFormats({ course, materials = [], structure, generations = [] }) {
+  return mergeExpectedFormats([
+    ...(course?.exercisePatterns || []),
+    ...materials.flatMap(material => material.exercisePatterns || []),
+    ...(structure?.exercisePatterns || [])
+  ], generations)
+}
