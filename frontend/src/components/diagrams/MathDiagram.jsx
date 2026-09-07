@@ -77,11 +77,17 @@ import LogarithmScaleDiagram from './diagrams/LogarithmScaleDiagram'
 import SimilarTrianglesDiagram from './diagrams/SimilarTrianglesDiagram'
 import CommercialMathDiagram from './diagrams/CommercialMathDiagram'
 
+// Older/generated questions may use the fraction style as the diagram type.
+function FractionSetDiagram({ params = {}, size }) {
+  return <FractionDiagram params={{ ...params, style: 'set' }} size={size} />
+}
+
 /** Registry: maps diagram type → component */
 const DIAGRAM_REGISTRY = {
   // Original 10
   clock:           ClockDiagram,
   fraction:        FractionDiagram,
+  set:             FractionSetDiagram,
   rightTriangle:   TrigDiagram,
   trig:            TrigDiagram,
   angle:           AngleDiagram,
@@ -219,7 +225,7 @@ const DIAGRAM_REGISTRY = {
 export default function MathDiagram({ diagram, size = 220, className = '' }) {
   if (!diagram || !diagram.type) return null
 
-  const Component = DIAGRAM_REGISTRY[diagram.type.toLowerCase()] ||
+  const Component = DIAGRAM_REGISTRY[diagram.type.trim().toLowerCase()] ||
                     DIAGRAM_REGISTRY[diagram.type]
 
   if (!Component) {

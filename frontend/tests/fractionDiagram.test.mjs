@@ -102,3 +102,18 @@ test('malformed saved diagrams render a correction message instead of crashing',
     assert.match(render(params), /needs correction/)
   }
 })
+
+test('question view renders saved top-level set diagrams identically to fraction sets', () => {
+  const MathDiagram = loadComponent('../src/components/diagrams/MathDiagram.jsx').default
+  const params = { numerator: 2, denominator: 5, showLabel: false }
+  const renderDiagram = diagram => renderToStaticMarkup(React.createElement(MathDiagram, { diagram }))
+  const expected = renderDiagram({ type: 'fraction', params: { ...params, style: 'set' }, caption: 'Count the shaded objects.' })
+  for (const type of ['set', 'SET', ' set ']) {
+    const actual = renderDiagram({ type, params, caption: 'Count the shaded objects.' })
+    assert.equal(actual, expected)
+    assert.equal((actual.match(/<circle/g) || []).length, 5)
+    assert.doesNotMatch(actual, /Unknown diagram/)
+  }
+  const items = [{ shape: 'triangle', shaded: true }, { shape: 'square', shaded: false }]
+  assert.equal(renderDiagram({ type: 'set', params: { items } }), renderDiagram({ type: 'fraction', params: { items, style: 'set' } }))
+})

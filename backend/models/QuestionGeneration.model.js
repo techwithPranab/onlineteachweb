@@ -45,7 +45,8 @@ const questionGenerationSchema = new mongoose.Schema({
     contentHash: String,
     capturedAt: Date,
     sources: [{
-      type: String,
+      // `type` is source metadata, not Mongoose's array element type option.
+      type: { type: String },
       materialId: { type: mongoose.Schema.Types.ObjectId, ref: 'Material' },
       title: String,
       updatedAt: Date

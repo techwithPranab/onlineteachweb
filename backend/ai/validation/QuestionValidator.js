@@ -29,6 +29,13 @@ class QuestionValidator {
    * @returns {Object} Validation result with isValid, errors, and sanitized question
    */
   validate(question) {
+    // Accept existing/provider shorthand while storing the canonical contract.
+    if (typeof question.diagram?.type === 'string' && question.diagram.type.trim().toLowerCase() === 'set') {
+      question = {
+        ...question,
+        diagram: { ...question.diagram, type: 'fraction', params: { ...question.diagram.params, style: 'set' } }
+      };
+    }
     const errors = [];
     const warnings = [];
     

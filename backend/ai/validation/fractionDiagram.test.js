@@ -49,3 +49,20 @@ test('active quizzes and session snapshots retain nested figure geometry', () =>
   expect(active.toObject().questions[0].diagram).toEqual(base.diagram);
   expect(session.toObject().selectedQuestions[0].diagram).toEqual(base.diagram);
 });
+
+test('set shorthand is validated and stored as a fraction set without mutating input', () => {
+  for (const type of ['set', 'SET', ' set ']) {
+    const question = { ...base, diagram: { type, params: { numerator: 2, denominator: 5 }, caption: 'Objects' } };
+    const result = QuestionValidator.validate(question);
+    expect(result.errors).toEqual([]);
+    expect(result.sanitized.diagram).toEqual({ type: 'fraction', params: { numerator: 2, denominator: 5, style: 'set' }, caption: 'Objects' });
+    expect(question.diagram.type).toBe(type);
+    expect(question.diagram.params.style).toBeUndefined();
+  }
+});
+
+test('set shorthand cannot bypass fraction geometry validation', () => {
+  const result = QuestionValidator.validate({ ...base, diagram: { type: 'set', params: { numerator: 6, denominator: 5 } } });
+  expect(result.isValid).toBe(false);
+  expect(result.errors.join(' ')).toContain('set numerator cannot exceed');
+});
