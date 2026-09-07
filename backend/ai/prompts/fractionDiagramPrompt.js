@@ -1,7 +1,7 @@
 // Keep this contract aligned with the fraction catalog and renderer.
 module.exports = `Fraction figures use { "type": "fraction", "params": { ... }, "caption": "<neutral description>" }.
 Use showLabel:false for questions. Never reveal the answer in captions, panel labels, or alt text.
-The top-level diagram type must always be "fraction"; "set" belongs in params.style, never in diagram.type. Supported params (all indices are zero-based):
+The top-level diagram type must always be "fraction"; the styles "pie", "bar", "set", "triangle", "grid", and "regions" belong in params.style, never in diagram.type. Supported params (all indices are zero-based):
 - Equal pie/bar: {style:"pie"|"bar", numerator:0..1200, denominator:1..100, showLabel:false}. Numerator may exceed denominator; at most 12 congruent wholes. Zero is valid. Optional shadedIndices selects non-consecutive parts of ONE whole; its length must equal numerator.
 - Triangles split into three equal areas: {style:"triangle", numerator:4, denominator:3, showLabel:false} shows one whole and one third.
 - Grid with whole and half shaded cells: {style:"grid", rows:2, cols:3, cells:["full","empty","top-left","bottom-right","top-right","bottom-left"], showLabel:false}. Exactly rows*cols cells, row-major, at most 100. Each corner name shades that triangular HALF of a cell; empty/full have area 0/1. Calculate shaded area as full cells + half cells/2, divided by rows*cols. Do not count unequal pieces as equal units.

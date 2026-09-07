@@ -66,3 +66,27 @@ test('set shorthand cannot bypass fraction geometry validation', () => {
   expect(result.isValid).toBe(false);
   expect(result.errors.join(' ')).toContain('set numerator cannot exceed');
 });
+
+test.each([
+  ['pie', { numerator: 3, denominator: 4 }],
+  ['bar', { numerator: 2, denominator: 5 }],
+  ['triangle', { numerator: 2, denominator: 3 }],
+  ['grid', { rows: 1, cols: 2, cells: ['full', 'top-left'] }],
+  ['regions', { regions: [{ points: [[0, 0], [100, 0], [0, 100]], shaded: true }] }]
+])('%s shorthand is normalized and validated before saving', (style, params) => {
+  for (const type of [style, style.toUpperCase(), ` ${style} `]) {
+    const input = { ...base, diagram: { type, params } };
+    const result = QuestionValidator.validate(input);
+    expect(result.errors).toEqual([]);
+    expect(result.sanitized.diagram).toMatchObject({ type: 'fraction', params: { ...params, style } });
+    expect(input.diagram.type).toBe(type);
+    expect(input.diagram.params.style).toBeUndefined();
+  }
+});
+
+test('pie and grid shorthand cannot bypass geometry validation', () => {
+  for (const diagram of [
+    { type: 'pie', params: { numerator: 1, denominator: 0 } },
+    { type: 'grid', params: { rows: 2, cols: 2, cells: ['full'] } }
+  ]) expect(QuestionValidator.validate({ ...base, diagram }).isValid).toBe(false);
+});

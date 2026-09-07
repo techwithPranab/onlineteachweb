@@ -78,16 +78,21 @@ import SimilarTrianglesDiagram from './diagrams/SimilarTrianglesDiagram'
 import CommercialMathDiagram from './diagrams/CommercialMathDiagram'
 
 // Older/generated questions may use the fraction style as the diagram type.
-function FractionSetDiagram({ params = {}, size }) {
-  return <FractionDiagram params={{ ...params, style: 'set' }} size={size} />
-}
+const FRACTION_STYLE_ALIASES = Object.fromEntries(
+  ['pie', 'bar', 'set', 'triangle', 'grid', 'regions'].map(style => [
+    style,
+    function FractionStyleDiagram({ params = {}, size }) {
+      return <FractionDiagram params={{ ...params, style }} size={size} />
+    }
+  ])
+)
 
 /** Registry: maps diagram type → component */
 const DIAGRAM_REGISTRY = {
   // Original 10
   clock:           ClockDiagram,
   fraction:        FractionDiagram,
-  set:             FractionSetDiagram,
+  ...FRACTION_STYLE_ALIASES,
   rightTriangle:   TrigDiagram,
   trig:            TrigDiagram,
   angle:           AngleDiagram,

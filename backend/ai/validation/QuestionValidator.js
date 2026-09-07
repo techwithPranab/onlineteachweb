@@ -30,10 +30,11 @@ class QuestionValidator {
    */
   validate(question) {
     // Accept existing/provider shorthand while storing the canonical contract.
-    if (typeof question.diagram?.type === 'string' && question.diagram.type.trim().toLowerCase() === 'set') {
+    const fractionStyle = typeof question.diagram?.type === 'string' ? question.diagram.type.trim().toLowerCase() : '';
+    if (['pie', 'bar', 'set', 'triangle', 'grid', 'regions'].includes(fractionStyle)) {
       question = {
         ...question,
-        diagram: { ...question.diagram, type: 'fraction', params: { ...question.diagram.params, style: 'set' } }
+        diagram: { ...question.diagram, type: 'fraction', params: { ...question.diagram.params, style: fractionStyle } }
       };
     }
     const errors = [];

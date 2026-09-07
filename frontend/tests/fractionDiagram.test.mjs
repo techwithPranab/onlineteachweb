@@ -117,3 +117,27 @@ test('question view renders saved top-level set diagrams identically to fraction
   const items = [{ shape: 'triangle', shaded: true }, { shape: 'square', shaded: false }]
   assert.equal(renderDiagram({ type: 'set', params: { items } }), renderDiagram({ type: 'fraction', params: { items, style: 'set' } }))
 })
+
+test('every fraction style alias renders like the canonical fraction diagram', () => {
+  const MathDiagram = loadComponent('../src/components/diagrams/MathDiagram.jsx').default
+  const renderDiagram = diagram => renderToStaticMarkup(React.createElement(MathDiagram, { diagram }))
+  const examples = {
+    pie: { numerator: 3, denominator: 4 },
+    bar: { numerator: 2, denominator: 5 },
+    set: { numerator: 2, denominator: 5 },
+    triangle: { numerator: 2, denominator: 3 },
+    grid: { rows: 1, cols: 2, cells: ['full', 'top-left'] },
+    regions: { regions: [{ points: [[0, 0], [100, 0], [0, 100]], shaded: true }] },
+  }
+  for (const [style, params] of Object.entries(examples)) {
+    const expected = renderDiagram({ type: 'fraction', params: { ...params, style } })
+    for (const type of [style, style.toUpperCase(), ` ${style} `]) {
+      const actual = renderDiagram({ type, params })
+      assert.equal(actual, expected, type)
+      assert.match(actual, /<svg/)
+      assert.doesNotMatch(actual, /Unknown diagram|needs correction/)
+    }
+  }
+  assert.match(renderDiagram({ type: 'pieChart', params: { data: [{ label: 'A', value: 3 }, { label: 'B', value: 2 }] } }), /<svg/)
+  assert.match(renderDiagram({ type: 'unsupported-example' }), /Unknown diagram/)
+})
