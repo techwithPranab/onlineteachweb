@@ -4,6 +4,7 @@
  */
 import { useState } from 'react'
 import MathDiagram from '../../components/diagrams/MathDiagram'
+import { FRACTION_EXAMPLES } from '../../components/diagrams/fractionExamples.mjs'
 import { DIAGRAM_CATALOG } from '../../components/diagrams/diagramCatalog'
 import SEOHead from '../../components/SEO/SEOHead'
 
@@ -11,6 +12,9 @@ const DEMO_DIAGRAMS = [
   // Clocks
   { type: 'clock', params: { hours: 3, minutes: 30 }, caption: '3:30 – What time does this clock show?' },
   { type: 'clock', params: { hours: 7, minutes: 15 }, caption: '7:15 – Quarter past seven' },
+
+  // Scan-inspired fraction question formats
+  ...FRACTION_EXAMPLES.map(example => ({ ...example.diagram, caption: example.question })),
 
   // Fractions
   { type: 'fraction', params: { numerator: 3, denominator: 4, style: 'pie' }, caption: '3/4 – Pie chart' },
@@ -249,7 +253,7 @@ export default function DiagramGallery() {
         {/* Gallery Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {filtered.map((diag, i) => (
-            <div key={i} className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden hover:shadow-md transition-shadow">
+            <div key={i} className={`bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden hover:shadow-md transition-shadow ${diag.params?.panels ? 'sm:col-span-2' : ''}`}>
               <div className="flex items-center justify-center p-4 bg-gray-50 min-h-[220px]">
                 <MathDiagram
                   diagram={{ type: diag.type, params: diag.params, caption: diag.caption }}

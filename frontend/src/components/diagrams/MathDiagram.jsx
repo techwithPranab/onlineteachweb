@@ -232,7 +232,7 @@ export default function MathDiagram({ diagram, size = 220, className = '' }) {
 
   return (
     <figure className={`flex flex-col items-center gap-2 ${className}`}>
-      <div className="rounded-xl border border-gray-100 shadow-sm bg-white p-3 overflow-hidden">
+      <div className="rounded-xl border border-gray-100 shadow-sm bg-white p-3 max-w-full overflow-x-auto">
         <Component params={diagram.params || {}} size={size} />
       </div>
       {diagram.caption && (

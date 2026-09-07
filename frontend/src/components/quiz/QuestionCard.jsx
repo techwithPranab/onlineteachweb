@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import MathDiagram from '../diagrams/MathDiagram'
 import { Circle, CheckCircle, Flag } from 'lucide-react'
 
 /**
@@ -333,6 +334,8 @@ export default function QuestionCard({
         </div>
       )}
       
+      {question.diagram?.type && <MathDiagram diagram={question.diagram} size={240} className="my-4" />}
+
       {/* Question Content */}
       <div className="mt-4">
         {renderQuestionContent()}

@@ -73,6 +73,7 @@ exports.createAlgorithmQuiz = async (req, res, next) => {
       questions: questions.map(q => ({
         id: q._id.toString(),
         question: q.questionText,
+        diagram: q.diagram || null,
         type: q.type || 'mcq-single',
         options: q.options,
         correctAnswer: q.correctAnswer,
@@ -97,6 +98,7 @@ exports.createAlgorithmQuiz = async (req, res, next) => {
       questions: questions.map(q => ({
         questionId: q._id,
         question: q.questionText,
+        diagram: q.diagram || null,
         options: q.options,
         correctAnswer: q.correctAnswer,
         topic: q.topic,
@@ -136,6 +138,7 @@ exports.createAlgorithmQuiz = async (req, res, next) => {
         questions: questions.map(q => ({
           id: q._id,
           questionText: q.questionText,
+          diagram: q.diagram || null,
           options: q.options,
           topic: q.topic,
           difficulty: q.difficulty,
@@ -591,6 +594,7 @@ exports.getQuizHistory = async (req, res, next) => {
           questionId: q.questionId,
           // Direct access to question properties (no parsing needed)
           text: q.question,
+          diagram: q.diagram || null,
           question: q.question,
           type: q.type,
           options: q.options,

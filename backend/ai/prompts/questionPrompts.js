@@ -4,7 +4,7 @@ const { buildExerciseGuidance } = require('../../services/exercisePattern.servic
  * Versioned templates for consistent question generation
  */
 
-const PROMPT_VERSION = '1.2.0';
+const PROMPT_VERSION = '1.3.0';
 
 /**
  * Diagram type prompt instructions – mirrors the frontend diagramCatalog.js
@@ -17,7 +17,7 @@ const DIAGRAM_PROMPT_SPECS = {
   },
   fraction: {
     label: 'Fraction',
-    instruction: `{ "type": "fraction", "params": { "numerator": <n>, "denominator": <d>, "style": "pie"|"bar"|"set", "showLabel": true }, "caption": "<fraction description>" }`
+    instruction: require('./fractionDiagramPrompt')
   },
   rightTriangle: {
     label: 'Right Triangle',
@@ -120,7 +120,7 @@ DIAGRAM RULES:
 - The question TEXT must reference the diagram (e.g. "Look at the clock shown...", "In the figure above...")
 - Diagram params must be mathematically valid and consistent with the question
 - For time questions: the clock hours/minutes must match the question's time reference
-- For fraction questions: numerator/denominator must match the fraction in the question
+- For fraction questions: compute answers from the depicted shaded area or object count, respecting complements, mixed wholes and unequal areas. Follow the fraction contract above.
 - For shape questions: dimensions in the diagram must be the same as values used in calculations
 - For pattern questions: use missingIndex to create fill-in-the-blank pattern questions
 - caption field should briefly describe what the diagram shows

@@ -90,6 +90,7 @@ const quizSessionSchema = new mongoose.Schema({
       ref: 'Question',
       required: true
     },
+    diagram: { type: mongoose.Schema.Types.Mixed, default: null },
     originalOrder: Number,
     displayOrder: Number, // After shuffling
     // Complete question data at time of quiz start
@@ -364,6 +365,7 @@ quizSessionSchema.methods.saveAnswer = async function(questionId, answer, timeSp
       // Create questionSnapshot from the complete question details
       const questionSnapshot = {
         text: question.question,
+        diagram: question.diagram || null,
         question: question.question,
         type: question.type,
         options: question.options,

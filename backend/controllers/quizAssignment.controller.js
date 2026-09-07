@@ -82,6 +82,7 @@ exports.assignQuizToStudents = async (req, res, next) => {
       questions: allQuestions.map(q => ({
         id: q._id.toString(),
         question: q.questionText,
+        diagram: q.diagram || null,
         type: q.type || 'mcq-single',
         options: q.options || [],
         correctAnswer: q.correctAnswer,

@@ -1,3 +1,4 @@
+const { validateFractionParams } = require('./fractionDiagram');
 const logger = require('../../utils/logger');
 
 /**
@@ -54,6 +55,10 @@ class QuestionValidator {
       errors.push(...typeErrors);
     }
     
+    if (typeof question.diagram?.type === 'string' && question.diagram.type.toLowerCase() === 'fraction') {
+      errors.push(...validateFractionParams(question.diagram.params || {}));
+    }
+
     // Validate marks
     if (question.marks !== undefined) {
       if (typeof question.marks !== 'number' || question.marks < 0) {

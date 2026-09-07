@@ -43,7 +43,7 @@ const matchesTags = (text, tags) => {
  */
 function getDiagramTypesForContext({ grade, subject, courseTitle = '', courseTags = [], chapterName = '', topic = '' }) {
   const numericGrade = Number(grade);
-  const normalisedSubject = normalise(subject);
+  const normalisedSubject = normalise(subject).replace(/\bolympiad\b/g, '').trim();
   const compatible = Object.entries(DIAGRAM_TAGS).filter(([, tags]) =>
     (!numericGrade || tags.grades.includes(numericGrade)) &&
     (!normalisedSubject || tags.subjects.some(tag => normalise(tag) === normalisedSubject))

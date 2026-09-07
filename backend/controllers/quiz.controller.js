@@ -492,6 +492,7 @@ exports.startQuiz = async (req, res, next) => {
             questionId: q.questionId,
             displayOrder: q.displayOrder,
             question: q.question,
+            diagram: q.diagram || null,
             type: q.type,
             options: q.options,
             marks: q.marks,
@@ -622,6 +623,7 @@ exports.startQuiz = async (req, res, next) => {
       originalOrder: q.originalOrder,
       displayOrder: q.displayOrder,
       question: q.snapshot.question || q.snapshot.text || '',
+      diagram: q.snapshot.diagram || null,
       type: q.snapshot.type || 'mcq-single',
       options: (q.snapshot.options || []).map(opt => ({
         _id: opt._id || opt.id,
@@ -700,10 +702,11 @@ exports.startQuiz = async (req, res, next) => {
       session: {
         _id: session._id,
         quizId: session.quizId,
-        questions: selectedQuestions.map(q => ({
+        questions: session.selectedQuestions.map(q => ({
           questionId: q.questionId,
           displayOrder: q.displayOrder,
           question: q.question,
+          diagram: q.diagram || null,
           type: q.type,
           options: q.options,
           marks: q.marks,

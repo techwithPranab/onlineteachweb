@@ -18,14 +18,14 @@ export const DIAGRAM_CATALOG = [
   },
   {
     type: 'fraction',
-    label: 'Fraction (Pie/Bar/Set)',
+    label: 'Fraction Figures',
     emoji: '🥧',
-    description: 'Visualise fractions as pie, bar or dot sets',
+    description: 'Shaded areas, mixed wholes, half-cell grids, composite shapes, collections and figure choices',
     grades: [2, 3, 4, 5],
     subjects: ['Mathematics'],
     topics: ['Fractions', 'Parts of a Whole', 'Equivalent Fractions', 'Unit fractions', 'Fractions on number line', 'Addition of like fractions'],
     exampleParams: { numerator: 3, denominator: 4, style: 'pie' },
-    aiInstruction: '{ "type": "fraction", "params": { "numerator": <n>, "denominator": <d>, "style": "pie"|"bar"|"set", "showLabel": true }, "caption": "<fraction description>" }'
+    aiInstruction: 'Fraction figures use { "type": "fraction", "params": { ... }, "caption": "<neutral description>" }.\nUse showLabel:false for questions. Never reveal the answer in captions, panel labels, or alt text.\nSupported params (all indices are zero-based):\n- Equal pie/bar: {style:"pie"|"bar", numerator:0..1200, denominator:1..100, showLabel:false}. Numerator may exceed denominator; at most 12 congruent wholes. Zero is valid. Optional shadedIndices selects non-consecutive parts of ONE whole; its length must equal numerator.\n- Triangles split into three equal areas: {style:"triangle", numerator:4, denominator:3, showLabel:false} shows one whole and one third.\n- Grid with whole and half shaded cells: {style:"grid", rows:2, cols:3, cells:["full","empty","top-left","bottom-right","top-right","bottom-left"], showLabel:false}. Exactly rows*cols cells, row-major, at most 100. Each corner name shades that triangular HALF of a cell; empty/full have area 0/1. Calculate shaded area as full cells + half cells/2, divided by rows*cols. Do not count unequal pieces as equal units.\n- Composite shapes or triangular tessellations: {style:"regions", regions:[{points:[[0,0],[50,0],[0,50]],shaded:true},{points:[[50,0],[50,50],[0,50]],shaded:false}], showLabel:false}. Coordinates in 0..100; 3..12 vertices per polygon, 1..100 non-overlapping convex polygons, no self-intersections. Regions together define the whole. Derive the fraction from polygon AREAS, not number of pieces. Use simple exact geometry. Do not invent equal-area claims.\n- Unequal pie sectors: {style:"pie", sectorWeights:[2,1,1,2,1,1], numerator:3, denominator:6, shadedIndices:[0,2,4], showLabel:false}. Sector weights are positive relative angles. Area fraction is SUM OF SHADED WEIGHTS / SUM OF ALL WEIGHTS. numerator counts shaded sectors, not area units.\n- Concentric regions: add rings:[{innerRadius:0,outerRadius:0.4,shadedIndices:[1,3]},{innerRadius:0.4,outerRadius:1,shadedIndices:[0,2]}] to a pie with sectorWeights. Rings must tile radius 0..1 without gaps/overlaps. Compute each shaded area using (outerRadius^2-innerRadius^2)*shadedWeight/totalWeight.\n- Object collections: {style:"set", items:[{shape:"circle"|"square"|"triangle"|"star",shaded:true|false},...], cols:4, outline:true, showLabel:false}. At most 100 items. Count requested shape or shaded objects / total items. For identical beads use {style:"set",numerator:4,denominator:7,layout:"necklace",shadedIndices:[0,2,4,6],showLabel:false}. Optional itemShape selects an identical object shape.\n- Multiple figures: {panels:[{label:"X",style:"grid",rows:2,cols:2,cells:["top-left","bottom-right","top-left","bottom-right"]},{label:"A",style:"pie",numerator:2,denominator:4},{label:"B",style:"triangle",numerator:2,denominator:3},{label:"C",text:"None of these"}],showLabel:false}. 1..12 flat panels. Each panel uses a supported shape format or text. Use labels A/B/C/D matching normal question.options text for figure choices; keep diagrams in this top-level panel collection (not inside options). Use X for a reference figure and P/Q or (i)/(ii)/(iii) for comparisons or counting. Do not nest panels.\nGenerate varied figure-to-fraction, unshaded/complement, fraction-to-figure, equivalent/comparison, mixed-number, half-cell area, shape-counting, necklace, figure arithmetic, and count-the-correct-figures questions when the chosen exercise format calls for them. For arithmetic label the figures P and Q and put the operation in question text. Explicitly say whether one shape is one whole or the collection is one whole. For mcq-single verify exactly one answer is correct, including equivalence of distractor fractions. For unshaded questions retain actual shaded geometry and compute its complement; do not invert the diagram to display the answer.'
   },
   {
     type: 'rightTriangle',
@@ -642,7 +642,7 @@ RULES:
 - The question TEXT must reference the diagram (e.g. "Look at the clock above...", "In the figure shown...")
 - Diagram params must be mathematically valid and consistent with the question
 - For clock: hours/minutes must match the question's time reference
-- For fraction: numerator/denominator must match the fraction in the question
+- For fraction: derive answers from shaded area or object count, respecting complements and mixed wholes; hide answer labels.
 - For shapes: dimensions must equal values used in calculations
 - For decimal: value must be between 0 and 1 (e.g. 0.35 for thirty-five hundredths)
 - For factorTree: use a composite number only (not prime)

@@ -271,6 +271,7 @@ class DefaultQuestionSelectionStrategy extends QuestionSelectionStrategy {
       displayOrder: index,
       snapshot: {
         text: q.text,
+        diagram: q.diagram || null,
         type: q.type,
         caseStudy: q.caseStudy,
         options: q.options ? q.options.map((opt, optIndex) => ({

@@ -256,6 +256,7 @@ class AdaptiveQuestionSelectionStrategy extends QuestionSelectionStrategy {
       snapshot: {
         question: q.text,
         text: q.text,
+        diagram: q.diagram || null,
         type: q.type,
         caseStudy: q.caseStudy,
         options: q.options ? q.options.map((opt, optIndex) => ({

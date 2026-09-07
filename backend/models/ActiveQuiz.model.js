@@ -112,6 +112,7 @@ const activeQuizSchema = new mongoose.Schema({
       enum: ['mcq-single', 'mcq-multiple', 'true-false', 'numerical', 'short-answer', 'long-answer', 'case-based'],
       default: 'mcq-single'
     },
+    diagram: { type: mongoose.Schema.Types.Mixed, default: null },
     options: [{
       id: {
         type: String,

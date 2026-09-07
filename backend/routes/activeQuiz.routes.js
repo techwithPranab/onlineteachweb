@@ -569,6 +569,7 @@ router.post('/', validateQuizCreation, async (req, res) => {
         return {
           id: (q.questionId || q._id).toString(),
           question: q.snapshot?.question || q.snapshot?.text || q.text || '',
+          diagram: q.snapshot?.diagram || q.diagram || null,
           type: q.snapshot?.type || q.type || 'mcq-single',
           options: (q.snapshot?.options || q.options || []).map(opt => ({
             id: (opt._id || opt.id).toString(),
@@ -853,6 +854,7 @@ router.put('/:quizId/start', [
           displayOrder: index,
           // Store complete question details instead of snapshot
           question: q.question || q.text || '',
+          diagram: q.diagram || null,
           type: q.type || 'mcq-single',
           options: (q.options || []).map(opt => ({
             _id: opt._id || opt.id,
