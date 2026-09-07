@@ -1,3 +1,4 @@
+const { parseNumericalAnswer, hasNumericalAnswerConflict } = require('../utils/numericalAnswer');
 const { loadExercisePatterns, selectExercisePatterns } = require('../services/exercisePattern.service');
 const AIProviderFactory = require('./providers/AIProviderFactory');
 const QuestionValidator = require('./validation/QuestionValidator');
@@ -552,8 +553,8 @@ class AIQuestionGenerationService {
     // Numerical questions: infer numericalAnswer from correctAnswer if possible
     if (q.type === 'numerical') {
       if (!q.numericalAnswer && q.correctAnswer) {
-        const num = parseFloat(String(q.correctAnswer).replace(/[^[0-9\.\-]]/g, ''));
-        if (!isNaN(num)) {
+        const num = parseNumericalAnswer(q.correctAnswer);
+        if (num !== null) {
           q.numericalAnswer = { value: num, tolerance: 0 };
           fixes.push('Inferred numericalAnswer from correctAnswer');
         }
@@ -684,6 +685,10 @@ class AIQuestionGenerationService {
       questionData.chapterName = questionData.chapterName; // Already in questionPayload
     }
     
+    if (hasNumericalAnswerConflict(questionData)) {
+      throw new Error('Numerical grading value conflicts with correctAnswer. Edit the draft before approving.');
+    }
+
     // Validate after ensuring all required fields are present
     if (edits) {
       const validation = this.validator.validate(questionData);

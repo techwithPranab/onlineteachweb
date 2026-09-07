@@ -1,3 +1,4 @@
+const { hasNumericalAnswerConflict } = require('../../utils/numericalAnswer');
 const { validateFractionParams } = require('./fractionDiagram');
 const logger = require('../../utils/logger');
 
@@ -241,15 +242,19 @@ class QuestionValidator {
       return errors;
     }
     
-    if (typeof question.numericalAnswer.value !== 'number') {
+    if (!Number.isFinite(question.numericalAnswer.value)) {
       errors.push('Numerical answer value must be a number');
     }
     
     if (question.numericalAnswer.tolerance !== undefined && 
-        typeof question.numericalAnswer.tolerance !== 'number') {
-      errors.push('Tolerance must be a number');
+        (!Number.isFinite(question.numericalAnswer.tolerance) || question.numericalAnswer.tolerance < 0)) {
+      errors.push('Tolerance must be a finite non-negative number');
     }
     
+    if (hasNumericalAnswerConflict(question)) {
+      errors.push('Numerical grading value conflicts with correctAnswer; use the complete fraction value (for example, 5/8 = 0.625), not its numerator');
+    }
+
     // Validate correctAnswer field exists
     if (!question.correctAnswer) {
       errors.push('correctAnswer field is required (should contain the numerical answer with unit)');

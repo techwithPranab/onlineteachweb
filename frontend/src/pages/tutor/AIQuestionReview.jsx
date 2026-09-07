@@ -9,6 +9,7 @@ import EmptyState from '../../components/common/EmptyState'
 import Modal from '../../components/common/Modal'
 import ConfirmDialog from '../../components/common/ConfirmDialog'
 import MathDiagram from '../../components/diagrams/MathDiagram'
+import { hasNumericalAnswerConflict } from '../../utils/numericalAnswer.mjs'
 
 export default function AIQuestionReview() {
   const navigate = useNavigate()
@@ -647,6 +648,7 @@ export default function AIQuestionReview() {
 // Question Preview Component
 function QuestionPreview({ draft, onApprove, onEdit, onReject }) {
   const question = draft.questionPayload
+  const answerConflict = hasNumericalAnswerConflict(question)
 
   const getDifficultyBadge = (level) => {
     const styles = {
@@ -718,9 +720,10 @@ function QuestionPreview({ draft, onApprove, onEdit, onReject }) {
       )}
 
       {/* Numerical Answer */}
-      {question.numericalAnswer && (
-        <div className="bg-green-100 border border-green-300 rounded-lg p-4">
-          <h4 className="font-medium text-green-800 mb-1">✓ Correct Answer</h4>
+      {question.type === 'numerical' && question.numericalAnswer && (
+        <div className="bg-gray-50 border border-gray-300 rounded-lg p-4">
+          <h4 className="font-medium text-gray-800 mb-1">Numerical grading value</h4>
+          {answerConflict && <p role="alert" className="text-red-700 mb-2">This grading value conflicts with the correct answer. Edit the numerical value before approving.</p>}
           <p className="text-green-900 font-medium text-lg">
             {question.numericalAnswer.value} 
             {question.numericalAnswer.unit && ` ${question.numericalAnswer.unit}`}
@@ -809,6 +812,7 @@ function QuestionPreview({ draft, onApprove, onEdit, onReject }) {
         <div className="flex gap-3 pt-4 border-t">
           <button
             onClick={onApprove}
+            disabled={answerConflict}
             className="flex-1 py-2 px-4 bg-green-600 text-white rounded-lg hover:bg-green-700 font-medium"
           >
             ✓ Approve
@@ -986,6 +990,17 @@ function QuestionEditor({ draft, onSave, onCancel }) {
               </div>
             ))}
           </div>
+        </div>
+      )}
+
+      {formData.type === 'numerical' && (
+        <div className="grid grid-cols-2 gap-4">
+          <label>Correct answer
+            <input className="w-full border rounded p-2" name="correctAnswer" value={formData.correctAnswer || ''} onChange={handleChange} />
+          </label>
+          <label>Numerical grading value
+            <input className="w-full border rounded p-2" type="number" step="any" value={formData.numericalAnswer?.value ?? ''} onChange={e => setFormData(prev => ({ ...prev, numericalAnswer: { ...prev.numericalAnswer, value: e.target.value === '' ? null : Number(e.target.value) } }))} />
+          </label>
         </div>
       )}
 
