@@ -1,3 +1,8 @@
+import DiagramJsonEditor from '../../components/diagrams/DiagramJsonEditor'
+import { parseDiagramJson } from '../../utils/diagramJson.mjs'
+import FractionDiagramReview from '../../components/diagrams/FractionDiagramReview'
+import { fractionDiagramIssues } from '../../utils/fractionDiagramConsistency.mjs'
+import { asOpenTextFraction } from '../../utils/fractionAnswer.mjs'
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import aiQuestionService from '../../services/aiQuestionService'
@@ -9,7 +14,7 @@ import EmptyState from '../../components/common/EmptyState'
 import Modal from '../../components/common/Modal'
 import ConfirmDialog from '../../components/common/ConfirmDialog'
 import MathDiagram from '../../components/diagrams/MathDiagram'
-import { hasNumericalAnswerConflict } from '../../utils/numericalAnswer.mjs'
+import { hasNumericalAnswerConflict, parseNumericalAnswer, useCorrectAnswerForGrading } from '../../utils/numericalAnswer.mjs'
 
 export default function AIQuestionReview() {
   const navigate = useNavigate()
@@ -443,8 +448,8 @@ export default function AIQuestionReview() {
                     </div>
                   </td>
                   <td className="px-4 py-4">
-                    <span className={`px-2 py-1 text-xs font-medium rounded-full ${getTypeBadge(draft.questionPayload?.type)}`}>
-                      {draft.questionPayload?.type || 'N/A'}
+                    <span className={`px-2 py-1 text-xs font-medium rounded-full ${getTypeBadge(asOpenTextFraction(draft.questionPayload)?.type)}`}>
+                      {asOpenTextFraction(draft.questionPayload)?.type || 'N/A'}
                     </span>
                   </td>
                   <td className="px-4 py-4">
@@ -647,7 +652,7 @@ export default function AIQuestionReview() {
 
 // Question Preview Component
 function QuestionPreview({ draft, onApprove, onEdit, onReject }) {
-  const question = draft.questionPayload
+  const question = asOpenTextFraction(draft.questionPayload)
   const answerConflict = hasNumericalAnswerConflict(question)
 
   const getDifficultyBadge = (level) => {
@@ -661,6 +666,7 @@ function QuestionPreview({ draft, onApprove, onEdit, onReject }) {
 
   return (
     <div className="space-y-6">
+      <FractionDiagramReview question={question} />
       {/* Diagram (if image-based question) */}
       {question.diagram && question.diagram.type && (
         <div className="flex justify-center">
@@ -712,7 +718,7 @@ function QuestionPreview({ draft, onApprove, onEdit, onReject }) {
       )}
 
       {/* Correct Answer Summary */}
-      {question.correctAnswer && (
+      {question.correctAnswer && !(question.type === 'short-answer' && question.expectedAnswer) && (
         <div className="bg-green-100 border border-green-300 rounded-lg p-4">
           <h4 className="font-medium text-green-800 mb-1">✓ Correct Answer</h4>
           <p className="text-green-900 font-medium">{question.correctAnswer}</p>
@@ -723,7 +729,7 @@ function QuestionPreview({ draft, onApprove, onEdit, onReject }) {
       {question.type === 'numerical' && question.numericalAnswer && (
         <div className="bg-gray-50 border border-gray-300 rounded-lg p-4">
           <h4 className="font-medium text-gray-800 mb-1">Numerical grading value</h4>
-          {answerConflict && <p role="alert" className="text-red-700 mb-2">This grading value conflicts with the correct answer. Edit the numerical value before approving.</p>}
+          {answerConflict && <p role="alert" className="text-red-700 mb-2">This grading value conflicts with the correct answer. The answer {question.correctAnswer} equals {parseNumericalAnswer(question.correctAnswer)}. Choose Edit &amp; Approve to correct it.</p>}
           <p className="text-green-900 font-medium text-lg">
             {question.numericalAnswer.value} 
             {question.numericalAnswer.unit && ` ${question.numericalAnswer.unit}`}
@@ -812,7 +818,7 @@ function QuestionPreview({ draft, onApprove, onEdit, onReject }) {
         <div className="flex gap-3 pt-4 border-t">
           <button
             onClick={onApprove}
-            disabled={answerConflict}
+            disabled={answerConflict || fractionDiagramIssues(question).length > 0}
             className="flex-1 py-2 px-4 bg-green-600 text-white rounded-lg hover:bg-green-700 font-medium"
           >
             ✓ Approve
@@ -837,7 +843,9 @@ function QuestionPreview({ draft, onApprove, onEdit, onReject }) {
 
 // Question Editor Component
 function QuestionEditor({ draft, onSave, onCancel }) {
-  const [formData, setFormData] = useState({ ...draft.questionPayload })
+  const [formData, setFormData] = useState(() => ({ ...asOpenTextFraction(draft.questionPayload) }))
+  const [diagramJson, setDiagramJson] = useState(() => draft.questionPayload.diagram ? JSON.stringify(draft.questionPayload.diagram, null, 2) : '')
+  const parsedDiagram = parseDiagramJson(diagramJson)
   const [chapters, setChapters] = useState([])
   const [topics, setTopics] = useState([])
 
@@ -892,7 +900,8 @@ function QuestionEditor({ draft, onSave, onCancel }) {
   }
 
   const handleSubmit = () => {
-    onSave(formData)
+    if (parsedDiagram.error) return
+    onSave({ ...formData, diagram: parsedDiagram.diagram })
   }
 
   return (
@@ -944,6 +953,15 @@ function QuestionEditor({ draft, onSave, onCancel }) {
         />
       </div>
 
+      <DiagramJsonEditor value={diagramJson} onChange={setDiagramJson} />
+      {!parsedDiagram.error && <FractionDiagramReview
+        question={{ ...formData, diagram: parsedDiagram.diagram }}
+        onChange={updated => {
+          setFormData(updated)
+          setDiagramJson(JSON.stringify(updated.diagram, null, 2))
+        }}
+      />}
+
       {/* Case Study */}
       {formData.caseStudy !== undefined && (
         <div>
@@ -993,11 +1011,25 @@ function QuestionEditor({ draft, onSave, onCancel }) {
         </div>
       )}
 
+      {formData.type === 'short-answer' && (
+        <label className="block font-medium text-gray-700">Expected answer (open text)
+          <textarea className="mt-2 w-full border rounded p-2" value={formData.expectedAnswer ?? formData.correctAnswer ?? ''} onChange={e => setFormData(prev => ({ ...prev, expectedAnswer: e.target.value, correctAnswer: e.target.value }))} placeholder="For example, 5/8" />
+        </label>
+      )}
+
       {formData.type === 'numerical' && (
         <div className="grid grid-cols-2 gap-4">
           <label>Correct answer
-            <input className="w-full border rounded p-2" name="correctAnswer" value={formData.correctAnswer || ''} onChange={handleChange} />
+            <input className="w-full border rounded p-2" name="correctAnswer" value={formData.correctAnswer ?? ''} onChange={handleChange} />
           </label>
+          {hasNumericalAnswerConflict(formData) && (
+            <div role="alert" className="col-span-2 rounded-lg bg-amber-50 p-3 text-amber-900">
+              <p>The answer {formData.correctAnswer} equals {parseNumericalAnswer(formData.correctAnswer)}, but the grading value is {formData.numericalAnswer?.value}.</p>
+              <button type="button" className="mt-2 rounded border border-amber-700 px-3 py-1 font-medium" onClick={() => setFormData(useCorrectAnswerForGrading)}>
+                Use {parseNumericalAnswer(formData.correctAnswer)} for grading
+              </button>
+            </div>
+          )}
           <label>Numerical grading value
             <input className="w-full border rounded p-2" type="number" step="any" value={formData.numericalAnswer?.value ?? ''} onChange={e => setFormData(prev => ({ ...prev, numericalAnswer: { ...prev.numericalAnswer, value: e.target.value === '' ? null : Number(e.target.value) } }))} />
           </label>
@@ -1047,6 +1079,7 @@ function QuestionEditor({ draft, onSave, onCancel }) {
       <div className="flex gap-3 pt-4 border-t">
         <button
           onClick={handleSubmit}
+          disabled={Boolean(parsedDiagram.error)}
           className="flex-1 py-2 px-4 bg-green-600 text-white rounded-lg hover:bg-green-700 font-medium"
         >
           Save & Approve

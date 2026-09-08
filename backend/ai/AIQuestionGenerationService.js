@@ -1,3 +1,5 @@
+const { fractionDiagramIssues } = require('../utils/fractionDiagramConsistency');
+const { asOpenTextFraction } = require('../utils/fractionAnswer');
 const { parseNumericalAnswer, hasNumericalAnswerConflict } = require('../utils/numericalAnswer');
 const { loadExercisePatterns, selectExercisePatterns } = require('../services/exercisePattern.service');
 const AIProviderFactory = require('./providers/AIProviderFactory');
@@ -671,6 +673,8 @@ class AIQuestionGenerationService {
       questionData = { ...questionData, ...edits, ...preservedFields };
     }
     
+    questionData = asOpenTextFraction(questionData);
+
     // Ensure required fields are present BEFORE validation
     // Generate correctAnswer from options if not present
     if (!questionData.correctAnswer && questionData.options) {
@@ -686,8 +690,11 @@ class AIQuestionGenerationService {
     }
     
     if (hasNumericalAnswerConflict(questionData)) {
-      throw new Error('Numerical grading value conflicts with correctAnswer. Edit the draft before approving.');
+      throw new Error(`Numerical grading value conflicts with correctAnswer: ${questionData.correctAnswer} equals ${parseNumericalAnswer(questionData.correctAnswer)}, but the grading value is ${questionData.numericalAnswer.value}. Open Edit & Approve and use ${parseNumericalAnswer(questionData.correctAnswer)} for grading.`);
     }
+
+    const diagramIssues = fractionDiagramIssues(questionData);
+    if (diagramIssues.length) throw new Error(`Diagram does not match question: ${diagramIssues.join(' ')}`);
 
     // Validate after ensuring all required fields are present
     if (edits) {

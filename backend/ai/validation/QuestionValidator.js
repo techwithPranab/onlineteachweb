@@ -1,3 +1,5 @@
+const { fractionDiagramIssues } = require('../../utils/fractionDiagramConsistency');
+const { asOpenTextFraction } = require('../../utils/fractionAnswer');
 const { hasNumericalAnswerConflict } = require('../../utils/numericalAnswer');
 const { validateFractionParams } = require('./fractionDiagram');
 const logger = require('../../utils/logger');
@@ -30,6 +32,7 @@ class QuestionValidator {
    * @returns {Object} Validation result with isValid, errors, and sanitized question
    */
   validate(question) {
+    question = asOpenTextFraction(question);
     // Accept existing/provider shorthand while storing the canonical contract.
     const fractionStyle = typeof question.diagram?.type === 'string' ? question.diagram.type.trim().toLowerCase() : '';
     if (['pie', 'bar', 'set', 'triangle', 'grid', 'regions'].includes(fractionStyle)) {
@@ -67,6 +70,8 @@ class QuestionValidator {
     if (typeof question.diagram?.type === 'string' && question.diagram.type.toLowerCase() === 'fraction') {
       errors.push(...validateFractionParams(question.diagram.params || {}));
     }
+
+    errors.push(...fractionDiagramIssues(question));
 
     // Validate marks
     if (question.marks !== undefined) {

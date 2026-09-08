@@ -18,3 +18,10 @@ export function hasNumericalAnswerConflict(question) {
   return expected !== null && (!Number.isFinite(actual) || Math.abs(expected - actual) > 1e-9 * Math.max(1, Math.abs(expected)));
 }
 
+
+// Explicit editor action: synchronize only a complete, parseable numeric answer.
+export function useCorrectAnswerForGrading(question) {
+  const value = parseNumericalAnswer(question.correctAnswer);
+  if (question.type !== 'numerical' || value === null) return question;
+  return { ...question, numericalAnswer: { ...question.numericalAnswer, value, tolerance: question.numericalAnswer?.tolerance ?? 0 } };
+}

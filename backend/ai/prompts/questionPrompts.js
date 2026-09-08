@@ -1,3 +1,4 @@
+const { isFractionAnswer } = require('../../utils/fractionAnswer');
 const { buildExerciseGuidance } = require('../../services/exercisePattern.service');
 /**
  * Prompt Templates for AI Question Generation
@@ -249,6 +250,7 @@ CRITICAL RULES:
  * Generate the main question generation prompt
  */
 function generateQuestionPrompt({ topic, content, difficultyLevel, questionType, count, context, imageBased, diagramTypes }) {
+  if (questionType === 'numerical' && isFractionAnswer({ topic, chapterName: context?.chapterName })) questionType = 'short-answer';
   const difficulty = DIFFICULTY_DEFINITIONS[difficultyLevel];
   const typeSpec = QUESTION_TYPE_SPECS[questionType];
   

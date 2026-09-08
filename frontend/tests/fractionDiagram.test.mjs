@@ -141,3 +141,33 @@ test('every fraction style alias renders like the canonical fraction diagram', (
   assert.match(renderDiagram({ type: 'pieChart', params: { data: [{ label: 'A', value: 3 }, { label: 'B', value: 2 }] } }), /<svg/)
   assert.match(renderDiagram({ type: 'unsupported-example' }), /Unknown diagram/)
 })
+
+test('fraction questions approved as open text give students a text box', async () => {
+  const { asOpenTextFraction } = await import('../src/utils/fractionAnswer.mjs')
+  const QuestionCard = loadComponent('../src/components/quiz/QuestionCard.jsx').default
+  const question = asOpenTextFraction({ type: 'numerical', text: 'What fraction is unshaded?', correctAnswer: '5/8', numericalAnswer: { value: 5, tolerance: 0.1 } })
+  const markup = renderToStaticMarkup(React.createElement(QuestionCard, { question, questionNumber: 1, selectedAnswer: '5/8', onAnswerChange: () => {} }))
+  assert.match(markup, /<textarea/)
+  assert.match(markup, /5\/8/)
+  assert.doesNotMatch(markup, /type="number"|tolerance|Numerical grading/)
+})
+
+test('reported triangle question produces three equal areas with only one shaded', async () => {
+  const { diagramFromDescription, fractionDiagramIssues } = await import('../src/utils/fractionDiagramConsistency.mjs')
+  const question = { text: 'Look at the diagram above showing a triangle divided into three equal smaller triangles, with one small triangle shaded. Which of the following is the correct fraction of the triangle that is shaded?' }
+  const diagram = diagramFromDescription(question)
+  const markup = render(diagram.params)
+  assert.equal((markup.match(/<polygon/g) || []).length, 3)
+  assert.equal((markup.match(/fill="#64748b"/g) || []).length, 1)
+  const areas = fractionRegions(diagram.params).map(r => polygonArea(r.points))
+  assert.ok(areas.every(a => Math.abs(a - areas[0]) < 1e-8))
+  assert.equal(fractionValue(diagram.params), 1 / 3)
+  assert.deepEqual(fractionDiagramIssues({ ...question, diagram }), [])
+  const Review = loadComponent('../src/components/diagrams/FractionDiagramReview.jsx').default
+  const mismatch = { ...question, diagram: { type: 'pie', params: { numerator: 2, denominator: 3 } } }
+  const review = renderToStaticMarkup(React.createElement(Review, { question: mismatch, onChange: () => {} }))
+  assert.match(review, /Figure does not match/)
+  assert.match(review, /Use this figure/)
+  assert.equal((review.match(/<polygon/g) || []).length, 3)
+  assert.match(render({ style: 'triangle', denominator: 4, numerator: 1 }), /needs correction/)
+})

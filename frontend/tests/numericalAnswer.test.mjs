@@ -12,3 +12,19 @@ test('review and backend agree on exact fractional answers', () => {
   }
   assert.equal(hasNumericalAnswerConflict({ type: 'numerical', correctAnswer: '5/8', numericalAnswer: { value: 5 } }), true)
 })
+
+test('explicit editor repair resolves a fraction conflict without mutating the draft', async () => {
+  const { useCorrectAnswerForGrading } = await import('../src/utils/numericalAnswer.mjs')
+  const question = { type: 'numerical', correctAnswer: '5/8', numericalAnswer: { value: 5, tolerance: 0.1, unit: '' }, text: 'What fraction is unshaded?' }
+  const repaired = useCorrectAnswerForGrading(question)
+  assert.equal(repaired.numericalAnswer.value, 0.625)
+  assert.equal(repaired.numericalAnswer.tolerance, 0.1)
+  assert.equal(repaired.correctAnswer, '5/8')
+  assert.equal(hasNumericalAnswerConflict(repaired), false)
+  assert.equal(question.numericalAnswer.value, 5)
+  for (const correctAnswer of ['1/0', 'five of eight', '5/8 cm']) {
+    const unsupported = { ...question, correctAnswer }
+    assert.equal(useCorrectAnswerForGrading(unsupported), unsupported)
+  }
+  assert.equal(useCorrectAnswerForGrading({ ...question, correctAnswer: '0' }).numericalAnswer.value, 0)
+})

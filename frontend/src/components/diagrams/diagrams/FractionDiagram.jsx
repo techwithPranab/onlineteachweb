@@ -16,6 +16,7 @@ export default function FractionDiagram({ params = {}, size = 200 }) {
     </div>
   }
   const style = params.style || 'pie'
+  if (style === 'triangle' && params.denominator !== undefined && Number(params.denominator) !== 3) return <InvalidFigure />
   const d = style === 'triangle' ? 3 : Number(params.denominator ?? 4)
   const n = Number(params.numerator ?? 1)
   // Multiple congruent wholes preserve improper and mixed fractions.

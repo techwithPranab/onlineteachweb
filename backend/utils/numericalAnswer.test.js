@@ -1,7 +1,7 @@
 const { parseNumericalAnswer, hasNumericalAnswerConflict } = require('./numericalAnswer');
 const validator = require('../ai/validation/QuestionValidator');
 const service = require('../ai/AIQuestionGenerationService');
-const question = { text: 'What fraction is unshaded?', topic: 'Fractions', difficultyLevel: 'easy', type: 'numerical', correctAnswer: '5/8', numericalAnswer: { value: 5, tolerance: 0.1 } };
+const question = { text: 'Give the decimal value.', topic: 'Decimals', difficultyLevel: 'easy', type: 'numerical', correctAnswer: '0.625', numericalAnswer: { value: 5, tolerance: 0.1 } };
 test.each([['5/8', 0.625], ['$\\frac{5}{8}$', 0.625], ['0.625', 0.625], ['-3/4', -0.75], ['0', 0], ['1/0', null], ['5 apples out of 8', null], ['Infinity', null]])('parses %s as a complete number', (text, expected) => expect(parseNumericalAnswer(text)).toBe(expected));
 test('rejects conflicting fraction grading values', () => {
   expect(hasNumericalAnswerConflict(question)).toBe(true);
