@@ -702,7 +702,13 @@ class AIQuestionGenerationService {
       if (!validation.isValid) {
         throw new Error(`Validation failed after edits: ${validation.errors.join(', ')}`);
       }
-      questionData = validation.sanitized;
+      questionData = {
+        ...validation.sanitized,
+        courseId: questionData.courseId,
+        courseTitle: questionData.courseTitle,
+        grade: questionData.grade,
+        subject: questionData.subject
+      };
     }
     
     // Create actual question
@@ -714,6 +720,8 @@ class AIQuestionGenerationService {
     });
     
     // Update draft status
+    draft.questionPayload = questionData;
+    draft.markModified?.('questionPayload');
     draft.status = 'approved';
     draft.approvedBy = userId;
     draft.approvedAt = new Date();

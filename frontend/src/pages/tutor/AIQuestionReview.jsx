@@ -1,5 +1,6 @@
 import DiagramJsonEditor from '../../components/diagrams/DiagramJsonEditor'
 import { parseDiagramJson } from '../../utils/diagramJson.mjs'
+import { draftSaveError } from '../../utils/draftSaveError.mjs'
 import FractionDiagramReview from '../../components/diagrams/FractionDiagramReview'
 import { fractionDiagramIssues } from '../../utils/fractionDiagramConsistency.mjs'
 import { asOpenTextFraction } from '../../utils/fractionAnswer.mjs'
@@ -39,6 +40,9 @@ export default function AIQuestionReview() {
   // Modals
   const [viewDraft, setViewDraft] = useState(null)
   const [editDraft, setEditDraft] = useState(null)
+  const [editorBusy, setEditorBusy] = useState(false)
+  const [editorError, setEditorError] = useState('')
+  useEffect(() => { setEditorError('') }, [editDraft?._id])
   const [showRejectModal, setShowRejectModal] = useState(null)
   const [rejectReason, setRejectReason] = useState('')
   const [showBulkRejectModal, setShowBulkRejectModal] = useState(false)
@@ -136,6 +140,8 @@ export default function AIQuestionReview() {
   }
 
   const handleApprove = async (draftId, edits = null) => {
+    setEditorError('')
+    if (edits) setEditorBusy(true)
     try {
       console.log('Approving draft:', draftId, 'with edits:', edits);
       await aiQuestionService.approveDraft(draftId, edits)
@@ -146,7 +152,27 @@ export default function AIQuestionReview() {
       fetchStats()
     } catch (err) {
       console.error('Approve error:', err);
-      setError(err.response?.data?.message || 'Failed to approve draft')
+      const message = draftSaveError(err, 'Failed to approve draft')
+      setError(message)
+      if (edits) setEditorError(message)
+    } finally {
+      if (edits) setEditorBusy(false)
+    }
+  }
+
+  const handleSaveDraft = async (draftId, questionPayload) => {
+    setEditorBusy(true)
+    setEditorError('')
+    try {
+      await aiQuestionService.editDraft(draftId, { questionPayload, changeDescription: 'Saved from question editor' })
+      setSuccess('Changes saved. Question remains a draft.')
+      setEditDraft(null)
+      setViewDraft(null)
+      fetchDrafts(pagination.page)
+    } catch (err) {
+      setEditorError(draftSaveError(err, 'Failed to save draft'))
+    } finally {
+      setEditorBusy(false)
     }
   }
 
@@ -557,7 +583,10 @@ export default function AIQuestionReview() {
         >
           <QuestionEditor
             draft={editDraft}
-            onSave={(edits) => handleApprove(editDraft._id, edits)}
+            onSave={(edits) => handleSaveDraft(editDraft._id, edits)}
+            onApprove={(edits) => handleApprove(editDraft._id, edits)}
+            busy={editorBusy}
+            errorMessage={editorError}
             onCancel={() => setEditDraft(null)}
           />
         </Modal>
@@ -842,7 +871,7 @@ function QuestionPreview({ draft, onApprove, onEdit, onReject }) {
 }
 
 // Question Editor Component
-function QuestionEditor({ draft, onSave, onCancel }) {
+function QuestionEditor({ draft, onSave, onApprove, onCancel, busy, errorMessage }) {
   const [formData, setFormData] = useState(() => ({ ...asOpenTextFraction(draft.questionPayload) }))
   const [diagramJson, setDiagramJson] = useState(() => draft.questionPayload.diagram ? JSON.stringify(draft.questionPayload.diagram, null, 2) : '')
   const parsedDiagram = parseDiagramJson(diagramJson)
@@ -875,7 +904,7 @@ function QuestionEditor({ draft, onSave, onCancel }) {
 
   const handleChange = (e) => {
     const { name, value } = e.target
-    setFormData(prev => ({ ...prev, [name]: value }))
+    setFormData(prev => ({ ...prev, [name]: ['marks', 'negativeMarks'].includes(name) ? (value === '' ? null : Number(value)) : value }))
   }
 
   const handleChapterChange = (chapterId) => {
@@ -899,9 +928,11 @@ function QuestionEditor({ draft, onSave, onCancel }) {
     }))
   }
 
-  const handleSubmit = () => {
-    if (parsedDiagram.error) return
-    onSave({ ...formData, diagram: parsedDiagram.diagram })
+  const handleSubmit = (approve = false) => {
+    if (parsedDiagram.error || busy) return
+    const payload = { ...formData, diagram: parsedDiagram.diagram }
+    if (approve) onApprove(payload)
+    else onSave(payload)
   }
 
   return (
@@ -1075,17 +1106,26 @@ function QuestionEditor({ draft, onSave, onCancel }) {
         </div>
       </div>
 
+      {errorMessage && <p role="alert" className="rounded-lg bg-red-50 p-3 text-red-700">{errorMessage}</p>}
       {/* Actions */}
       <div className="flex gap-3 pt-4 border-t">
         <button
-          onClick={handleSubmit}
-          disabled={Boolean(parsedDiagram.error)}
+          onClick={() => handleSubmit(false)}
+          disabled={busy || Boolean(parsedDiagram.error)}
+          className="flex-1 py-2 px-4 bg-blue-600 text-white rounded-lg disabled:opacity-50"
+        >
+          Save Only
+        </button>
+        <button
+          onClick={() => handleSubmit(true)}
+          disabled={busy || Boolean(parsedDiagram.error)}
           className="flex-1 py-2 px-4 bg-green-600 text-white rounded-lg hover:bg-green-700 font-medium"
         >
           Save & Approve
         </button>
         <button
           onClick={onCancel}
+          disabled={busy}
           className="flex-1 py-2 px-4 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 font-medium"
         >
           Cancel

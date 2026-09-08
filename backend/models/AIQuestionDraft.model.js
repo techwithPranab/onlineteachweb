@@ -410,6 +410,20 @@ aiQuestionDraftSchema.methods.reject = function(rejectedBy, reason) {
   return this.save();
 };
 
+// Save an edit without publishing a question to the question bank.
+aiQuestionDraftSchema.methods.recordEdit = function(editedBy, questionPayload, changeDescription = 'Manual edit') {
+  if (!['draft', 'needs_edit'].includes(this.status)) {
+    throw new Error('Only pending drafts can be edited');
+  }
+  const previousPayload = this.toObject().questionPayload;
+  this.questionPayload = { ...previousPayload, ...questionPayload };
+  if (this.questionPayload.type !== 'numerical') delete this.questionPayload.numericalAnswer;
+  this.markModified('questionPayload');
+  this.editHistory.push({ editedBy, previousPayload, changeDescription });
+  this.status = 'draft';
+  return this.save();
+};
+
 // Method to mark as needing edits
 aiQuestionDraftSchema.methods.needsEdit = function(editedBy, changeDescription, previousPayload = null) {
   this.status = 'needs_edit';
