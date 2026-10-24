@@ -50,6 +50,11 @@ class OpenAIProvider extends AIProviderInterface {
     };
   }
 
+  supportsCustomTemperature() {
+    // Current reasoning-model families accept only the default temperature.
+    return !/^(?:gpt-[56](?:[.-]|$)|o\d)/i.test(this.model);
+  }
+
   async isAvailable() {
     if (!this.apiKey) {
       logger.warn('OpenAI API key not configured');
@@ -91,7 +96,8 @@ class OpenAIProvider extends AIProviderInterface {
       diagramTypes: diagramTypes || []
     });
 
-    const temperature = this.temperatureSettings[difficultyLevel] || 0.5;
+    const requestedTemperature = this.temperatureSettings[difficultyLevel] || 0.5;
+    const temperature = this.supportsCustomTemperature() ? requestedTemperature : 1;
     const maxTokens = (this.maxTokenSettings[questionType] || 800) * count;
 
     try {
@@ -107,7 +113,7 @@ class OpenAIProvider extends AIProviderInterface {
             { role: 'system', content: systemPrompt },
             { role: 'user', content: userPrompt }
           ],
-          temperature,
+          ...(this.supportsCustomTemperature() ? { temperature: requestedTemperature } : {}),
           max_completion_tokens: maxTokens,
           response_format: { type: 'json_object' }
         })
@@ -198,7 +204,7 @@ class OpenAIProvider extends AIProviderInterface {
             { role: 'system', content: systemPrompt },
             { role: 'user', content: userPrompt }
           ],
-          temperature: 0.3,
+          ...(this.supportsCustomTemperature() ? { temperature: 0.3 } : {}),
           max_completion_tokens: 2000,
           response_format: { type: 'json_object' }
         })
@@ -241,7 +247,7 @@ class OpenAIProvider extends AIProviderInterface {
             { role: 'system', content: systemPrompt },
             { role: 'user', content: userPrompt }
           ],
-          temperature: 0.2,
+          ...(this.supportsCustomTemperature() ? { temperature: 0.2 } : {}),
           max_completion_tokens: 500,
           response_format: { type: 'json_object' }
         })
