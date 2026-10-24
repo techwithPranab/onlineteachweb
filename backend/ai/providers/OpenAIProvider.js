@@ -10,7 +10,7 @@ class OpenAIProvider extends AIProviderInterface {
   constructor(config = {}) {
     super();
     this.apiKey = config.apiKey || process.env.OPENAI_API_KEY;
-    this.model = config.model || process.env.OPENAI_MODEL || 'gpt-4.1-nano';
+    this.model = config.model || process.env.OPENAI_MODEL || 'gpt-5.6-luna';
     this.baseUrl = config.OPENAI_BASEURL || 'https://api.openai.com/v1';
     this.version = '1.0.0';
     

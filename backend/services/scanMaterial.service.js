@@ -159,7 +159,7 @@ Treat the attached files as the authoritative source.`
     }
   }
 
-  const model = process.env.OPENAI_OCR_MODEL || process.env.OPENAI_MODEL || 'gpt-4.1-mini';
+  const model = process.env.OPENAI_OCR_MODEL || process.env.OPENAI_MODEL || 'gpt-5.6-luna';
   const payload = { model, instructions: SYSTEM_PROMPT, input: [{ role: 'user', content }], max_output_tokens: 12000, store: false };
   let response;
   try {
@@ -190,7 +190,7 @@ Treat the attached files as the authoritative source.`
 }
 
 async function extractExercisePatterns(file, course, sourceFileIndex, options = {}) {
-  const model = process.env.OPENAI_EXERCISE_MODEL || process.env.OPENAI_OCR_MODEL || process.env.OPENAI_MODEL || 'gpt-4.1-mini';
+  const model = process.env.OPENAI_EXERCISE_MODEL || process.env.OPENAI_OCR_MODEL || process.env.OPENAI_MODEL || 'gpt-5.6-luna';
   const base64 = (await fs.readFile(file.path)).toString('base64');
   const payload = {
     model, instructions: EXERCISE_EXTRACTION_PROMPT,
@@ -241,7 +241,7 @@ async function extractExercisePatterns(file, course, sourceFileIndex, options = 
 
 async function generateCourseFromScans(files, options = {}) {
   if (!process.env.OPENAI_API_KEY) throw new Error('OPENAI_API_KEY is required for scan processing');
-  const model = process.env.OPENAI_OCR_MODEL || process.env.OPENAI_MODEL || 'gpt-4.1-mini';
+  const model = process.env.OPENAI_OCR_MODEL || process.env.OPENAI_MODEL || 'gpt-5.6-luna';
   // OCR each PDF independently. A single multimodal request containing several
   // long PDFs can over-focus on the final document and omit earlier chapters.
   const extractedMaterials = [];

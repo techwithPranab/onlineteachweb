@@ -188,7 +188,7 @@ Return a JSON array of question objects. Each question MUST have this exact stru
       ],
       "_metadata": {
         "provider": "openai",
-        "model": "gpt-4.1-nano",
+        "model": "gpt-5.6-luna",
         "version": "1.0.0",
         "generatedAt": "ISO_DATE_HERE",
         "temperature": 0.3,
@@ -306,7 +306,7 @@ IMPORTANT:
           ],
           _metadata: {
             provider: "openai",
-            model: "gpt-4.1-nano",
+            model: "gpt-5.6-luna",
             version: "1.0.0",
             generatedAt: new Date().toISOString(),
             temperature: 0.3,

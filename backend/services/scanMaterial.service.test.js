@@ -45,6 +45,31 @@ describe('course scan material mapping', () => {
     const result = await generateCourseFromScans([pdf('Chapter.pdf')]);
     expect(result.materials[0]).toEqual({ title: 'AI title', description: 'Summary', chapterName: 'Chapter', content: 'Full source content', exercisePatterns: [], exercisePatternsReviewed: true, exerciseAnalysisReport: 'DOCUMENT ANALYSIS: No exercises' });
   });
+
+  test('uses the supported low-latency model when no model override is configured', async () => {
+    const originalModel = process.env.OPENAI_MODEL;
+    const originalOcrModel = process.env.OPENAI_OCR_MODEL;
+    const originalExerciseModel = process.env.OPENAI_EXERCISE_MODEL;
+    delete process.env.OPENAI_MODEL;
+    delete process.env.OPENAI_OCR_MODEL;
+    delete process.env.OPENAI_EXERCISE_MODEL;
+    global.fetch.mockResolvedValueOnce(respond('Full source content'))
+      .mockResolvedValueOnce(respond(JSON.stringify({ course: { title: 'Course' }, materials: [{ title: 'Chapter' }] })));
+    try {
+      await generateCourseFromScans([pdf('Chapter.pdf')]);
+      for (const call of global.fetch.mock.calls) {
+        expect(JSON.parse(call[1].body).model).toBe('gpt-5.6-luna');
+      }
+    } finally {
+      if (originalModel === undefined) delete process.env.OPENAI_MODEL;
+      else process.env.OPENAI_MODEL = originalModel;
+      if (originalOcrModel === undefined) delete process.env.OPENAI_OCR_MODEL;
+      else process.env.OPENAI_OCR_MODEL = originalOcrModel;
+      if (originalExerciseModel === undefined) delete process.env.OPENAI_EXERCISE_MODEL;
+      else process.env.OPENAI_EXERCISE_MODEL = originalExerciseModel;
+    }
+  });
+
   test('retains exercise formats on their original PDF when material metadata count differs', async () => {
     const patterns = [
       { description: 'Complete a missing fraction', skillTested: 'Addition', cognitiveLevel: 2, sourceFileIndex: 0, chapterName: 'Fractions', topics: ['Addition'], label: 'Fill in the blanks', questionType: 'short-answer', instructions: 'Complete the blanks', example: '1/5 + 2/5 = ___', sourcePages: [2] },
