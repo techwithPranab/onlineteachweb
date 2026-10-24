@@ -108,7 +108,7 @@ class OpenAIProvider extends AIProviderInterface {
             { role: 'user', content: userPrompt }
           ],
           temperature,
-          max_tokens: maxTokens,
+          max_completion_tokens: maxTokens,
           response_format: { type: 'json_object' }
         })
       });
@@ -199,7 +199,7 @@ class OpenAIProvider extends AIProviderInterface {
             { role: 'user', content: userPrompt }
           ],
           temperature: 0.3,
-          max_tokens: 2000,
+          max_completion_tokens: 2000,
           response_format: { type: 'json_object' }
         })
       });
@@ -242,7 +242,7 @@ class OpenAIProvider extends AIProviderInterface {
             { role: 'user', content: userPrompt }
           ],
           temperature: 0.2,
-          max_tokens: 500,
+          max_completion_tokens: 500,
           response_format: { type: 'json_object' }
         })
       });
