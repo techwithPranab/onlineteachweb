@@ -10,6 +10,7 @@ const DIAGRAM_TAGS = {
   numberLine: { grades: [1, 2, 3, 4, 5], subjects: ['Mathematics'], topics: ['Numbers', 'Counting', 'Fractions on Number Line', 'Integers', 'Number line representation', 'Rounding off numbers'] },
   shapes: { grades: [1, 2, 3, 4, 5, 6], subjects: ['Mathematics'], topics: ['Shapes', 'Geometry', 'Area', 'Perimeter', 'Properties of triangles and quadrilaterals', 'Area of rectangles', 'Perimeter of rectangles and squares'] },
   barGraph: { grades: [3, 4, 5, 6], subjects: ['Mathematics'], topics: ['Data Handling', 'Statistics', 'Bar Graphs', 'Reading bar graphs', 'Drawing bar graphs (single and double)'] },
+  pictograph: { grades: [2, 3, 4, 5, 6], subjects: ['Mathematics'], topics: ['Data Handling', 'Statistics', 'Pictographs', 'Pictorial representation', 'Reading pictographs'] },
   placeValue: { grades: [1, 2, 3, 4, 5], subjects: ['Mathematics'], topics: ['Place Value', 'Numbers', 'Expanded Form', 'Place value and face value', '4-Digit Numbers'] },
   pattern: { grades: [1, 2, 3, 4, 5], subjects: ['Mathematics'], topics: ['Patterns', 'Sequences', 'Number Patterns', 'Tessellations and tiling patterns', 'Geometric patterns in art'] },
   coordGrid: { grades: [4, 5, 6, 7, 8], subjects: ['Mathematics'], topics: ['Coordinates', 'Geometry', 'Graphing', 'Linear Equations'] },

@@ -52,7 +52,7 @@ test('truncated review is rejected', async () => {
 });
 
 test('uses the supplied visual taxonomy, evidence table, level summary and worksheet mix', () => {
-  for (const instruction of ['expert educational consultant', 'all visual content', 'Figure-to-Fraction Visual Question', 'Statement I / Statement II', '| # | Question Format | Description | Skill Tested | Example Pattern | Page(s) | Difficulty |', 'RECOMMENDED WORKSHEET MIX']) {
+  for (const instruction of ['expert educational consultant', 'all visual content', 'Figure-to-Fraction Visual Question', 'Statement I / Statement II', 'Pictograph interpretation', 'bar-graph interpretation', '| # | Question Format | Description | Skill Tested | Example Pattern | Page(s) | Difficulty |', 'RECOMMENDED WORKSHEET MIX']) {
     expect(EXERCISE_EXTRACTION_PROMPT).toContain(instruction);
   }
 });

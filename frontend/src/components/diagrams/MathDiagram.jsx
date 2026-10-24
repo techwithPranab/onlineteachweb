@@ -31,6 +31,7 @@ import AngleDiagram from './diagrams/AngleDiagram'
 import NumberLineDiagram from './diagrams/NumberLineDiagram'
 import ShapesDiagram from './diagrams/ShapesDiagram'
 import BarGraphDiagram from './diagrams/BarGraphDiagram'
+import PictographDiagram from './diagrams/PictographDiagram'
 import PlaceValueDiagram from './diagrams/PlaceValueDiagram'
 import PatternDiagram from './diagrams/PatternDiagram'
 import CoordGridDiagram from './diagrams/CoordGridDiagram'
@@ -102,6 +103,7 @@ const DIAGRAM_REGISTRY = {
   shape:           ShapesDiagram,
   barGraph:        BarGraphDiagram,
   bargraph:        BarGraphDiagram,
+  pictograph:      PictographDiagram,
   placeValue:      PlaceValueDiagram,
   placevalue:      PlaceValueDiagram,
   pattern:         PatternDiagram,

@@ -38,7 +38,11 @@ const DIAGRAM_PROMPT_SPECS = {
   },
   barGraph: {
     label: 'Bar Graph',
-    instruction: `{ "type": "barGraph", "params": { "data": [{"label": "<string>", "value": <n>}, ...], "title": "<string>", "xLabel": "<string>", "yLabel": "<string>" }, "caption": "..." }`
+    instruction: `{ "type": "barGraph", "params": { "data": [{"label": "<string>", "value": <n>}, ...], "title": "<string>", "xLabel": "<string>", "yLabel": "<string>", "orientation": "vertical"|"horizontal", "tickStep": <positive number>, "showValues": false }, "caption": "<neutral description that does not reveal answers>" }`
+  },
+  pictograph: {
+    label: 'Pictograph',
+    instruction: `{ "type": "pictograph", "params": { "data": [{"label": "<string>", "count": <whole number of symbols 0..12>}, ...], "symbol": "apple"|"cake"|"chair"|"car"|"book"|"person"|"star"|"tree"|"circle"|"square", "valuePerSymbol": <positive number>, "unit": "<plural unit>", "title": "<string>" }, "caption": "<neutral description that does not reveal answers>" }. count is the number of displayed symbols; each category's represented value is count * valuePerSymbol.`
   },
   placeValue: {
     label: 'Place Value Chart',
@@ -124,6 +128,9 @@ DIAGRAM RULES:
 - For fraction questions: compute answers from the depicted shaded area or object count, respecting complements, mixed wholes and unequal areas. Follow the fraction contract above.
 - For shape questions: dimensions in the diagram must be the same as values used in calculations
 - For pattern questions: use missingIndex to create fill-in-the-blank pattern questions
+- For pictographs: derive every value from symbol count × valuePerSymbol. Keep counts whole-numbered and include the visible key.
+- For bar graphs: use a scale that makes every bar value exactly readable. Prefer showValues:false so learners must interpret the axis.
+- For data-handling questions: vary direct reading, maximum/minimum, differences, totals, fractions/ratios, hypothetical changes, and multi-step cost or quantity reasoning.
 - caption field should briefly describe what the diagram shows
 
 DIAGRAM FIELD FORMAT (add inside each question object in the "questions" array):

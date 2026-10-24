@@ -2,6 +2,7 @@ const { fractionDiagramIssues } = require('../../utils/fractionDiagramConsistenc
 const { asOpenTextFraction } = require('../../utils/fractionAnswer');
 const { hasNumericalAnswerConflict } = require('../../utils/numericalAnswer');
 const { validateFractionParams } = require('./fractionDiagram');
+const { validateDataHandlingDiagram } = require('./dataHandlingDiagram');
 const logger = require('../../utils/logger');
 
 /**
@@ -72,6 +73,7 @@ class QuestionValidator {
     }
 
     errors.push(...fractionDiagramIssues(question));
+    errors.push(...validateDataHandlingDiagram(question.diagram));
 
     // Validate marks
     if (question.marks !== undefined) {

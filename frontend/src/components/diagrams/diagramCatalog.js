@@ -80,7 +80,18 @@ export const DIAGRAM_CATALOG = [
     subjects: ['Mathematics'],
     topics: ['Data Handling', 'Statistics', 'Bar Graphs', 'Reading bar graphs', 'Drawing bar graphs (single and double)'],
     exampleParams: { data: [{ label: 'Mon', value: 5 }, { label: 'Tue', value: 8 }], title: 'Students present', xLabel: 'Day', yLabel: 'Count' },
-    aiInstruction: '{ "type": "barGraph", "params": { "data": [{"label": "<string>", "value": <number>}, ...], "title": "<string>", "xLabel": "<string>", "yLabel": "<string>" }, "caption": "..." }'
+    aiInstruction: '{ "type": "barGraph", "params": { "data": [{"label": "<string>", "value": <number>}, ...], "title": "<string>", "xLabel": "<string>", "yLabel": "<string>", "orientation": "vertical"|"horizontal", "tickStep": <positive number>, "showValues": false }, "caption": "..." }'
+  },
+  {
+    type: 'pictograph',
+    label: 'Pictograph',
+    emoji: '🍎',
+    description: 'Table pictograph with repeated symbols and a value key',
+    grades: [2, 3, 4, 5, 6],
+    subjects: ['Mathematics'],
+    topics: ['Data Handling', 'Statistics', 'Pictographs', 'Pictorial representation', 'Reading pictographs'],
+    exampleParams: { data: [{ label: 'Monday', count: 4 }, { label: 'Tuesday', count: 2 }], symbol: 'apple', valuePerSymbol: 5, unit: 'apples', title: 'Apples sold' },
+    aiInstruction: '{ "type": "pictograph", "params": { "data": [{"label": "<string>", "count": <whole number of symbols 0..12>}, ...], "symbol": "apple"|"cake"|"chair"|"car"|"book"|"person"|"star"|"tree"|"circle"|"square", "valuePerSymbol": <positive number>, "unit": "<plural unit>", "title": "<string>" }, "caption": "<neutral description that does not reveal the answer>" }. count is the number of displayed symbols, so the represented value is count * valuePerSymbol.'
   },
   {
     type: 'placeValue',

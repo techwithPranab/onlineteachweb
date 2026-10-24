@@ -132,6 +132,10 @@ While reviewing the PDF, check whether the exercises include formats such as:
 - Statement I / Statement II questions
 - Matching columns
 - Table/data interpretation
+- Pictograph interpretation with an explicit per-symbol key
+- Vertical or horizontal bar-graph interpretation with a readable axis scale
+- Graph/pictograph comparison, total, fraction or ratio questions
+- Graph/pictograph hypothetical-change and multi-step cost/quantity questions
 - Symbol substitution puzzles
 - Picture-based mathematical puzzles
 - Pattern recognition
