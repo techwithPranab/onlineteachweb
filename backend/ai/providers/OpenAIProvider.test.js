@@ -13,6 +13,7 @@ function expectModernTokenLimit(expected) {
   expect(payload.max_completion_tokens).toBe(expected);
   expect(payload).not.toHaveProperty('max_tokens');
   expect(payload).not.toHaveProperty('temperature');
+  expect(payload.reasoning_effort).toBe('none');
 }
 
 test('question generation uses max_completion_tokens with current OpenAI models', async () => {
@@ -23,16 +24,16 @@ test('question generation uses max_completion_tokens with current OpenAI models'
   }] }));
   const provider = new OpenAIProvider({ apiKey: 'test', model: 'gpt-5.6-luna' });
   await provider.generateQuestions({ topic: 'Pictographs', content: '', difficultyLevel: 'easy', questionType: 'mcq-single', count: 2 });
-  expectModernTokenLimit(1600);
+  expectModernTokenLimit(8000);
 });
 
 test('content extraction and validation use max_completion_tokens', async () => {
   global.fetch = jest.fn().mockResolvedValue(mockResponse({ valid: true }));
   const provider = new OpenAIProvider({ apiKey: 'test', model: 'gpt-5.6-luna' });
   await provider.extractContent('A pictograph lesson', 'Pictographs');
-  expectModernTokenLimit(2000);
+  expectModernTokenLimit(8000);
   await provider.validateQuestion({ text: 'Question' });
-  expectModernTokenLimit(500);
+  expectModernTokenLimit(4000);
 });
 
 test('legacy models retain supported custom temperature controls', async () => {
@@ -44,4 +45,15 @@ test('legacy models retain supported custom temperature controls', async () => {
   const provider = new OpenAIProvider({ apiKey: 'test', model: 'gpt-4o-mini' });
   await provider.generateQuestions({ topic: 'Data', content: '', difficultyLevel: 'easy', questionType: 'mcq-single', count: 1 });
   expect(JSON.parse(global.fetch.mock.calls[0][1].body).temperature).toBe(0.3);
+  expect(JSON.parse(global.fetch.mock.calls[0][1].body)).not.toHaveProperty('reasoning_effort');
+});
+
+test('empty completions report finish reason and token usage', async () => {
+  global.fetch = jest.fn().mockResolvedValue({ ok: true, json: async () => ({
+    choices: [{ finish_reason: 'length', message: { content: '' } }],
+    usage: { completion_tokens: 8000 }
+  }) });
+  const provider = new OpenAIProvider({ apiKey: 'test', model: 'gpt-5.6-luna' });
+  await expect(provider.generateQuestions({ topic: 'Pictographs', content: '', difficultyLevel: 'olympiad', questionType: 'short-answer', count: 1 }))
+    .rejects.toThrow('finish_reason: length, completion_tokens: 8000');
 });

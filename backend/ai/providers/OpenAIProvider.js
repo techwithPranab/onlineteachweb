@@ -55,6 +55,12 @@ class OpenAIProvider extends AIProviderInterface {
     return !/^(?:gpt-[56](?:[.-]|$)|o\d)/i.test(this.model);
   }
 
+  reasoningEffort() {
+    // GPT-5.6 supports "none" and otherwise defaults to medium, which can
+    // consume a small completion budget before producing visible JSON.
+    return /^gpt-5\.6(?:[.-]|$)/i.test(this.model) ? 'none' : null;
+  }
+
   async isAvailable() {
     if (!this.apiKey) {
       logger.warn('OpenAI API key not configured');
@@ -98,7 +104,8 @@ class OpenAIProvider extends AIProviderInterface {
 
     const requestedTemperature = this.temperatureSettings[difficultyLevel] || 0.5;
     const temperature = this.supportsCustomTemperature() ? requestedTemperature : 1;
-    const maxTokens = (this.maxTokenSettings[questionType] || 800) * count;
+    const requestedMaxTokens = (this.maxTokenSettings[questionType] || 800) * count;
+    const maxTokens = this.reasoningEffort() ? Math.max(requestedMaxTokens, 8000) : requestedMaxTokens;
 
     try {
       const response = await fetch(`${this.baseUrl}/chat/completions`, {
@@ -114,6 +121,7 @@ class OpenAIProvider extends AIProviderInterface {
             { role: 'user', content: userPrompt }
           ],
           ...(this.supportsCustomTemperature() ? { temperature: requestedTemperature } : {}),
+          ...(this.reasoningEffort() ? { reasoning_effort: this.reasoningEffort() } : {}),
           max_completion_tokens: maxTokens,
           response_format: { type: 'json_object' }
         })
@@ -125,10 +133,14 @@ class OpenAIProvider extends AIProviderInterface {
       }
 
       const data = await response.json();
-      const content = data.choices[0]?.message?.content;
+      const choice = data.choices?.[0];
+      const content = choice?.message?.content;
       
       if (!content) {
-        throw new Error('Empty response from OpenAI');
+        const reason = choice?.finish_reason || 'unknown';
+        const refusal = choice?.message?.refusal;
+        const used = data.usage?.completion_tokens;
+        throw new Error(`Empty response from OpenAI (finish_reason: ${reason}${used === undefined ? '' : `, completion_tokens: ${used}`}${refusal ? `, refusal: ${refusal}` : ''})`);
       }
 
       // Parse and validate response
@@ -205,7 +217,8 @@ class OpenAIProvider extends AIProviderInterface {
             { role: 'user', content: userPrompt }
           ],
           ...(this.supportsCustomTemperature() ? { temperature: 0.3 } : {}),
-          max_completion_tokens: 2000,
+          ...(this.reasoningEffort() ? { reasoning_effort: this.reasoningEffort() } : {}),
+          max_completion_tokens: this.reasoningEffort() ? 8000 : 2000,
           response_format: { type: 'json_object' }
         })
       });
@@ -248,7 +261,8 @@ class OpenAIProvider extends AIProviderInterface {
             { role: 'user', content: userPrompt }
           ],
           ...(this.supportsCustomTemperature() ? { temperature: 0.2 } : {}),
-          max_completion_tokens: 500,
+          ...(this.reasoningEffort() ? { reasoning_effort: this.reasoningEffort() } : {}),
+          max_completion_tokens: this.reasoningEffort() ? 4000 : 500,
           response_format: { type: 'json_object' }
         })
       });
